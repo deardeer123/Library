@@ -1,2 +1,4 @@
-package com.green.Library.user.vo;public class UserVO {
+package com.green.Library.user.vo;
+
+public class UserVO {
 }

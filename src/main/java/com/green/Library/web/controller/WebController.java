@@ -1,2 +1,4 @@
-package com.green.Library.web.controller;public class WebController {
+package com.green.Library.web.controller;
+
+public class WebController {
 }

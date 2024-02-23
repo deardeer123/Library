@@ -1,2 +1,4 @@
-package com.green.Library.library.controller;public class LibraryController {
+package com.green.Library.library.controller;
+
+public class LibraryController {
 }

@@ -1,2 +1,4 @@
-package com.green.Library.web.vo;public class WebVO {
+package com.green.Library.web.vo;
+
+public class WebVO {
 }
