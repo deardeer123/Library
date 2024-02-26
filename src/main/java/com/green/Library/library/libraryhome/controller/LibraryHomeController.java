@@ -20,11 +20,11 @@ public class LibraryHomeController {
     }
 
     //비동기 로그인
-    @ResponseBody
-    @PostMapping("/login")
-    public String login(@RequestBody){
-
-    }
+//    @ResponseBody
+//    @PostMapping("/login")
+//    public String login(@RequestBody){
+//
+//    }
 
     //홈
     @GetMapping("/home")
