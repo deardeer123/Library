@@ -2,10 +2,18 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="headerFragment"> 
 <!-- headerFragment -->
-    헤더
+    <div class="row">
+        <div class="col">
+            <span>헤더</span>
+            <span onclick="location.href='/member/join'">회원가입</span>
+        </div>
+        <div class="col">
+            
+        </div>
+    </div>
     
 
 
-    <script src="/js/fragment/user/user_header.js"></script>
+    <script src="/js/fragment/homePage.js"></script>
 </th:block>
 </html>
