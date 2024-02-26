@@ -3,6 +3,9 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="libraryBookMapper">
+<<<<<<< HEAD
+    
+=======
     <resultMap id="libraryBook" type="com.green.Library.libraryBook.vo.LibraryBookVO">
         <id column="BOOK_CODE" property="bookCode" />
         <result column="BOOK_TITLE" property="bookTitle" />
@@ -47,6 +50,7 @@
     </select>
 
 
+>>>>>>> 3a0d3f497d32212e1c6cf4129403b4f04a9f5bf3
 </mapper>
 
 
