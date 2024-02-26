@@ -6,13 +6,27 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/bookAdmin")
 public class LibraryHomeController {
     @Resource(name="menuService")
     LibraryMenuService libraryMenuService;
+
+    // 로그인 페이지 이동
+    @GetMapping("/main")
+    public String goLogin(){
+        return "content/library/main";
+    }
+
+    @ResponseBody
+    @PostMapping("/login")
+    public String login(){
+
+    }
 
     //홈
     @GetMapping("/home")
