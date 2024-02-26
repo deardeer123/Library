@@ -20,8 +20,13 @@ public class LibraryHomeController {
     }
 
     //비동기 로그인
+<<<<<<< HEAD
 //    @ResponseBody
 //    @PostMapping("/login")
+=======
+    @ResponseBody
+    @PostMapping("/login")
+>>>>>>> Bom
 //    public String login(@RequestBody){
 //
 //    }
