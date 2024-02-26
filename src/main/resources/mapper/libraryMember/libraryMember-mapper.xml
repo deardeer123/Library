@@ -3,7 +3,7 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="libraryMemberMapper">
-<<<<<<< HEAD
+
     <resultMap id="libMember" type="com.green.Library.libraryMember.vo.LibraryMemberVO">
         <id column="USER_CODE"          property="userCode"/>
         <result column="USER_ID"        property="userId"/>
@@ -17,8 +17,7 @@
         <result column="EMAIL"          property="email"/>
         <result column="IS_ADMIN"       property="isAdmin"/>
     </resultMap>
-=======
->>>>>>> 3a0d3f497d32212e1c6cf4129403b4f04a9f5bf3
+
 
 <select id="login" resultMap="libMember">
     SELECT USER_CODE

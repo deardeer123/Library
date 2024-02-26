@@ -17,7 +17,7 @@ public class RegAndViewController {
     @GetMapping("/workingBook")
     public String goWorkingBook(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
 
         System.out.println("작업 자료 관리 이동");
@@ -26,7 +26,7 @@ public class RegAndViewController {
     @GetMapping("/collectionBook")
     public String goCollectionBook(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
 
         System.out.println("소장 자료 관리 이동");
@@ -35,7 +35,7 @@ public class RegAndViewController {
     @GetMapping("/markImport")
     public String goMarkImport(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
 
         System.out.println("마크 반입 이동");

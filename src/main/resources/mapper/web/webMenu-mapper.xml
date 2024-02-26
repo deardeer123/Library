@@ -2,18 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
-<mapper namespace="libraryMenuMapper">
-<!--    헤더 메뉴-->
-    <resultMap id="headerMenu" type="com.green.Library.library.libraryMenu.vo.LibraryHeaderMenuVO">
+<mapper namespace="webMenuMapper">
+
+    <!--    헤더 메뉴-->
+    <resultMap id="headerMenu" type="com.green.Library.web.webMenu.vo.WebHeaderMenuVO">
         <id column="MENU_NUM" property="menuNum" />
         <result column="MENU_NAME" property="menuName" />
         <result column="MENU_PAGE" property="menuPage" />
         <result column="MENU_INDEX" property="menuIndex" />
         <result column="MENU_TYPE" property="menuType" />
-        <collection property="LibrarySideMenuVOList" resultMap="libraryMenuMapper.sideMenu" />
+        <collection property="webSideMenuVOList" resultMap="webMenuMapper.sideMenu" />
     </resultMap>
-<!--사이드 메뉴-->
-    <resultMap id="sideMenu" type="com.green.Library.library.libraryMenu.vo.LibrarySideMenuVO">
+
+    <!--사이드 메뉴-->
+    <resultMap id="sideMenu" type="com.green.Library.web.webMenu.vo.WebSideMenuVO">
         <id column="SIDE_MENU_NUM" property="sideMenuNum" />
         <result column="SIDE_MENU_NAME" property="sideMenuName" />
         <result column="SIDE_MENU_PAGE" property="sideMenuPage" />
@@ -21,8 +23,8 @@
         <result column="MENU_NUM" property="menuNum" />
     </resultMap>
 
-<!--헤더 메뉴 및 사이드 메뉴 불러오기-->
-    <select id="selectLibraryMenuList" resultMap="headerMenu">
+    <!--헤더 메뉴 및 사이드 메뉴 불러오기-->
+    <select id="selectWebMenuList" resultMap="headerMenu">
         SELECT
         header_menu.MENU_NUM ,
         MENU_NAME ,
@@ -35,29 +37,16 @@
         FROM
         header_menu INNER JOIN side_menu
         ON header_menu.MENU_NUM = side_menu.MENU_NUM
-        WHERE header_menu.MENU_TYPE = 'library'
+        WHERE header_menu.MENU_TYPE = #{menuType}
+    </select>
+
+<!--    선택된 메뉴 찾기-->
+    <select id="" resultType="int">
+
     </select>
 
 
-
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

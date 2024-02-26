@@ -26,7 +26,7 @@ public class BuyController {
     @GetMapping("/wishBook")
     public String goWishBook(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
         //상대방이 원하는 책을 등록하는것
 
         System.out.println("희망 자료 이동");
@@ -36,7 +36,7 @@ public class BuyController {
     @GetMapping("/deleteBook")
     public String goDeleteBook(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
         //그말대로 삭!제
 
         System.out.println("삭제 자료 이동");
@@ -45,7 +45,7 @@ public class BuyController {
     @GetMapping("/buyBook")
     public String goBuyBook(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
         //일단 넣어야할 코드 잘 가져오는지 확인좀 합시다.
         System.out.println(libraryBookService.searchMaxCode());
@@ -62,7 +62,7 @@ public class BuyController {
     @GetMapping("/donatedBook")
     public String goDonatedBook(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
 
         System.out.println("기증 자료 이동");

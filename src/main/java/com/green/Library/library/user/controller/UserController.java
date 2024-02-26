@@ -18,7 +18,7 @@ public class UserController {
     @GetMapping("/user")
     public String goUser(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
 
         System.out.println(" 이동");
@@ -28,7 +28,7 @@ public class UserController {
     @GetMapping("/userApproval")
     public String goUserApproval(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
 
         System.out.println("이용자 승인 이동");
@@ -38,7 +38,7 @@ public class UserController {
     @GetMapping("/delinquent")
     public String goDelinquent(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
 
         System.out.println("연체자 관리 이동");

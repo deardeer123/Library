@@ -19,7 +19,7 @@ public class BorrowReturnController {
     @GetMapping("/borrowReturn")
     public String goBorrowReturn(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
 
         System.out.println("대출반납으로 이동");
@@ -30,7 +30,7 @@ public class BorrowReturnController {
     @GetMapping("/consistentReturn")
     public String goConsistentReturn(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
 
         System.out.println("대출반납으로 이동");
@@ -41,7 +41,7 @@ public class BorrowReturnController {
     @GetMapping("/borrowReturnManagement")
     public String goBorrowReturnManagement(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
 
         System.out.println("대출 반납 관리 이동");
@@ -51,7 +51,7 @@ public class BorrowReturnController {
     @GetMapping("/reservationInfo")
     public String goReservationInfo(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
 
         System.out.println("예약 정보 관리 이동");
@@ -61,7 +61,7 @@ public class BorrowReturnController {
     @GetMapping("/outputHistory")
     public String goOutputHistory(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
 
         System.out.println("출력 이력 관리 이동");

@@ -31,10 +31,10 @@ public class LibraryHomeController {
     @GetMapping("/home")
     public String goHome(Model model){
         System.out.println("홈으로 이동");
-        System.out.println(libraryMenuService.selectMenuList());
+        System.out.println(libraryMenuService.selectLibraryMenuList());
 
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
         return "content/library/home";
     }
 

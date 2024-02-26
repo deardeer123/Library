@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface LibraryMenuService {
     //메뉴 불러오기
-    List<LibraryHeaderMenuVO> selectMenuList();
+    List<LibraryHeaderMenuVO> selectLibraryMenuList();
 }
