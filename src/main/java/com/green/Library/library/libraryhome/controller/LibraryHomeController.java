@@ -5,10 +5,7 @@ import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/bookAdmin")
@@ -25,7 +22,7 @@ public class LibraryHomeController {
     //비동기 로그인
     @ResponseBody
     @PostMapping("/login")
-    public String login(@ResponseBody){
+    public String login(@RequestBody){
 
     }
 
