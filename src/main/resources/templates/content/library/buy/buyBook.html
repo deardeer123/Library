@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/library/library_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/library/library_detail_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
@@ -11,10 +10,74 @@
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
     구입 자료
+    <div class="row">
+        <div class="col">
+            <!-- 책등록하기 -->
+            <div class="row">
+                <div class="col">
+
+                    <div class="row">
+                        <!-- 중간부분 -->
+                        <div class="col-5">
+                            <!-- 이미지 들어갈 자리 -->
+                            <div class="row">
+                                <div class="col">
+                                    <div class="text-center">
+                                        <img src="/upload/book_character_smile.png" class="rounded" alt="..." width="100%">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-7">
+                            <!-- 책 이름  -->
+                            <div class="row mb-2">
+                                <div class="col-3">책이름</div>
+                                <div class="col-9"><input type="text" class="form-control"></div>
+                            </div>
+
+                            <!-- 작가 -->
+                            <div class="row mb-2">
+                                <div class="col-3">작가</div>
+                                <div class="col-9"><input type="text" class="form-control"></div>
+                            </div>
+
+                            <!-- 출판사 -->
+                            <div class="row mb-2">
+                                <div class="col-3">출판사</div>
+                                <div class="col-9"><input type="text" class="form-control"></div>
+                            </div>
+                            <!-- 출판년도 -->
+                            <div class="row mb-2">
+                                <div class="col-3">출판년도</div>
+                                <div class="col-9"><input type="text" class="form-control"></div>
+                            </div>
+
+                            <!-- 카테고리 -->
+                            <div class="row">
+                                <div class="col-3">카테고리</div>
+                                <div class="col-9">
+                                    <select class="form-select" aria-label="Default select example">
+                                        <th:block th:each="e:${cateList}">
+                                            <option th:value="${e.bookCateCode}">[[${e.bookCateName}]]</option>
+                                        </th:block>
+                                       
+                                    </select>
+                                </div>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
     <!-- <script src="/"></script> -->
 </th:block>
+
 </html>
