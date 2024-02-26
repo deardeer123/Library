@@ -22,9 +22,10 @@ public class LibraryHomeController {
         return "content/library/main";
     }
 
+    //비동기 로그인
     @ResponseBody
     @PostMapping("/login")
-    public String login(){
+    public String login(@ResponseBody){
 
     }
 

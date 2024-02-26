@@ -1,24 +1,30 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/layout파일명기입}" >
-
-<th:block layout:fragment="content_css">
-    <!-- html 파일이 열릴때 같이 실행되는 css -->
-    <link rel="stylesheet" href="/">
-</th:block>
-
-<th:block layout:fragment="contentFragment">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
     <div class="row">
-        <div class="col">
-            <input type="text" name="userId">
-            <input type="password" name="userPw">
+        <div class="col" style="margin-left: 200px; margin-top: 200px;">
+            <table class="table">
+                <tr>
+                    <td>
+                        아이디 : <input type="text" name="userId">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        비밀번호 : <input type="password" name="userPw">
+                    </td>
+                </tr> 
+                <tr>
+                    <td>
+                        <input type="button" value="로그인" onclick="login()">
+                    </td>
+                </tr>              
+            </table>
         </div>
     </div>
-</th:block>
-
-<th:block layout:fragment="content_js">
-    <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <script src="/"></script>
-</th:block>
+</body>
 </html>
