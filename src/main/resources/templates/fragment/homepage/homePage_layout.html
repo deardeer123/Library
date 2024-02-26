@@ -20,10 +20,13 @@
                 <th:block th:replace="~{fragment/homePage/homePage_header::headerFragment}"></th:block>
             </div>
         </div>
-
         <div class="row">
-
-            <div class="col-12">
+            <div class="col">
+                <th:block th:replace="~{fragment/homePage/homePage_menu::menuFragment}"></th:block>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <th:block layout:fragment="contentFragment"></th:block>
             </div>
         </div>
