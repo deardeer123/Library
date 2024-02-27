@@ -10,69 +10,114 @@
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
     구입 자료
-    <div class="row">
-        <div class="col">
-            <!-- 책등록하기 -->
-            <div class="row">
-                <div class="col">
+    <form id="" method="post" action="/bookAdmin/regBook" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col">
+                <!-- 책등록하기 -->
+                <div class="row">
+                    <div class="col">
 
-                    <div class="row">
-                        <!-- 중간부분 -->
-                        <div class="col-5">
-                            <!-- 이미지 들어갈 자리 -->
-                            <div class="row">
-                                <div class="col">
-                                    <div class="text-center">
-                                        <img src="/upload/book_character_smile.png" class="rounded" alt="..." width="100%">
+                        <div class="row">
+                            <!-- 중간부분 -->
+                            <div class="col-5">
+                                <!-- 이미지 들어갈 자리 -->
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="text-center">
+                                            <img src="/upload/book_character_smile.png" class="rounded" alt="..."
+                                                width="100%" id="bookImg">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <!-- 이미지 변경 버튼 -->
+                                        <div class="input-group mb-3">
+
+                                            <input type="file" class="form-control" id="itemImg" name="bookImg"
+                                                onchange="previewImg(this)" aria-describedby="inputGroupFileAddon03"
+                                                aria-label="Upload">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            
-                        </div>
-                        <div class="col-7">
-                            <!-- 책 이름  -->
-                            <div class="row mb-2">
-                                <div class="col-3">책이름</div>
-                                <div class="col-9"><input type="text" class="form-control"></div>
-                            </div>
 
-                            <!-- 작가 -->
-                            <div class="row mb-2">
-                                <div class="col-3">작가</div>
-                                <div class="col-9"><input type="text" class="form-control"></div>
-                            </div>
+                            <div class="col-7">
+                                <!-- 책 이름  -->
+                                <div class="row mb-4">
+                                    <div class="col-3">책이름</div>
+                                    <div class="col-9"><input type="text" class="form-control" name="bookTitle"></div>
+                                </div>
 
-                            <!-- 출판사 -->
-                            <div class="row mb-2">
-                                <div class="col-3">출판사</div>
-                                <div class="col-9"><input type="text" class="form-control"></div>
-                            </div>
-                            <!-- 출판년도 -->
-                            <div class="row mb-2">
-                                <div class="col-3">출판년도</div>
-                                <div class="col-9"><input type="text" class="form-control"></div>
-                            </div>
+                                <!-- 작가 -->
+                                <div class="row mb-4">
+                                    <div class="col-3">작가</div>
+                                    <div class="col-9"><input type="text" class="form-control" name="bookWriter"></div>
+                                </div>
 
-                            <!-- 카테고리 -->
-                            <div class="row">
-                                <div class="col-3">카테고리</div>
-                                <div class="col-9">
-                                    <select class="form-select" aria-label="Default select example">
-                                        <th:block th:each="e:${cateList}">
-                                            <option th:value="${e.bookCateCode}">[[${e.bookCateName}]]</option>
-                                        </th:block>
-                                       
-                                    </select>
+                                <!-- 출판사 -->
+                                <div class="row mb-4">
+                                    <div class="col-3">출판사</div>
+                                    <div class="col-9"><input type="text" class="form-control" name="bookPub"></div>
+                                </div>
+                                <!-- 출판년도 -->
+                                <div class="row mb-4">
+                                    <div class="col-3">출판년도</div>
+                                    <div class="col-9"><input type="text" class="form-control" name="bookYear"></div>
+                                </div>
+
+                                <!-- 카테고리 -->
+                                <div class="row mb-4">
+                                    <div class="col-3">카테고리</div>
+                                    <div class="col-9">
+                                        <select class="form-select" aria-label="Default select example" name="bookCateCode">
+                                            <th:block th:each="e:${cateList}">
+                                                <option th:value="${e.bookCateCode}">[[${e.bookCateName}]]</option>
+                                            </th:block>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                            
-
                         </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <!-- 책 소개 -->
+                                <div class="input-group">
+                                    <span class="input-group-text">책 소개</span>
+                                    <textarea class="form-control" aria-label="With textarea"
+                                        name="bookIntro"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-10"></div>
+                            <div class="col d-grid">
+                                <button type="submit" class="btn btn-primary">등록하기</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
+
+    <script>
+        function previewImg(selectTag) {
+            if (selectTag.files && selectTag.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.querySelector('#bookImg').src = e.target.result;
+                };
+                reader.readAsDataURL(selectTag.files[0]);
+            } else {
+                document.querySelector('#bookImg').src = "/upload/book_character_smile.png";
+            }
+        }
+    </script>
 </th:block>
 
 <th:block layout:fragment="content_js">
