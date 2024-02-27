@@ -10,11 +10,97 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    회원가입
+    <div class="row justify-content-center">
+        <div class="col-10">
+            <form action="/member/insertMember" method="post" id="memberForm">
+                <table class="table align-middle">
+                    <colgroup>
+                        <col width="25%">
+                        <col width="25%">
+                        <col width="25%">
+                        <col width="25%">
+                    </colgroup>
+                    <tr>
+                        <td>아이디</td><span>*</span>
+                        <td colspan="3"><input type="text" name="userId"></td>
+                    </tr>
+                    <tr>
+                        <td>성명</td><span>*</span>
+                        <td colspan="3"><input type="text" name="userName"></td>
+                    </tr>
+                    <tr>
+                        <td>패스워드</td><span>*</span>
+                        <td colspan="3"><input type="password" name="userPw" id="pw"></td>
+                    </tr>
+                    <tr>
+                        <td>패스워드 확인</td><span>*</span>
+                        <td colspan="3"><input type="password" name="userPw" id="pw2"></td>
+                    </tr>
+                    <tr>
+                        <td>휴대폰번호</td>
+                        <td colspan="3">
+                            <input type="text" name="userTel"> - <input type="text" name="userTel"> - <input type="text" name="userTel">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">주소</td>
+                        <td colspan="3">
+                            <input type="text" name="postCode" id="postCode" placeholder="우편번호" style="width: 20%;">
+                            <input type="button" onclick="post()" value="주소 찾기" style="width: 80px;"> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="userAddr" id="userAddr" placeholder="주소"></td><br>
+                        <td colspan="3"><input type="text" name="addrDetail" id="sample6_detailAddress" placeholder="상세주소"></td>
+                    </tr>
+                    <tr>
+                        <td>이메일</td>
+                        <td>
+                            <input type="text" name="email"> @ 
+                        </td>
+                        <td>
+                            <select name="email"> 
+                                <option value="@ naver.com">naver.com</option>
+                                <option value="@ gmail.com">gmail.com</option>
+                                <option value="@ daum.net">daum.net</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>성별</td>
+                        <td>
+                            <input type="radio" value="남성" name="gender"> 남성
+                            <input type="radio" value="여성" name="gender"> 여성
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="text-align: center;">
+                            <input type="button" value="회원등록" onclick="checkPW()">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <script>
+        function checkPW(){
+            let pw = document.querySelector("#pw").value
+            console.log(pw)
+            let pw2 = document.querySelector("#pw2").value
+            console.log(pw2)
+            console.log(document.querySelector("#memberForm"))
+            if(pw != pw2){
+                alert("두 비밀번호가 서로 다릅니다 \n 다시 입력바랍니다")
+            }
+            else{
+                document.querySelector("#memberForm").submit();
+            }
+        }
+    </script>
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <script src="/"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </th:block>
 </html>
