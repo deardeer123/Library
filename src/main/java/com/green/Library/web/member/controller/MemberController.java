@@ -40,7 +40,7 @@ public class MemberController {
         memberVO.setEmail(memberVO.getEmail().replace(",",""));
 
         memberService.insertMember(memberVO);
-        return "redirect:/webHome/home";
+        return "redirect:/login";
     }
 
     @GetMapping("/join")
