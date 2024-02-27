@@ -11,7 +11,12 @@ public class WebHomeController {
 
     @GetMapping("/home")
     public String goHome(){
-        System.out.println("홈으로 가긴하니");
+        System.out.println("홈");
         return "content/homePage/home";
     }
+
+
+
+
+
 }
