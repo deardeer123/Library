@@ -2,6 +2,8 @@ package com.green.Library.library.libraryhome.controller;
 
 
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
+import com.green.Library.library.libraryhome.service.LibraryHomeService;
+import com.green.Library.libraryMember.vo.LibraryMemberVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -14,15 +16,24 @@ public class LibraryHomeController {
     @Resource(name="menuService")
     LibraryMenuService libraryMenuService;
 
+    @Resource(name = "LibraryHomeService")
+    LibraryHomeService libraryHomeService;
+
     // 로그인 페이지 이동
     @GetMapping("/main")
     public String goLogin(){
         return "content/library/main";
     }
 
-    //동기 로그인
+    //동기 관리자 로그인
     @PostMapping("/login")
-    public String login(HttpSession session){
+    public String login(LibraryMemberVO libraryMemberVO, HttpSession session){
+
+        LibraryMemberVO loginInfo = libraryHomeService.login(libraryMemberVO);
+
+        if(loginInfo != null){
+            session.setAttribute("loginInfo", loginInfo);
+        }
 
         return "";
     }

@@ -10,12 +10,13 @@ public class LibraryHomeServiceImpl implements LibraryHomeService{
     @Autowired
     private SqlSessionTemplate sqlSession;
 
+    //admin 로그인
     @Override
     public LibraryMemberVO login(LibraryMemberVO libraryMemberVO) {
         return sqlSession.selectOne("libraryMemberMapper.login", libraryMemberVO);
     }
 
-    //admin 로그인
+
 
 
 }
