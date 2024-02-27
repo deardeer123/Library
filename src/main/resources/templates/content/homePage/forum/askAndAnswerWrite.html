@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragment/homepage/homePage_detail_layout}" >
+
+  <!-- html 파일이 열릴때 같이 실행되는 css-->
+<th:block layout:fragment="content_css">
+  <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+  <!-- html code 작성-->
+  <div class="row">
+    <div class="col"><span>*</span>로 표시되는 항목은 필수기입 사항입니다.</div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <table class="table table-bordered text-center align-middle">
+        <colgroup>
+          <col width="35%">
+          <col width="*">
+        </colgroup>
+        <tr>
+          <td>작성자<span>*</span></td>
+          <td><input type="text">데이터불러와</td>
+        </tr>
+        <tr>
+          <td>공개여부<span>*</span></td>
+          <td>
+            <input type="radio" name="open" checked>공개
+            <input type="radio" name="open">비공개
+          </td>
+        </tr>
+        <tr>
+          <td>제목<span>*</span></td>
+          <td>
+            <select name="" id="">
+              <option value="">상담합니다.</option>
+              <option value="">문의합니다.</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>분류<span>*</span></td>
+          <td>
+            <select name="" id="">
+              <option value="">자료이용</option>
+              <option value="">시설이용</option>
+              <option value="">강좌/프로그램</option>
+              <option value="">기타</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>내용<span>*</span></td>
+          <td><textarea style="resize: none;" name="" id="" cols="80" rows="15"></textarea></td>
+        </tr>
+      </table>
+    </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <input type="button" value="등록">
+        <input type="button" value="목록">
+      </div>
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="content_js">
+  <!-- html 파일이 열릴때 같이 실행되는 css-->
+  <!-- <script src="/"></script> -->
+</th:block>
+</html>

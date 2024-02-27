@@ -10,7 +10,75 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    도서관 행사
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3>도서관 행사</h3>
+        </div>
+        <div class="col-12 mt-5">
+            <tr>
+                <td>도서관주간 행사 신청</td>
+            </tr>
+        </div>
+        <div class="col-12 mt-4">
+            <tr>
+                <td>
+                    <input type="search">
+                </td>
+                <td>
+                    <select name=>
+                        <option>진행상태</option>
+                        <option>신청전</option>
+                        <option>진행중</option>
+                        <option>마감완료</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="button" value="조회">
+                </td>
+            </tr>
+        </div>
+        <div class="col mt-3">
+            <table class="align-middle table">
+                <colgroup>
+                <col width="10%">
+                <col width="30%">
+                <col width="10%">
+                <col width="20%">
+                <col width="10%">
+                <col width="10%">
+                <col width="10%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <td>번호</td>
+                        <td>도서관주간</td>
+                        <td>대상</td>
+                        <td>신청기간</td>
+                        <td>정원대기</td>
+                        <td>신청방법</td>
+                        <td>상태</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>물뿌리기행사</td>
+                        <td>울산시민</td>
+                        <td>2024-03-18 ~ 2024-04-18</td>
+                        <td>0 / 40</td>
+                        <td>인터넷</td>
+                        <td>
+                            <input type="button" value="기간마감">
+                            <input type="button" value="신청확인">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <input type="button" value="게시글 작성" onclick="location.href='/eventBoard'">
+            </div>
+        </div>
+    </div>
 </th:block>
 
 <th:block layout:fragment="content_js">

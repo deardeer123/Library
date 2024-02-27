@@ -1,21 +1,33 @@
 package com.green.Library.web.participationForum.controller;
 
+import com.green.Library.web.participationForum.service.ParticipationForumService;
+import com.green.Library.web.participationForum.service.ParticipationForumServiceIMPL;
+import com.green.Library.web.participationForum.vo.ParticipationForumVO;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Controller;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
 public class ParticipationForumController {
     @Resource(name ="webMenuService")
     WebMenuService webMenuService;
+    @Resource(name = "ParticipationForumService")
+    private ParticipationForumServiceIMPL participationForumService;
 
     //    -------- 참여마당(forum)---------
+
+    //공지사항조회
     @GetMapping("/notice")
-    public String goNotice(Model model){
+    public String goNotice(ParticipationForumVO participationForumVO, Model model){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -30,8 +42,24 @@ public class ParticipationForumController {
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
 
         System.out.println("공지사항");
+
+        List<ParticipationForumVO> noticeList = participationForumService.selctNotice();
+        model.addAttribute("noticeList", noticeList);
+        participationForumService.updateCnt(participationForumVO.getBoardCnt());
         return "content/homePage/forum/notice";
     }
+    //공지사항 글쓰기 페이지이동
+    @GetMapping("/noticeWrite")
+    public String noticeWrite (){
+        return "content/homePage/forum/noticeWrite";
+    }
+    //공지사항 글쓰기
+    @PostMapping("/noticeWrite")
+    public String noiceWrite(ParticipationForumVO participationForumVO){
+        participationForumService.insertNotice(participationForumVO);
+        return "redirect:/notice";
+    }
+
     @GetMapping("/askAndAnswer")
     public String goAskAndAnswer(Model model){
         //드가기전 메뉴 정보좀 들고옴
@@ -85,6 +113,7 @@ public class ParticipationForumController {
 
         System.out.println("사물함예약");
         return "content/homePage/forum/lockerReservation";
+
     }
 
 }

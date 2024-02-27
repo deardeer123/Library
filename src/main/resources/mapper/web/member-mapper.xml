@@ -3,6 +3,19 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="memberMapper">
+    <resultMap id="users" type="com.green.Library.web.member.vo.MemberVO">
+        <result property="userCode" column="USER_CODE"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="userPw" column="USER_PW"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="userTel" column="USER_TEL"/>
+        <result property="postCode" column="POST_CODE"/>
+        <result property="userAddr" column="USER_ADDR"/>
+        <result property="addrDetail" column="ADDR_DETAIL"/>
+        <result property="gender" column="GENDER"/>
+        <result property="email" column="EMAIL"/>
+        <result property="isAdmin" column="IS_ADMIN"/>
+    </resultMap>
     <insert id="insertMember">
         INSERT INTO USERS(
             USER_ID
@@ -26,6 +39,17 @@
             ,#{email}
         )
     </insert>
+
+    <select id="login" resultMap="users">
+        SELECT
+            USER_ID
+            ,USER_PW
+        FROM USERS
+        WHERE USER_ID = #{userId}
+        AND USER_PW = #{userPw}
+    </select>
+
+
 </mapper>
 
 

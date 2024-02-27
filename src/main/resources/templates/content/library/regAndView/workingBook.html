@@ -10,7 +10,40 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    작업 자료 관리
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped">
+                <colgroup>
+                    <col width="13%">
+                    <col width="*%">
+                    <col width="25%">
+                    <col width="15%">
+                    <col width="10%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <td>책 코드</td>
+                        <td>책 제목</td>
+                        <td>책 저자</td>
+                        <td>책 출판사</td>
+                        <td>출판년도</td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <th:block th:each="e:${bookList}">
+                        <tr>
+                            <td>[[${e.bookCode}]]</td>
+                            <td>[[${e.bookTitle}]]</td>
+                            <td>[[${e.bookWriter}]]</td>
+                            <td>[[${e.bookPub}]]</td>
+                            <td>[[${e.bookYear}]]</td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </th:block>
 
 <th:block layout:fragment="content_js">
