@@ -17,7 +17,7 @@ public class StatisticsController {
     @GetMapping("/statistics")
     public String goStatistics(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
 
         System.out.println("통계 이동");

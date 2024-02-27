@@ -12,8 +12,8 @@ public class LibraryMenuServiceImpl implements LibraryMenuService {
     @Autowired
     SqlSessionTemplate sqlSession;
     @Override
-    public List<LibraryHeaderMenuVO> selectMenuList() {
+    public List<LibraryHeaderMenuVO> selectLibraryMenuList() {
         //메뉴 불러오기
-        return sqlSession.selectList("libraryMenuMapper.selectMenuList");
+        return sqlSession.selectList("libraryMenuMapper.selectLibraryMenuList");
     }
 }

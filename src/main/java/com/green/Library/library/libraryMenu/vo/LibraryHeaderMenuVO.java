@@ -14,6 +14,7 @@ public class LibraryHeaderMenuVO {
     private String menuName;
     private String menuPage;
     private int menuIndex;
+    private String menuType;
     private List<LibrarySideMenuVO> LibrarySideMenuVOList;
 
 }

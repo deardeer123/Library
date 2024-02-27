@@ -9,6 +9,7 @@
         <result column="MENU_NAME" property="menuName" />
         <result column="MENU_PAGE" property="menuPage" />
         <result column="MENU_INDEX" property="menuIndex" />
+        <result column="MENU_TYPE" property="menuType" />
         <collection property="LibrarySideMenuVOList" resultMap="libraryMenuMapper.sideMenu" />
     </resultMap>
 <!--사이드 메뉴-->
@@ -21,11 +22,12 @@
     </resultMap>
 
 <!--헤더 메뉴 및 사이드 메뉴 불러오기-->
-    <select id="selectMenuList" resultMap="headerMenu">
+    <select id="selectLibraryMenuList" resultMap="headerMenu">
         SELECT
         header_menu.MENU_NUM ,
         MENU_NAME ,
         MENU_INDEX ,
+        MENU_TYPE,
         SIDE_MENU_NAME ,
         SIDE_MENU_PAGE ,
         SIDE_MENU_INDEX ,
@@ -33,6 +35,7 @@
         FROM
         header_menu INNER JOIN side_menu
         ON header_menu.MENU_NUM = side_menu.MENU_NUM
+        WHERE header_menu.MENU_TYPE = 'library'
     </select>
 
 
