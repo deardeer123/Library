@@ -32,7 +32,7 @@ public class MemberController {
 //        return "content/homePage/join";
 //    }
 
-    //회원가입
+    //회원 등록
     @PostMapping("/insertMember")
     public String insertMember(MemberVO memberVO){
         //문자열 치환
@@ -43,6 +43,8 @@ public class MemberController {
         return "redirect:/login";
     }
 
+
+    //회원가입으로 이동
     @GetMapping("/join")
     public String goJoin(Model model){
         //드가기전 메뉴 정보좀 들고옴
@@ -59,11 +61,13 @@ public class MemberController {
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
 
         System.out.println("회원가입");
+
+        //로그인창으로 보내기
         return "content/homePage/member/join";
     }
 
     @GetMapping("/login")
-    public String goLogin(Model model){
+    public String goLogin(Model model, MemberVO memberVO, HttpSession session){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -80,6 +84,21 @@ public class MemberController {
         System.out.println("로그인");
         return "content/homePage/member/login";
     }
+
+    //로그인
+    @PostMapping("/loginForm")
+    public String login(HttpSession session, MemberVO memberVO){
+        MemberVO loginInfo = memberService.login(memberVO);
+
+
+        if(loginInfo != null){
+            session.setAttribute("loginInfo",loginInfo);
+            return "redirect:/home";
+        }else{
+            return "redirect:/login";
+        }
+    }
+
 
     @GetMapping("/findIdOrPW")
     public String goHome(Model model){

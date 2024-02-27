@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+
+<th:block layout:fragment="content_css">
+    <!-- html 파일이 열릴 때 같이 실행되는 css -->
+    <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+    <!-- html 코드 작성 -->
+    <div class="row ">
+        <div class="col-12">
+            <h3>게시글 등록</h3>
+        </div>
+        <div class="col">
+            <form action="" method="post">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>
+                                <select name="">
+                                    <option>진행중</option>
+                                    <option>신청전</option>
+                                    <option>마감완료</option>
+                                </select>
+                            </td>
+                            <td>
+                                주간 제목 <input type="text">
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>일시</td>
+                            <td colspan="3"><input type="date"></td>
+                        </tr>
+                        <tr>
+                            <td>장소</td>
+                            <td></td>
+                            <td>대상</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>신청기간</td>
+                            <td></td>
+                            <td>정원</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>신청방법</td>
+                            <td></td>
+                            <td>문의 전화</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>내용</td>
+                            <td colspan="3"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="content_js">
+    <!-- html 파일이 열릴 때 같이 실행되는 js -->
+    <!-- <script src="/"></script> -->
+</th:block>
+</html>
