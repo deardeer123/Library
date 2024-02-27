@@ -5,7 +5,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("libraryService")
+@Service("libraryHomeService")
 public class LibraryHomeServiceImpl implements LibraryHomeService{
     @Autowired
     private SqlSessionTemplate sqlSession;
