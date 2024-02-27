@@ -4,6 +4,17 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="regAndViewMapper">
 
+<!--    책 정보 끌고오기-->
+    <select id="selectBookList" resultMap="libraryBookMapper.libraryBook">
+        SELECT
+        BOOK_CODE ,
+        BOOK_TITLE ,
+        BOOK_WRITER ,
+        BOOK_PUB ,
+        BOOK_YEAR
+        FROM
+        book
+    </select>
 
 
 </mapper>
