@@ -9,10 +9,50 @@
 </th:block>
 
 <th:block layout:fragment="contentFragment">
-    <!-- html 코드 작성 -->
-    대출반납
-
     
+<form action="" method="post">
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <input type="radio" checked>일반
+                            <input type="radio">특별
+                            <input type="radio">관내
+                            <input type="date">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="radio" checked>일반
+                            <input type="radio">소급
+                            <input type="date">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <form action="" method="post">
+                                <input type="checkbox">타관
+                                <input type="text" name="userCode" placeholder="대출번호,이름,등록번호">
+                                <input type="submit" value="처리">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+
+                </div>
+                <div class="col">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 </th:block>
 
 <th:block layout:fragment="content_js">

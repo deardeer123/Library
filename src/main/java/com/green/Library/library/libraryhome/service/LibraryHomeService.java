@@ -4,6 +4,6 @@ import com.green.Library.libraryMember.vo.LibraryMemberVO;
 
 public interface LibraryHomeService {
 
-    //admin 로그인
+    // 관리자 로그인
     LibraryMemberVO login(LibraryMemberVO libraryMemberVO);
 }

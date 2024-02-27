@@ -23,13 +23,13 @@ public class LibraryHomeController {
     @Resource(name = "libraryHomeService")
     private LibraryHomeService libraryHomeService;
 
-    // 로그인 페이지 이동
+    // 관리자 로그인 페이지 이동
     @GetMapping("/main")
     public String goLogin(){
         return "content/library/main";
     }
 
-    //동기 관리자 로그인
+    // 관리자 로그인
     @PostMapping("/login")
     public String login(LibraryMemberVO libraryMemberVO, HttpSession session){
 
@@ -46,9 +46,11 @@ public class LibraryHomeController {
 
     //홈
     @GetMapping("/home")
-    public String goHome(Model model){
+    public String goHome(Model model, HttpSession session){
         System.out.println("홈으로 이동");
         System.out.println(libraryMenuService.selectLibraryMenuList());
+
+        model.addAttribute("loginInfo", session.getAttribute("loginInfo"));
 
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
