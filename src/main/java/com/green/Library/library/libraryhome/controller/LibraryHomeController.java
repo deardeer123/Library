@@ -3,6 +3,7 @@ package com.green.Library.library.libraryhome.controller;
 
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +20,12 @@ public class LibraryHomeController {
         return "content/library/main";
     }
 
-    //비동기 로그인
+    //동기 로그인
+    @PostMapping("/login")
+    public String login(HttpSession session){
 
-//    @ResponseBody
-//    @PostMapping("/login")
-//    public String login(@RequestBody){
-//
-//    }
+        return "";
+    }
 
     //홈
     @GetMapping("/home")
