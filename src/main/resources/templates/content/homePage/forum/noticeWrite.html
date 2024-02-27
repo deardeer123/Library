@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragment/homepage/homePage_detail_layout}" >
+
+  <!-- html 파일이 열릴때 같이 실행되는 css-->
+<th:block layout:fragment="content_css">
+  <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+  <!-- html code 작성-->
+
+  <form action="/noticeWrite" method="post">
+  <div class="row">
+    <div class="col">
+      <table class="table table-bordered text-center align-middle">
+        <colgroup>
+          <col width="35%">
+          <col width="*">
+        </colgroup>
+        <tr>
+          <td>제목<span>*</span></td>
+          <td><input class="form-control" type="text" name="boardTitle"></td>
+        </tr>
+        <tr>
+          <td>작성일<span>*</span></td>
+          <td><input type="date" class="form-control" style="resize: none;" name="boardDate" id="" cols="80" rows="15"></td>
+        </tr>
+        <tr>
+          <td>내용<span>*</span></td>
+          <td><textarea class="form-control" style="resize: none;" name="content" id="" cols="80" rows="15"></textarea></td>
+        </tr>
+        <tr>
+          <td>첨부파일<span>*</span></td>
+          <td>
+            <div class="input-group mb-3">
+              <input type="file" class="form-control" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" aria-label="Upload" name="attachedFileName">
+            </div>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <input type="submit" value="등록">
+        <input type="button" value="목록" onclick="location.href='/notice'">
+      </div>
+    </div>
+  </form>
+</th:block>
+
+<th:block layout:fragment="content_js">
+  <!-- html 파일이 열릴때 같이 실행되는 css-->
+  <!-- <script src="/"></script> -->
+</th:block>
+</html>

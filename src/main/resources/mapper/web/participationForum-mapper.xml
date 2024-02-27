@@ -3,6 +3,61 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="participationForumMapper">
+    <resultMap id="forum" type="com.green.Library.web.participationForum.vo.ParticipationForumVO">
+    <id column="BOARD_NO"          property="boardNo"/>
+    <result column="BOARD_TITLE"   property="boardTitle"/>
+    <result column="CONTENT"       property="content"/>
+    <result column="BOARD_DATE"    property="boardDate"/>
+    <result column="USER_CODE"     property="userCode"/>
+    <result column="ATTACHED_FILE_NAME"     property="attachedFileName"/>
+    <result column="BOARD_CNT"     property="boardCnt"/>
+
+    </resultMap>
+
+    <!-- 공지사항 등록-->
+    <insert id="insertBoard">
+        INSERT INTO BOARD (
+            BOARD_NO
+            , BOARD_TITLE
+            , CONTENT
+            , BOARD_DATE
+            , ATTACHED_FILE_NAME
+        ) VALUES (
+            #{boardNo}
+            , #{boardTitle}
+            , #{content}
+            , #{boardDate}
+            , #{attachedFileName}
+        )
+    </insert>
+
+    <!-- 공지사항 조회-->
+    <select id="selectNotice" resultMap="forum">
+        <!-- 완성본 , 나중에 회원 기능이 완성되면 이 쿼리로 변경-->
+<!--        SELECT BOARD_NO-->
+<!--            , BOARD_TITLE-->
+<!--            , CONTENT-->
+<!--            , BOARD_DATE-->
+<!--            , ATTACHED_FILE_NAME-->
+<!--            , BOARD.USER_CODE-->
+<!--            , USER_NAME-->
+<!--        FROM BOARD INNER JOIN USERS-->
+<!--        ON BOARD.USER_CODE = USERS.USER_CODE-->
+
+        SELECT BOARD_NO
+            , BOARD_TITLE
+            , CONTENT
+            , BOARD_DATE
+            , ATTACHED_FILE_NAME
+            , USER_CODE
+        FROM BOARD
+    </select>
+
+    <update id="updateCnt">
+        UPDATE BOARD
+        SET BOARD_CNT = BOARD_CNT + 1
+        WHERE BOARD_NO = #{boardNo}
+    </update>
 
 </mapper>
 
