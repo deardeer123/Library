@@ -16,32 +16,43 @@
         </div>
         <div class="col">
             <form action="/cultureInsertBoard" method="post">
-                <table>
+                <table class="align-middle">
+                    <colgroup>
+                    <col width="20%">
+                    <col width="30%">
+                    <col width="25%">
+                    <col width="25%">
+                    </colgroup>
                     <thead>
                         <tr>
                             <td>
-                                제목<input type="text" name="boardTitle">
+                                제목
                             </td>
+                            <td colspan="3"><input type="text" name="boardTitle"></td>
                         </tr>
-                    </thead>
-                    <tbody>
                         <tr>
                             <td>작성자</td>
-                            <td><input type="text" name="userId"></td>
+                            <td colspan="3"><input type="text" name="userId"></td>
                         </tr>
                         <tr>
                             <td>작성일</td>
                             <td colspan="3"><input type="date" name="boardDate"></td>
                         </tr>
+                    </thead>
+                    <tbody>
                         <tr>
-                            <td>내용</td>
-                            <td colspan="3">
-                                <input type="text">
+                            <td colspan="4">
+                                <textarea name="content" cols="100" rows="20"></textarea>
                             </td>
                         </tr>
                         <tr>
-                            <td>대표 이미지</td>
-                            <td>서브 이미지</td>
+                            <td><input type="file" src="">대표 이미지</td>
+                            <td><input type="file" src="">서브 이미지</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div><input type="submit" value="등록하기"></div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
