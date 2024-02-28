@@ -13,6 +13,6 @@ public class ParticipationForumVO {
     private String content;
     private String boardDate;
     private int userCode;
-    private String attachedFileName;
     private int boardCnt;
+    private int boardType;
 }

@@ -1,9 +1,12 @@
 package com.green.Library.web.participationForum.controller;
 
+import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.participationForum.service.ParticipationForumService;
 import com.green.Library.web.participationForum.service.ParticipationForumServiceIMPL;
 import com.green.Library.web.participationForum.vo.ParticipationForumVO;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.Session;
 import org.springframework.stereotype.Controller;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
@@ -46,6 +49,7 @@ public class ParticipationForumController {
         List<ParticipationForumVO> noticeList = participationForumService.selctNotice();
         model.addAttribute("noticeList", noticeList);
         participationForumService.updateCnt(participationForumVO.getBoardCnt());
+
         return "content/homePage/forum/notice";
     }
     //공지사항 글쓰기 페이지이동
@@ -55,8 +59,12 @@ public class ParticipationForumController {
     }
     //공지사항 글쓰기
     @PostMapping("/noticeWrite")
-    public String noiceWrite(ParticipationForumVO participationForumVO){
+    public String noiceWrite(ParticipationForumVO participationForumVO, HttpSession session, Model model){
+
         participationForumService.insertNotice(participationForumVO);
+        MemberVO loginInfo = (MemberVO) session.getAttribute("loginInfo");
+        model.addAttribute("loginInfo",loginInfo);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + loginInfo);
         return "redirect:/notice";
     }
 
