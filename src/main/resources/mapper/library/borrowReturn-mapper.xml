@@ -4,25 +4,39 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="borrowReturnMapper">
 
-<!--<resultMap id="" type="com.green.Library.library.borrowReturn.vo.BookBorrowVO">-->
-<!--    <id column="" property=""/>-->
-<!--    <result column="" property=""/>-->
-<!--    <result column="" property=""/>-->
-<!--    <result column="" property=""/>-->
-<!--    <result column="" property=""/>-->
-<!--</resultMap>-->
+<resultMap id="bookBorrow" type="com.green.Library.library.borrowReturn.vo.BookBorrowVO">
+    <id          column="BR_CODE"         property="brCode"/>
+    <result      column="BR_DATE"         property="brDate"/>
+    <result      column="BOOK_CNT"        property="bookCnt"/>
+    <result      column="RETURN_YN"       property="returnYN"/>
+    <result      column="RETURN_DATE"     property="returnDate"/>
+    <result      column="USER_CODE"       property="userCode"/>
+    <result      column="BOOK_CODE"       property="bookCode"/>
+    <association property="libraryMember" resultMap="libraryMemberMapper.libAdmMember"/>
+</resultMap>
 
-<!--<resultMap id="" type="com.green.Library.library.borrowReturn.vo.BookReturnVO">-->
-<!--    <id column="" property=""/>-->
-<!--    <result column="" property=""/>-->
-<!--    <result column="" property=""/>-->
-<!--    <result column="" property=""/>-->
-<!--</resultMap>-->
-
-<!--     &lt;!&ndash; 이용자의 &ndash;&gt;-->
-<!--    <select id="">-->
-
-<!--    </select>-->
+    <!-- 이용자의 대출 정보 조회-->
+    <select id="borrowInfo" resultMap="bookBorrow">
+        SELECT USER.USER_CODE
+            , USER_NAME
+            , USER_TEL
+            , BR_CODE
+            , BR_DATE
+            , BOOK_CNT
+            , RETURN_YN
+            , RETURN_DATE
+            , BB.BOOK_CODE
+            , BOOK_TITLE
+        FROM BOOK_BORROW AS BB
+        INNER JOIN USERS AS USER
+        ON USER.USER_CODE = BB.USER_CODE
+        INNER JOIN BOOK_INFO AS BI
+        ON BB.BOOK_CODE = BI.BOOK_CODE
+        INNER JOIN book AS B
+        ON B.BOOK_CODE = BB.BOOK_CODE
+        WHERE BB.USER_CODE = #{userCode}
+        ORDER BY BR_DATE DESC
+    </select>
 
 
 
