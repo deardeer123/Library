@@ -15,48 +15,33 @@
             <h3>게시글 등록</h3>
         </div>
         <div class="col">
-            <form action="" method="post">
+            <form action="/cultureInsertBoard" method="post">
                 <table>
                     <thead>
                         <tr>
                             <td>
-                                <select name="">
-                                    <option>진행중</option>
-                                    <option>신청전</option>
-                                    <option>마감완료</option>
-                                </select>
-                            </td>
-                            <td>
-                                주간 제목 <input type="text">
+                                제목<input type="text" name="boardTitle">
                             </td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>일시</td>
-                            <td colspan="3"><input type="date"></td>
+                            <td>작성자</td>
+                            <td><input type="text" name="userId"></td>
                         </tr>
                         <tr>
-                            <td>장소</td>
-                            <td></td>
-                            <td>대상</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>신청기간</td>
-                            <td></td>
-                            <td>정원</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>신청방법</td>
-                            <td></td>
-                            <td>문의 전화</td>
-                            <td></td>
+                            <td>작성일</td>
+                            <td colspan="3"><input type="date" name="boardDate"></td>
                         </tr>
                         <tr>
                             <td>내용</td>
-                            <td colspan="3"></td>
+                            <td colspan="3">
+                                <input type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>대표 이미지</td>
+                            <td>서브 이미지</td>
                         </tr>
                     </tbody>
                 </table>
