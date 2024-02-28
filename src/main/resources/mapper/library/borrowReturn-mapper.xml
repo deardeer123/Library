@@ -4,7 +4,25 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="borrowReturnMapper">
 
+<!--<resultMap id="" type="com.green.Library.library.borrowReturn.vo.BookBorrowVO">-->
+<!--    <id column="" property=""/>-->
+<!--    <result column="" property=""/>-->
+<!--    <result column="" property=""/>-->
+<!--    <result column="" property=""/>-->
+<!--    <result column="" property=""/>-->
+<!--</resultMap>-->
 
+<!--<resultMap id="" type="com.green.Library.library.borrowReturn.vo.BookReturnVO">-->
+<!--    <id column="" property=""/>-->
+<!--    <result column="" property=""/>-->
+<!--    <result column="" property=""/>-->
+<!--    <result column="" property=""/>-->
+<!--</resultMap>-->
+
+    <!-- 이용자의    -->
+<!--    <select id="">-->
+<!--        -->
+<!--    </select>-->
 
 
 
