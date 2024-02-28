@@ -10,7 +10,6 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
     @Autowired
     private SqlSessionTemplate sqlSession;
 
-    // 이용자 조회, 대출, BOOK_INFO의 이용가능 여부 변경
-    //@Transactional(rollbackFor = Exception.class)
+    // 대출정보 이력 조회
 
 }
