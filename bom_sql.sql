@@ -18,8 +18,9 @@ CREATE TABLE BOOK_BORROW(
    , BOOK_CODE VARCHAR(15) REFERENCES BOOK(BOOK_CODE)
 );
 
--- 대출 혹은 반납 프로세스는 3개의 쿼리를 트랜젝션으로
--- 1. 이용자 조회 2. 대출 내역 조회 3. BOOK_INFO에 BOOK_BORROW_AVAILABLE 업데이트
+-- DROP TABLE BOOK_BORROW;
+
+-- 반납 테이블은 삭제해주세요!
 
 -- 이용자 정보 insert 문
 
