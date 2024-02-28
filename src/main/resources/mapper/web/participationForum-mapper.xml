@@ -10,6 +10,7 @@
     <result column="BOARD_DATE"    property="boardDate"/>
     <result column="USER_CODE"     property="userCode"/>
     <result column="BOARD_CNT"     property="boardCnt"/>
+    <result column="BOARD_TYPE"     property="boardType"/>
     </resultMap>
 
     <resultMap id="img" type="com.green.Library.web.img.vo.imgVO">
@@ -26,13 +27,14 @@
             , BOARD_TITLE
             , CONTENT
             , BOARD_DATE
-            , USER_NAME
+            , BOARD_TYPE
         ) VALUES (
-            #{boardNo}
+            #{boardNo
+            }
             , #{boardTitle}
             , #{content}
             , #{boardDate}
-            , #{userName}
+            , #{boardType}
         )
     </insert>
 

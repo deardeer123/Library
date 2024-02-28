@@ -12,13 +12,23 @@
   <!-- html code 작성-->
 
   <form action="/noticeWrite" method="post">
-  <div class="row">
+  <input type="hidden" name="userCode" >
+    <div class="row">
     <div class="col">
       <table class="table table-bordered text-center align-middle">
         <colgroup>
           <col width="35%">
           <col width="*">
         </colgroup>
+        <tr>
+          <td>게시판위치<span>*</span></td>
+          <td>
+            <select class="form-select" name="boardType">게시판정보
+              <option value="21">공지사항</option>
+              <option value="22">묻고답하기</option>
+            </select>
+          </td>
+        </tr>
         <tr>
           <td>제목<span>*</span></td>
           <td><input class="form-control" type="text" name="boardTitle"></td>

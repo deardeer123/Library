@@ -14,4 +14,5 @@ public class ParticipationForumVO {
     private String boardDate;
     private int userCode;
     private int boardCnt;
+    private int boardType;
 }
