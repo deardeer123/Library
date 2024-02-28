@@ -10,7 +10,6 @@
         <result column="BOOK_WRITER" property="bookWriter" />
         <result column="BOOK_PUB" property="bookPub" />
         <result column="BOOK_YEAR" property="bookYear" />
-        <result column="USER_CODE" property="userCode" />
         <association property="libraryBookInfoVO" resultMap="LibraryBookInfo" />
     </resultMap>
 
