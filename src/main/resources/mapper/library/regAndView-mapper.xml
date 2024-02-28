@@ -34,16 +34,28 @@
         WHERE
             book.BOOK_CODE = #{bookCode};
     </select>
+<!--    책 업데이트-->
+    <update id="updateBook">
+        UPDATE book
+        set
+            BOOK_TITLE = #{bookTitle},
+            BOOK_WRITER = #{bookWriter} ,
+            BOOK_PUB = #{bookPub} ,
+            BOOK_YEAR = #{bookYear}
+        WHERE
+            BOOK_CODE = #{bookCode}
+    </update>
 
+<!--    책 상세정보 업데이트-->
     <update id="updateBookInfo">
         UPDATE book_info
         SET
-            BOOK_INFO_ATTACHED_FILE_NAME = #{bookInfoAttachedFileName} ,
-            BOOK_INFO_ORIGIN_FILE_NAME = #{bookInfoOriginFileName} ,
-            BOOK_INTRO = #{bookIntro} ,
-            BOOK_CATE_CODE = #{bookCateCode}
+            BOOK_INFO_ATTACHED_FILE_NAME = #{libraryBookInfoVO.bookInfoAttachedFileName} ,
+            BOOK_INFO_ORIGIN_FILE_NAME = #{libraryBookInfoVO.bookInfoOriginFileName} ,
+            BOOK_INTRO = #{libraryBookInfoVO.bookIntro} ,
+            BOOK_CATE_CODE = #{libraryBookInfoVO.bookCateCode}
         WHERE
-            BOOK_CODE = #{bookCode}
+            BOOK_CODE = #{libraryBookInfoVO.bookCode}
     </update>
 
 <!--    프로시져 쓸 줄 몰라서 쓴 초기화 쿼리문임 가능하면 건드지 마십쇼-->

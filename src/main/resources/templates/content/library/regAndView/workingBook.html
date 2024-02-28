@@ -11,13 +11,43 @@
     <!-- html 코드 작성 -->
     <div class="row">
         <div class="col">
-            <div class="row">
+            <!-- 책 정보가 변경되었으면 실행되는 코드 -->
+            <th:block th:if="${update == 1}">
+                <input type="hidden" value="1" id="is-update">
+            </th:block>
+
+            <th:block th:if="${update != 1}">
+                <input type="hidden" value="0" id="is-update">
+            </th:block>
+
+            <div class="row mb-3">
                 <div class="col">
                     <!-- 이제 여기다가 조회된 책들 검색되게 뭐 검색창 하나 넣을듯 -->
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Launch demo modal
-                    </button>
+                    </button> -->
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-2">
+                            <!-- 카테고리 -->
+                            <select class="form-select" aria-label="Default select example" name="searchType" id="search-type">
+                                <option value="책이름">책이름</option>
+                                <option value="저자">저자</option>
+                                <option value="출판사">출판사</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <!-- 검색 -->
+                            <input type="text" class="form-control" name="searchValue" id="search-value">
+                        </div>
+                        <div class="col">
+                            <!-- 검색 버튼 -->
+                            <input type="button" class="btn btn-primary" value="검색" onclick="search()">
+                        </div>
+                    </div>
+                    
+
                 </div>
             </div>
 
@@ -81,9 +111,28 @@
 
 
     <script>
+        update()
+
+        function update(){
+            let is_update = document.querySelector("#is-update").value
+            console.log(is_update);
+            if(is_update == 1){
+                alert("책 정보가 변경되었습니다.")
+            }
+        }
+
         function goChange(bookCode){
             alert(`변경하고자 하는 책 코드 : ${bookCode}`)
             location.href=`/bookAdmin/changeBook?bookCode=${bookCode}`;
+        }
+
+        function search(){
+            const search_type = document.querySelector("#search-type").value
+            const search_value = document.querySelector("#search-type").value
+
+            //비동기로 해야겠지?
+            
+             
         }
     </script>
 </th:block>

@@ -32,13 +32,17 @@ public class RegAndViewController {
 
     //----------------등록 열람----------------
     @GetMapping("/workingBook")
-    public String goWorkingBook(Model model){
+    public String goWorkingBook(Model model, @RequestParam(name="update" ,required = false, defaultValue = "0") int update){
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
         //대충 책 정보 가져 오고나서 해당 파일의 상세 정보등을 변경시키게
         System.out.println(regAndViewService.selectBookList());
         model.addAttribute("bookList", regAndViewService.selectBookList());
+
+        //변경하고나서 해당 페이지로 이동 시 알람창 하나 띄우고 싶어서 적은 코드
+        System.out.println(update);
+        model.addAttribute("update", update);
 
         //초기화
 //        List<Integer> initList = new ArrayList<>();
@@ -69,6 +73,7 @@ public class RegAndViewController {
         model.addAttribute("book",regAndViewService.selectOneBook(bookCode));
         return "content/library/regAndView/changeBook";
     }
+
     @PostMapping("/changeBook2")
     public String changeBook(LibraryBookVO libraryBookVO,
                              LibraryBookInfoVO libraryBookInfoVO,
@@ -78,45 +83,47 @@ public class RegAndViewController {
         System.out.println(libraryBookVO);
         System.out.println(libraryBookInfoVO);
         System.out.println(bookImg.getOriginalFilename());
-        //아니 근데 이미지 변경하면서 원래 있던 이미지를 삭제해야하는데 라;ㅣㄴㅇㅁㄹㄴㅇ;ㅏㅣㅁㅇㄹ나;ㅣㅁㅇㄹ나;ㅣ
+        //아니 근데 이미지 변경하면서 원래 있던 이미지를 삭제해야하는데 맞는거 같은데
 
-        //일단 손이 가는대로 적음
 
-//        if(bookImg.getOriginalFilename().equals("")){
-//            //만약 사진이 올라가지 않는다면 아래 코드 실행
-//            System.out.println("사진 안올렸음;");
-//            //그냥 디폴트 사진 설정
-//            libraryBookInfoVO.setBookInfoOriginFileName("book_character_smile.png");
-//            //그냥 디폴트 사진2 설정
-//            libraryBookInfoVO.setBookInfoAttachedFileName("book_character_smile.png");
-//            //책 소개 넣기
-//            libraryBookInfoVO.setBookIntro(bookIntro);
-//            //카테고리 정보도 넣기
-//            libraryBookInfoVO.setBookCateCode(bookCateCode);
-//            //bookcode 넣어주기
-//            libraryBookInfoVO.setBookCode(libraryBookService.searchMaxCode());
-//
-//            //bookvo에 infovo 넣기
-//            libraryBookVO.setLibraryBookInfoVO(libraryBookInfoVO);
-//        }else{
-//            //사진이 올라왔다면
-//            //uploadutil에 있는 uploadFile(리턴값 bookinfo)를 libraryBookInfoVO1 에 넣음
-//            LibraryBookInfoVO libraryBookInfoVO1 = UploadUtil.uploadFile(bookImg);
-//            //libraryBookInfoVO1에 책 소개 넣기
-//            libraryBookInfoVO1.setBookIntro(bookIntro);
-//            //카테고리 정보 넣기
-//            libraryBookInfoVO1.setBookCateCode(bookCateCode);
-//            libraryBookInfoVO1.setBookCode(libraryBookService.searchMaxCode());
-//            //bookvo에 infovo 넣기
-//            libraryBookVO.setLibraryBookInfoVO(libraryBookInfoVO1);
-//        }
-//        //bookvo에도 bookcode 넣어주기
-//        libraryBookVO.setBookCode(libraryBookService.searchMaxCode());
-//        System.out.println(libraryBookVO);
-//
-//        buyService.regBook(libraryBookVO);
+        if(bookImg.getOriginalFilename().equals("")){
+            //새로운 정보를 담기 위한 객체 생성
+            LibraryBookInfoVO libraryBookInfoVO1 = new LibraryBookInfoVO();
+            //만약 사진이 올라가지 않는다면 아래 코드 실행
+            System.out.println("사진 안올렸음;");
+            //사진을 올리지 않았다면 원래 올려진 사진을 그대로 사용
+            libraryBookInfoVO1.setBookInfoOriginFileName(libraryBookInfoVO.getBookInfoOriginFileName());
+            libraryBookInfoVO1.setBookInfoAttachedFileName(libraryBookInfoVO.getBookInfoAttachedFileName());
 
-        return "redirect:/bookAdmin/workingBook";
+            //만든 객체에 커맨더 객체(libraryBookInfoVO)로 받은 책 소개 넣기
+            libraryBookInfoVO1.setBookIntro(libraryBookInfoVO.getBookIntro());
+            ///만든 객체에 커맨더 객체(libraryBookInfoVO)로 카테고리 정보도 넣기
+            libraryBookInfoVO1.setBookCateCode(libraryBookInfoVO.getBookCateCode());
+            ///만든 객체에 커맨더 객체(libraryBookInfoVO)로 bookcode 넣어주기
+            libraryBookInfoVO1.setBookCode(libraryBookInfoVO.getBookCode());
+
+            //보낼 bookvo에 새루운 객체 넣기
+            libraryBookVO.setLibraryBookInfoVO(libraryBookInfoVO1);
+        }else{
+            //사진이 올라왔다면
+            //uploadutil에 있는 uploadFile(리턴값 librarybookinfo)를 libraryBookInfoVO1 에 넣음
+            LibraryBookInfoVO libraryBookInfoVO1 = UploadUtil.uploadFile(bookImg);
+            ///만든 객체에 커맨더 객체(libraryBookInfoVO)에 있는 책 소개 넣기
+            libraryBookInfoVO1.setBookIntro(libraryBookInfoVO.getBookIntro());
+            ///만든 객체에 커맨더 객체(libraryBookInfoVO)에 있는 카테고리 정보 넣기
+            libraryBookInfoVO1.setBookCateCode(libraryBookInfoVO.getBookCateCode());
+            ///만든 객체에 커맨더 객체(libraryBookInfoVO)에 있는 책코드 넣기
+            libraryBookInfoVO1.setBookCode(libraryBookInfoVO.getBookCode());
+            //bookvo에 infovo 넣기
+            libraryBookVO.setLibraryBookInfoVO(libraryBookInfoVO1);
+        }
+        //데이터가 제대로 들어갔는지 확인좀
+        System.out.println(libraryBookVO);
+
+        regAndViewService.updateBook(libraryBookVO);
+
+        //변경 되었으면 변경됬다고 뭐하나 띄우고 싶은데
+        return "redirect:/bookAdmin/workingBook?update=1";
     }
 
     @GetMapping("/collectionBook")

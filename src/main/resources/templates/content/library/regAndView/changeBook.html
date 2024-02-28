@@ -23,12 +23,14 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="text-center">
-                                            <th:block th:if="${book.libraryBookInfoVO.bookInfoAttachedFileName == null}">
+                                            <th:block th:if="${book.libraryBookInfoVO.bookInfoAttachedFileName == ''}">
                                                 <img src="/upload/book_character_smile.png" class="rounded" alt="..."
                                                     width="100%" id="bookImg">
+                                                
                                             </th:block>
 
-                                            <th:block th:if="${book.libraryBookInfoVO.bookInfoAttachedFileName != null}">
+                                            <th:block th:if="${book.libraryBookInfoVO.bookInfoAttachedFileName != ''}">
+                    
                                                 <img th:src="@{/upload/} + ${book.libraryBookInfoVO.bookInfoAttachedFileName}" class="rounded" alt="..."
                                                     width="250px" id="bookImg">
                                             </th:block>
@@ -101,7 +103,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text">책 소개</span>
                                     <textarea class="form-control" aria-label="With textarea"
-                                        name="bookIntro">[[${book.libraryBookInfoVO.bookIntro}]]</textarea>
+                                        name="bookIntro" rows="6">[[${book.libraryBookInfoVO.bookIntro}]]</textarea>
                                 </div>
                             </div>
                         </div>
