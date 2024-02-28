@@ -4,7 +4,7 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="libraryMemberMapper">
 
-    <resultMap id="libAdmMember" type="com.green.Library.libraryMember.vo.LibraryMemberVO">
+    <resultMap id="libMember" type="com.green.Library.libraryMember.vo.LibraryMemberVO">
         <id     column="USER_CODE"      property="userCode"/>
         <result column="USER_ID"        property="userId"/>
         <result column="USER_PW"        property="userPw"/>
@@ -18,8 +18,8 @@
         <result column="IS_ADMIN"       property="isAdmin"/>
     </resultMap>
 
-    <!-- 관리자 로그인 쿼리 -->
-    <select id="login" resultMap="libAdmMember">
+    <!-- 로그인 쿼리 -->
+    <select id="login" resultMap="libMember">
         SELECT USER_CODE
             , USER_ID
             , USER_NAME
