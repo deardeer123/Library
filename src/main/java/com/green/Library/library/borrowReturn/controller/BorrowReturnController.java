@@ -47,6 +47,7 @@ public class BorrowReturnController {
         System.out.println("대출 반납 관리 이동");
         return "content/library/borrowReturn/borrowReturnManagement";
     }
+
     //예약 정보 관리
     @GetMapping("/reservationInfo")
     public String goReservationInfo(Model model){
@@ -57,6 +58,7 @@ public class BorrowReturnController {
         System.out.println("예약 정보 관리 이동");
         return "content/library/borrowReturn/reservationInfo";
     }
+
     //출력 이력 관리
     @GetMapping("/outputHistory")
     public String goOutputHistory(Model model){
