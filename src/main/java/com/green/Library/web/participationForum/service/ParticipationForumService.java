@@ -4,7 +4,8 @@ import com.green.Library.web.participationForum.vo.ParticipationForumVO;
 
 import java.util.List;
 
-public interface ParticipationForumService {
+public interface
+ParticipationForumService {
     //공지사항 등록
     void insertNotice (ParticipationForumVO participationForumVO);
     //공지사항 조회
