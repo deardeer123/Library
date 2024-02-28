@@ -14,6 +14,5 @@ public class LibraryBookVO {
     private String bookWriter;
     private String bookPub;
     private String bookYear;
-    private int userCode;
     private LibraryBookInfoVO libraryBookInfoVO;
 }

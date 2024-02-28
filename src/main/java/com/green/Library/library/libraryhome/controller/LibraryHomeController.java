@@ -50,7 +50,8 @@ public class LibraryHomeController {
         System.out.println("홈으로 이동");
         System.out.println(libraryMenuService.selectLibraryMenuList());
 
-        model.addAttribute("loginInfo", session.getAttribute("loginInfo"));
+        LibraryMemberVO loginInfo = (LibraryMemberVO) session.getAttribute("loginInfo");
+        model.addAttribute("loginInfo", loginInfo);
 
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
