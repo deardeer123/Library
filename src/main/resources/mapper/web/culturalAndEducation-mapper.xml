@@ -3,7 +3,7 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="culturalAndEducationMapper">
-    <resultMap id="culture" type="com.green.Library.web.participationForum.vo.ParticipationForumVO">
+    <resultMap id="culture" type="com.green.Library.web.culturalAndEducation.vo.CulturalAndEducationVO">
         <id column="BOARD_NO"          property="boardNo"/>
         <result column="BOARD_TITLE"   property="boardTitle"/>
         <result column="CONTENT"       property="content"/>
@@ -11,6 +11,7 @@
         <result column="USER_CODE"     property="userCode"/>
         <result column="BOARD_CNT"     property="boardCnt"/>
         <result column="BOARD_TYPE"     property="boardType"/>
+        <association property="memberVO" resultMap="memberMapper.users"/>
     </resultMap>
 
     <!--  게시글 작성   -->
@@ -19,24 +20,26 @@
             BOARD_TITLE
             , CONTENT
             , BOARD_DATE
+            , USER_ID
         )
         VALUES(
             #{boardTitle}
             ,#{content}
             ,#{boardDate}
+            ,#{userId}
         )
     </insert>
 
     <select id="selectCulBoardList" resultMap="culture">
         SELECT
-            BOARD_NO
-            , BOARD_TITLE
-            , CONTENT
-            , BOARD_DATE
-            , BOARD.USER_CODE
-            , BOARD_CNT
-        FROM BOARD INNER JOIN USERS
-        ON BOARD.USER_CODE = USERS.USER_CODE
+        BOARD_NO
+        , BOARD_TITLE
+        , CONTENT
+        , BOARD_DATE
+        , CUL_BOARD.USER_CODE
+        , BOARD_CNT
+        FROM cul_board INNER JOIN USERS
+        ON CUL_BOARD.USER_CODE = USERS.USER_CODE
     </select>
 
 </mapper>
