@@ -3,6 +3,41 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="culturalAndEducationMapper">
+    <resultMap id="culture" type="com.green.Library.web.participationForum.vo.ParticipationForumVO">
+        <id column="BOARD_NO"          property="boardNo"/>
+        <result column="BOARD_TITLE"   property="boardTitle"/>
+        <result column="CONTENT"       property="content"/>
+        <result column="BOARD_DATE"    property="boardDate"/>
+        <result column="USER_CODE"     property="userCode"/>
+        <result column="BOARD_CNT"     property="boardCnt"/>
+        <result column="BOARD_TYPE"     property="boardType"/>
+    </resultMap>
+
+    <!--  게시글 작성   -->
+    <insert id="insertCulBoard">
+        INSERT INTO CUL_BOARD(
+            BOARD_TITLE
+            , CONTENT
+            , BOARD_DATE
+        )
+        VALUES(
+            #{boardTitle}
+            ,#{content}
+            ,#{boardDate}
+        )
+    </insert>
+
+    <select id="selectCulBoardList" resultMap="culture">
+        SELECT
+            BOARD_NO
+            , BOARD_TITLE
+            , CONTENT
+            , BOARD_DATE
+            , BOARD.USER_CODE
+            , BOARD_CNT
+        FROM BOARD INNER JOIN USERS
+        ON BOARD.USER_CODE = USERS.USER_CODE
+    </select>
 
 </mapper>
 

@@ -25,14 +25,6 @@
                     <input type="search">
                 </td>
                 <td>
-                    <select name=>
-                        <option>진행상태</option>
-                        <option>신청전</option>
-                        <option>진행중</option>
-                        <option>마감완료</option>
-                    </select>
-                </td>
-                <td>
                     <input type="button" value="조회">
                 </td>
             </tr>
@@ -40,36 +32,34 @@
         <div class="col mt-3">
             <table class="align-middle table">
                 <colgroup>
-                <col width="10%">
-                <col width="30%">
-                <col width="10%">
-                <col width="20%">
-                <col width="10%">
-                <col width="10%">
-                <col width="10%">
+                <col width="25%">
+                <col width="25%">
+                <col width="25%">
+                <col width="25%">
                 </colgroup>
-                <thead>
+                <thead style="text-align: center;">
                     <tr>
-                        <td>번호</td>
-                        <td>도서관주간</td>
-                        <td>대상</td>
-                        <td>신청기간</td>
-                        <td>정원대기</td>
-                        <td>신청방법</td>
-                        <td>상태</td>
+                        <td colspan="4">
+                            <select name="" id="">
+                                <option value="제목">제목</option>
+                                <option value="작성자">작성자</option>
+                            </select>
+                            <input type="search">
+                            <input type="button" value="검색">
+                        </td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>1</td>
-                        <td>물뿌리기행사</td>
-                        <td>울산시민</td>
-                        <td>2024-03-18 ~ 2024-04-18</td>
-                        <td>0 / 40</td>
-                        <td>인터넷</td>
                         <td>
-                            <input type="button" value="기간마감">
-                            <input type="button" value="신청확인">
+                            <div class="card" style="width: 18rem;">
+                                <img src="..." class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">제목</p>
+                                    <p class="card-text">작성자</p>
+                                    <p class="card-text">작성일</p>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
