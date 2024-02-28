@@ -46,6 +46,7 @@ public class ParticipationForumController {
         List<ParticipationForumVO> noticeList = participationForumService.selctNotice();
         model.addAttribute("noticeList", noticeList);
         participationForumService.updateCnt(participationForumVO.getBoardCnt());
+
         return "content/homePage/forum/notice";
     }
     //공지사항 글쓰기 페이지이동
