@@ -15,8 +15,56 @@
         FROM
         book
     </select>
+<!--    책 하나 찾기-->
+    <select id="selectOneBook" resultMap="libraryBookMapper.libraryBook">
+        SELECT
+            BOOK.BOOK_CODE,
+            BOOK.BOOK_TITLE,
+            BOOK.BOOK_WRITER,
+            BOOK.BOOK_PUB,
+            BOOK.BOOK_YEAR,
+            book_info.BOOK_INFO_ORIGIN_FILE_NAME,
+            book_info.BOOK_INFO_ATTACHED_FILE_NAME,
+            book_info.BOOK_INTRO,
+            book_info.BOOK_CATE_CODE
+        FROM
+            book LEFT OUTER JOIN book_info
+        ON
+            book.BOOK_CODE = book_info.BOOK_CODE
+        WHERE
+            book.BOOK_CODE = #{bookCode};
+    </select>
 
+    <update id="updateBookInfo">
+        UPDATE book_info
+        SET
+            BOOK_INFO_ATTACHED_FILE_NAME = #{bookInfoAttachedFileName} ,
+            BOOK_INFO_ORIGIN_FILE_NAME = #{bookInfoOriginFileName} ,
+            BOOK_INTRO = #{bookIntro} ,
+            BOOK_CATE_CODE = #{bookCateCode}
+        WHERE
+            BOOK_CODE = #{bookCode}
+    </update>
 
+<!--    프로시져 쓸 줄 몰라서 쓴 초기화 쿼리문임 가능하면 건드지 마십쇼-->
+    <insert id="bookInfoInit">
+        INSERT INTO book_info(
+        BOOK_INFO_ATTACHED_FILE_NAME ,
+        BOOK_INFO_ORIGIN_FILE_NAME ,
+        BOOK_INTRO ,
+        BOOK_CATE_CODE ,
+        BOOK_CODE)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (
+            'book_character_smile.png',
+            'book_character_smile.png' ,
+            '초기화',
+            1,
+            CONCAT('GR',LPAD(#{item},10,'0'))
+            )
+        </foreach>
+    </insert>
 </mapper>
 
 

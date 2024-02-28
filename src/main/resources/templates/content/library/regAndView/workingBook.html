@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/library/library_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/library/library_detail_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
@@ -12,42 +11,86 @@
     <!-- html 코드 작성 -->
     <div class="row">
         <div class="col">
-            <table class="table table-striped">
-                <colgroup>
-                    <col width="13%">
-                    <col width="*%">
-                    <col width="25%">
-                    <col width="15%">
-                    <col width="10%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <td>책 코드</td>
-                        <td>책 제목</td>
-                        <td>책 저자</td>
-                        <td>책 출판사</td>
-                        <td>출판년도</td>
-                    </tr>
-                </thead>
+            <div class="row">
+                <div class="col">
+                    <!-- 이제 여기다가 조회된 책들 검색되게 뭐 검색창 하나 넣을듯 -->
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Launch demo modal
+                    </button>
+                </div>
+            </div>
 
-                <tbody>
-                    <th:block th:each="e:${bookList}">
-                        <tr>
-                            <td>[[${e.bookCode}]]</td>
-                            <td>[[${e.bookTitle}]]</td>
-                            <td>[[${e.bookWriter}]]</td>
-                            <td>[[${e.bookPub}]]</td>
-                            <td>[[${e.bookYear}]]</td>
-                        </tr>
-                    </th:block>
-                </tbody>
-            </table>
+            <div class="row">
+                <div class="col">
+                    <table class="table table-striped">
+                        <colgroup>
+                            <col width="13%">
+                            <col width="*%">
+                            <col width="25%">
+                            <col width="15%">
+                            <col width="10%">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <td>책 코드</td>
+                                <td>책 제목</td>
+                                <td>책 저자</td>
+                                <td>책 출판사</td>
+                                <td>출판년도</td>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <th:block th:each="e:${bookList}">
+                                <tr th:onclick="goChange([[${e.bookCode}]])">
+                                    <td>[[${e.bookCode}]]</td>
+                                    <td>[[${e.bookTitle}]]</td>
+                                    <td>[[${e.bookWriter}]]</td>
+                                    <td>[[${e.bookPub}]]</td>
+                                    <td>[[${e.bookYear}]]</td>
+                                </tr>
+                            </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+
+
+    <script>
+        function goChange(bookCode){
+            alert(`변경하고자 하는 책 코드 : ${bookCode}`)
+            location.href=`/bookAdmin/changeBook?bookCode=${bookCode}`;
+        }
+    </script>
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
     <!-- <script src="/"></script> -->
 </th:block>
+
 </html>

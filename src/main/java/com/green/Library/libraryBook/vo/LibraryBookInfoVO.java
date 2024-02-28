@@ -12,8 +12,6 @@ public class LibraryBookInfoVO {
     private String bookInfoAttachedFileName;
     private String bookInfoOriginFileName;
     private String bookBorrowAvailable;
-    private String bookBorrowMemberNum;
-    private String bookBorrowDate;
     private String bookBorrowCnt;
     private String bookIntro;
     private int bookCateCode;
