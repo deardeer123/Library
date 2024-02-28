@@ -1,5 +1,6 @@
 package com.green.Library.web.culturalAndEducation.vo;
 
+import com.green.Library.web.member.vo.MemberVO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,4 +17,5 @@ public class CulturalAndEducationVO {
     private String attachedFileName;
     private int boardCnt;
     private int boardType;
+    private MemberVO memberVO;
 }
