@@ -18,4 +18,15 @@ public class RegAndViewServiceImpl implements RegAndViewService{
     public List<LibraryBookVO> selectBookList() {
         return sqlSession.selectList("regAndViewMapper.selectBookList");
     }
+
+    //책하나 검색하기
+    @Override
+    public LibraryBookVO selectOneBook(String bookCode) {
+        return sqlSession.selectOne("regAndViewMapper.selectOneBook",bookCode);
+    }
+
+    @Override
+    public void bookInfoInit(List<Integer> initList) {
+        sqlSession.insert("regAndViewMapper.bookInfoInit", initList);
+    }
 }

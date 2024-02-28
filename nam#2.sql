@@ -293,5 +293,23 @@ CREATE TABLE CUL_BOARD(
   , BOARD_CNT INT
 );
 
+SELECT * FROM cul_board;
 
->>>>>>> dev-nam
+UPDATE cul_board
+SET USER_CODE = 10,
+	BOARD_CNT = 0
+WHERE 
+	board_NO = 1;
+
+
+SELECT
+   BOARD_NO
+   , BOARD_TITLE
+   , CONTENT
+   , BOARD_DATE
+   , users.USER_ID
+   , BOARD_CNT
+FROM cul_board INNER JOIN USERS
+ON cul_board.USER_CODE = USERS.USER_CODE;
+
+SELECT * from users;

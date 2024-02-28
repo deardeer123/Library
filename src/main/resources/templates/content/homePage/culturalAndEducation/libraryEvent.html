@@ -50,14 +50,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <div class="card" style="width: 18rem;">
-                                <img src="..." class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <p class="card-text">제목</p>
-                                    <p class="card-text">작성자</p>
-                                    <p class="card-text">작성일</p>
+                    <tr >
+                        <td colspan="4">
+                            <div class="row">
+                                <div class="col-4 card" th:each="board : ${boardList}">
+                                    <img src="..." class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <p class="card-text">[[${board.boardTitle}]]</p>
+                                        <p class="card-text">[[board.memberVO.userId]]</p>
+                                        <p class="card-text">[[${board.boardDate}]]</p>
+                                    </div>
                                 </div>
                             </div>
                         </td>

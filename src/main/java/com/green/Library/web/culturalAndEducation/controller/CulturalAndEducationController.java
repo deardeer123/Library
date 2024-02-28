@@ -2,9 +2,11 @@ package com.green.Library.web.culturalAndEducation.controller;
 
 import com.green.Library.web.culturalAndEducation.service.CulturalAndEducationServiceImpl;
 import com.green.Library.web.culturalAndEducation.vo.CulturalAndEducationVO;
+import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.participationForum.vo.ParticipationForumVO;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +25,7 @@ public class CulturalAndEducationController {
 
     //    -------- 문화행사/교육(culturalAndEducation)---------
     @GetMapping("/libraryEvent")
-    public String goLibraryEvent(Model model){
+    public String goLibraryEvent(Model model, CulturalAndEducationVO culturalAndEducationVO){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -39,7 +41,9 @@ public class CulturalAndEducationController {
 
 
         List<CulturalAndEducationVO> boardList = culService.selectCulBoardList();
-        model.addAttribute("boardList",culService.selectCulBoardList());
+
+        System.out.println(boardList);
+        model.addAttribute("boardList",boardList);
 
         System.out.println("도서관행사");
 
@@ -49,7 +53,10 @@ public class CulturalAndEducationController {
 
     // 문화 게시판 등록
     @PostMapping("/cultureInsertBoard")
-    public String cultureInsertBoard(Model model, CulturalAndEducationVO culturalAndEducationVO){
+    public String cultureInsertBoard(Model model,
+                                     CulturalAndEducationVO culturalAndEducationVO,
+                                     MemberVO memberVO,
+                                     HttpSession session){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -63,10 +70,13 @@ public class CulturalAndEducationController {
         System.out.println(webMenuService.selectWebMenuList("member"));
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
 
+        MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 
         culService.insertCulBoard(culturalAndEducationVO);
+        memberVO.setUserId(loginInfo.getUserId());
 
-        return "";
+
+        return "redirect:/libraryEvent";
     }
 
 

@@ -24,8 +24,6 @@
         <result column="BOOK_INFO_ATTACHED_FILE_NAME" property="bookInfoAttachedFileName" />
         <result column="BOOK_INFO_ORIGIN_FILE_NAME" property="bookInfoOriginFileName" />
         <result column="BOOK_BORROW_AVAILABLE" property="bookBorrowAvailable" />
-        <result column="BOOK_BORROW_MEMBER_NUM" property="bookBorrowMemberNum" />
-        <result column="BOOK_BORROW_DATE" property="bookBorrowDate" />
         <result column="BOOK_BORROW_CNT" property="bookBorrowCnt" />
         <result column="BOOK_INTRO" property="bookIntro" />
         <result column="BOOK_CATE_CODE" property="bookCateCode" />
