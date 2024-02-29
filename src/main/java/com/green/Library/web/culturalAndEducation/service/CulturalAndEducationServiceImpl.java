@@ -22,4 +22,6 @@ public class CulturalAndEducationServiceImpl implements CulturalAndEducationServ
     public void insertCulBoard(CulturalAndEducationVO culturalAndEducationVO) {
         sqlSession.insert("culturalAndEducationMapper.insertCulBoard",culturalAndEducationVO);
     }
+
+
 }

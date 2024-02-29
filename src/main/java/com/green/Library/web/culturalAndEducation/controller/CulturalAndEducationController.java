@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class CulturalAndEducationController {
 
     //    -------- 문화행사/교육(culturalAndEducation)---------
     @GetMapping("/libraryEvent")
-    public String goLibraryEvent(Model model, CulturalAndEducationVO culturalAndEducationVO){
+    public String goLibraryEvent(Model model, CulturalAndEducationVO culturalAndEducationVO, HttpSession session){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -41,8 +42,8 @@ public class CulturalAndEducationController {
 
 
         List<CulturalAndEducationVO> boardList = culService.selectCulBoardList();
-
         System.out.println(boardList);
+
         model.addAttribute("boardList",boardList);
 
         System.out.println("도서관행사");
@@ -69,6 +70,7 @@ public class CulturalAndEducationController {
         webMenuService.selectWebMenuList("member");
         System.out.println(webMenuService.selectWebMenuList("member"));
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+
 
         MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 

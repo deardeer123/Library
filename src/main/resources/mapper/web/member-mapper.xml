@@ -43,7 +43,8 @@
     <select id="login" resultMap="users">
         SELECT
             USER_ID
-            ,USER_PW
+            ,USER_NAME
+            ,USER_CODE
         FROM USERS
         WHERE USER_ID = #{userId}
         AND USER_PW = #{userPw}

@@ -88,8 +88,8 @@ public class MemberController {
     //로그인
     @PostMapping("/loginForm")
     public String login(HttpSession session, MemberVO memberVO){
-        MemberVO loginInfo = memberService.login(memberVO);
 
+        MemberVO loginInfo = memberService.login(memberVO);
 
         if(loginInfo != null){
             session.setAttribute("loginInfo",loginInfo);

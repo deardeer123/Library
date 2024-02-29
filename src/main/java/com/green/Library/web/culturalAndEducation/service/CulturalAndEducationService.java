@@ -12,4 +12,5 @@ public interface CulturalAndEducationService {
 
     //문화 게시판 등록
     void insertCulBoard(CulturalAndEducationVO culturalAndEducationVO);
+
 }

@@ -20,15 +20,17 @@
             BOARD_TITLE
             , CONTENT
             , BOARD_DATE
-            , USER_CODE
         )
         VALUES(
             #{boardTitle}
             ,#{content}
             ,#{boardDate}
-            ,#{userCode}
         )
     </insert>
+
+    <select id="">
+
+    </select>
 
     <select id="selectCulBoardList" resultMap="culture">
         SELECT
@@ -41,6 +43,8 @@
         FROM cul_board INNER JOIN USERS
         ON CUL_BOARD.USER_CODE = USERS.USER_CODE
     </select>
+
+
 
 </mapper>
 
