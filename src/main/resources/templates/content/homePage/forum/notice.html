@@ -63,8 +63,9 @@
           <tbody>
             <tr th:each="notice : ${noticeList}">
                 <td>[[${notice.boardNo}]]</td>
-                <td>[[${notice.boardTitle}]]</td>
-                <td></td>
+                <td th:onclick="location.href='/noticeDetail?boardNo=[[${notice.boardNo}]]'">
+                  [[${notice.boardTitle}]]</td>
+                <td>[[${notice.memberVO.userName}]]</td>
                 <td>[[${notice.boardDate}]]</td>
                 <td>[[${notice.boardCnt}]]</td>
             </tr>
@@ -72,8 +73,10 @@
         </table>
       </div>
     </div>
-    <input type="button" value="목록">
-    <input type="button" value="글쓰기" onclick="location.href='/noticeWrite'">
+    <input type="button" value="목록" onclick="location.href='/notice'">
+    <!-- <th:block th:if="${session.logiInfo.isMain == 'Y'}"> 지훈push해주면 테스트하자 -->
+      <input type="button" value="글쓰기" onclick="location.href='/noticeWrite'">
+    <!-- </th:block> -->
   
     
 </th:block>

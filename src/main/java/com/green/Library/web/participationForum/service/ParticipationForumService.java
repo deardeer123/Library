@@ -9,8 +9,10 @@ ParticipationForumService {
     //공지사항 등록
     void insertNotice (ParticipationForumVO participationForumVO);
     //공지사항 조회
-    List<ParticipationForumVO> selctNotice ();
+    List<ParticipationForumVO> selectNotice ();
     //조회수증가
-    int updateCnt (int boardNo);
+    void updateCnt (int boardNo);
+    //공지사항 상세조회
+    ParticipationForumVO noticeDetail (int boardNo);
 
 }

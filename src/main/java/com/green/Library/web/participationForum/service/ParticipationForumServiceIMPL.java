@@ -19,14 +19,20 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
     }
     //공지사항조회
     @Override
-    public List<ParticipationForumVO> selctNotice() {
+    public List<ParticipationForumVO> selectNotice() {
         return sqlSession.selectList("participationForumMapper.selectNotice");
     }
     //조회수증가
     @Override
-    public int updateCnt(int boardNo) {
-        return sqlSession.update("participationForumMapper.updateCnt");
+    public void updateCnt(int boardNo) {
+        sqlSession.update("participationForumMapper.updateCnt",boardNo);
     }
+    //공지사항 상세조회
+    @Override
+    public ParticipationForumVO noticeDetail(int boardNo) {
+        return sqlSession.selectOne("participationForumMapper.noticeDetail", boardNo);
+    }
+    //
 
 
 }
