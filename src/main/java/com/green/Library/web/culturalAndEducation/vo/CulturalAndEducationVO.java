@@ -1,9 +1,12 @@
 package com.green.Library.web.culturalAndEducation.vo;
 
+import com.green.Library.web.img.vo.ImgVO;
 import com.green.Library.web.member.vo.MemberVO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,8 +17,8 @@ public class CulturalAndEducationVO {
     private String content;
     private String boardDate;
     private int userCode;
-    private String attachedFileName;
     private int boardCnt;
     private int boardType;
     private MemberVO memberVO;
+    private List<ImgVO> imgList;
 }

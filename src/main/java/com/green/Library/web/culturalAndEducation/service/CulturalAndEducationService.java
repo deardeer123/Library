@@ -11,5 +11,8 @@ public interface CulturalAndEducationService {
     List<CulturalAndEducationVO> selectCulBoardList();
 
     //문화 게시판 등록
+    //이미지 등록
     void insertCulBoard(CulturalAndEducationVO culturalAndEducationVO);
+
+    int maxBoardNo();
 }

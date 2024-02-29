@@ -13,7 +13,7 @@
     <result column="BOARD_TYPE"     property="boardType"/>
     </resultMap>
 
-    <resultMap id="img" type="com.green.Library.web.img.vo.imgVO">
+    <resultMap id="img" type="com.green.Library.web.img.vo.ImgVO">
         <id column="IMG_CODE"          property="imgCode"/>
         <result column="ORIGIN_FILE_NAME"   property="originFileName"/>
         <result column="ATTACHED_FILE_NAME"       property="attachedFileName"/>

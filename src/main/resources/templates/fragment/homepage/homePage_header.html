@@ -30,13 +30,19 @@
                                     </li> -->
                                 </ul>
                                 <span class="navbar-text">
-                                    <th:block th:each="e:${memberMenuList}">
-                                        <th:block th:each="e1:${e.webSideMenuVOList}">
-
-                                            <a th:onclick="goPage([[${e1.sideMenuPage}]])">[[${e1.sideMenuName}]] </a>
-
+                                    <th:block th:if="${session.loginInfo == null}">
+                                        <th:block th:each="e:${memberMenuList}">
+                                            <th:block th:each="e1:${e.webSideMenuVOList}">
+                                                <a th:onclick="goPage([[${e1.sideMenuPage}]])">[[${e1.sideMenuName}]]
+                                                </a>
+                                            </th:block>
                                         </th:block>
                                     </th:block>
+
+                                    <th:block th:if="${session.loginInfo != null}">
+                                        [[${session.loginInfo.userId}]]
+                                    </th:block>
+
                                 </span>
                             </div>
                         </div>
@@ -83,7 +89,7 @@
     <script>
         function goPage(page) {
             alert(`${page}로 이동합니다.`)
-            location.href=`/${page}`
+            location.href = `/${page}`
         }
     </script>
 
