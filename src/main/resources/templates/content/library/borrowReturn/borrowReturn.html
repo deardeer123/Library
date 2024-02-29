@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/library/library_detail_layout}" >
+    layout:decorate="~{fragment/library/library_layout}" >
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
@@ -10,43 +10,62 @@
 
 <th:block layout:fragment="contentFragment">
     
-<form action="" method="post">
+<form action="/bookAdmin/selectBorrowInfo" method="post">
     <div class="row">
         <div class="col">
             <div class="row">
                 <div class="col">
-                    <div class="row">
-                        <div class="col">
-                            <input type="radio" checked name="type1">일반
-                            <input type="radio" name="type1">특별
-                            <input type="radio" name="type1">관내
-                            <input type="date">
+                    <form action="/bookAdmin/selectBorrowInfo" method="post">
+                        <div class="row">
+                            <div class="col">
+                                <b>대출</b> <input type="radio" name="borrowType" value="1" checked>일반
+                                <input type="radio" name="borrowType" value="2">특별
+                                <input type="radio" name="borrowType" value="3">관내
+                                <input type="date" name="brDate">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <input type="radio" checked name="type2">일반
-                            <input type="radio" name="type2">소급
-                            <input type="date">
+                        <div class="row">
+                            <div class="col">
+                                <b>반납</b> <input type="radio" name="returnType" value="1" checked>일반
+                                <input type="radio" name="returnType" value="2">소급
+                                <input type="date" name="returnDate">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <form action="" method="post">
-                                <input type="checkbox">타관
-                                <input type="text" name="userCode" placeholder="대출번호,이름,등록번호">
+                        <div class="row">
+                            <div class="col">
+                                <input type="text" name="userCode" placeholder="대출번호">
                                 <input type="submit" value="처리">
-                            </form>
+                                <input type="checkbox">타관
+                                <input type="text" name="bookCode" placeholder="등록번호">
+                                <input type="submit" value="처리">
+                            </div>
                         </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        이용자정보
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        서지 정보
+                    </div>
+                </div>
+                <div class="rwo">
+                    <div class="col">
+                        반납예정일
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        달력
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-
-                </div>
-                <div class="col">
-
+                대출 반납 내역들
                 </div>
             </div>
         </div>
@@ -57,6 +76,6 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <!-- <script src="/"></script> -->
+    <script src="/library/js/borrowReturn.js"></script>
 </th:block>
 </html>

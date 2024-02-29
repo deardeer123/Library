@@ -12,11 +12,11 @@
     <result      column="RETURN_DATE"     property="returnDate"/>
     <result      column="USER_CODE"       property="userCode"/>
     <result      column="BOOK_CODE"       property="bookCode"/>
-    <association property="libraryMember" resultMap="libraryMemberMapper.libAdmMember"/>
+    <association property="memberVO"        resultMap="memberMapper.users"/>
 </resultMap>
 
     <!-- 이용자의 대출 정보 조회-->
-    <select id="borrowInfo" resultMap="bookBorrow">
+    <select id="selectBorrowInfo" resultMap="bookBorrow">
         SELECT USER.USER_CODE
             , USER_NAME
             , USER_TEL
@@ -35,22 +35,12 @@
         INNER JOIN book AS B
         ON B.BOOK_CODE = BB.BOOK_CODE
         WHERE BB.USER_CODE = #{userCode}
-        ORDER BY BR_DATE DESC
+        ORDER BY BR_DATE
     </select>
 
 
 
 </mapper>
-
-
-
-
-
-
-
-
-
-
 
 
 
