@@ -73,7 +73,7 @@ public class CulturalAndEducationController {
         MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 
         culService.insertCulBoard(culturalAndEducationVO);
-        memberVO.setUserId(loginInfo.getUserId());
+        memberVO.setUserCode(loginInfo.getUserCode());
 
 
         return "redirect:/libraryEvent";

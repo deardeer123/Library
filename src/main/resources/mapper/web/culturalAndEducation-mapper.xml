@@ -20,13 +20,13 @@
             BOARD_TITLE
             , CONTENT
             , BOARD_DATE
-            , USER_ID
+            , USER_CODE
         )
         VALUES(
             #{boardTitle}
             ,#{content}
             ,#{boardDate}
-            ,#{userId}
+            ,#{userCode}
         )
     </insert>
 
