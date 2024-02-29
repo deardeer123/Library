@@ -5,6 +5,7 @@ import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.libraryhome.service.LibraryHomeService;
 import com.green.Library.library.libraryhome.service.LibraryHomeServiceImpl;
 import com.green.Library.libraryMember.vo.LibraryMemberVO;
+import com.green.Library.web.member.vo.MemberVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -31,9 +32,9 @@ public class LibraryHomeController {
 
     // 관리자 로그인
     @PostMapping("/login")
-    public String login(LibraryMemberVO libraryMemberVO, HttpSession session){
+    public String login(MemberVO memberVO, HttpSession session){
 
-        LibraryMemberVO loginInfo = libraryHomeService.login(libraryMemberVO);
+        MemberVO loginInfo = libraryHomeService.login(memberVO);
 
         System.out.println(loginInfo);
 
@@ -50,7 +51,7 @@ public class LibraryHomeController {
         System.out.println("홈으로 이동");
         System.out.println(libraryMenuService.selectLibraryMenuList());
 
-        LibraryMemberVO loginInfo = (LibraryMemberVO) session.getAttribute("loginInfo");
+        MemberVO loginInfo = (MemberVO) session.getAttribute("loginInfo");
         model.addAttribute("loginInfo", loginInfo);
 
         //이동하기전 메뉴리스트 가져가기

@@ -1,6 +1,7 @@
 package com.green.Library.library.libraryhome.service;
 
 import com.green.Library.libraryMember.vo.LibraryMemberVO;
+import com.green.Library.web.member.vo.MemberVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,8 @@ public class LibraryHomeServiceImpl implements LibraryHomeService{
 
     // 관리자 로그인
     @Override
-    public LibraryMemberVO login(LibraryMemberVO libraryMemberVO) {
-        return sqlSession.selectOne("libraryMemberMapper.login", libraryMemberVO);
+    public MemberVO login(MemberVO memberVO) {
+        return sqlSession.selectOne("memberMapper.login", memberVO);
     }
 
 

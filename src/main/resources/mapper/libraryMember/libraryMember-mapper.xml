@@ -4,33 +4,6 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="libraryMemberMapper">
 
-    <resultMap id="libMember" type="com.green.Library.libraryMember.vo.LibraryMemberVO">
-        <id     column="USER_CODE"      property="userCode"/>
-        <result column="USER_ID"        property="userId"/>
-        <result column="USER_PW"        property="userPw"/>
-        <result column="USER_NAME"      property="userName"/>
-        <result column="USER_TEL"       property="userTel"/>
-        <result column="POST_CODE"      property="postCode"/>
-        <result column="USER_ADDR"      property="userAddr"/>
-        <result column="ADDR_DETAIL"    property="addrDetail"/>
-        <result column="GENDER"         property="gender"/>
-        <result column="EMAIL"          property="email"/>
-        <result column="IS_ADMIN"       property="isAdmin"/>
-    </resultMap>
-
-    <!-- 로그인 쿼리 -->
-    <select id="login" resultMap="libMember">
-        SELECT USER_CODE
-            , USER_ID
-            , USER_NAME
-            , IS_ADMIN
-        FROM USERS
-        WHERE USER_ID = #{userId}
-        AND USER_PW = #{userPw}
-    </select>
-
-
-
 </mapper>
 
 
