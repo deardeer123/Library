@@ -1,18 +1,17 @@
 package com.green.Library.library.regAndView.controller;
 
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
+import com.green.Library.library.regAndView.service.BookSearchVO;
 import com.green.Library.library.regAndView.service.RegAndViewService;
 import com.green.Library.libraryBook.service.LibraryBookService;
 import com.green.Library.libraryBook.vo.LibraryBookInfoVO;
 import com.green.Library.libraryBook.vo.LibraryBookVO;
 import com.green.Library.util.UploadUtil;
 import jakarta.annotation.Resource;
+import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -32,7 +31,9 @@ public class RegAndViewController {
 
     //----------------등록 열람----------------
     @GetMapping("/workingBook")
-    public String goWorkingBook(Model model, @RequestParam(name="update" ,required = false, defaultValue = "0") int update){
+    public String goWorkingBook(Model model,
+                                @RequestParam(name="update" ,required = false, defaultValue = "0") int update ,
+                                @RequestParam(name="delete", required = false, defaultValue = "0") int delete){
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
@@ -40,9 +41,13 @@ public class RegAndViewController {
         System.out.println(regAndViewService.selectBookList());
         model.addAttribute("bookList", regAndViewService.selectBookList());
 
-        //변경하고나서 해당 페이지로 이동 시 알람창 하나 띄우고 싶어서 적은 코드
+        //변경 혹은 삭제 하고나서 해당 페이지로 이동 시 알람창 하나 띄우고 싶어서 적은 코드
         System.out.println(update);
         model.addAttribute("update", update);
+
+        System.out.println(delete);
+        model.addAttribute("delete", delete);
+
 
         //초기화
 //        List<Integer> initList = new ArrayList<>();
@@ -125,6 +130,29 @@ public class RegAndViewController {
         //변경 되었으면 변경됬다고 뭐하나 띄우고 싶은데
         return "redirect:/bookAdmin/workingBook?update=1";
     }
+
+    //책 삭제하기
+    @GetMapping("/deleteBook1")
+    public String deleteBook1(@RequestParam(name="bookCode")String bookCode){
+        System.out.println(bookCode);
+
+//        받은 bookCode로 쿼리문 실행
+        regAndViewService.deleteBookOne(bookCode);
+
+        return "redirect:/bookAdmin/workingBook?delete=1";
+    }
+
+    @ResponseBody
+    @PostMapping("/searchBook")
+    public List<LibraryBookVO> doSearchBook(BookSearchVO bookSearchVO){
+        System.out.println("이동합니까?");
+        System.out.println(bookSearchVO);
+       List<LibraryBookVO> libraryBookVOList = regAndViewService.searchBookList(bookSearchVO);
+
+
+       return libraryBookVOList;
+    }
+
 
     @GetMapping("/collectionBook")
     public String goCollectionBook(Model model){

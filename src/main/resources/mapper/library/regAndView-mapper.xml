@@ -58,6 +58,35 @@
             BOOK_CODE = #{libraryBookInfoVO.bookCode}
     </update>
 
+<!--    책 삭제하기전 처음할거-->
+    <delete id="DeleteBookOne">
+        DELETE FROM book_info
+        WHERE book_code = #{bookCode}
+    </delete>
+<!-- 두번째로 할거-->
+    <delete id="DeleteBookTwo">
+        DELETE FROM book
+        WHERE book_code = #{bookCode}
+    </delete>
+
+<!--    검색기능-->
+    <select id="searchBookList" resultMap="libraryBookMapper.libraryBook">
+        SELECT
+            BOOK_CODE ,
+            BOOK_TITLE ,
+            BOOK_WRITER ,
+            BOOK_PUB ,
+            BOOK_YEAR
+        FROM
+            BOOK
+        WHERE
+            1 = 1
+            <if test='searchValue != null and !searchValue.equals("")'>
+                AND ${searchType} LIKE CONCAT('%',#{searchValue},'%')
+            </if>
+    </select>
+
+
 <!--    프로시져 쓸 줄 몰라서 쓴 초기화 쿼리문임 가능하면 건드지 마십쇼-->
     <insert id="bookInfoInit">
         INSERT INTO book_info(

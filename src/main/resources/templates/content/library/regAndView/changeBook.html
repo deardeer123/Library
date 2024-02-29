@@ -109,17 +109,22 @@
                         </div>
 
                         <div class="row mt-2">
-                            <div class="col-10"></div>
+                            <div class="col-8"></div>
                             <div class="col d-grid">
                                 <button type="submit" class="btn btn-primary">변경 하기</button>
                             </div>
+
+                            <div class="col d-grid">
+                                <button type="button" class="btn btn-primary" onclick="goDelete()">삭제 하기</button>
+                            </div>
+
                         </div>
 
                     </div>
                 </div>
             </div>
         </div>
-        <input type="hidden" name="bookCode" th:value="${book.bookCode}">
+        <input type="hidden" name="bookCode" th:value="${book.bookCode}" id="book_code">
     </form>
 
     <script>
@@ -134,6 +139,19 @@
                 document.querySelector('#bookImg').src = "/upload/book_character_smile.png";
             }
         }
+
+        function goDelete(){
+            const book_code = document.querySelector("#book_code").value
+            console.log(book_code);
+
+            if(confirm('삭제 하실건가요?')){
+                location.href=`/bookAdmin/deleteBook1?bookCode=${book_code}`
+            }
+            else{
+                return 0;
+            }
+        }
+
     </script>
 </th:block>
 
