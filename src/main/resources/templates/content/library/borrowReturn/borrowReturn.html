@@ -5,77 +5,145 @@
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
-    <!-- <link rel="stylesheet" href="/"> -->
+    <link rel="stylesheet" href="/">
 </th:block>
 
 <th:block layout:fragment="contentFragment">
     
-<form action="/bookAdmin/selectBorrowInfo" method="post">
-    <div class="row">
-        <div class="col">
+<style>
+
+    .header{
+        width: 100%;
+        height: 50px;
+        border: 1px solid black;
+    }
+
+    .content{
+        width: 100%;
+        height: 500px;
+        border: 1px solid black;
+    }
+
+    .left{
+        width: 40%;
+        float: left;
+        box-sizing: border-box;
+        border-right: 1px solid black;
+    }
+
+    .right{
+        width: 60%;
+        float: right;
+        box-sizing: border-box;
+    }
+
+    textarea{
+        resize: none;
+        height: 3em;
+        width: 90%;
+    }
+</style>
+<body>
+
+<div class="header">
+    갑자기 메뉴리스트가 안 떠유... 🫠🫠🥲
+</div>
+
+<div class="content">
+
             <div class="row">
                 <div class="col">
-                    <form action="/bookAdmin/selectBorrowInfo" method="post">
-                        <div class="row">
-                            <div class="col">
-                                <b>대출</b> <input type="radio" name="borrowType" value="1" checked>일반
-                                <input type="radio" name="borrowType" value="2">특별
-                                <input type="radio" name="borrowType" value="3">관내
-                                <input type="date" name="brDate">
+                    <div class="row">
+                        <div class="col-3">
+                                <form action="/bookAdmin/selectBorrowInfo" method="post">
+                                    <div class="row">
+                                        <div class="col">
+                                            <b>대출</b> <input type="radio" name="borrowType" checked>일반
+                                            <input type="radio" name="borrowType">특별
+                                            <input type="date" name="brDate">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <b>반납</b> <input type="radio" name="returnType" checked>일반
+                                            <input type="radio" name="returnType">소급
+                                            <input type="date" name="returnDate">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="input-group mb-3" style="width: 89%; height: 1em;">
+                                                <input type="text" class="form-control" placeholder="대출번호" name="memberNum" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                                <button class="btn btn-secondary" type="submit" id="button-addon2">처리</button>
+                                            </div>
+                                            <div class="input-group mb-3" style="width: 89%; height: 1em;">
+                                                <input type="text" class="form-control" placeholder="등록번호" name="bookCode" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                                <button class="btn btn-secondary" type="submit" id="button-addon2">처리</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div>김봄이</div>
+                                            <div>010-9517-1791</div>
+                                            <div><textarea name="" id="" cols="30" rows="10"></textarea></div>
+                                            <button class="btn btn-primary text-end">수정</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            서지 정보
+                                        </div>
+                                    </div>
+                                    <div class="rwo">
+                                        <div class="col">
+                                            반납예정일
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            달력
+                                        </div>
+                                    </div>
+                        </div>                   
+                            <div class="col-9">
+                                <div class="row">
+                                    <div class="col">
+                                        자관대출        
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        타관대출
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        예약내역
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        반납내역
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        관리자가 당일 처리한 대출 반납 내역
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <b>반납</b> <input type="radio" name="returnType" value="1" checked>일반
-                                <input type="radio" name="returnType" value="2">소급
-                                <input type="date" name="returnDate">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <input type="text" name="userCode" placeholder="대출번호">
-                                <input type="submit" value="처리">
-                                <input type="checkbox">타관
-                                <input type="text" name="bookCode" placeholder="등록번호">
-                                <input type="submit" value="처리">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        이용자정보
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        서지 정보
-                    </div>
-                </div>
-                <div class="rwo">
-                    <div class="col">
-                        반납예정일
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        달력
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                대출 반납 내역들
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
+
+</div>
 
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <script src="/library/js/borrowReturn.js"></script>
+    <script src="/"></script>
 </th:block>
 </html>
