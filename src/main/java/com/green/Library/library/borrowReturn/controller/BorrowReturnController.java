@@ -2,15 +2,13 @@ package com.green.Library.library.borrowReturn.controller;
 
 import com.green.Library.library.borrowReturn.service.BorrowReturnService;
 import com.green.Library.library.borrowReturn.vo.BookBorrowVO;
+import com.green.Library.library.borrowReturn.vo.MemberCardVO;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.web.member.vo.MemberVO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,14 +33,15 @@ public class BorrowReturnController {
     }
 
     //이용자 대출 반납 조회
+    @ResponseBody
     @PostMapping("/selectBorrowInfo")
-    public String selectBorrowInfo(@RequestParam(name = "userCode") int userCode, Model model){
+    public MemberCardVO selectBorrowInfo(MemberCardVO memberCardVO, int userCode){
 
-        List<BookBorrowVO> bookBorrowList = borrowReturnService.selectBorrowInfo(userCode);
+        MemberCardVO memberBorrowInfo = borrowReturnService.selectBorrowInfo(userCode);
 
-        model.addAttribute("bookBorrowList", bookBorrowList);
+        System.out.println(memberBorrowInfo);
 
-        return "redirect:/bookAdmin/borrowReturn";
+        return memberBorrowInfo;
     }
 
     //일관 반납
