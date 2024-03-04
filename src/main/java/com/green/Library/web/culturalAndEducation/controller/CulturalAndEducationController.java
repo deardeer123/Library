@@ -136,10 +136,9 @@ public class CulturalAndEducationController {
         webMenuService.selectWebMenuList("member");
         System.out.println(webMenuService.selectWebMenuList("member"));
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
-
-
-
-
+        BoardVO board = boardService.selectBoardDetail();
+        model.addAttribute("board", board);
+        System.out.println(board);
         return "content/homePage/culturalAndEducation/eventDetailBoard";
     }
 

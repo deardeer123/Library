@@ -20,4 +20,7 @@ public interface BoardService {
 
     //게시판 개수
     int countBoard();
+
+    //상세 게시판
+    BoardVO selectBoardDetail();
 }

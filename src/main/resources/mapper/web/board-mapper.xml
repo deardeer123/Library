@@ -106,6 +106,24 @@
         SELECT COUNT (BOARD_NO)
         FROM BOARD
     </select>
+
+    <select id="selectBoardDetail" resultMap="board">
+        SELECT
+            BOARD.BOARD_NO
+            ,BOARD.USER_CODE
+            ,BOARD_TITLE
+            ,BOARD_DATE
+            ,BOARD_CNT
+            ,CONTENT
+            ,USER_ID
+            ,ATTACHED_FILE_NAME
+            ,IS_MAIN
+        FROM BOARD
+        INNER JOIN USERS
+        ON BOARD.USER_CODE = USERS.USER_CODE
+        INNER JOIN IMAGE
+        ON BOARD.BOARD_NO = IMAGE.BOARD_NO
+    </select>
 </mapper>
 
 
