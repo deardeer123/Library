@@ -14,11 +14,8 @@ public interface CulturalAndEducationService {
     //이미지 등록
 //    void insertCulBoard(CulturalAndEducationVO culturalAndEducationVO);
 
-<<<<<<< HEAD
-
-=======
 //    int maxBoardNo();
->>>>>>> dev-nam
+
 
 //    int isNullBoardNo();
 }

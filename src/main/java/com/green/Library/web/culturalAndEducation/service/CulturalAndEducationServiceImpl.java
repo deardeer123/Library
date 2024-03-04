@@ -15,25 +15,7 @@ public class CulturalAndEducationServiceImpl implements CulturalAndEducationServ
     @Autowired
     private SqlSessionTemplate sqlSession;
 
-<<<<<<< HEAD
-    @Override
-    public List<CulturalAndEducationVO> selectCulBoardList() {
-        return sqlSession.selectList("culturalAndEducationMapper.selectCulBoardList");
-    }
 
-    @Override
-    @Transactional(rollbackFor = ExportException.class)
-    public void insertCulBoard(CulturalAndEducationVO culturalAndEducationVO) {
-        sqlSession.insert("culturalAndEducationMapper.insertCulBoard",culturalAndEducationVO);
-        sqlSession.insert("culturalAndEducationMapper.insertImgList",culturalAndEducationVO);
-    }
-
-
-    @Override
-    public int isNullBoardNo() {
-        return sqlSession.selectOne("culturalAndEducationMapper.isNullBoardNo");
-    }
-=======
 //    @Override
 //    public List<CulturalAndEducationVO> selectCulBoardList() {
 //        return sqlSession.selectList("culturalAndEducationMapper.selectCulBoardList");
@@ -46,16 +28,12 @@ public class CulturalAndEducationServiceImpl implements CulturalAndEducationServ
 //        sqlSession.insert("culturalAndEducationMapper.insertImgList",culturalAndEducationVO);
 //    }
 //
-//    @Override
-//    public int maxBoardNo() {
-//        return sqlSession.selectOne("culturalAndEducationMapper.maxBoardNo");
-//    }
 //
 //    @Override
 //    public int isNullBoardNo() {
 //        return sqlSession.selectOne("culturalAndEducationMapper.isNullBoardNo");
 //    }
->>>>>>> dev-nam
+//
 
 
 }

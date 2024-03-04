@@ -90,12 +90,7 @@
         </foreach>
     </insert>
 
-<<<<<<< HEAD
 
-    <select id="maxBoardNo" resultType="int">
-        SELECT
-            MAX(board_no) + 1
-=======
     <!--  게시판 개수 + 1  -->
     <select id="isNullBoardNo" resultType="int">
         SELECT CASE WHEN
@@ -103,7 +98,6 @@
         THEN 1
             ELSE MAX(BOARD_NO) + 1
         END
->>>>>>> dev-nam
         FROM BOARD
     </select>
 
