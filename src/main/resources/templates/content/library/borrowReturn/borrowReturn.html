@@ -5,7 +5,7 @@
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
-    <link rel="stylesheet" href="/libary/css/borrowReturn.css">
+    <link rel="stylesheet" href="/css/content/library/borrowReturn/borrowReturn.css">
 </th:block>
 
 <th:block layout:fragment="contentFragment">
@@ -90,6 +90,32 @@
                                             달력
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div id="memberNum"></div>
+                                    <div id="userName"></div>
+                                    <div id="userTel"></div>
+                                    <div><textarea></textarea></div>
+                                    <button class="btn btn-primary text-end">수정</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    서지 정보
+                                </div>
+                            </div>
+                            <div class="rwo">
+                                <div class="col">
+                                    반납예정일
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    달력
+                                </div>
+                            </div>
                         </div>                   
                         <div class="col-9">
                             <div class="row">
@@ -128,6 +154,6 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <script src="/"></script>
+    <script src="/js/content/library/borrowReturn/borrowReturn.js"></script>
 </th:block>
 </html>
