@@ -77,6 +77,17 @@
     <!-- <th:block th:if="${session.logiInfo.isMain == 'Y'}"> 지훈push해주면 테스트하자 -->
       <input type="button" value="글쓰기" onclick="location.href='/noticeWrite'">
     <!-- </th:block> -->
+    <div>
+      <th:block th:if="${searchVO.prev}">
+          <a th:href="@{/notice(nowPage=${searchVO.beginPage - 1})}">이전</a>
+      </th:block>
+      <th:block th:each=" i : ${#numbers.sequence(searchVO.beginPage, searchVO.endPage)}">
+          <a th:href="@{/notice(nowPage=${i})}">[[${i}]]</a>
+      </th:block>
+      <th:block th:if="${searchVO.next}">
+          <a th:href="@{/notice(nowPage=${searchVO.endPage + 1})}">다음</a>
+      </th:block>
+  </div>
   
     
 </th:block>

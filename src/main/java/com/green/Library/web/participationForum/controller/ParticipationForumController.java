@@ -2,6 +2,7 @@ package com.green.Library.web.participationForum.controller;
 
 import com.green.Library.web.board.service.BoardServiceImpl;
 import com.green.Library.web.board.vo.BoardVO;
+import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.participationForum.service.ParticipationForumServiceIMPL;
 import jakarta.annotation.Resource;
@@ -31,7 +32,7 @@ public class ParticipationForumController {
 
     //공지사항조회
     @GetMapping("/notice")
-    public String goNotice(BoardVO boardVO, Model model, HttpSession session){
+    public String goNotice(BoardVO boardVO, Model model, HttpSession session, SearchVO searchVO){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -51,7 +52,13 @@ public class ParticipationForumController {
         model.addAttribute("noticeList", noticeList);
 
         //페이징처리
+        int totalBoardCnt= boardService.countBoard();
+        searchVO.setTotalDataCnt(totalBoardCnt);
 
+        searchVO.setPageInfo();
+
+        List<BoardVO> boardList = boardService.selectBoardList(searchVO);
+        System.out.println(boardList);
 
         return "content/homePage/forum/notice";
     }
@@ -63,8 +70,8 @@ public class ParticipationForumController {
 
     //공지사항 글쓰기
     @PostMapping("/noticeWrite")
-    public String noticeWrite(BoardVO boardVO, HttpSession session, Model model,
-                              @RequestParam(name = "uploadFile") MultipartFile[] uploadFile){
+    public String noticeWrite(BoardVO boardVO, HttpSession session, Model model
+                              ){
 
         //로그인 정보 전달
         MemberVO loginInfo = (MemberVO) session.getAttribute("loginInfo");

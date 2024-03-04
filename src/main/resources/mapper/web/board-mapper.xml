@@ -23,12 +23,6 @@
         <result column="BOARD_NO" property="boardNo"/>
     </resultMap>
 
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> dev
     <!--  게시글 작성   -->
     <insert id="insertCulBoard">
         INSERT INTO BOARD(
@@ -93,15 +87,11 @@
         </foreach>
     </insert>
 
-<<<<<<< HEAD
     <select id="maxBoardNo" resultType="int">
         SELECT
             MAX(board_no) + 1
         FROM BOARD
     </select>
-
-
-=======
 
     <!--  게시판 개수 + 1  -->
     <select id="isNullBoardNo" resultType="int">
@@ -118,7 +108,6 @@
         SELECT COUNT (BOARD_NO)
         FROM BOARD
     </select>
->>>>>>> dev
 </mapper>
 
 

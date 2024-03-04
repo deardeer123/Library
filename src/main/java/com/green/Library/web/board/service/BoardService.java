@@ -16,14 +16,11 @@ public interface BoardService {
     List<BoardVO> selectBoardList(SearchVO searchVO);
 
     //게시글 큰 값
-<<<<<<< HEAD
     int maxBoardNo();
 
-
-=======
     int isNullBoardNo();
 
     //게시판 개수
     int countBoard();
->>>>>>> dev
+
 }
