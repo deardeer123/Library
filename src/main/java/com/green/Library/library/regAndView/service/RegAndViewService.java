@@ -17,9 +17,11 @@ public interface RegAndViewService {
     //책 검색하기
     List<LibraryBookVO> searchBookList(BookSearchVO bookSearchVO);
 
-
+    //책 삭제
     void deleteBookOne(String bookCode);
 
+    //책 갯수 검색
+    int selectBookCnt(BookSearchVO bookSearchVO);
 
 
 

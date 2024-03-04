@@ -69,6 +69,17 @@
         WHERE book_code = #{bookCode}
     </delete>
 
+<!--    책 갯수-->
+    <select id="selectBookCnt" resultType="int">
+        select count(*)
+        from book
+        where
+        1 = 1
+        <if test='searchValue != null and !searchValue.equals("")'>
+            and ${searchType} LIKE CONCAT('%',#{searchValue},'%')
+        </if>
+    </select>
+
 <!--    검색기능-->
     <select id="searchBookList" resultMap="libraryBookMapper.libraryBook">
         SELECT
@@ -84,6 +95,8 @@
             <if test='searchValue != null and !searchValue.equals("")'>
                 AND ${searchType} LIKE CONCAT('%',#{searchValue},'%')
             </if>
+        ORDER BY book_code
+        LIMIT ${displayDataCnt} offset ${(displayDataCnt) * (nowPage - 1)}
     </select>
 
 
