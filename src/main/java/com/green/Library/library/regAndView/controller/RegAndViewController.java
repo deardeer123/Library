@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/bookAdmin")
@@ -32,14 +34,37 @@ public class RegAndViewController {
     //----------------등록 열람----------------
     @GetMapping("/workingBook")
     public String goWorkingBook(Model model,
+                                BookSearchVO bookSearchVO,
                                 @RequestParam(name="update" ,required = false, defaultValue = "0") int update ,
                                 @RequestParam(name="delete", required = false, defaultValue = "0") int delete){
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
+
+        System.out.println(bookSearchVO);
+
+        System.out.println("------------------------"+ bookSearchVO.getNowPage());
+        //페이징
+        System.out.println(bookSearchVO.getNowPage());
+        bookSearchVO.setNowPage(bookSearchVO.getNowPage());
+
+        //전체 게시물 갯수 설정
+        int totalDataCnt = regAndViewService.selectBookCnt(bookSearchVO);
+        bookSearchVO.setTotalDataCnt(totalDataCnt);
+
+        //페이지 정보 세팅
+        bookSearchVO.setPageInfo();
+        // 끝나는 페이지, 마지막 페이지 확인
+        System.out.println("endPage : " + bookSearchVO.getEndPage());
+        System.out.println("totalPage : " + bookSearchVO.getTotalPageCnt());
+        System.out.println("prev : " + bookSearchVO.getPrev());
+        System.out.println("next : " + bookSearchVO.getNext());
+
+
+//
         //대충 책 정보 가져 오고나서 해당 파일의 상세 정보등을 변경시키게
-        System.out.println(regAndViewService.selectBookList());
-        model.addAttribute("bookList", regAndViewService.selectBookList());
+        System.out.println(regAndViewService.searchBookList(bookSearchVO));
+        model.addAttribute("bookList", regAndViewService.searchBookList(bookSearchVO));
 
         //변경 혹은 삭제 하고나서 해당 페이지로 이동 시 알람창 하나 띄우고 싶어서 적은 코드
         System.out.println(update);
@@ -47,6 +72,16 @@ public class RegAndViewController {
 
         System.out.println(delete);
         model.addAttribute("delete", delete);
+
+
+        
+        
+        
+
+
+
+
+
 
 
         //초기화
@@ -144,13 +179,39 @@ public class RegAndViewController {
 
     @ResponseBody
     @PostMapping("/searchBook")
-    public List<LibraryBookVO> doSearchBook(BookSearchVO bookSearchVO){
+    public Map<String,Object> doSearchBook(BookSearchVO bookSearchVO){
+
+
         System.out.println("이동합니까?");
         System.out.println(bookSearchVO);
-       List<LibraryBookVO> libraryBookVOList = regAndViewService.searchBookList(bookSearchVO);
+        //가져갈 책 리스트
+        List<LibraryBookVO> libraryBookVOList = regAndViewService.searchBookList(bookSearchVO);
+
+        //페이징
+        System.out.println(bookSearchVO.getNowPage());
 
 
-       return libraryBookVOList;
+        //전체 게시물 갯수 설정
+        int totalDataCnt = regAndViewService.selectBookCnt(bookSearchVO);
+        bookSearchVO.setTotalDataCnt(totalDataCnt);
+
+        //페이지 정보 세팅
+        bookSearchVO.setPageInfo();
+        // 끝나는 페이지, 마지막 페이지 확인
+        System.out.println("endPage : " + bookSearchVO.getEndPage());
+        System.out.println("totalPage : " + bookSearchVO.getTotalPageCnt());
+        System.out.println("prev : " + bookSearchVO.getPrev());
+        System.out.println("next : " + bookSearchVO.getNext());
+
+
+
+        //bookSearchVO 내용도 던져줄려면 map 써야할듯
+        Map<String,Object> bookInfo = new HashMap<String,Object>();
+        bookInfo.put("libraryBookVOList",regAndViewService.searchBookList(bookSearchVO));
+        bookInfo.put("bookSearchVO",bookSearchVO);
+
+
+       return bookInfo;
     }
 
 

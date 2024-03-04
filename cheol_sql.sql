@@ -314,8 +314,12 @@ CREATE TABLE BOOK_BORROW(
 
 
 
+
+
 SELECT * FROM book;
 -- DROP TABLE book_info;
+
+
 
 
 -- 문자열로 바꾸고 숫자부분만 훔치고 최대값을 구한다음에 +1 해주기
@@ -324,6 +328,16 @@ SELECT MAX(CAST(SUBSTRING((BOOK_CODE),3) AS INT)+1) FROM book;
 
 -- 위에서 결과물에 GR 붙이고 0으로 채워주기
 SELECT CONCAT('GR',LPAD( (SELECT MAX(CAST(SUBSTRING((BOOK_CODE),3) AS INT)+1) FROM book) , 10 ,'0'));
+
+
+SELECT * 
+FROM book
+ORDER BY book_code
+LIMIT 10 OFFSET 30;
+
+
+
+
 -- 책 정보
 
 -- 이건 외부에 있는 데이터 불러오는기능
