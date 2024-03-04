@@ -66,8 +66,8 @@
 
 <!--    </select>-->
 
-<<<<<<< HEAD
-=======
+
+
 <!--    &lt;!&ndash;  이미지 등록  &ndash;&gt;-->
 <!--    <insert id="insertImgList">-->
 <!--        INSERT INTO IMAGE(-->
@@ -89,7 +89,7 @@
 <!--        SELECT-->
 <!--            MAX(board_no) + 1-->
 <!--        FROM BOARD-->
->>>>>>> dev-nam
+
 
 <!--    </select>-->
 
