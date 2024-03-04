@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-function selectMemberInfo(memberNum){
-=======
 function selectMemberInfo(){
 
     const memberNum = document.querySelector('#memberNum').value;
->>>>>>> dev
     
     fetch('/bookAdmin/selectBorrowInfo', { //요청경로
     method: 'POST',
