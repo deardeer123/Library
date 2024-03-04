@@ -17,6 +17,7 @@
                 <div class="col">
                     <div class="row">
                         <div class="col-3">
+<<<<<<< HEAD
                             <div class="row">
                                 <div class="col">
                                     <b>대출</b> <input type="radio" name="borrowType" checked>일반
@@ -40,6 +41,80 @@
                                     <div class="input-group mb-3" style="width: 89%; height: 1em;">
                                         <input type="text" class="form-control" placeholder="등록번호" name="bookCode" aria-label="Recipient's username" aria-describedby="button-addon2">
                                         <button class="btn btn-secondary" type="button" id="button-addon2" th:onclick="">처리</button>
+=======
+                                <div class="row">
+                                    <div class="col">
+                                        <b>대출</b> <input type="radio" name="borrowType" checked>일반
+                                        <input type="radio" name="borrowType">특별
+                                        <input type="date" name="brDate">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <b>반납</b> <input type="radio" name="returnType" checked>일반
+                                        <input type="radio" name="returnType">소급
+                                        <input type="date" name="returnDate">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="input-group mb-3" style="width: 89%; height: 1em;">
+                                            <input type="text" class="form-control" placeholder="대출번호" name="memberNum" id="memberNum" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                            <button class="btn btn-secondary" type="button" id="button-addon2" onclick="selectMemberInfo()">처리</button>
+                                        </div>
+                                        
+                                        <div class="input-group mb-3" style="width: 89%; height: 1em;">
+                                            <input type="text" class="form-control" placeholder="등록번호" name="bookCode" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                            <button class="btn btn-secondary" type="button" id="button-addon2">처리</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="row">
+                                                <div class="col" id="card-num">
+                                                    <!-- 카드번호 -->
+                                                    카드번호
+                                                </div>
+                                            </div>
+                                           
+                                            
+                                            <div class="row">
+                                                <div class="col" id="user-name">
+                                                    사용자 이름 
+                                                </div>
+                                            </div>
+
+                                        
+                                            <div class="row">
+                                                <div class="col" id="tel">
+                                                    전화번호
+                                                </div>
+                                            </div>
+
+                                         
+                                            <div>카드번호</div>
+                                            <div>김봄이</div>
+                                            <div>010-9517-1791</div>
+                                            <div><textarea name="" id="" cols="30" rows="10"></textarea></div>
+                                            <button class="btn btn-primary text-end">수정</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            서지 정보
+                                        </div>
+                                    </div>
+                                    <div class="rwo">
+                                        <div class="col">
+                                            반납예정일
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            달력
+                                        </div>
+>>>>>>> dev
                                     </div>
                                 </div>
                             </div>

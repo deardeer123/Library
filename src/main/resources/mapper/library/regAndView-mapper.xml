@@ -26,7 +26,8 @@
             book_info.BOOK_INFO_ORIGIN_FILE_NAME,
             book_info.BOOK_INFO_ATTACHED_FILE_NAME,
             book_info.BOOK_INTRO,
-            book_info.BOOK_CATE_CODE
+            book_info.BOOK_CATE_CODE,
+            book_info.BOOK_MID_CATE_CODE
         FROM
             book LEFT OUTER JOIN book_info
         ON
@@ -53,7 +54,8 @@
             BOOK_INFO_ATTACHED_FILE_NAME = #{libraryBookInfoVO.bookInfoAttachedFileName} ,
             BOOK_INFO_ORIGIN_FILE_NAME = #{libraryBookInfoVO.bookInfoOriginFileName} ,
             BOOK_INTRO = #{libraryBookInfoVO.bookIntro} ,
-            BOOK_CATE_CODE = #{libraryBookInfoVO.bookCateCode}
+            BOOK_CATE_CODE = #{libraryBookInfoVO.bookCateCode} ,
+            BOOK_MID_CATE_CODE = #{libraryBookInfoVO.bookMidCateCode}
         WHERE
             BOOK_CODE = #{libraryBookInfoVO.bookCode}
     </update>
@@ -68,6 +70,17 @@
         DELETE FROM book
         WHERE book_code = #{bookCode}
     </delete>
+
+<!--    책 갯수-->
+    <select id="selectBookCnt" resultType="int">
+        select count(*)
+        from book
+        where
+        1 = 1
+        <if test='searchValue != null and !searchValue.equals("")'>
+            and ${searchType} LIKE CONCAT('%',#{searchValue},'%')
+        </if>
+    </select>
 
 <!--    검색기능-->
     <select id="searchBookList" resultMap="libraryBookMapper.libraryBook">
@@ -84,6 +97,8 @@
             <if test='searchValue != null and !searchValue.equals("")'>
                 AND ${searchType} LIKE CONCAT('%',#{searchValue},'%')
             </if>
+        ORDER BY book_code
+        LIMIT ${displayDataCnt} offset ${(displayDataCnt) * (nowPage - 1)}
     </select>
 
 

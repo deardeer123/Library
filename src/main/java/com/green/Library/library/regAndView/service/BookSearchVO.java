@@ -8,7 +8,7 @@ import lombok.ToString;
 @Setter
 @ToString
 
-public class BookSearchVO {
+public class BookSearchVO extends PageVO{
     private String searchType;
     private String searchValue;
 
