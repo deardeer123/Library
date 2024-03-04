@@ -1,6 +1,7 @@
 package com.green.Library.web.board.service;
 
 import com.green.Library.web.board.vo.BoardVO;
+import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.img.vo.ImgVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +17,23 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public void insertCulBoard(BoardVO boardVO) {
         sqlSession.insert("boardMapper.insertCulBoard",boardVO);
+        sqlSession.insert("boardMapper.insertImgList",boardVO);
+    }
+
+
+    @Override
+    public List<BoardVO> selectBoardList(SearchVO searchVO) {
+        return sqlSession.selectList("boardMapper.selectBoardList",searchVO);
     }
 
     @Override
-    public List<BoardVO> selectCulBoardList() {
-        return sqlSession.selectList("boardMapper.selectCulBoardList");
+    public int isNullBoardNo() {
+        return sqlSession.selectOne("boardMapper.isNullBoardNo");
     }
 
     @Override
-    public void insertImgList(ImgVO imgVO) {
-        sqlSession.insert("boardMapper.insertImgList",imgVO);
+    public int countBoard() {
+        return sqlSession.selectOne("boardMapper.countBoard");
     }
 
-    @Override
-    public int maxBoardNo() {
-        return sqlSession.selectOne("boardMapper.insertImgList");
-    }
 }

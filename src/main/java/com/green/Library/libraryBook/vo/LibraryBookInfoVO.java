@@ -15,5 +15,7 @@ public class LibraryBookInfoVO {
     private String bookBorrowCnt;
     private String bookIntro;
     private int bookCateCode;
+    private int bookMidCateCode;
+    private String bookRegTime;
     private String bookCode;
 }

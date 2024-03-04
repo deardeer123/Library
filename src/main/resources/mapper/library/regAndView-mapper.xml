@@ -26,7 +26,8 @@
             book_info.BOOK_INFO_ORIGIN_FILE_NAME,
             book_info.BOOK_INFO_ATTACHED_FILE_NAME,
             book_info.BOOK_INTRO,
-            book_info.BOOK_CATE_CODE
+            book_info.BOOK_CATE_CODE,
+            book_info.BOOK_MID_CATE_CODE
         FROM
             book LEFT OUTER JOIN book_info
         ON
@@ -53,7 +54,8 @@
             BOOK_INFO_ATTACHED_FILE_NAME = #{libraryBookInfoVO.bookInfoAttachedFileName} ,
             BOOK_INFO_ORIGIN_FILE_NAME = #{libraryBookInfoVO.bookInfoOriginFileName} ,
             BOOK_INTRO = #{libraryBookInfoVO.bookIntro} ,
-            BOOK_CATE_CODE = #{libraryBookInfoVO.bookCateCode}
+            BOOK_CATE_CODE = #{libraryBookInfoVO.bookCateCode} ,
+            BOOK_MID_CATE_CODE = #{libraryBookInfoVO.bookMidCateCode}
         WHERE
             BOOK_CODE = #{libraryBookInfoVO.bookCode}
     </update>
