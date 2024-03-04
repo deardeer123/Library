@@ -3,39 +3,61 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="borrowReturnMapper">
+    <resultMap id="memberCard" type="com.green.Library.library.borrowReturn.vo.MemberCardVO">
+        <id          column="MEMBER_NUM"        property="memberNum"/>
+        <result      column="MEMBER_REG"       property="memberReg"/>
+        <result      column="MEMBER_PENALTY"   property="memberPenalty"/>
+        <result      column="MEMBER_BOOK_CNT"  property="memberBookCnt"/>
+        <result      column="MEMBER_INTRO"     property="memberIntro"/>
+        <result      column="USER_CODE"        property="userCode"/>
+        <result      column="BR_CODE"          property="brCode"/>
+        <result      column="RT_CODE"          property="rtCode"/>
+        <collection  property="bookBorrowList" resultMap="bookBorrow"/>
+        <collection  property="bookReturnList" resultMap="bookReturn"/>
+    </resultMap>
 
-<resultMap id="bookBorrow" type="com.green.Library.library.borrowReturn.vo.BookBorrowVO">
-    <id          column="BR_CODE"         property="brCode"/>
-    <result      column="BR_DATE"         property="brDate"/>
-    <result      column="BOOK_CNT"        property="bookCnt"/>
-    <result      column="RETURN_YN"       property="returnYN"/>
-    <result      column="RETURN_DATE"     property="returnDate"/>
-    <result      column="USER_CODE"       property="userCode"/>
-    <result      column="BOOK_CODE"       property="bookCode"/>
-    <association property="memberVO"        resultMap="memberMapper.users"/>
-</resultMap>
+    <resultMap id="bookBorrow" type="com.green.Library.library.borrowReturn.vo.BookBorrowVO">
+        <id     column="BR_CODE"          property="brCode"/>
+        <result column="BORROW_DATE"      property="borrowDate"/>
+        <result column="RETURN_YN"        property="returnYN"/>
+        <result column="EX_RETURN_DATE"   property="exReturnDate"/>
+        <result column="USER_CODE"        property="userCode"/>
+        <result column="BOOK_CODE"        property="bookCode"/>
+    </resultMap>
+
+    <resultMap id="bookReturn" type="com.green.Library.library.borrowReturn.vo.BookReturnVO">
+        <id     column="RT_CODE"     property="rtCode"/>
+        <result column="RETURN_DATE" property="returnDate"/>
+        <result column="USER_CODE"   property="userCode"/>
+        <result column="BOOK_CODE"   property="bookCode"/>
+    </resultMap>
+
 
     <!-- 이용자의 대출 정보 조회-->
-    <select id="selectBorrowInfo" resultMap="bookBorrow">
-        SELECT USER.USER_CODE
+    <select id="selectBorrowInfo" resultMap="memberCard">
+        SELECT MEMBER_NUM
+            , MEMBER_PENALTY
+            , MEMBER_INTRO
+            , MEMBER_BOOK_CNT
+            , MC.USER_CODE
             , USER_NAME
             , USER_TEL
-            , BR_CODE
-            , BR_DATE
-            , BOOK_CNT
+            , MC.BR_CODE
+            , BORROW_DATE
             , RETURN_YN
+            , EX_RETURN_DATE
+            , MC.RT_CODE
             , RETURN_DATE
-            , BB.BOOK_CODE
-            , BOOK_TITLE
-        FROM BOOK_BORROW AS BB
-        INNER JOIN USERS AS USER
-        ON USER.USER_CODE = BB.USER_CODE
-        INNER JOIN BOOK_INFO AS BI
-        ON BB.BOOK_CODE = BI.BOOK_CODE
-        INNER JOIN book AS B
-        ON B.BOOK_CODE = BB.BOOK_CODE
-        WHERE BB.USER_CODE = #{userCode}
-        ORDER BY BR_DATE
+            , BR.BOOK_CODE
+        FROM MEMBER_CARD AS MC
+        INNER JOIN USERS AS U
+        ON U.USER_CODE = MC.USER_CODE
+        LEFT JOIN BOOK_BORROW AS BB
+        ON MC.BR_CODE = BB.BR_CODE
+        LEFT JOIN BOOK_RETURN AS BR
+        ON MC.RT_CODE = BR.RT_CODE
+        WHERE MC.USER_CODE = #{userCode}
+        ORDER BY BORROW_DATE DESC
     </select>
 
 
