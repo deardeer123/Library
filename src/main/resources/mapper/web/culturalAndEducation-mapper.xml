@@ -76,12 +76,6 @@
         </foreach>
     </insert>
 
-    <select id="maxBoardNo" resultType="int">
-        SELECT
-            MAX(board_no) + 1
-        FROM BOARD
-
-    </select>
 
     <select id="isNullBoardNo" resultType="int">
         SELECT CASE WHEN
