@@ -3,88 +3,104 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="culturalAndEducationMapper">
-    <resultMap id="culture" type="com.green.Library.web.culturalAndEducation.vo.CulturalAndEducationVO">
-        <id column="BOARD_NO"          property="boardNo"/>
-        <result column="BOARD_TITLE"   property="boardTitle"/>
-        <result column="CONTENT"       property="content"/>
-        <result column="BOARD_DATE"    property="boardDate"/>
-        <result column="USER_CODE"     property="userCode"/>
-        <result column="BOARD_CNT"     property="boardCnt"/>
-        <result column="BOARD_TYPE"     property="boardType"/>
-        <association property="memberVO" resultMap="memberMapper.users"/>
-        <collection property="imgList" resultMap="img"/>
-    </resultMap>
+<!--    <resultMap id="culture" type="com.green.Library.web.culturalAndEducation.vo.CulturalAndEducationVO">-->
+<!--        <id column="BOARD_NO"          property="boardNo"/>-->
+<!--        <result column="BOARD_TITLE"   property="boardTitle"/>-->
+<!--        <result column="CONTENT"       property="content"/>-->
+<!--        <result column="BOARD_DATE"    property="boardDate"/>-->
+<!--        <result column="USER_CODE"     property="userCode"/>-->
+<!--        <result column="BOARD_CNT"     property="boardCnt"/>-->
+<!--        <result column="BOARD_TYPE"     property="boardType"/>-->
+<!--        <association property="memberVO" resultMap="memberMapper.users"/>-->
+<!--        <collection property="imgList" resultMap="img"/>-->
+<!--    </resultMap>-->
 
-    <resultMap id="img" type="com.green.Library.web.img.vo.ImgVO">
-        <id column="IMG_CODE" property="imgCode"/>
-        <result column="ORIGIN_FILE_NAME" property="originFileName"/>
-        <result column="ATTACHED_FILE_NAME" property="attachedFileName"/>
-        <result column="IS_MAIN" property="isMain"/>
-        <result column="BOARD_NO" property="boardNo"/>
-    </resultMap>
+<!--    <resultMap id="img" type="com.green.Library.web.img.vo.ImgVO">-->
+<!--        <id column="IMG_CODE" property="imgCode"/>-->
+<!--        <result column="ORIGIN_FILE_NAME" property="originFileName"/>-->
+<!--        <result column="ATTACHED_FILE_NAME" property="attachedFileName"/>-->
+<!--        <result column="IS_MAIN" property="isMain"/>-->
+<!--        <result column="BOARD_NO" property="boardNo"/>-->
+<!--    </resultMap>-->
 
-    <!--  게시글 작성   -->
-    <insert id="insertCulBoard">
-        INSERT INTO BOARD(
-            BOARD_TITLE
-            , CONTENT
-            , BOARD_DATE
-            , BOARD_TYPE
-            , USER_CODE
-            , BOARD_CNT
-            , BOARD_NO
-        )
-        VALUES(
-            #{boardTitle}
-            ,#{content}
-            ,#{boardDate}
-            ,#{boardType}
-            ,#{userCode}
-            ,#{boardCnt}
-            ,#{boardNo}
-        )
-    </insert>
+<!--    &lt;!&ndash;  게시글 작성   &ndash;&gt;-->
+<!--    <insert id="insertCulBoard">-->
+<!--        INSERT INTO BOARD(-->
+<!--            BOARD_TITLE-->
+<!--            , CONTENT-->
+<!--            , BOARD_DATE-->
+<!--            , BOARD_TYPE-->
+<!--            , USER_CODE-->
+<!--            , BOARD_CNT-->
+<!--            , BOARD_NO-->
+<!--        )-->
+<!--        VALUES(-->
+<!--            #{boardTitle}-->
+<!--            ,#{content}-->
+<!--            ,#{boardDate}-->
+<!--            ,#{boardType}-->
+<!--            ,#{userCode}-->
+<!--            ,#{boardCnt}-->
+<!--            ,#{boardNo}-->
+<!--        )-->
+<!--    </insert>-->
 
-    <!--  등록한 게시물 정보 리스트  -->
-    <select id="selectCulBoardList" resultMap="culture">
-        SELECT
-            BOARD_NO
-            , BOARD_TITLE
-            , CONTENT
-            , BOARD_DATE
-            , CUL_BOARD.USER_CODE
-            , BOARD_CNT
-            , USER_ID
-        FROM board INNER JOIN USERS
-        ON BOARD.USER_CODE = USERS.USER_CODE
-    </select>
+<!--    &lt;!&ndash;  등록한 게시물 정보 리스트  &ndash;&gt;-->
+<!--    <select id="selectCulBoardList" resultMap="culture">-->
+<!--        SELECT-->
+<!--            BOARD.BOARD_NO-->
+<!--            , BOARD_TITLE-->
+<!--            , CONTENT-->
+<!--            , BOARD_DATE-->
+<!--            , BOARD.USER_CODE-->
+<!--            , BOARD_CNT-->
+<!--            , USER_ID-->
+<!--            , IMG_CODE-->
+<!--            , ORIGIN_FILE_NAME-->
+<!--            , ATTACHED_FILE_NAME-->
+<!--            , IS_MAIN-->
+<!--        FROM board INNER JOIN USERS-->
+<!--        ON BOARD.USER_CODE = USERS.USER_CODE-->
+<!--        INNER JOIN IMAGE-->
+<!--        ON BOARD.BOARD_NO = IMAGE.BOARD_NO-->
 
-    <!--  이미지 등록  -->
-    <insert id="insertImgList">
-        INSERT INTO IMAGE(
-            ORIGIN_FILE_NAME
-            ,ATTACHED_FILE_NAME
-            ,IS_MAIN
-            ,BOARD_NO
-        )
-        VALUES
-        <foreach collection="imgList" item="img" separator=",">
-            (#{img.originFileName}
-            ,#{img.attachedFileName}
-            ,#{img.isMain}
-            ,#{img.boardNo})
-        </foreach>
-    </insert>
+<!--    </select>-->
 
 
-    <select id="isNullBoardNo" resultType="int">
-        SELECT CASE WHEN
-            MAX(BOARD_NO) IS NULL
-        THEN 1
-            ELSE MAX(BOARD_NO) + 1
-        END
-        FROM BOARD
-    </select>
+
+<!--    &lt;!&ndash;  이미지 등록  &ndash;&gt;-->
+<!--    <insert id="insertImgList">-->
+<!--        INSERT INTO IMAGE(-->
+<!--            ORIGIN_FILE_NAME-->
+<!--            ,ATTACHED_FILE_NAME-->
+<!--            ,IS_MAIN-->
+<!--            ,BOARD_NO-->
+<!--        )-->
+<!--        VALUES-->
+<!--        <foreach collection="imgList" item="img" separator=",">-->
+<!--            (#{img.originFileName}-->
+<!--            ,#{img.attachedFileName}-->
+<!--            ,#{img.isMain}-->
+<!--            ,#{img.boardNo})-->
+<!--        </foreach>-->
+<!--    </insert>-->
+
+<!--    <select id="maxBoardNo" resultType="int">-->
+<!--        SELECT-->
+<!--            MAX(board_no) + 1-->
+<!--        FROM BOARD-->
+
+
+<!--    </select>-->
+
+<!--    <select id="isNullBoardNo" resultType="int">-->
+<!--        SELECT CASE WHEN-->
+<!--            MAX(BOARD_NO) IS NULL-->
+<!--        THEN 1-->
+<!--            ELSE MAX(BOARD_NO) + 1-->
+<!--        END-->
+<!--        FROM BOARD-->
+<!--    </select>-->
 </mapper>
 
 
