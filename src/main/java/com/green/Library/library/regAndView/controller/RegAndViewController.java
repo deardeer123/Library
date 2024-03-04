@@ -4,7 +4,9 @@ import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.regAndView.service.BookSearchVO;
 import com.green.Library.library.regAndView.service.RegAndViewService;
 import com.green.Library.libraryBook.service.LibraryBookService;
+import com.green.Library.libraryBook.vo.LibraryBookCategoryVO;
 import com.green.Library.libraryBook.vo.LibraryBookInfoVO;
+import com.green.Library.libraryBook.vo.LibraryBookMidCategoryVO;
 import com.green.Library.libraryBook.vo.LibraryBookVO;
 import com.green.Library.util.UploadUtil;
 import jakarta.annotation.Resource;
@@ -105,13 +107,22 @@ public class RegAndViewController {
 
         //가기전에 카테고리 목록 리스트 가져오기
         //System.out.println(libraryBookService.selectCateList());
-        model.addAttribute("cateList",libraryBookService.selectCateList());
+        List<LibraryBookCategoryVO> cateList = libraryBookService.selectCateList();
+        model.addAttribute("cateList",cateList);
+        System.out.println(cateList);
         
         //확인좀
         System.out.println(regAndViewService.selectOneBook(bookCode));
 
         model.addAttribute("book",regAndViewService.selectOneBook(bookCode));
         return "content/library/regAndView/changeBook";
+    }
+    @ResponseBody
+    @PostMapping("/selectCateList")
+    public LibraryBookCategoryVO giveMeCateList(@RequestParam(name="bookCateCode")int bookCateCode){
+        System.out.println("중분류 카테고리 넘겨주기");
+        LibraryBookCategoryVO libraryBookCategoryVO = libraryBookService.selectCateOne(bookCateCode);
+        return libraryBookCategoryVO;
     }
 
     @PostMapping("/changeBook2")
@@ -127,7 +138,6 @@ public class RegAndViewController {
 
 
         if(bookImg.getOriginalFilename().equals("")){
-            //새로운 정보를 담기 위한 객체 생성
             LibraryBookInfoVO libraryBookInfoVO1 = new LibraryBookInfoVO();
             //만약 사진이 올라가지 않는다면 아래 코드 실행
             System.out.println("사진 안올렸음;");
@@ -139,6 +149,9 @@ public class RegAndViewController {
             libraryBookInfoVO1.setBookIntro(libraryBookInfoVO.getBookIntro());
             ///만든 객체에 커맨더 객체(libraryBookInfoVO)로 카테고리 정보도 넣기
             libraryBookInfoVO1.setBookCateCode(libraryBookInfoVO.getBookCateCode());
+            ///만든 객체에 커맨더 객체(libraryBookInfoVO)로 중분류 카테고리 정보도 넣기
+            libraryBookInfoVO1.setBookMidCateCode(libraryBookInfoVO.getBookMidCateCode());
+
             ///만든 객체에 커맨더 객체(libraryBookInfoVO)로 bookcode 넣어주기
             libraryBookInfoVO1.setBookCode(libraryBookInfoVO.getBookCode());
 
@@ -152,6 +165,8 @@ public class RegAndViewController {
             libraryBookInfoVO1.setBookIntro(libraryBookInfoVO.getBookIntro());
             ///만든 객체에 커맨더 객체(libraryBookInfoVO)에 있는 카테고리 정보 넣기
             libraryBookInfoVO1.setBookCateCode(libraryBookInfoVO.getBookCateCode());
+            //만든 객체에 커맨더 객체(libraryBookInfoVO)에 있는 중분류 카테고리 정보 넣기
+            libraryBookInfoVO1.setBookMidCateCode(libraryBookInfoVO.getBookMidCateCode());
             ///만든 객체에 커맨더 객체(libraryBookInfoVO)에 있는 책코드 넣기
             libraryBookInfoVO1.setBookCode(libraryBookInfoVO.getBookCode());
             //bookvo에 infovo 넣기
