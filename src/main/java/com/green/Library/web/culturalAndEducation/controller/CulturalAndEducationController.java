@@ -2,6 +2,9 @@ package com.green.Library.web.culturalAndEducation.controller;
 
 import com.green.Library.util.BoardUploadUtil;
 import com.green.Library.util.UploadUtil;
+import com.green.Library.web.board.service.BoardService;
+import com.green.Library.web.board.service.BoardServiceImpl;
+import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.culturalAndEducation.service.CulturalAndEducationServiceImpl;
 import com.green.Library.web.culturalAndEducation.vo.CulturalAndEducationVO;
 import com.green.Library.web.img.vo.ImgVO;
@@ -25,8 +28,11 @@ import java.util.List;
 public class CulturalAndEducationController {
     @Resource(name ="webMenuService")
     WebMenuService webMenuService;
+    @Resource(name = "boardService")
+    BoardServiceImpl boardService;
     @Resource(name = "culturalAndEducationService")
-    CulturalAndEducationServiceImpl culService;
+    CulturalAndEducationServiceImpl culturalAndEducationService;
+
 
     //    -------- 문화행사/교육(culturalAndEducation)---------
     @GetMapping("/libraryEvent")
@@ -45,7 +51,7 @@ public class CulturalAndEducationController {
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
 
 
-        List<CulturalAndEducationVO> boardList = culService.selectCulBoardList();
+        List<BoardVO> boardList = boardService.selectCulBoardList();
         System.out.println(boardList);
 
         model.addAttribute("boardList",boardList);
@@ -59,7 +65,7 @@ public class CulturalAndEducationController {
     // 문화 게시판 등록
     @PostMapping("/cultureInsertBoard")
     public String cultureInsertBoard(Model model,
-                                     CulturalAndEducationVO culturalAndEducationVO,
+                                     BoardVO boardVO,
                                      MemberVO memberVO,
                                      HttpSession session,
                                      @RequestParam(name = "mainImg") MultipartFile mainImg,
@@ -81,7 +87,8 @@ public class CulturalAndEducationController {
         MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 
         //boardNo의 max값
-        int maxBoardNo = culService.maxBoardNo();
+        int maxBoardNo = culturalAndEducationService.isNullBoardNo();
+        System.out.println(maxBoardNo);
 
         // 단일 이미지 첨부 기능
         ImgVO mainImgVO = BoardUploadUtil.uploadFile(mainImg);
@@ -93,11 +100,12 @@ public class CulturalAndEducationController {
             img.setBoardNo(maxBoardNo);
         }
         imgList.add(mainImgVO);
-        culturalAndEducationVO.setImgList(imgList);
+        System.out.println(imgList);
+        boardVO.setImgList(imgList);
 
-        culturalAndEducationVO.setBoardNo(maxBoardNo);
-        System.out.println(culturalAndEducationVO);
-        culService.insertCulBoard(culturalAndEducationVO);
+        boardVO.setBoardNo(maxBoardNo);
+        System.out.println(boardVO);
+        boardService.insertCulBoard(boardVO);
         memberVO.setUserCode(loginInfo.getUserCode());
 
 

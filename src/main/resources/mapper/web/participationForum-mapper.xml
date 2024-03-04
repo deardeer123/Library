@@ -3,7 +3,7 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="participationForumMapper">
-    <resultMap id="culBoard" type="com.green.Library.web.participationForum.vo.ParticipationForumVO">
+    <resultMap id="board" type="com.green.Library.web.board.vo.BoardVO">
     <id column="BOARD_NO"          property="boardNo"/>
     <result column="BOARD_TITLE"   property="boardTitle"/>
     <result column="CONTENT"       property="content"/>
@@ -17,6 +17,10 @@
 
     <resultMap id="img" type="com.green.Library.web.img.vo.ImgVO">
         <id column="IMG_CODE"          property="imgCode"/>
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
         <result column="ORIGIN_FILE_NAME"   property="originFileName"/>
         <result column="ATTACHED_FILE_NAME" property="attachedFileName"/>
         <result column="IS_MAIN"            property="isMain"/>
