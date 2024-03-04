@@ -15,13 +15,8 @@
     <collection property="images" resultMap="img"/>
     </resultMap>
 
-<<<<<<< HEAD
     <resultMap id="img" type="com.green.Library.web.img.vo.ImgVO">
         <id column="IMG_CODE"          property="imgCode"/>
-=======
-    <resultMap id="img" type="com.green.Library.web.img.vo.imgVO">
-        <id column="IMG_CODE"               property="imgCode"/>
->>>>>>> UK
         <result column="ORIGIN_FILE_NAME"   property="originFileName"/>
         <result column="ATTACHED_FILE_NAME" property="attachedFileName"/>
         <result column="IS_MAIN"            property="isMain"/>
