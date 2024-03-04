@@ -27,9 +27,10 @@ public class CulturalAndEducationServiceImpl implements CulturalAndEducationServ
         sqlSession.insert("culturalAndEducationMapper.insertImgList",culturalAndEducationVO);
     }
 
+
     @Override
-    public int maxBoardNo() {
-        return sqlSession.selectOne("culturalAndEducationMapper.maxBoardNo");
+    public int isNullBoardNo() {
+        return sqlSession.selectOne("culturalAndEducationMapper.isNullBoardNo");
     }
 
 
