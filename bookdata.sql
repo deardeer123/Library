@@ -1,118 +1,30 @@
--- --------------------------------------------------------
--- 호스트:                          127.0.0.1
--- 서버 버전:                        11.4.0-MariaDB - mariadb.org binary distribution
--- 서버 OS:                        Win64
--- HeidiSQL 버전:                  12.3.0.6589
--- --------------------------------------------------------
+CREATE TABLE BOOK_CATEGORY(
+	BOOK_CATE_CODE INT AUTO_INCREMENT PRIMARY KEY,
+	BOOK_CATE_NAME VARCHAR(20) NOT NULL ,
+	BOOK_CATE_INDEX INT NOT NULL
+);
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
--- 테이블 team2.book 구조 내보내기
-DROP TABLE IF EXISTS `book`;
-CREATE TABLE IF NOT EXISTS `book` (
-  `BOOK_CODE` varchar(15) NOT NULL,
-  `BOOK_TITLE` varchar(100) NOT NULL,
-  `BOOK_WRITER` varchar(100) NOT NULL,
-  `BOOK_PUB` varchar(30) NOT NULL,
-  `BOOK_YEAR` varchar(20) NOT NULL,
-  PRIMARY KEY (`BOOK_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- 테이블 데이터 team2.book:~36 rows (대략적) 내보내기
-INSERT INTO `book` (`BOOK_CODE`, `BOOK_TITLE`, `BOOK_WRITER`, `BOOK_PUB`, `BOOK_YEAR`) VALUES
-	('GR0000000001', '예루살렘의 아이히만', '한나 아렌트 지음 ; 김선욱 옮김', '한길사', '2006'),
-	('GR0000000002', '분해의 철학:부패와 발효를 생각한다', '후지하라 다쓰시 지음 ; 박성관 옮김', '사월의책', '2022'),
-	('GR0000000003', '삶은 문제해결의 연속이다', '칼 포퍼 지음 ; 허형은 옮김', '포레스트북스', '2023'),
-	('GR0000000004', '익스텐드 마인드', '애니 머피 폴 지음 ; 이정미 옮김', 'RHK', '2022'),
-	('GR0000000005', '동물들의 위대한 법정', '장 뤽 포르케 지음 ; 야체크 워즈니악 그림 ; 장한라 옮김', '서해문집', '2022'),
-	('GR0000000006', '(정선) 쌍윳따 니까야', '이중표 역해', '불광출판사', '2021'),
-	('GR0000000007', '평범한 그들이 어떻게 30대에 건물주가 되었을까?', '서울행복지킴이 [외] 지음', '매일경제신문사', '2023'),
-	('GR0000000008', '스틱!', '칩 히스 댄 히스 [공]지음 ; 안진환|박슬라 [공]옮김', '웅진지식하우스', '2022'),
-	('GR0000000009', '자유주의와 그 불만', '프랜시스 후쿠야마 지음 ; 이상원 옮김', 'arte', '2023'),
-	('GR0000000010', '우리 아이 수학 1등급은 부모가 만든다', '황지언 지음', '온더페이지', '2022'),
-	('GR0000000011', '불확실성의 시대', '토비아스 휘터 지음 ; 배명자 옮김', '흐름출판', '2023'),
-	('GR0000000012', '(인공위성 만드는 물리학자 황정아 박사의) 우주미션 이야기', '황정아 지음', '플루토', '2022'),
-	('GR0000000013', '최재천의 동물대탐험.', '황혜영 글 ; 박현미 그림', '다산어린이', '2022'),
-	('GR0000000014', '못해도 괜찮아!', '펭귄 비행기 제작소 원작 ; 정인영 옮김 ; 사토 가쓰후미', '지학사아르볼', '2021'),
-	('GR0000000015', '아야! 다쳤어요', '요하네스 포크트 글 ; 펠리치타스 호르스체퍼 그림 ; 신동경 옮김', '그레이트북스', '2023'),
-	('GR0000000016', '나는 시골에서 비즈니스한다', '표성미 지음', '42미디어콘텐츠', '2022'),
-	('GR0000000017', '그 많은 빗물은 어디로 갈까요?', '가마타 아유미 글·그림  ; 김영주 옮김', '북스토리아이', '2022'),
-	('GR0000000018', '(정리  절약  낭비 문제를 즉시 해결하는) 사지 않는 생활', '후데코 지음 ; 노경아 옮김', '스노우폭스북스', '2022'),
-	('GR0000000019', '쉽고 예쁜 색연필 일러스트:12색 색연필로 만나는 일상 속 작은 행복  손그림 그리기', '후지와라 테루에 지음 ; 임지인 옮김', '티나', '2022'),
-	('GR0000000020', '뮤지컬 익스프레스 슈퍼스타==Musical express superstar', '황조교 지음', '초록비책공방', '2022'),
-	('GR0000000021', '파라노만', '샘 펠 크리스 버틀러 [공]감독 ; 터커 알브리지 [외]목소리출연', '미디어연가', '2022'),
-	('GR0000000022', '당신은 사건 현장에 있습니다', '모데스토 가르시아 글 ; 하비 데 카스트로 그림 ; 엄지영 번역', '중앙books', '2023'),
-	('GR0000000023', '(처음 만나는) 사자소학', '표시정 글 ; 류은형 그림', '미래주니어', '2013'),
-	('GR0000000024', '잊었던 용기:휘리 그림책', '휘리 글·그림', '창비', '2022'),
-	('GR0000000025', '나라면 나와 결혼할까?', '후이 지음 ; 최인애 옮김', '미디어숲', '2022'),
-	('GR0000000026', '나미야 잡화점의 기적', '히가시노 게이고 지음 ; 양윤옥 옮김', '현대문학', '2023'),
-	('GR0000000027', '벳시', '샐리 가드너 글 ; 닉 말런드 그림 ; 박재형 옮김', '봄이아트북스', '2023'),
-	('GR0000000028', '황금빛 피라냐', '비르지니 드 포 글 ; 마리케 부울라지 그림 ; 홍명지 옮김', '작가와비평', '2022'),
-	('GR0000000029', '이기거나 혹은 즐기거나', '플뢰르 펠르랭 지음 ; 권지현 옮김', '김영사', '2022'),
-	('GR0000000030', '그해 여름  에스더 앤더슨', '디모테 드 퐁벨 글 ; 이렌 보나시나 그림 ; 최혜진 옮김', '길벗어린이', '2023'),
-	('GR0000000031', '그해 여름  에스더 앤더슨', '디모테 드 퐁벨 글 ; 이렌 보나시나 그림 ; 최혜진 옮김', '길벗어린이', '2023'),
-	('GR0000000032', '라라의 산책', '엘레오노라 가리가 글 ; 아나 산펠리포 그림 ; 문주선 옮김', '짠', '2022'),
-	('GR0000000033', '나는 실 엄마는 실뭉치!:아이와 부모의 아름다운 동행을 위한 사랑의 원리', '알베르토 펠라이 글 ; 일라리아 자넬라토 그림 ; 정진 옮김', '레드스톤', '2022'),
-	('GR0000000034', '고양이들의 섬', '마수드 가레바기 글 ; 명혜권 옮김', '파랑서재', '2022'),
-	('GR0000000035', '대약탈박물관:제국주의는 어떻게 식민지 문화를 말살시켰나', '댄 힉스 지음 ; 정영은 옮김', '책과함께', '2022'),
-	('GR0000000036', '효기심의 권력으로 읽는 세계사', '효기심 지음', '다산초당', '2023'),
-	('GR0000000037', '햄스터', '작가', '출판사', '1234');
-
--- 테이블 team2.book_borrow 구조 내보내기
-DROP TABLE IF EXISTS `book_borrow`;
-CREATE TABLE IF NOT EXISTS `book_borrow` (
-  `BR_CODE` int(11) NOT NULL AUTO_INCREMENT,
-  `BR_DATE` datetime DEFAULT current_timestamp(),
-  `RT_CODE` int(11) DEFAULT NULL,
-  `USER_CODE` int(11) DEFAULT NULL,
-  `BOOK_CODE` varchar(15) DEFAULT NULL,
-  PRIMARY KEY (`BR_CODE`),
-  KEY `RT_CODE` (`RT_CODE`),
-  KEY `USER_CODE` (`USER_CODE`),
-  KEY `BOOK_CODE` (`BOOK_CODE`),
-  CONSTRAINT `book_borrow_ibfk_1` FOREIGN KEY (`RT_CODE`) REFERENCES `book_return` (`RT_CODE`),
-  CONSTRAINT `book_borrow_ibfk_2` FOREIGN KEY (`USER_CODE`) REFERENCES `users` (`USER_CODE`),
-  CONSTRAINT `book_borrow_ibfk_3` FOREIGN KEY (`BOOK_CODE`) REFERENCES `book` (`BOOK_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- 테이블 데이터 team2.book_borrow:~0 rows (대략적) 내보내기
-
--- 테이블 team2.book_category 구조 내보내기
-DROP TABLE IF EXISTS `book_category`;
-CREATE TABLE IF NOT EXISTS `book_category` (
-  `BOOK_CATE_CODE` int(11) NOT NULL AUTO_INCREMENT,
-  `BOOK_CATE_NAME` varchar(20) NOT NULL,
-  `BOOK_CATE_INDEX` int(11) NOT NULL,
-  PRIMARY KEY (`BOOK_CATE_CODE`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- 테이블 데이터 team2.book_category:~10 rows (대략적) 내보내기
-INSERT INTO `book_category` (`BOOK_CATE_CODE`, `BOOK_CATE_NAME`, `BOOK_CATE_INDEX`) VALUES
-	(1, '총류', 0),
-	(2, '철학', 1),
-	(3, '종교', 2),
-	(4, '사회과학', 3),
-	(5, '자연과학', 4),
-	(6, '기술과학', 5),
-	(7, '예술', 6),
-	(8, '언어', 7),
-	(9, '문학', 8),
-	(10, '역사', 9);
+INSERT INTO book_category(
+	BOOK_CATE_NAME ,
+	BOOK_CATE_INDEX)
+	VALUES
+	('총류' , 0) ,
+	('철학' , 1) ,
+	('종교' , 2) ,
+	('사회과학' , 3) ,
+	('자연과학' , 4) ,
+	('기술과학' , 5) ,
+	('예술' , 6 ) ,
+	('언어' , 7 ) ,
+	('문학' , 8 ) ,
+	('역사' , 9 );
 	
 CREATE TABLE BOOK_MID_CATEGORY(
 	BOOK_MID_CATE_CODE INT AUTO_INCREMENT PRIMARY KEY,
 	BOOK_MID_CATE_NAME VARCHAR(35) NOT NULL,
 	BOOK_MID_CATE_INDEX INT NOT NULL,
 	BOOK_CATE_CODE INT NOT NULL REFERENCES book_category(BOOK_CATE_CODE));
-
-
+	
 INSERT INTO BOOK_MID_CATEGORY(
 	BOOK_MID_CATE_NAME ,
 	BOOK_MID_CATE_INDEX ,
@@ -218,31 +130,68 @@ INSERT INTO BOOK_MID_CATEGORY(
 	('양극지방' , 7 , 10) ,
 	('지리' , 8 , 10) ,
 	('전기' , 9 , 10);
+	
 
--- 테이블 team2.book_info 구조 내보내기
-DROP TABLE IF EXISTS `book_info`;
-CREATE TABLE IF NOT EXISTS `book_info` (
-  `BOOK_INFO_NUM` int(11) NOT NULL AUTO_INCREMENT,
-  `BOOK_INFO_ATTACHED_FILE_NAME` varchar(100) DEFAULT NULL,
-  `BOOK_INFO_ORIGIN_FILE_NAME` varchar(100) DEFAULT NULL,
-  `BOOK_BORROW_AVAILABLE` varchar(3) DEFAULT 'Y',
-  `BOOK_BORROW_CNT` int(11) DEFAULT 0,
-  `book_intro` varchar(2000) DEFAULT NULL,
-  `BOOK_CATE_CODE` int(11) DEFAULT NULL,
-  `BOOK_CODE` varchar(15) DEFAULT NULL,
-  `BOOK_REGDATE` datetime DEFAULT current_timestamp(),
-  `BOOK_MID_CATE_CODE` int(11) DEFAULT NULL,
-  PRIMARY KEY (`BOOK_INFO_NUM`),
-  KEY `BOOK_CATE_CODE` (`BOOK_CATE_CODE`),
-  KEY `BOOK_CODE` (`BOOK_CODE`),
-  KEY `BOOK_MID_CATE_CODE` (`BOOK_MID_CATE_CODE`),
-  CONSTRAINT `book_info_ibfk_1` FOREIGN KEY (`BOOK_CATE_CODE`) REFERENCES `book_category` (`BOOK_CATE_CODE`),
-  CONSTRAINT `book_info_ibfk_2` FOREIGN KEY (`BOOK_CODE`) REFERENCES `book` (`BOOK_CODE`),
-  CONSTRAINT `book_info_ibfk_3` FOREIGN KEY (`BOOK_MID_CATE_CODE`) REFERENCES `book_mid_category` (`BOOK_MID_CATE_CODE`)
-) ENGINE=InnoDB AUTO_INCREMENT=198 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE BOOK(
+   BOOK_CODE VARCHAR(15) PRIMARY KEY,
+   BOOK_TITLE VARCHAR(100) NOT NULL,
+   BOOK_WRITER VARCHAR(100) NOT NULL,
+   BOOK_PUB VARCHAR(30) NOT NULL,
+   BOOK_YEAR VARCHAR(20) NOT NULL);
+   
+CREATE TABLE BOOK_INFO(
+	BOOK_INFO_NUM INT AUTO_INCREMENT PRIMARY KEY ,
+	BOOK_INFO_ATTACHED_FILE_NAME VARCHAR(100) ,		
+	BOOK_INFO_ORIGIN_FILE_NAME VARCHAR(100) , 			
+	BOOK_BORROW_AVAILABLE VARCHAR(3) DEFAULT 'Y', 					
+	BOOK_BORROW_CNT INT DEFAULT 0, 								
+	BOOK_INTRO VARCHAR(2000) , -- 2024-02-29 변경함
+	BOOK_REGDATE DATETIME DEFAULT CURRENT_TIMESTAMP , -- 2024-02-29 변경함  								
+	BOOK_CATE_CODE INT REFERENCES BOOK_CATEGORY(BOOK_CATE_CODE) ,
+	BOOK_MID_CATE_CODE INT REFERENCES BOOK_MID_CATEGORY(BOOK_MID_CATE_CODE) ,
+	BOOK_CODE VARCHAR(15) REFERENCES BOOK(BOOK_CODE)); 
 
--- 테이블 데이터 team2.book_info:~38 rows (대략적) 내보내기
-INSERT INTO `book_info` (`BOOK_INFO_NUM`, `BOOK_INFO_ATTACHED_FILE_NAME`, `BOOK_INFO_ORIGIN_FILE_NAME`, `BOOK_BORROW_AVAILABLE`, `BOOK_BORROW_CNT`, `book_intro`, `BOOK_CATE_CODE`, `BOOK_CODE`, `BOOK_REGDATE`, `BOOK_MID_CATE_CODE`) VALUES
+
+INSERT INTO BOOK (BOOK_CODE, BOOK_TITLE, BOOK_WRITER, BOOK_PUB, BOOK_YEAR) VALUES
+	('GR0000000001', '예루살렘의 아이히만', '한나 아렌트 지음 ; 김선욱 옮김', '한길사', '2006'),
+	('GR0000000002', '분해의 철학:부패와 발효를 생각한다', '후지하라 다쓰시 지음 ; 박성관 옮김', '사월의책', '2022'),
+	('GR0000000003', '삶은 문제해결의 연속이다', '칼 포퍼 지음 ; 허형은 옮김', '포레스트북스', '2023'),
+	('GR0000000004', '익스텐드 마인드', '애니 머피 폴 지음 ; 이정미 옮김', 'RHK', '2022'),
+	('GR0000000005', '동물들의 위대한 법정', '장 뤽 포르케 지음 ; 야체크 워즈니악 그림 ; 장한라 옮김', '서해문집', '2022'),
+	('GR0000000006', '(정선) 쌍윳따 니까야', '이중표 역해', '불광출판사', '2021'),
+	('GR0000000007', '평범한 그들이 어떻게 30대에 건물주가 되었을까?', '서울행복지킴이 [외] 지음', '매일경제신문사', '2023'),
+	('GR0000000008', '스틱!', '칩 히스 댄 히스 [공]지음 ; 안진환|박슬라 [공]옮김', '웅진지식하우스', '2022'),
+	('GR0000000009', '자유주의와 그 불만', '프랜시스 후쿠야마 지음 ; 이상원 옮김', 'arte', '2023'),
+	('GR0000000010', '우리 아이 수학 1등급은 부모가 만든다', '황지언 지음', '온더페이지', '2022'),
+	('GR0000000011', '불확실성의 시대', '토비아스 휘터 지음 ; 배명자 옮김', '흐름출판', '2023'),
+	('GR0000000012', '(인공위성 만드는 물리학자 황정아 박사의) 우주미션 이야기', '황정아 지음', '플루토', '2022'),
+	('GR0000000013', '최재천의 동물대탐험.', '황혜영 글 ; 박현미 그림', '다산어린이', '2022'),
+	('GR0000000014', '못해도 괜찮아!', '펭귄 비행기 제작소 원작 ; 정인영 옮김 ; 사토 가쓰후미', '지학사아르볼', '2021'),
+	('GR0000000015', '아야! 다쳤어요', '요하네스 포크트 글 ; 펠리치타스 호르스체퍼 그림 ; 신동경 옮김', '그레이트북스', '2023'),
+	('GR0000000016', '나는 시골에서 비즈니스한다', '표성미 지음', '42미디어콘텐츠', '2022'),
+	('GR0000000017', '그 많은 빗물은 어디로 갈까요?', '가마타 아유미 글·그림  ; 김영주 옮김', '북스토리아이', '2022'),
+	('GR0000000018', '(정리  절약  낭비 문제를 즉시 해결하는) 사지 않는 생활', '후데코 지음 ; 노경아 옮김', '스노우폭스북스', '2022'),
+	('GR0000000019', '쉽고 예쁜 색연필 일러스트:12색 색연필로 만나는 일상 속 작은 행복  손그림 그리기', '후지와라 테루에 지음 ; 임지인 옮김', '티나', '2022'),
+	('GR0000000020', '뮤지컬 익스프레스 슈퍼스타==Musical express superstar', '황조교 지음', '초록비책공방', '2022'),
+	('GR0000000021', '파라노만', '샘 펠 크리스 버틀러 [공]감독 ; 터커 알브리지 [외]목소리출연', '미디어연가', '2022'),
+	('GR0000000022', '당신은 사건 현장에 있습니다', '모데스토 가르시아 글 ; 하비 데 카스트로 그림 ; 엄지영 번역', '중앙books', '2023'),
+	('GR0000000023', '(처음 만나는) 사자소학', '표시정 글 ; 류은형 그림', '미래주니어', '2013'),
+	('GR0000000024', '잊었던 용기:휘리 그림책', '휘리 글·그림', '창비', '2022'),
+	('GR0000000025', '나라면 나와 결혼할까?', '후이 지음 ; 최인애 옮김', '미디어숲', '2022'),
+	('GR0000000026', '나미야 잡화점의 기적', '히가시노 게이고 지음 ; 양윤옥 옮김', '현대문학', '2023'),
+	('GR0000000027', '벳시', '샐리 가드너 글 ; 닉 말런드 그림 ; 박재형 옮김', '봄이아트북스', '2023'),
+	('GR0000000028', '황금빛 피라냐', '비르지니 드 포 글 ; 마리케 부울라지 그림 ; 홍명지 옮김', '작가와비평', '2022'),
+	('GR0000000029', '이기거나 혹은 즐기거나', '플뢰르 펠르랭 지음 ; 권지현 옮김', '김영사', '2022'),
+	('GR0000000030', '그해 여름  에스더 앤더슨', '디모테 드 퐁벨 글 ; 이렌 보나시나 그림 ; 최혜진 옮김', '길벗어린이', '2023'),
+	('GR0000000031', '그해 여름  에스더 앤더슨', '디모테 드 퐁벨 글 ; 이렌 보나시나 그림 ; 최혜진 옮김', '길벗어린이', '2023'),
+	('GR0000000032', '라라의 산책', '엘레오노라 가리가 글 ; 아나 산펠리포 그림 ; 문주선 옮김', '짠', '2022'),
+	('GR0000000033', '나는 실 엄마는 실뭉치!:아이와 부모의 아름다운 동행을 위한 사랑의 원리', '알베르토 펠라이 글 ; 일라리아 자넬라토 그림 ; 정진 옮김', '레드스톤', '2022'),
+	('GR0000000034', '고양이들의 섬', '마수드 가레바기 글 ; 명혜권 옮김', '파랑서재', '2022'),
+	('GR0000000035', '대약탈박물관:제국주의는 어떻게 식민지 문화를 말살시켰나', '댄 힉스 지음 ; 정영은 옮김', '책과함께', '2022'),
+	('GR0000000036', '효기심의 권력으로 읽는 세계사', '효기심 지음', '다산초당', '2023'),
+	('GR0000000037', '햄스터', '작가', '출판사', '1234');
+	
+INSERT INTO book_info (BOOK_INFO_NUM, BOOK_INFO_ATTACHED_FILE_NAME, BOOK_INFO_ORIGIN_FILE_NAME, BOOK_BORROW_AVAILABLE, BOOK_BORROW_CNT, book_intro, BOOK_CATE_CODE, BOOK_CODE, BOOK_REGDATE, BOOK_MID_CATE_CODE) VALUES
 	(154, '99defc7f-711f-4430-b391-93fff3aaf5f5.jpg', '예수살램의_아이히만.jpg', 'Y', 0, '유대인 학살의 사건을 통해 악의 평범성을 이야기하다!\r\n인류의 위대한 지적 유산을 집대성한「한길그레이트북스」제81권 『예루살렘의 아이히만 』. 예루살렘에서 있었던 아이히만의 재판에 대한 보고를 통해 악의 평범성을 이야기하는 책이다. 저자는 유대인 학살의 주범이라 할 수 있는 아돌프 아이히만의 재판을 참관한 것을 바탕으로, 어떠한 이론이나 사상을 의도한 것이 아니라 단지 아주 사실적인 어떤 것, 엄청난 규모로 자행된 악행의 현상을 나타내고자 했다.\r\n\r\n저자는 아이히만의 사례를 통해 악의 평범성의 의미를 여러 각도에서 드러내며, 보편적 유대인 개념이 갖는 허상을 자신의 체험을 바탕으로 설명하고 있다. 특히 악의 평범성 개념으로 어떻게 자기중심성을 벗어나 타자중심적 윤리로 돌아설 수 있는지를 보여준다. 이번 한국어판에는 포스트 모던적 정치사상의 입장에서 이 책이 어떻게 읽혀질 수 있는지, 그리고 어떠한 중요한 논점들을 제공하는지를 조망한 정화열 교수의 해제를 함께 실었다.\r\n', 2, 'GR0000000001', '2024-02-29 12:49:56', 15),
 	(155, 'a0523380-3fa4-4ab3-a433-8ac66ead02c9.jpg', '분해의_철학_부패와_발효를_생각한다.jpg', 'Y', 0, '가장 위험한 세계는 아무것도 썩지 않는 세계\r\n생산과 성장의 관점에서는 보이지 않던 분해의 세계를 만나다\r\n악취가 나고 형체가 흐물흐물해지는 부패에 대해 우리는 불편함을 느낀다. 그러나 부패 없이 세상이 돌아갈 수 있을까? 발효란 부패의 일종이며, 어쩌다가 인간에게 유용하게 된 부패 현상을 ‘발효’라 부르는 데 불과하다. 또한 썩지 않는 플라스틱으로 인해 해양 쓰레기는 쌓여만 가고, 자연적 분해 능력을 넘어선 온실 가스에 의해 기후 위기는 눈앞에 닥쳐왔다.\r\n\r\n이 책은 농업사학자 후지하라 다쓰시가 생태학 개념인 ‘분해’를 주제어로 삼아 철학, 생물학, 인류학, 문학 등 학문의 틀을 뛰어넘어 그간 주목받지 못했던 분해 현상에 새롭게 빛을 비춘 책이다. ‘분해’는 자연 세계뿐 아니라 인간 사회에서도 흔히 볼 수 있는 현상이다. 낙엽이 미생물에 의해 분해되어 식물에게 양분을 제공하듯, 망가진 자동차는 폐차장에서 분해되어 새로운 생명을 얻는다. 만일 그런 분해 과정이 없다면, 폐차는 부패되지 않은 채 쓰레기로 지상에 산더미처럼 쌓이고 말 것이다.\r\n\r\n생산과 소비의 닫힌 순환에서 벗어나 ‘분해’의 관점으로 눈을 돌리면, 쓰레기를 수집하거나 부서진 물건을 고치는 노동이 사회의 지속가능성에 얼마나 필수적인지 깨닫게 된다. 나아가 우리 자신도 자연 속에서 분해자의 역할을 해야 하며, 지금까지 그 역할을 자각하지 못했기에 기후 위기를 초래했음을 인식하게 된다. 그래서 저자는 이 위기의 시대에 우리가 활성화해야 할 것은 생산력이 아니라 ‘부패력’이라고 말한다. 가장 위험한 세계는 아무것도 썩지 않는 세계이기 때문이다. 이 책은 이런 독창적 논지로 일본 최고의 학술상인 제41회 ‘산토리 학예상’을 수상하기도 했다.', 4, 'GR0000000002', '2024-02-29 12:49:56', 30),
 	(156, '4873c7c4-45f4-45d6-86c8-4d16e7f57323.jpg', '삶은_문제해결의_연속이다.jpg', 'Y', 0, '‘시대의 지성’ 칼 포퍼가 들려주는 마지막 수업\r\n\r\n“오늘을 책임지려는 마음이\r\n내일의 희망이 됩니다”\r\n\r\n20세기 가장 위대한 철학자가\r\n21세기 인류에게 건네는 희망과 위로\r\n『삶은 문제해결의 연속이다』는 20세기 가장 위대한 철학자인 칼 포퍼가 평생에 걸쳐 탐구해온 자연과학과 역사 및 정치에 관한 생각을 집대성한 책이다. 그는 두 차례의 세계대전을 경험하며 나치의 폭압으로 친구와 친지가 목숨을 잃는 등 여러 사건을 겪었다. 그럼에도 불구하고 그는 “인간은 오직 자신의 실수와 오류에 대한 비판을 통해 배울 수 있다”면서 끝까지 인간 이성에 대한 신뢰를 표명한 바 있다. 평생을 냉소주의, 비관주의와 맞서 싸워 온 칼 포퍼는 인류가 멈추지 않고 앞으로 나아가기 위해 꼭 필요한 사유를 이 책에 담았다.\r\n시대가 달라졌음에도 여전히 멈추지 않는 전쟁, 시간이 흐를수록 극심해지는 경제 불안과 사회적 양극화, 정치, 인종, 젠더 등 사회 전 분야에서 극단적인 혐오가 판을 치는 오늘을 살아가는 인류에게 20세기 철학자는 희망을 담아 제언한다. “우리가 나아갈 올바른 방향은 과거를 미래와 완전히 분리된 것으로 보는 것입니다. 미래는 열려 있습니다. 어떤 일이든 일어날 수 있고 그 미래는 우리가 결정할 수 있습니다.”\r\n칼 포퍼는 자기비판이 가능하며 반대를 허용하는 사회가 되려면, 개인이 주체적으로 사유하고 스스로 책임지려는 자세를 갖춰야 한다고 말한다, 인간의 생명보다 더 중요한 가치가 있다는 생각으로 전쟁을 반복하는 인류에게 ‘책임지려는 자세’가 중요하다고 강조하는 칼 포퍼의 제언은 지금 이 순간 더욱 빛을 발하고 있다.', 2, 'GR0000000003', '2024-02-29 12:49:56', 11),
@@ -280,9 +229,4 @@ INSERT INTO `book_info` (`BOOK_INFO_NUM`, `BOOK_INFO_ATTACHED_FILE_NAME`, `BOOK_
 	(188, 'book_character_smile.png', 'book_character_smile.png', 'Y', 0, '초기화', 1, 'GR0000000035', '2024-02-29 12:49:56', 1),
 	(189, 'book_character_smile.png', 'book_character_smile.png', 'Y', 0, '초기화', 1, 'GR0000000036', '2024-02-29 12:49:56', 1),
 	(195, 'ad57ecb1-e0bf-464c-a8e0-87d662dc1bee.jpg', '9788997137138.jpg', 'Y', 0, '햄스타', 1, 'GR0000000037', '2024-02-29 12:49:56', 1);
-
-/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+	
