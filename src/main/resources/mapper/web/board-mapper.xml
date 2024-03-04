@@ -23,6 +23,12 @@
         <result column="BOARD_NO" property="boardNo"/>
     </resultMap>
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> dev
     <!--  게시글 작성   -->
     <insert id="insertCulBoard">
         INSERT INTO BOARD(
@@ -46,17 +52,28 @@
     </insert>
 
     <!--  등록한 게시물 정보 리스트  -->
-    <select id="selectCulBoardList" resultMap="board">
+    <select id="selectBoardList" resultMap="board">
         SELECT
-            BOARD_NO
+            BOARD.BOARD_NO
             , BOARD_TITLE
             , CONTENT
             , BOARD_DATE
             , BOARD.USER_CODE
             , BOARD_CNT
             , USER_ID
+            , IMG_CODE
+            , ORIGIN_FILE_NAME
+            , ATTACHED_FILE_NAME
+            , IS_MAIN
         FROM board INNER JOIN USERS
         ON BOARD.USER_CODE = USERS.USER_CODE
+        INNER JOIN IMAGE
+        ON BOARD.BOARD_NO = IMAGE.BOARD_NO
+        <if test='searchValue != null and !searchValue.equals("")'>
+            where ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+        ORDER BY BOARD_NO DESC
+        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
     </select>
 
     <!--  이미지 등록  -->
@@ -76,6 +93,7 @@
         </foreach>
     </insert>
 
+<<<<<<< HEAD
     <select id="maxBoardNo" resultType="int">
         SELECT
             MAX(board_no) + 1
@@ -83,6 +101,24 @@
     </select>
 
 
+=======
+
+    <!--  게시판 개수 + 1  -->
+    <select id="isNullBoardNo" resultType="int">
+        SELECT CASE WHEN
+            MAX(BOARD_NO) IS NULL
+        THEN 1
+            ELSE MAX(BOARD_NO) + 1
+        END
+        FROM BOARD
+    </select>
+
+    <!--  게시판 개수  -->
+    <select id="countBoard" resultType="int">
+        SELECT COUNT (BOARD_NO)
+        FROM BOARD
+    </select>
+>>>>>>> dev
 </mapper>
 
 

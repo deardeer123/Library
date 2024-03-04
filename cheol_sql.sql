@@ -199,9 +199,135 @@ INSERT INTO book_category(
 	('문학' , 8 ) ,
 	('역사' , 9 );
 	
-SELECT * FROM book_category;
-SELECT * FROM book;
-SELECT * FROM book_info;
+CREATE TABLE BOOK_MID_CATEGORY(
+	BOOK_MID_CATE_CODE INT AUTO_INCREMENT PRIMARY KEY,
+	BOOK_MID_CATE_NAME VARCHAR(35) NOT NULL,
+	BOOK_MID_CATE_INDEX INT NOT NULL,
+	BOOK_CATE_CODE INT NOT NULL REFERENCES book_category(BOOK_CATE_CODE));
+
+-- DROP TABLE BOOK_MID_CATEGORY;
+
+INSERT INTO BOOK_MID_CATEGORY(
+	BOOK_MID_CATE_NAME ,
+	BOOK_MID_CATE_INDEX ,
+	BOOK_CATE_CODE)
+	VALUES
+	-- 총류
+	('도서학,서지학' , 1 , 1),
+	('문헌정보학' , 2 , 1 ),
+	('백과사전' , 3 , 1) ,
+	('강연집,수필집,연설문집' , 4 , 1) ,	
+	('일반연속간행물' , 5 , 1) ,	
+	('일반학회,단체,협회,기관' , 6 , 1) ,	
+	('신문,언론,저널리즘' , 7 , 1) ,	
+	('일반전집,총서' , 8 , 1) ,	
+	('향토자료' , 9 , 1) ,
+	-- 철학
+	('형이상학' , 1 , 2) ,
+	('인신론,인과론,인간학' , 2 , 2) ,
+	('철학의체계' , 3 , 2) ,
+	('경학' , 4 , 2) ,
+	('동양철학,사상' , 5 , 2) ,
+	('서양철학' , 6 , 2) ,
+	('논리학' , 7 , 2) ,
+	('심리학' , 8 , 2) ,
+	('윤리학,도덕철학' , 9 , 2) ,
+	-- 종교
+	('비교종교' , 1 , 3) ,
+	('불교' , 2 , 3) ,
+	('기독교' , 3 , 3) ,
+	('도교' , 4 , 3) ,
+	('천도교' , 5 , 3) ,
+	('신도' , 6 , 3) ,
+	('힌두교,브라만교' , 7 , 3) ,
+	('이슬람교(회교)' , 8 , 3) ,
+	('기타 제종교' , 9 , 3) ,
+	-- 사회과학
+	('통계학' , 1 , 4) ,
+	('경제학' , 2 , 4) ,
+	('사회학,사회문제' , 3 , 4) ,
+	('정치학' , 4 , 4) ,
+	('행정학' , 5 , 4) ,
+	('법학' , 6 , 4) ,
+	('교육학' , 7 , 4) ,
+	('풍속,예절,민속학' , 8 , 4) ,
+	('국방,군사학' , 9 , 4) ,
+	-- 자연과학
+	('수학' , 1 , 5) ,
+	('물리학' , 2 , 5) ,
+	('화학' , 3 , 5) ,
+	('천문학' , 4 , 5) ,
+	('지학' , 5 , 5) ,
+	('광물학' , 6 , 5) ,
+	('생명과학' , 7 , 5) ,
+	('식물학' , 8 , 5) ,
+	('동물학' , 9 , 5) ,
+	-- 기술과학
+	('의학' , 1 , 6) ,
+	('농업,농학' , 2 , 6) ,
+	('공학,공업일반,토목공학,환경공학' , 3 , 6) ,
+	('건축공학' , 4 , 6) ,
+	('기계공학' , 5 , 6) ,
+	('전기공학,전자공학' , 6 , 6) ,
+	('화학공학' , 7 , 6) ,
+	('제조업' , 8 , 6) ,
+	('생활과학' , 9 , 6) ,
+	-- 예술
+	('건축물' , 1 , 7) ,
+	('조각,조형,예술' , 2 , 7) ,
+	('공예,장식미술' , 3 , 7) ,
+	('서예' , 4 , 7) ,
+	('호회,도화' , 5 , 7) ,
+	('사진예술' , 6 , 7) ,
+	('음악' , 7 , 7) ,
+	('공연예술,매체예술' , 8 , 7) ,
+	('오락,스포츠' , 9 , 7) ,
+	-- 언어
+	('한국어' , 1 , 8) ,
+	('중국어' , 2 , 8) ,
+	('일본어,기타아시아제어' , 3 , 8) ,
+	('영어' , 4 , 8) ,
+	('독일어' , 5 , 8) ,
+	('프랑스어' , 6 , 8) ,
+	('스페인어,포르투칼어' , 7 , 8) ,
+	('이탈리라어' , 8 , 8) ,
+	('기타제어' , 9 , 8) ,
+	-- 문학
+	('한국문학' , 1 , 9) ,
+	('중국문학' , 2 , 9) ,
+	('일본문학,기타아시아문학' , 3 , 9) ,
+	('영미문학' , 4 , 9) ,
+	('독일문학' , 5 , 9) ,
+	('프랑스문학' , 6 , 9) ,
+	('스페인,포르투칼문학' , 7 , 9) ,
+	('이탈리아문학' , 8 , 9) ,
+	('기타제문학' , 9 , 9) ,
+	-- 역사
+	('아시아' , 1 , 10) ,
+	('유럽' , 2 , 10) ,
+	('아프리카' , 3 , 10) ,
+	('북아메리카' , 4 , 10) ,
+	('남아메리카' , 5 , 10) ,
+	('오세아니아' , 6 , 10) ,
+	('양극지방' , 7 , 10) ,
+	('지리' , 8 , 10) ,
+	('전기' , 9 , 10);
+
+SELECT 
+	book_category.BOOK_CATE_CODE , 
+	BOOK_CATE_NAME ,
+	BOOK_CATE_INDEX ,
+	BOOK_MID_CATE_CODE ,
+	BOOK_MID_CATE_NAME ,
+	BOOK_MID_CATE_INDEX
+FROM
+	book_category INNER JOIN BOOK_MID_CATEGORY
+	ON book_category.BOOK_CATE_CODE = BOOK_MID_CATEGORY.BOOK_CATE_CODE
+WHERE
+	book_category.BOOK_CATE_CODE = 1;
+
+
+
 
 CREATE TABLE BOOK(
    BOOK_CODE VARCHAR(15) PRIMARY KEY,
@@ -220,12 +346,16 @@ CREATE TABLE BOOK_INFO(
 	BOOK_INTRO VARCHAR(2000) , -- 2024-02-29 변경함
 	BOOK_REGDATE DATETIME DEFAULT CURRENT_TIMESTAMP , -- 2024-02-29 변경함  								
 	BOOK_CATE_CODE INT REFERENCES BOOK_CATEGORY(BOOK_CATE_CODE) ,
+	BOOK_MID_CATE_CODE INT REFERENCES BOOK_MID_CATEGORY(BOOK_MID_CATE_CODE) ,
 	BOOK_CODE VARCHAR(15) REFERENCES BOOK(BOOK_CODE)); 
 
 -- 책소개 최대길이가 조금 모자랄거 같아서 늘렸어요 만약에 book_info 테이블을 만들었다면 아래 쿼리문 실행해주세요.
 ALTER TABLE book_info modify book_intro VARCHAR(2000);
 ALTER TABLE book_info ADD BOOK_REGDATE DATETIME DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE book_info ADD BOOK_MID_CATE_CODE INT REFERENCES BOOK_MID_CATEGORY(BOOK_MID_CATE_CODE); -- 2024-03-04 중분류 추가
 
+UPDATE book_info
+SET BOOK_MID_CATE_CODE = 1;
 
 SELECT * FROM book_info;
 
@@ -334,6 +464,9 @@ SELECT *
 FROM book
 ORDER BY book_code
 LIMIT 10 OFFSET 30;
+
+SELECT *
+FROM book_info;
 
 
 

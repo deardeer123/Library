@@ -22,5 +22,11 @@ public class LibraryBookServiceImpl implements LibraryBookService{
         return sqlSession.selectList("libraryBookMapper.selectCateList");
     }
 
+    @Override
+    public LibraryBookCategoryVO selectCateOne(int bookCateCode) {
+        return sqlSession.selectOne("libraryBookMapper.selectCateOne",bookCateCode);
+    }
+
+
 
 }
