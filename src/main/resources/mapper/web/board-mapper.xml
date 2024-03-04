@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
-<mapper namespace="culturalAndEducationMapper">
-    <resultMap id="culture" type="com.green.Library.web.culturalAndEducation.vo.CulturalAndEducationVO">
+<mapper namespace="boardMapper">
+    <resultMap id="board" type="com.green.Library.web.board.vo.BoardVO">
         <id column="BOARD_NO"          property="boardNo"/>
         <result column="BOARD_TITLE"   property="boardTitle"/>
         <result column="CONTENT"       property="content"/>
@@ -22,6 +22,7 @@
         <result column="IS_MAIN" property="isMain"/>
         <result column="BOARD_NO" property="boardNo"/>
     </resultMap>
+
 
     <!--  게시글 작성   -->
     <insert id="insertCulBoard">
@@ -46,13 +47,13 @@
     </insert>
 
     <!--  등록한 게시물 정보 리스트  -->
-    <select id="selectCulBoardList" resultMap="culture">
+    <select id="selectCulBoardList" resultMap="board">
         SELECT
             BOARD_NO
             , BOARD_TITLE
             , CONTENT
             , BOARD_DATE
-            , CUL_BOARD.USER_CODE
+            , BOARD.USER_CODE
             , BOARD_CNT
             , USER_ID
         FROM board INNER JOIN USERS
@@ -80,18 +81,26 @@
         SELECT
             MAX(board_no) + 1
         FROM BOARD
-
     </select>
 
-    <select id="isNullBoardNo" resultType="int">
-        SELECT CASE WHEN
-            MAX(BOARD_NO) IS NULL
-        THEN 1
-            ELSE MAX(BOARD_NO) + 1
-        END
-        FROM BOARD
-    </select>
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

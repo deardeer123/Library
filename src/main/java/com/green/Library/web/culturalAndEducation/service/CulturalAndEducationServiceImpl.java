@@ -32,5 +32,10 @@ public class CulturalAndEducationServiceImpl implements CulturalAndEducationServ
         return sqlSession.selectOne("culturalAndEducationMapper.maxBoardNo");
     }
 
+    @Override
+    public int isNullBoardNo() {
+        return sqlSession.selectOne("culturalAndEducationMapper.isNullBoardNo");
+    }
+
 
 }

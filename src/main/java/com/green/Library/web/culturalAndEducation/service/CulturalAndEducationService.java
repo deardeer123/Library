@@ -15,4 +15,6 @@ public interface CulturalAndEducationService {
     void insertCulBoard(CulturalAndEducationVO culturalAndEducationVO);
 
     int maxBoardNo();
+
+    int isNullBoardNo();
 }
