@@ -8,13 +8,13 @@ import java.util.List;
 public interface CulturalAndEducationService {
 
     //문화 게시판 리스트
-    List<CulturalAndEducationVO> selectCulBoardList();
+//    List<CulturalAndEducationVO> selectCulBoardList();
 
     //문화 게시판 등록
     //이미지 등록
-    void insertCulBoard(CulturalAndEducationVO culturalAndEducationVO);
+//    void insertCulBoard(CulturalAndEducationVO culturalAndEducationVO);
 
-    int maxBoardNo();
+//    int maxBoardNo();
 
-    int isNullBoardNo();
+//    int isNullBoardNo();
 }

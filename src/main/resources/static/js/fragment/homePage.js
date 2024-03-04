@@ -28,3 +28,11 @@ function post(){
         }
     }).open();
 }
+
+function logout(){
+    const logout = confirm('로그아웃을 하시겠습니까 ?')
+
+    if(logout){
+        location.href="/logout"
+    }
+}
