@@ -7,6 +7,7 @@ import com.green.Library.web.participationForum.vo.ParticipationForumVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.Session;
+import lombok.Getter;
 import org.springframework.stereotype.Controller;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class ParticipationForumController {
 
     //공지사항조회
     @GetMapping("/notice")
-    public String goNotice(ParticipationForumVO participationForumVO, Model model){
+    public String goNotice(ParticipationForumVO participationForumVO, Model model, HttpSession session){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -41,14 +43,14 @@ public class ParticipationForumController {
         //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
         //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
         webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
 
         System.out.println("공지사항");
 
-        List<ParticipationForumVO> noticeList = participationForumService.selctNotice();
+        //글목록 조회
+        List<ParticipationForumVO> noticeList = participationForumService.selectNotice();
         model.addAttribute("noticeList", noticeList);
-        participationForumService.updateCnt(participationForumVO.getBoardCnt());
+
 
         return "content/homePage/forum/notice";
     }
@@ -57,17 +59,35 @@ public class ParticipationForumController {
     public String noticeWrite (){
         return "content/homePage/forum/noticeWrite";
     }
+
     //공지사항 글쓰기
     @PostMapping("/noticeWrite")
-    public String noiceWrite(ParticipationForumVO participationForumVO, HttpSession session, Model model){
+    public String noticeWrite(ParticipationForumVO participationForumVO, HttpSession session, Model model){
 
-        participationForumService.insertNotice(participationForumVO);
+        //로그인 정보 전달위함
         MemberVO loginInfo = (MemberVO) session.getAttribute("loginInfo");
+        participationForumVO.setUserCode(loginInfo.getUserCode());
         model.addAttribute("loginInfo",loginInfo);
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + loginInfo);
+
+        //글등록
+        participationForumService.insertNotice(participationForumVO);
+
         return "redirect:/notice";
     }
+    //공지사항 글 상세조회
+    @GetMapping("/noticeDetail")
+    public String noticeDetail(@RequestParam(name = "boardNo") int boardNo, Model model){
 
+        //공지 상세조회
+        participationForumService.noticeDetail(boardNo);
+
+        //조회수 증가
+        participationForumService.updateCnt(boardNo);
+
+        return "content/homePage/forum/noticeDetail";
+    }
+
+    //묻고답하기
     @GetMapping("/askAndAnswer")
     public String goAskAndAnswer(Model model){
         //드가기전 메뉴 정보좀 들고옴

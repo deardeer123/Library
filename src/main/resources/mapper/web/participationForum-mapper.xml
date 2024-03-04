@@ -3,7 +3,7 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="participationForumMapper">
-    <resultMap id="forum" type="com.green.Library.web.participationForum.vo.ParticipationForumVO">
+    <resultMap id="culBoard" type="com.green.Library.web.participationForum.vo.ParticipationForumVO">
     <id column="BOARD_NO"          property="boardNo"/>
     <result column="BOARD_TITLE"   property="boardTitle"/>
     <result column="CONTENT"       property="content"/>
@@ -11,13 +11,20 @@
     <result column="USER_CODE"     property="userCode"/>
     <result column="BOARD_CNT"     property="boardCnt"/>
     <result column="BOARD_TYPE"     property="boardType"/>
+    <association property="memberVO"  resultMap="memberMapper.users" />
+    <collection property="images" resultMap="img"/>
     </resultMap>
 
-    <resultMap id="img" type="com.green.Library.web.img.vo.imgVO">
+<<<<<<< HEAD
+    <resultMap id="img" type="com.green.Library.web.img.vo.ImgVO">
         <id column="IMG_CODE"          property="imgCode"/>
+=======
+    <resultMap id="img" type="com.green.Library.web.img.vo.imgVO">
+        <id column="IMG_CODE"               property="imgCode"/>
+>>>>>>> UK
         <result column="ORIGIN_FILE_NAME"   property="originFileName"/>
-        <result column="ATTACHED_FILE_NAME"       property="attachedFileName"/>
-        <result column="IS_MAIN"    property="isMain"/>
+        <result column="ATTACHED_FILE_NAME" property="attachedFileName"/>
+        <result column="IS_MAIN"            property="isMain"/>
     </resultMap>
 
     <!-- 공지사항 등록-->
@@ -28,39 +35,52 @@
             , CONTENT
             , BOARD_DATE
             , BOARD_TYPE
+            , USER_CODE
+            , BOARD_CNT
+            , ATTACHED_FILE_NAME
         ) VALUES (
-            #{boardNo
-            }
+            #{boardNo}
             , #{boardTitle}
             , #{content}
             , #{boardDate}
             , #{boardType}
+            , #{userCode}
+            , #{boardCnt}
+            , #{attachedFileName}
         )
     </insert>
 
     <!-- 공지사항 조회-->
-    <select id="selectNotice" resultMap="forum">
-        <!-- 완성본 , 나중에 회원 기능이 완성되면 이 쿼리로 변경-->
+    <select id="selectNotice" resultMap="board">
         SELECT BOARD.BOARD_NO
             , BOARD_TITLE
             , CONTENT
             , BOARD_DATE
-            , ATTACHED_FILE_NAME
             , BOARD.USER_CODE
-            , USER_NAME
+            , USERS.USER_NAME
+            , BOARD_CNT
         FROM BOARD INNER JOIN USERS
         ON BOARD.USER_CODE = USERS.USER_CODE
-        INNER JOIN IMAGE
-        ON BOARD.BOARD_NO = IMAGE.BOARD_NO
-
     </select>
 
+    <!-- 조회수 증가-->
     <update id="updateCnt">
         UPDATE BOARD
         SET BOARD_CNT = BOARD_CNT + 1
         WHERE BOARD_NO = #{boardNo}
     </update>
 
+    <!-- 공지사항 상세조회-->
+    <select id="noticeDetail" resultMap="board">
+            SELECT BOARD_NO
+            , BOARD_TITLE
+            , BOARD_DATE
+            , BOARD_CNT
+            , CONTENT
+<!--            , ATTACHED_FILE_NAME-->
+            FROM BOARD
+            WHERE BOARD_NO = #{boardNo}
+    </select>
 </mapper>
 
 

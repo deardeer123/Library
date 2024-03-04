@@ -8,8 +8,8 @@ import lombok.ToString;
 @Setter
 @ToString
 
-public class bookSearchVO {
-    private String SearchType;
-    private String SearchValue;
+public class BookSearchVO {
+    private String searchType;
+    private String searchValue;
 
 }

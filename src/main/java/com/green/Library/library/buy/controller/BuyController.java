@@ -56,18 +56,16 @@ public class BuyController {
         return "content/library/buy/deleteBook";
     }
     @GetMapping("/buyBook")
-    public String goBuyBook(Model model){
+    public String goBuyBook(Model model, @RequestParam(name="insert" , required = false, defaultValue = "0") int insert){
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
-
-
 
         //가기전에 카테고리 목록 리스트 가져오기
         //System.out.println(libraryBookService.selectCateList());
         model.addAttribute("cateList",libraryBookService.selectCateList());
 
-
-
+        System.out.println(insert);
+        model.addAttribute("insert", insert);
         System.out.println("구입 자료 이동");
         return "content/library/buy/buyBook";
     }
@@ -125,7 +123,7 @@ public class BuyController {
 
         buyService.regBook(libraryBookVO);
 
-        return "redirect:/bookAdmin/buyBook";
+        return "redirect:/bookAdmin/buyBook?insert=1";
     }
 
 

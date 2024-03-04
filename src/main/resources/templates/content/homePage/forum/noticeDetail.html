@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+
+  <!-- html 파일이 열릴때 같이 실행되는 css-->
+<th:block layout:fragment="content_css">
+  <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+  <!-- html code 작성-->
+  <div class="row">
+    <div class="col">
+      <h3>
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="50" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+          <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+        </svg>
+       / 참여마당 / 공지사항</h3>
+    </div>
+
+    <div class="row">
+      <div class="col-12" style="border-top: 1px solid black;">
+          <div style="float: left;">제목 : [제목데이터불러]</div>
+          <div style="float: right;">작성일 : [작성일데이터불러]</div>
+      </div>
+        <div class="col-12" style="border-bottom: 1px solid black;">
+          <div style="float: right;">조회수 : [조회수데이터불러]</div>
+        </div>
+    </div>
+
+    <div class="row">
+      <div class="col" style="border-bottom: 1px solid black;">
+        내용부
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        첨부파일 넣을영역
+      </div>
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="content_js">
+  <!-- html 파일이 열릴때 같이 실행되는 css-->
+  <!-- <script src="/"></script> -->
+</th:block>
+</html>

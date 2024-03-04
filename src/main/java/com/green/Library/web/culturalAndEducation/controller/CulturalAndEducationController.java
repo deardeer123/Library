@@ -1,7 +1,10 @@
 package com.green.Library.web.culturalAndEducation.controller;
 
+import com.green.Library.util.BoardUploadUtil;
+import com.green.Library.util.UploadUtil;
 import com.green.Library.web.culturalAndEducation.service.CulturalAndEducationServiceImpl;
 import com.green.Library.web.culturalAndEducation.vo.CulturalAndEducationVO;
+import com.green.Library.web.img.vo.ImgVO;
 import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.participationForum.vo.ParticipationForumVO;
 import com.green.Library.web.webMenu.service.WebMenuService;
@@ -12,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,7 +30,7 @@ public class CulturalAndEducationController {
 
     //    -------- 문화행사/교육(culturalAndEducation)---------
     @GetMapping("/libraryEvent")
-    public String goLibraryEvent(Model model, CulturalAndEducationVO culturalAndEducationVO){
+    public String goLibraryEvent(Model model, CulturalAndEducationVO culturalAndEducationVO, HttpSession session){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -41,8 +46,8 @@ public class CulturalAndEducationController {
 
 
         List<CulturalAndEducationVO> boardList = culService.selectCulBoardList();
-
         System.out.println(boardList);
+
         model.addAttribute("boardList",boardList);
 
         System.out.println("도서관행사");
@@ -56,7 +61,9 @@ public class CulturalAndEducationController {
     public String cultureInsertBoard(Model model,
                                      CulturalAndEducationVO culturalAndEducationVO,
                                      MemberVO memberVO,
-                                     HttpSession session){
+                                     HttpSession session,
+                                     @RequestParam(name = "mainImg") MultipartFile mainImg,
+                                     @RequestParam(name = "subImgs") MultipartFile[] subImgs){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -70,8 +77,26 @@ public class CulturalAndEducationController {
         System.out.println(webMenuService.selectWebMenuList("member"));
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
 
+
         MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 
+        //boardNo의 max값
+        int maxBoardNo = culService.maxBoardNo();
+
+        // 단일 이미지 첨부 기능
+        ImgVO mainImgVO = BoardUploadUtil.uploadFile(mainImg);
+        mainImgVO.setBoardNo(maxBoardNo);
+
+        // 멀티 이미지 첨부 기능
+        List<ImgVO> imgList = BoardUploadUtil.subImgUploadFile(subImgs);
+        for (ImgVO img : imgList){
+            img.setBoardNo(maxBoardNo);
+        }
+        imgList.add(mainImgVO);
+        culturalAndEducationVO.setImgList(imgList);
+
+        culturalAndEducationVO.setBoardNo(maxBoardNo);
+        System.out.println(culturalAndEducationVO);
         culService.insertCulBoard(culturalAndEducationVO);
         memberVO.setUserCode(loginInfo.getUserCode());
 

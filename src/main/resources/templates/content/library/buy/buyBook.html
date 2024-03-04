@@ -104,8 +104,28 @@
             </div>
         </div>
     </form>
+    <th:block th:if="${insert == 1}">
+        <input type="hidden" value="1" id="is-insert">
+    </th:block>
+
+    <th:block th:if="${insert != 1}">
+        <input type="hidden" value="0" id="is-insert">
+    </th:block>
 
     <script>
+        isInsert()
+
+        function isInsert(){
+            //alert("씨발")
+            
+            let is_insert = document.querySelector("#is-insert").value
+           
+            console.log(is_insert);
+            if(is_insert == 1){
+                alert("책이 등록되었습니다.");               
+            }
+        }
+
         function previewImg(selectTag) {
             if (selectTag.files && selectTag.files[0]) {
                 var reader = new FileReader();

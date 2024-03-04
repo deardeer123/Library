@@ -15,11 +15,11 @@
             <h3>게시글 등록</h3>
         </div>
         <div class="col">
-            <form action="/cultureInsertBoard" method="post">
+            <form action="/cultureInsertBoard" method="post" enctype="multipart/form-data">
                 <table class="align-middle">
                     <colgroup>
-                    <col width="20%">
-                    <col width="30%">
+                    <col width="25%">
+                    <col width="25%">
                     <col width="25%">
                     <col width="25%">
                     </colgroup>
@@ -31,12 +31,22 @@
                             <td colspan="3"><input type="text" name="boardTitle"></td>
                         </tr>
                         <tr>
-                            <td>작성자</td>
-                            <td colspan="3"><input type="text" name="userCode"></td>
+                            <td>카테고리</td>
+                            <td>
+                                <select name="boardType">
+                                    <option value="21">도서관행사</option>
+                                    <option value="22">행사 참가신청</option>
+                                    <option value="23">영화 상영</option>
+                                    <option value="24">평생교육 강좌안내</option>
+                                    <option value="25">강좌 수강신청</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td>작성일</td>
-                            <td colspan="3"><input type="date" name="boardDate"></td>
+                            <td ><input type="date" name="boardDate"></td>
+                            <td>작성자</td>
+                            <td >[[${session.loginInfo.userId}]]</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,8 +56,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="file" src="">대표 이미지</td>
-                            <td><input type="file" src="">서브 이미지</td>
+                            <td><input type="file" name="mainImg">대표 이미지</td>
+                            <td><input type="file" name="subImgs" multiple>서브 이미지</td>
                         </tr>
                         <tr>
                             <td>
@@ -55,6 +65,7 @@
                             </td>
                         </tr>
                     </tbody>
+                    <input type="hidden" name="userCode" th:value="${session.loginInfo.userCode}">
                 </table>
             </form>
         </div>

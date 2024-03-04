@@ -14,8 +14,11 @@ public interface RegAndViewService {
     //책 정보 변경하기
     void updateBook(LibraryBookVO libraryBookVO);
 
+    //책 검색하기
+    List<LibraryBookVO> searchBookList(BookSearchVO bookSearchVO);
 
 
+    void deleteBookOne(String bookCode);
 
 
 

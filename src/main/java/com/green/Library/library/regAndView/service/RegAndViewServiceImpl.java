@@ -37,7 +37,22 @@ public class RegAndViewServiceImpl implements RegAndViewService{
 
     }
 
-//    책 상세보기 초기화
+    @Override
+    public List<LibraryBookVO> searchBookList(BookSearchVO bookSearchVO) {
+        return sqlSession.selectList("regAndViewMapper.searchBookList", bookSearchVO);
+    }
+
+    //    책 삭제하기
+//    맨처음엔 bookinfo 지우고
+//    그 다음엔 book 지우게함
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteBookOne(String bookCode) {
+        sqlSession.update("regAndViewMapper.DeleteBookOne", bookCode);
+        sqlSession.update("regAndViewMapper.DeleteBookTwo", bookCode);
+    }
+
+    //    책 상세보기 초기화
     @Override
     public void bookInfoInit(List<Integer> initList) {
         sqlSession.insert("regAndViewMapper.bookInfoInit", initList);
