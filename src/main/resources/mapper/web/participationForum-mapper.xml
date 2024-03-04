@@ -3,7 +3,7 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="participationForumMapper">
-    <resultMap id="culBoard" type="com.green.Library.web.participationForum.vo.ParticipationForumVO">
+    <resultMap id="board" type="com.green.Library.web.board.vo.BoardVO">
     <id column="BOARD_NO"          property="boardNo"/>
     <result column="BOARD_TITLE"   property="boardTitle"/>
     <result column="CONTENT"       property="content"/>
@@ -45,40 +45,39 @@
         )
     </insert>
 
-<!--    20240302 resultMap 없어서 오류남-->
+
     <!-- 공지사항 조회-->
-<!--    <select id="selectNotice" resultMap="board">-->
-<!--        SELECT BOARD.BOARD_NO-->
-<!--            , BOARD_TITLE-->
-<!--            , CONTENT-->
-<!--            , BOARD_DATE-->
-<!--            , BOARD.USER_CODE-->
-<!--            , USERS.USER_NAME-->
-<!--            , BOARD_CNT-->
-<!--        FROM BOARD INNER JOIN USERS-->
-<!--        ON BOARD.USER_CODE = USERS.USER_CODE-->
-<!--    </select>-->
+    <select id="selectNotice" resultMap="board">
+        SELECT BOARD.BOARD_NO
+            , BOARD_TITLE
+            , CONTENT
+            , BOARD_DATE
+            , BOARD.USER_CODE
+            , USERS.USER_NAME
+            , BOARD_CNT
+        FROM BOARD INNER JOIN USERS
+        ON BOARD.USER_CODE = USERS.USER_CODE
+    </select>
 
-<!--    &lt;!&ndash; 조회수 증가&ndash;&gt;-->
-<!--    <update id="updateCnt">-->
-<!--        UPDATE BOARD-->
-<!--        SET BOARD_CNT = BOARD_CNT + 1-->
-<!--        WHERE BOARD_NO = #{boardNo}-->
-<!--    </update>-->
+    <!-- 조회수 증가-->
+    <update id="updateCnt">
+        UPDATE BOARD
+        SET BOARD_CNT = BOARD_CNT + 1
+        WHERE BOARD_NO = #{boardNo}
+    </update>
 
-<!--    &lt;!&ndash; 공지사항 상세조회&ndash;&gt;-->
-<!--    <select id="noticeDetail" resultMap="board">-->
-<!--            SELECT BOARD_NO-->
-<!--            , BOARD_TITLE-->
-<!--            , BOARD_DATE-->
-<!--            , BOARD_CNT-->
-<!--            , CONTENT-->
-<!--&lt;!&ndash;            , ATTACHED_FILE_NAME&ndash;&gt;-->
-<!--            FROM BOARD-->
-<!--            WHERE BOARD_NO = #{boardNo}-->
-<!--    </select>-->
+    <!-- 공지사항 상세조회-->
+    <select id="noticeDetail" resultMap="board">
+            SELECT BOARD_NO
+            , BOARD_TITLE
+            , BOARD_DATE
+            , BOARD_CNT
+            , CONTENT
+<!--            , ATTACHED_FILE_NAME-->
+            FROM BOARD
+            WHERE BOARD_NO = #{boardNo}
+    </select>
 </mapper>
-
 
 
 
