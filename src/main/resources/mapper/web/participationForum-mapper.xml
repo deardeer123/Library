@@ -17,10 +17,6 @@
 
     <resultMap id="img" type="com.green.Library.web.img.vo.ImgVO">
         <id column="IMG_CODE"          property="imgCode"/>
-<<<<<<< HEAD
-=======
-
->>>>>>> dev
         <result column="ORIGIN_FILE_NAME"   property="originFileName"/>
         <result column="ATTACHED_FILE_NAME" property="attachedFileName"/>
         <result column="IS_MAIN"            property="isMain"/>
