@@ -30,6 +30,9 @@ public class CulturalAndEducationController {
     WebMenuService webMenuService;
     @Resource(name = "boardService")
     BoardServiceImpl boardService;
+    @Resource(name = "culturalAndEducationService")
+    CulturalAndEducationServiceImpl culturalAndEducationService;
+
 
     //    -------- 문화행사/교육(culturalAndEducation)---------
     @GetMapping("/libraryEvent")
@@ -84,7 +87,8 @@ public class CulturalAndEducationController {
         MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 
         //boardNo의 max값
-        int maxBoardNo = boardService.maxBoardNo();
+        int maxBoardNo = culturalAndEducationService.isNullBoardNo();
+        System.out.println(maxBoardNo);
 
         // 단일 이미지 첨부 기능
         ImgVO mainImgVO = BoardUploadUtil.uploadFile(mainImg);
@@ -96,6 +100,7 @@ public class CulturalAndEducationController {
             img.setBoardNo(maxBoardNo);
         }
         imgList.add(mainImgVO);
+        System.out.println(imgList);
         boardVO.setImgList(imgList);
 
         boardVO.setBoardNo(maxBoardNo);
