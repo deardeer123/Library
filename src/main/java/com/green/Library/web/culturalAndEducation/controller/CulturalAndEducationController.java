@@ -5,6 +5,7 @@ import com.green.Library.util.UploadUtil;
 import com.green.Library.web.board.service.BoardService;
 import com.green.Library.web.board.service.BoardServiceImpl;
 import com.green.Library.web.board.vo.BoardVO;
+import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.culturalAndEducation.service.CulturalAndEducationServiceImpl;
 import com.green.Library.web.culturalAndEducation.vo.CulturalAndEducationVO;
 import com.green.Library.web.img.vo.ImgVO;
@@ -35,8 +36,8 @@ public class CulturalAndEducationController {
 
 
     //    -------- 문화행사/교육(culturalAndEducation)---------
-    @GetMapping("/libraryEvent")
-    public String goLibraryEvent(Model model, CulturalAndEducationVO culturalAndEducationVO, HttpSession session){
+    @RequestMapping("/libraryEvent")
+    public String goLibraryEvent(Model model, CulturalAndEducationVO culturalAndEducationVO, HttpSession session, SearchVO searchVO){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -50,8 +51,13 @@ public class CulturalAndEducationController {
         System.out.println(webMenuService.selectWebMenuList("member"));
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
 
+        //전체 게시글 수
+        int totalBoardCnt= boardService.countBoard();
+        searchVO.setTotalDataCnt(totalBoardCnt);
 
-        List<BoardVO> boardList = boardService.selectCulBoardList();
+        searchVO.setPageInfo();
+
+        List<BoardVO> boardList = boardService.selectBoardList(searchVO);
         System.out.println(boardList);
 
         model.addAttribute("boardList",boardList);
@@ -87,8 +93,7 @@ public class CulturalAndEducationController {
         MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 
         //boardNo의 max값
-        int maxBoardNo = culturalAndEducationService.isNullBoardNo();
-        System.out.println(maxBoardNo);
+        int maxBoardNo = boardService.isNullBoardNo();
 
         // 단일 이미지 첨부 기능
         ImgVO mainImgVO = BoardUploadUtil.uploadFile(mainImg);
@@ -100,8 +105,8 @@ public class CulturalAndEducationController {
             img.setBoardNo(maxBoardNo);
         }
         imgList.add(mainImgVO);
-        System.out.println(imgList);
         boardVO.setImgList(imgList);
+        System.out.println(boardVO);
 
         boardVO.setBoardNo(maxBoardNo);
         System.out.println(boardVO);
@@ -116,9 +121,9 @@ public class CulturalAndEducationController {
 
 
 
-    //도서관 행사 게시글 등록
-    @GetMapping("/eventBoard")
-    public String eventBoard(Model model){
+    //도서관 행사 게시글 상세페이지
+    @GetMapping("/eventDetailBoard")
+    public String eventDetailBoard(Model model){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -134,7 +139,8 @@ public class CulturalAndEducationController {
 
 
 
-        return "content/homePage/culturalAndEducation/event_board";
+
+        return "content/homePage/culturalAndEducation/eventDetailBoard";
     }
 
 
