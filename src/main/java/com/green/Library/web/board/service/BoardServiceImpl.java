@@ -32,4 +32,6 @@ public class BoardServiceImpl implements BoardService{
     public int maxBoardNo() {
         return sqlSession.selectOne("boardMapper.insertImgList");
     }
+
+
 }

@@ -3,24 +3,6 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="participationForumMapper">
-    <resultMap id="board" type="com.green.Library.web.board.vo.BoardVO">
-    <id column="BOARD_NO"          property="boardNo"/>
-    <result column="BOARD_TITLE"   property="boardTitle"/>
-    <result column="CONTENT"       property="content"/>
-    <result column="BOARD_DATE"    property="boardDate"/>
-    <result column="USER_CODE"     property="userCode"/>
-    <result column="BOARD_CNT"     property="boardCnt"/>
-    <result column="BOARD_TYPE"     property="boardType"/>
-    <association property="memberVO"  resultMap="memberMapper.users" />
-    <collection property="images" resultMap="img"/>
-    </resultMap>
-
-    <resultMap id="img" type="com.green.Library.web.img.vo.ImgVO">
-        <id column="IMG_CODE"          property="imgCode"/>
-        <result column="ORIGIN_FILE_NAME"   property="originFileName"/>
-        <result column="ATTACHED_FILE_NAME" property="attachedFileName"/>
-        <result column="IS_MAIN"            property="isMain"/>
-    </resultMap>
 
     <!-- 공지사항 등록-->
     <insert id="insertBoard">
@@ -32,7 +14,6 @@
             , BOARD_TYPE
             , USER_CODE
             , BOARD_CNT
-            , ATTACHED_FILE_NAME
         ) VALUES (
             #{boardNo}
             , #{boardTitle}
@@ -41,13 +22,31 @@
             , #{boardType}
             , #{userCode}
             , #{boardCnt}
-            , #{attachedFileName}
         )
     </insert>
 
+    <!-- 첨부파일 등록용-->
+    <insert id="insertImg">
+        INSERT INTO IMAGE (
+            IMG_CODE
+            , ORIGIN_FILE_NAME
+            , ATTACHED_FILE_NAME
+            , IS_MAIN
+            , BOARD_NO
+        ) VALUES
+        <foreach collection="imgList" item="img" separator=",">
+        (
+        #{img.imgCode}
+        , #{img.originFileName}
+        , #{img.attachedFileName}
+        , #{img.isMain}
+        , #{img.boardNo}
+        )
+        </foreach>
+    </insert>
 
     <!-- 공지사항 조회-->
-    <select id="selectNotice" resultMap="board">
+    <select id="selectNotice" resultMap="boardMapper.board">
         SELECT BOARD.BOARD_NO
             , BOARD_TITLE
             , CONTENT
@@ -67,16 +66,18 @@
     </update>
 
     <!-- 공지사항 상세조회-->
-    <select id="noticeDetail" resultMap="board">
-            SELECT BOARD_NO
+    <select id="noticeDetail" resultMap="boardMapper.board">
+            SELECT BOARD.BOARD_NO
             , BOARD_TITLE
             , BOARD_DATE
             , BOARD_CNT
             , CONTENT
-<!--            , ATTACHED_FILE_NAME-->
-            FROM BOARD
-            WHERE BOARD_NO = #{boardNo}
+            , ATTACHED_FILE_NAME
+            FROM BOARD INNER JOIN IMAGE
+            ON BOARD.BOARD_NO = IMAGE.BOARD_NO
+            WHERE BOARD.BOARD_NO = #{boardNo}
     </select>
+
 </mapper>
 
 

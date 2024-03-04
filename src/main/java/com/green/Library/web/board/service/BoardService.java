@@ -18,4 +18,6 @@ public interface BoardService {
 
     //게시글 큰 값
     int maxBoardNo();
+
+
 }
