@@ -15,6 +15,12 @@
         <result property="gender" column="GENDER"/>
         <result property="email" column="EMAIL"/>
         <result property="isAdmin" column="IS_ADMIN"/>
+        <result property="cardNum" column="CARD_NUM"/>
+        <result property="publishDate" column="PUBLISH_DATE"/>
+        <result property="userIntro" column="USER_INTRO"/>
+        <result property="cardStatus" column="CARD_STATUS"/>
+        <collection property="bookBorrowList" resultMap="borrowReturnMapper.bookBorrow"/>
+        <collection property="bookReturnList" resultMap="borrowReturnMapper.bookReturn"/>
     </resultMap>
     <insert id="insertMember">
         INSERT INTO USERS(

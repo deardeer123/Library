@@ -74,7 +74,8 @@ public class BuyController {
     public String goRegBook(LibraryBookVO libraryBookVO,
                             @RequestParam(name="bookImg")MultipartFile bookImg ,
                             @RequestParam(name="bookIntro")String bookIntro,
-                            @RequestParam(name="bookCateCode")int bookCateCode){
+                            @RequestParam(name="bookCateCode")int bookCateCode ,
+                            @RequestParam(name="bookMidCateCode")int bookMidCateCode){
 
         //일단 넣어야할 코드 잘 가져오는지 확인좀 합시다.
         //이건 넣어야할 bookCode를 구하는 코드입니다.
@@ -100,6 +101,9 @@ public class BuyController {
             libraryBookInfoVO.setBookIntro(bookIntro);
             //카테고리 정보도 넣기
             libraryBookInfoVO.setBookCateCode(bookCateCode);
+            //만든 객체에 커맨더 객체(libraryBookInfoVO)에 있는 중분류 카테고리 정보 넣기
+            libraryBookInfoVO.setBookMidCateCode(bookMidCateCode);
+
             //bookcode 넣어주기
             libraryBookInfoVO.setBookCode(libraryBookService.searchMaxCode());
 
@@ -113,6 +117,9 @@ public class BuyController {
             libraryBookInfoVO1.setBookIntro(bookIntro);
             //카테고리 정보 넣기
             libraryBookInfoVO1.setBookCateCode(bookCateCode);
+            //만든 객체에 커맨더 객체(libraryBookInfoVO)에 있는 중분류 카테고리 정보 넣기
+            libraryBookInfoVO1.setBookMidCateCode(bookMidCateCode);
+
             libraryBookInfoVO1.setBookCode(libraryBookService.searchMaxCode());
             //bookvo에 infovo 넣기
             libraryBookVO.setLibraryBookInfoVO(libraryBookInfoVO1);
