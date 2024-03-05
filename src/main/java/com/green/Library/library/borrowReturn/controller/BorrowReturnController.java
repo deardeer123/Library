@@ -1,8 +1,11 @@
 package com.green.Library.library.borrowReturn.controller;
 
 import com.green.Library.library.borrowReturn.service.BorrowReturnService;
+import com.green.Library.library.borrowReturn.vo.BookBorrowVO;
+import com.green.Library.library.borrowReturn.vo.RequestDataVO;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.user.vo.UserVO;
+import com.green.Library.web.member.vo.MemberVO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,35 +25,35 @@ public class BorrowReturnController {
     @GetMapping("/borrowReturn")
     public String goBorrowReturn(Model model){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
+        //model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
         System.out.println("대출반납으로 이동");
-        return "content/library/borrowReturn/borrowReturn";
+        return "content/library/borrowReturn/borrowReturn.html";
     }
 
-    //이용자 대출 반납 조회 및 대출
+    //이용자 조회
     @ResponseBody
     @PostMapping("/selectBorrowInfo")
-//    public UserVO selectBorrowInfo(@RequestBody UserVO userVO){
-//
-//        // 대출번호가 데이터로 들어 올 때
-//        if(userVO.get() > 0){
-//
-//            return borrowReturnService.selectBorrowInfo(userVO);
-//
-//        }
-//        // 책 코드가 데이터로 들어 올 때
-//        else if (userVO.getBookBorrowList().contains("GR")) {
-//
-//
-//            return ;
-//        }
-//        // 둘 다 아닐 때
-//        else {
-//
-//            return ;
-//        }
-//    }
+    public MemberVO selectBorrowInfo(@RequestBody RequestDataVO requestDataVO){
+
+        System.out.println(requestDataVO);
+
+        MemberVO memberInfo = new MemberVO();
+        memberInfo.setCardNum(requestDataVO.getCardNum());
+
+
+        // 대출번호가 데이터로 들어 올 때
+        if(memberInfo.getCardNum() > 0 && !requestDataVO.getBookCode().contains("GR")){
+            memberInfo = borrowReturnService.selectBorrowInfo(memberInfo);
+            System.out.println(memberInfo);
+        }
+        return memberInfo;
+
+    }
+
+    //대출 기능
+
+
 
     //일관 반납
     @GetMapping("/consistentReturn")

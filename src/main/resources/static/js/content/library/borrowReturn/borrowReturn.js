@@ -1,13 +1,20 @@
 function selectMemberInfo(){
 
-    // 멤버넘 선택하기
-    const memberVO = document.querySelector('#inputData').value;
+    // 인풋 데이터 선택하기
+    let inputData = document.querySelector('#inputData').value;
     
     // 그림 그릴 이용자 정보 태그 선택하기
     const userInfo = document.querySelector('#userInfo');
     const cardNum = document.querySelector('#card-num');
     const userName = document.querySelector('#user-name');
     const tel = document.querySelector('#tel');
+
+    let requestDataVO = {
+        cardNum : !isNaN(parseInt(inputData, 10)) ? parseInt(inputData, 10) : null
+        , bookCode : inputData
+    }
+
+    console.log(requestDataVO)
     
     fetch('/bookAdmin/selectBorrowInfo', { //요청경로
         method: 'POST',
@@ -16,10 +23,7 @@ function selectMemberInfo(){
             'Content-Type': 'application/json; charset=UTF-8'
         },
         //컨트롤러로 전달할 데이터
-        body: JSON.stringify({
-           // 데이터명 : 데이터값
-           memberVO : memberVO
-        })
+        body: JSON.stringify(requestDataVO)
     })
     .then((response) => {
         return response.json(); //나머지 경우에 사용
@@ -27,27 +31,29 @@ function selectMemberInfo(){
     //fetch 통신 후 실행 영역
     .then((data) => {//data -> controller에서 리턴되는 데이터!
 
+        console.log(data);
+
         userInfo.innerHTML = '';
         
-        let str = ''
+        let str = '';
 
         str= `
         <div class="row">
             <div class="col" id="cardNum">
-                ${data.memberNum}
+                ${data.cardNum}
             </div>
         </div>
         <div class="row">
             <div class="col" id="userName">
-                ${data.memberVO.userName}
+                ${data.userName}
             </div>
         </div>
         <div class="row">
             <div class="col" id="tel">
-                ${data.memberVO.userTel}
+                ${data.userTel}
             </div>
         </div>
-        `
+        `;
 
         userInfo.insertAdjacentHTML('afterbegin', str);
     })
@@ -57,4 +63,3 @@ function selectMemberInfo(){
         console.log(err);
     });
 }
-

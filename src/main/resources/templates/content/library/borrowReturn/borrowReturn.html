@@ -3,8 +3,7 @@
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
     layout:decorate="~{fragment/library/library_layout}" >
 
-<th:block layout:fragment="content_css">
-    <!-- html 파일이 열릴때 같이 실행되는 css -->
+<th:block>
     <link rel="stylesheet" href="/css/content/library/borrowReturn/borrowReturn.css">
 </th:block>
 
@@ -34,7 +33,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="input-group mb-3" style="width: 89%; height: 1em;">
-                                        <input type="text" class="form-control" placeholder="대출번호" name="memberNum" id="inputData" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                        <input type="text" class="form-control" placeholder="대출번호" name="inputData" id="inputData" aria-label="Recipient's username" aria-describedby="button-addon2">
                                         <button class="btn btn-secondary" type="button" id="button-addon2" onclick="selectMemberInfo()">처리</button>
                                     </div>
                                 </div>

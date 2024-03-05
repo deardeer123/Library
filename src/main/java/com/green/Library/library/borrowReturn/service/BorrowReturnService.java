@@ -1,14 +1,15 @@
 package com.green.Library.library.borrowReturn.service;
 
 import com.green.Library.library.user.vo.UserVO;
+import com.green.Library.web.member.vo.MemberVO;
 
 public interface BorrowReturnService {
 
     // 이용자의 대출정보 조회
-    UserVO selectBorrowInfo(UserVO userVO);
+    MemberVO selectBorrowInfo(MemberVO memberVO);
 
-    // 이용자 대출 insert 및 대출 가능 여부 update
-
+    // 대출 시 book_borrow의 exReturnDate 업데이트
+    int updateExReturnDate(MemberVO memberVO);
 
     // 이용자 반납 update 및 대출 가능 여부 update
 }

@@ -37,22 +37,15 @@ public class BoardServiceImpl implements BoardService {
         return sqlSession.selectOne("boardMapper.countBoard");
     }
 
-<<<<<<< HEAD
-    @Override
+//    @Override
+//    public int maxBoardNo() {
+//        return sqlSession.selectOne("boardMapper.insertImgList");
+//    }
 
-    public int maxBoardNo() {
-        return sqlSession.selectOne("boardMapper.insertImgList");
-    }
-
-=======
-
-
->>>>>>> 0bbaaf2eaeeb5977377a82cc91efa83d44d01ef1
     public BoardVO selectBoardDetail() {
         return sqlSession.selectOne("boardMapper.selectBoardDetail");
     }
 
-<<<<<<< HEAD
     @Override
     public List<BoardVO> forumSelectBoardList(SearchVO searchVO) {
         return sqlSession.selectList("boardMapper.forumSelectBoardList",searchVO);
@@ -62,7 +55,6 @@ public class BoardServiceImpl implements BoardService {
 //    public void insertUploadFile(BoardVO boardVO) {
 //        sqlSession.insert("boardMapper.insertUpload");
 //    }
-=======
     public BoardVO selectBoardDetail(int boardNo) {
         return sqlSession.selectOne("boardMapper.selectBoardDetail", boardNo);
     }
@@ -83,7 +75,6 @@ public class BoardServiceImpl implements BoardService {
     }
 
 
->>>>>>> 0bbaaf2eaeeb5977377a82cc91efa83d44d01ef1
 
 }
 
