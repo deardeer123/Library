@@ -43,6 +43,3 @@ public interface BoardService {
     //게시판 수정
     void updateBoard(BoardVO boardVO);
 >>>>>>> 0bbaaf2eaeeb5977377a82cc91efa83d44d01ef1
-}
-gi
-
