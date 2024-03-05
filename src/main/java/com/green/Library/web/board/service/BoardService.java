@@ -16,13 +16,12 @@ public interface BoardService {
     List<BoardVO> selectBoardList(SearchVO searchVO);
 
     //게시글 큰 값
-    int maxBoardNo();
-
     int isNullBoardNo();
 
     //게시판 개수
     int countBoard();
 
+<<<<<<< HEAD
     //상세 게시판
     BoardVO selectBoardDetail();
 
@@ -31,4 +30,19 @@ public interface BoardService {
 
 //    //업로드 파일
 //    void insertUploadFile (BoardVO boardVO);
+=======
+
+    BoardVO selectBoardDetail(int boardNo);
+
+    //조회수
+    void boardCntUp(int boardNo);
+
+    // 게시판 삭제
+    void deleteBoard(int boardNo);
+
+    //게시판 수정
+    void updateBoard(BoardVO boardVO);
+>>>>>>> 0bbaaf2eaeeb5977377a82cc91efa83d44d01ef1
 }
+
+

@@ -67,15 +67,24 @@
             , ORIGIN_FILE_NAME
             , ATTACHED_FILE_NAME
             , IS_MAIN
+            , BOARD_TYPE
         FROM board INNER JOIN USERS
         ON BOARD.USER_CODE = USERS.USER_CODE
         INNER JOIN IMAGE
         ON BOARD.BOARD_NO = IMAGE.BOARD_NO
+        WHERE BOARD_TYPE = ${boardType}
         <if test='searchValue != null and !searchValue.equals("")'>
             where ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
         </if>
+        <if test='fromDate != null and !fromDate.equals("")'>
+            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') &gt;= #{fromDate}
+        </if>
+        <if test='toDate != null and !toDate.equals("")'>
+            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') &lt;= #{toDate}
+        </if>
         ORDER BY BOARD_NO DESC
         LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
+
     </select>
 
     <!--  이미지 등록  -->
@@ -95,11 +104,6 @@
         </foreach>
     </insert>
 
-    <select id="maxBoardNo" resultType="int">
-        SELECT
-            MAX(board_no) + 1
-        FROM BOARD
-    </select>
 
     <!--  게시판 개수 + 1  -->
     <select id="isNullBoardNo" resultType="int">
@@ -117,6 +121,7 @@
         FROM BOARD
     </select>
 
+    <!--  게시물 상세보기  -->
     <select id="selectBoardDetail" resultMap="board">
         SELECT
             BOARD.BOARD_NO
@@ -133,8 +138,10 @@
         ON BOARD.USER_CODE = USERS.USER_CODE
         INNER JOIN IMAGE
         ON BOARD.BOARD_NO = IMAGE.BOARD_NO
+        WHERE BOARD.BOARD_NO = #{boardNo}
     </select>
 
+<<<<<<< HEAD
     <!--  등록한 게시물 정보 리스트  -->
     <select id="forumSelectBoardList" resultMap="board">
         SELECT
@@ -171,6 +178,29 @@
         )
         </foreach>
     </insert>
+=======
+    <update id="boardCntUp">
+        UPDATE BOARD
+        SET BOARD_CNT = BOARD_CNT + 1
+        WHERE BOARD_NO
+    </update>
+
+    <!--  게시판 삭제  -->
+    <delete id="deleteBoard">
+        DELETE FROM BOARD
+        WHERE BOARD_NO = #{boardNo}
+    </delete>
+
+    <!--  게시판 수정  -->
+    <update id="updateBoard">
+        UPDATE BOARD
+        SET
+        BOARD_TITLE = #{boardTitle}
+        ,CONTENT = #{content}
+        WHERE BOARD_NO = #{boardNo}
+    </update>
+
+>>>>>>> 0bbaaf2eaeeb5977377a82cc91efa83d44d01ef1
 
 
 

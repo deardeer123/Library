@@ -3,18 +3,6 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="borrowReturnMapper">
-    <resultMap id="memberCard" type="com.green.Library.library.borrowReturn.vo.MemberCardVO">
-        <id          column="MEMBER_NUM"        property="memberNum"/>
-        <result      column="MEMBER_REG"       property="memberReg"/>
-        <result      column="MEMBER_PENALTY"   property="memberPenalty"/>
-        <result      column="MEMBER_BOOK_CNT"  property="memberBookCnt"/>
-        <result      column="MEMBER_INTRO"     property="memberIntro"/>
-        <result      column="USER_CODE"        property="userCode"/>
-        <result      column="BR_CODE"          property="brCode"/>
-        <result      column="RT_CODE"          property="rtCode"/>
-        <collection  property="bookBorrowList" resultMap="bookBorrow"/>
-        <collection  property="bookReturnList" resultMap="bookReturn"/>
-    </resultMap>
 
     <resultMap id="bookBorrow" type="com.green.Library.library.borrowReturn.vo.BookBorrowVO">
         <id     column="BR_CODE"          property="brCode"/>
@@ -32,35 +20,48 @@
         <result column="BOOK_CODE"   property="bookCode"/>
     </resultMap>
 
+<!--    <select id="">-->
+<!--   유저 관리 기능 만들 때 다음 번호를 조회 후 insert로 cardNum 주기 -->
+<!--    <select id="selectNextCardNum" resultType="int">-->
+<!--        SELECT IFNULL(MAX(CARD_NUM), 0) + 1 FROM USERS-->
+<!--    </select>-->
+<!--    </select>-->
 
     <!-- 이용자의 대출 정보 조회-->
-    <select id="selectBorrowInfo" resultMap="memberCard">
-        SELECT MEMBER_NUM
-            , MEMBER_PENALTY
-            , MEMBER_INTRO
-            , MEMBER_BOOK_CNT
-            , MC.USER_CODE
+    <select id="selectBorrowInfo" resultMap="memberMapper.users">
+        SELECT CARD_NUM
+            , USER_INTRO
+            , USER_CODE
             , USER_NAME
             , USER_TEL
-            , MC.BR_CODE
+            , BR_CODE
             , BORROW_DATE
             , RETURN_YN
             , EX_RETURN_DATE
             , MC.RT_CODE
             , RETURN_DATE
             , BR.BOOK_CODE
-        FROM MEMBER_CARD AS MC
-        INNER JOIN USERS AS U
-        ON U.USER_CODE = MC.USER_CODE
+        FROM USERS AS U
         LEFT JOIN BOOK_BORROW AS BB
-        ON MC.BR_CODE = BB.BR_CODE
+        ON U.BR_CODE = BB.BR_CODE
         LEFT JOIN BOOK_RETURN AS BR
         ON MC.RT_CODE = BR.RT_CODE
-        WHERE MC.USER_CODE = #{userCode}
+        WHERE MC.USER_CODE = #{memberNum}
         ORDER BY BORROW_DATE DESC
     </select>
 
+    <!--bookBorrow update -->
+<!--    <update id="">-->
+<!--        UPDATE BOOK_BORROW-->
+<!--        SET-->
+<!--            EX_RETURN_DATE = EX_RETURN_DATE + DATE_ADD(NOW(), INTERVAL +14 DAY)-->
+<!--        WHERE-->
+<!--    </update>-->
 
+<!--    &lt;!&ndash; bookInfo update &ndash;&gt;-->
+<!--    <update id="">-->
+
+<!--    </update>-->
 
 </mapper>
 

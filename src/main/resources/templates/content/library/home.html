@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/library/library_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/library/library_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
@@ -10,12 +9,219 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    도서 관리 페이지 홈
-    
+    <div class="row">
+        <div class="col">
+
+            <div class="row">
+                <div class="col-3">
+                    <!-- 메세지 보내기 -->
+                    <form method="post">
+                        <!-- action="/send-one" -->
+                        <div class="row mb-3">
+                            <div class="col">메세지보내기</div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col" style="font-size: 0.8em;">
+                                        발신자 번호(01011111111 이런식으로 적어야함)
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="text" name="setFrom" class="form-control"
+                                            placeholder="발신자 01012341234">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col" style="font-size: 0.8em;">
+                                        수신자 번호(01011111111 이런식으로 적어야함)
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="text" name="setTo" class="form-control"
+                                            placeholder="수신자 01012341234">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col">
+                                <div class="input-group">
+                                    <span class="input-group-text">문자 내용</span>
+                                    <textarea class="form-control" aria-label="With textarea" name="messageText"
+                                        rows="6"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <input type="submit" class="btn btn-primary" value="제발되라">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-6">
+                    <!-- 달력 -->
+                    <div id='calendar'></div>
+                </div>
+
+                <div class="col-3">
+                    <!-- 일정추가 -->
+
+                    <div class="row">
+                        <div class="col">
+                            일정 추가
+                        </div>
+                    </div>
+                    <form action="/bookAdmin/calendarAdd" method="post">
+                        <div class="row mt-3">
+                            <div class="col">
+                                일정 이름
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col">
+                                <input type="text" name="title" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col">
+                                날짜
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col">
+                                <input type="date" name="start" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col">
+                                <input type="submit" class="btn btn-primary" value="일정 추가하기">
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- 일정삭제 -->
+                    <div class="row mt-3">
+                        <div class="col">
+                            일정삭제
+                        </div>
+                    </div>
+                    <form action="/bookAdmin/calendarDelete" method="post">
+                        <div class="row mt-3">
+                            <div class="col">
+                                일정 이름
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col">
+                                <input type="text" name="title" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col">
+                                날짜
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col">
+                                <input type="date" name="start" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col">
+                                <input type="submit" class="btn btn-primary" value="일정 삭제하기">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script>
+        calendarData();
+
+        function calendarData() {
+            // ------------------- 첫번째 방식 ---------------//
+            fetch('/bookAdmin/calendarData', { //요청경로
+                method: 'POST',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                //컨트롤러로 전달할 데이터
+                body: new URLSearchParams({
+                    // 데이터명 : 데이터값
+                })
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                        return;
+                    }
+
+                    //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+                    return response.json(); //나머지 경우에 사용
+                })
+                //fetch 통신 후 실행 영역
+                .then((data) => {//data -> controller에서 리턴되는 데이터!
+                    let eventList = data
+                    console.log(eventList)
+
+                    
+                        var calendarEl = document.getElementById('calendar');
+                        var calendar = new FullCalendar.Calendar(calendarEl, {
+                            height: 650,
+                            initialView: 'dayGridMonth',
+                            locale: 'ko',
+                            //이벤트
+                            events: eventList
+
+                        });
+                        calendar.render();
+                    
+
+
+                })
+                //fetch 통신 실패 시 실행 영역
+                .catch(err => {
+                    alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+                    console.log(err);
+                });
+
+        }
+
+    </script>
+
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
     <!-- <script src="/"></script> -->
 </th:block>
+
 </html>
