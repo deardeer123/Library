@@ -2,6 +2,7 @@ package com.green.Library.library.borrowReturn.controller;
 
 import com.green.Library.library.borrowReturn.service.BorrowReturnService;
 import com.green.Library.library.borrowReturn.vo.BookBorrowVO;
+import com.green.Library.library.borrowReturn.vo.RequestDataVO;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.user.vo.UserVO;
 import com.green.Library.web.member.vo.MemberVO;
@@ -27,21 +28,27 @@ public class BorrowReturnController {
         //model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
         System.out.println("대출반납으로 이동");
-        return "content/library/borrowReturn/borrowReturn";
+        return "content/library/borrowReturn/borrowReturn.html";
     }
 
     //이용자 조회
     @ResponseBody
     @PostMapping("/selectBorrowInfo")
-    public MemberVO selectBorrowInfo(@RequestBody MemberVO inputData){
+    public MemberVO selectBorrowInfo(@RequestBody RequestDataVO requestDataVO){
+
+        System.out.println(requestDataVO);
 
         MemberVO memberInfo = new MemberVO();
+        memberInfo.setCardNum(requestDataVO.getCardNum());
+
 
         // 대출번호가 데이터로 들어 올 때
-        if(inputData.getCardNum() > 0){
-            memberInfo = borrowReturnService.selectBorrowInfo(inputData);
+        if(memberInfo.getCardNum() > 0 && !requestDataVO.getBookCode().contains("GR")){
+            memberInfo = borrowReturnService.selectBorrowInfo(memberInfo);
+            System.out.println(memberInfo);
         }
         return memberInfo;
+
     }
 
     //대출 기능
