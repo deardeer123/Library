@@ -1,6 +1,7 @@
 package com.green.Library.web.participationForum.service;
 
 import com.green.Library.web.board.vo.BoardVO;
+import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.participationForum.vo.ParticipationForumVO;
 
 import java.util.List;
@@ -19,5 +20,8 @@ ParticipationForumService {
     //공지사항 상세조회
     BoardVO noticeDetail (int boardNo);
 
-    //
+    //게시물 갯수 조회
+    int partiCountBoard(SearchVO searchVO);
+
+
 }

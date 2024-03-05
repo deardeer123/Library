@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/layout파일명기입}" >
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴 때 같이 실행되는 css -->
@@ -27,12 +27,21 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr th:each="img : ${board.imgList}">
+                        <td>
+                            <img th:src="@{'/upload/' + ${img.attachedFileName}}">
+                        </td>
+                    </tr>
                     <tr>
-                        <td></td>
-                        <td></td>
+                        <td>[[${board.content}]]</td>
                     </tr>
                 </tbody>
             </table>
+            <th:block th:if="${session.loginInfo != null}">
+                <th:block th:if="${session.loginInfo.isAdmin == 'Y'}">
+                    <input type="button" value="게시글 수정" th:onclick="|location.href='@{/culUpdate(boardNo=${board.boardNo})}'|">
+                </th:block>
+            </th:block>
         </div>
     </div>
 </th:block>

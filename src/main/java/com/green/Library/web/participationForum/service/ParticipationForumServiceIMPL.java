@@ -1,6 +1,7 @@
 package com.green.Library.web.participationForum.service;
 
 import com.green.Library.web.board.vo.BoardVO;
+import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.participationForum.vo.ParticipationForumVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
     @Override
     public void insertNotice(BoardVO boardVO) {
         sqlSession.insert("participationForumMapper.insertBoard", boardVO);
+        sqlSession.insert("boardMapper.insertUpload");
     }
 
     //공지사항조회
@@ -38,6 +40,10 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
         return sqlSession.selectOne("participationForumMapper.noticeDetail", boardNo);
     }
 
+    @Override
+    public int partiCountBoard(SearchVO searchVO) {
+        return sqlSession.selectOne("participationForumMapper.partiCountBoard",searchVO);
+    }
 
 
 }

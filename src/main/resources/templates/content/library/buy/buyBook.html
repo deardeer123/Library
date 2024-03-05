@@ -25,7 +25,7 @@
                                     <div class="col">
                                         <div class="text-center">
                                             <img src="/upload/book_character_smile.png" class="rounded" alt="..."
-                                                width="100%" id="bookImg">
+                                                width="60%" id="bookImg">
                                         </div>
                                     </div>
                                 </div>
@@ -71,10 +71,23 @@
                                 <div class="row mb-4">
                                     <div class="col-3">카테고리</div>
                                     <div class="col-9">
-                                        <select class="form-select" aria-label="Default select example" name="bookCateCode">
+                                        <select class="form-select" aria-label="Default select example" name="bookCateCode"
+                                        onchange="changeCate()" id="book-cate">
+                                            <option selected>대분류</option>
                                             <th:block th:each="e:${cateList}">
                                                 <option th:value="${e.bookCateCode}">[[${e.bookCateName}]]</option>
                                             </th:block>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-3"></div>
+                                    <!-- 중분류 -->
+                                    <div class="col-9">
+                                        <select class="form-select" aria-label="Default select example"
+                                            name="bookMidCateCode" id="book-mid-cate">
+                                            <option>중분류</option>
+                    
                                         </select>
                                     </div>
                                 </div>
@@ -114,6 +127,70 @@
 
     <script>
         isInsert()
+
+        function changeCate() {
+            let select_tags = document.querySelector("#book-cate");
+            let option_value = (select_tags.options[select_tags.selectedIndex].value);
+            console.log(option_value);
+            if(option_value == '대분류'){
+                //만약에 대분류 선택했으면 
+                //중분류에 있는거 다 없애버리기
+                const book_mid_cate_tag = document.querySelector("#book-mid-cate");
+                book_mid_cate_tag.innerHTML = '';
+                let str = `
+                    <option>중분류</option>
+                `
+                book_mid_cate_tag.insertAdjacentHTML("beforeend", str)
+
+                return;
+            }
+
+            // ------------------- 첫번째 방식 ---------------//
+            fetch('/bookAdmin/selectCateList', { //요청경로
+                method: 'POST',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                //컨트롤러로 전달할 데이터
+                body: new URLSearchParams({
+                    // 데이터명 : 데이터값
+                    bookCateCode: option_value
+                })
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                        return;
+                    }
+
+                    //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+                    return response.json(); //나머지 경우에 사용
+                })
+                //fetch 통신 후 실행 영역
+                .then((data) => {//data -> controller에서 리턴되는 데이터!
+                    console.log(data)
+                    const book_mid_cate_tag = document.querySelector("#book-mid-cate");
+                    book_mid_cate_tag.innerHTML = '';
+                    let str = ``;
+
+                    for (let e of data.libraryBookMidCategoryVOList) {
+                        str = `
+                            <option value='${e.bookMidCateCode}'>${e.bookMidCateName}</option>
+                        `
+                        book_mid_cate_tag.insertAdjacentHTML("beforeend", str)
+
+                    }
+
+                })
+                //fetch 통신 실패 시 실행 영역
+                .catch(err => {
+                    alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+                    console.log(err);
+                });
+
+
+        }
 
         function isInsert(){
             //alert("씨발")

@@ -11,7 +11,7 @@
 <th:block layout:fragment="contentFragment">
   <!-- html code 작성-->
 
-  <form action="/noticeWrite" method="post">
+  <form action="/noticeWrite" method="post" enctype="multipart/form-data">
     <div class="row">
     <div class="col">
       <table class="table table-bordered text-center align-middle">
@@ -44,7 +44,7 @@
           <td>첨부파일<span>*</span></td>
           <td>
             <div class="input-group mb-3">
-              <input type="file" class="form-control" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" aria-label="Upload" name="attachedFileName">
+              <input type="file" class="form-control" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" aria-label="Upload" name="files" multiple>
             </div>
           </td>
         </tr>

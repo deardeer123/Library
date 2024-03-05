@@ -3,6 +3,9 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="culturalAndEducationMapper">
+
+
+
 <!--    <resultMap id="culture" type="com.green.Library.web.culturalAndEducation.vo.CulturalAndEducationVO">-->
 <!--        <id column="BOARD_NO"          property="boardNo"/>-->
 <!--        <result column="BOARD_TITLE"   property="boardTitle"/>-->
@@ -88,7 +91,13 @@
 <!--        SELECT-->
 <!--            MAX(board_no) + 1-->
 <!--        FROM BOARD-->
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev-nam
+>>>>>>> 0bbaaf2eaeeb5977377a82cc91efa83d44d01ef1
 
 <!--    </select>-->
 

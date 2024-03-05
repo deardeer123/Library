@@ -35,6 +35,13 @@
         WHERE
             book.BOOK_CODE = #{bookCode};
     </select>
+
+    <select id="selectOneBookDetail" resultMap="libraryBookMapper.libraryBook">
+
+    </select>
+
+
+
 <!--    책 업데이트-->
     <update id="updateBook">
         UPDATE book
