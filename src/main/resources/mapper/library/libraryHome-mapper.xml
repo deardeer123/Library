@@ -3,7 +3,34 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="libraryHomeMapper">
+    <resultMap id="calendar" type="com.green.Library.library.libraryhome.vo.CalendarVO">
+        <result column="CALENDAR_TITLE" property="title" />
+        <result column="CALENDAR_START" property="start" />
+    </resultMap>
 
+    <select id="selectCalendarList" resultMap="calendar">
+        SELECT
+        CALENDAR_TITLE ,
+        DATE_FORMAT(CALENDAR_START, '%Y-%m-%d') AS CALENDAR_START
+        FROM
+        CALENDAR
+    </select>
+
+    <insert id="insertCalendar">
+        INSERT INTO CALENDAR(
+        CALENDAR_TITLE ,
+        CALENDAR_START)
+        values(
+        #{title},
+        #{start}
+        )
+    </insert>
+
+    <delete id="deleteCalendar">
+        delete from calendar
+        where
+        CALENDAR_TITLE = #{title} and CALENDAR_START = #{start}
+    </delete>
 </mapper>
 
 
