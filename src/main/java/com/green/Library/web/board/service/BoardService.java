@@ -21,11 +21,7 @@ public interface BoardService {
     //게시판 개수
     int countBoard();
 
-    //상세 게시판
-<<<<<<< HEAD
-    BoardVO selectBoardDetail();
 
-=======
     BoardVO selectBoardDetail(int boardNo);
 
     //조회수
@@ -36,6 +32,6 @@ public interface BoardService {
 
     //게시판 수정
     void updateBoard(BoardVO boardVO);
->>>>>>> dev-nam
 }
+
 

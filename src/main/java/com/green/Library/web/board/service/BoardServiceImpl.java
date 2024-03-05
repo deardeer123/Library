@@ -37,16 +37,12 @@ public class BoardServiceImpl implements BoardService {
         return sqlSession.selectOne("boardMapper.countBoard");
     }
 
-    @Override
-<<<<<<< HEAD
-    public int maxBoardNo() {
-        return sqlSession.selectOne("boardMapper.insertImgList");
-    }
+
 
     public BoardVO selectBoardDetail() {
         return sqlSession.selectOne("boardMapper.selectBoardDetail");
     }
-=======
+
     public BoardVO selectBoardDetail(int boardNo) {
         return sqlSession.selectOne("boardMapper.selectBoardDetail", boardNo);
     }
@@ -66,7 +62,7 @@ public class BoardServiceImpl implements BoardService {
         sqlSession.update("boardMapper.updateBoard",boardVO);
     }
 
->>>>>>> dev-nam
+
 
 }
 
