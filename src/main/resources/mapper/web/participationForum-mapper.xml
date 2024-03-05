@@ -7,42 +7,20 @@
     <!-- 공지사항 등록-->
     <insert id="insertBoard">
         INSERT INTO BOARD (
-            BOARD_NO
-            , BOARD_TITLE
+            BOARD_TITLE
             , CONTENT
             , BOARD_DATE
             , BOARD_TYPE
             , USER_CODE
             , BOARD_CNT
         ) VALUES (
-            #{boardNo}
-            , #{boardTitle}
+            #{boardTitle}
             , #{content}
             , #{boardDate}
             , #{boardType}
             , #{userCode}
             , #{boardCnt}
         )
-    </insert>
-
-    <!-- 첨부파일 등록용-->
-    <insert id="insertImg">
-        INSERT INTO IMAGE (
-            IMG_CODE
-            , ORIGIN_FILE_NAME
-            , ATTACHED_FILE_NAME
-            , IS_MAIN
-            , BOARD_NO
-        ) VALUES
-        <foreach collection="imgList" item="img" separator=",">
-        (
-        #{img.imgCode}
-        , #{img.originFileName}
-        , #{img.attachedFileName}
-        , #{img.isMain}
-        , #{img.boardNo}
-        )
-        </foreach>
     </insert>
 
     <!-- 공지사항 조회-->
@@ -56,6 +34,7 @@
             , BOARD_CNT
         FROM BOARD INNER JOIN USERS
         ON BOARD.USER_CODE = USERS.USER_CODE
+        ORDER BY BOARD_NO DESC
     </select>
 
     <!-- 조회수 증가-->
@@ -72,11 +51,22 @@
             , BOARD_DATE
             , BOARD_CNT
             , CONTENT
-            , ATTACHED_FILE_NAME
-            FROM BOARD INNER JOIN IMAGE
-            ON BOARD.BOARD_NO = IMAGE.BOARD_NO
+            , UPLOAD_ATTACHED_FILE_NAME
+            FROM BOARD INNER JOIN UPLOADFILE
+            ON BOARD.BOARD_NO = UPLOADFILE.BOARD_NO
             WHERE BOARD.BOARD_NO = #{boardNo}
     </select>
+
+    <!--  게시판 개수 조회 -->
+    <select id="partiCountBoard" resultType="int">
+        SELECT COUNT (BOARD_NO)
+        FROM BOARD inner join users
+        ON board.USER_CODE = users.USER_CODE
+        <if test='searchValue != null and !searchValue.equals("")'>
+            where ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+    </select>
+
 
 </mapper>
 

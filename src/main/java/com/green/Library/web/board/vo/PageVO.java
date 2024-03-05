@@ -12,14 +12,14 @@ public class PageVO {
 
     public PageVO(){
         nowPage = 1;
-        displayDataCnt = 9;
+        displayDataCnt = 10;
         displayPageCnt = 5;
     }
-
 
     public void setPageInfo(){
         // 화면 마지막 페이지 세팅
         endPage = (int)Math.ceil(nowPage / (double)displayPageCnt) * displayPageCnt;
+        // 화면 첫 페이지 세팅
         beginPage = endPage - displayPageCnt + 1;
 
         //전체 페이지 수
@@ -33,7 +33,7 @@ public class PageVO {
             next = false;
             endPage = totalPageCnt;
         }
-
+        //prev 이전버튼 유무
         prev = beginPage == 1 ? false : true;
 
 

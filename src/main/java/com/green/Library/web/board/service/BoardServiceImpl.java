@@ -37,16 +37,23 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-<<<<<<< HEAD
+
     public int maxBoardNo() {
         return sqlSession.selectOne("boardMapper.insertImgList");
     }
 
-
-=======
     public BoardVO selectBoardDetail() {
         return sqlSession.selectOne("boardMapper.selectBoardDetail");
     }
 
->>>>>>> 0c3b6763f5ba09e78a940f4ccd8d396d0d339ed3
+    @Override
+    public List<BoardVO> forumSelectBoardList(SearchVO searchVO) {
+        return sqlSession.selectList("boardMapper.forumSelectBoardList",searchVO);
+    }
+
+//    @Override
+//    public void insertUploadFile(BoardVO boardVO) {
+//        sqlSession.insert("boardMapper.insertUpload");
+//    }
+
 }

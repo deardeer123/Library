@@ -13,6 +13,7 @@
         <result column="BOARD_TYPE"     property="boardType"/>
         <association property="memberVO" resultMap="memberMapper.users"/>
         <collection property="imgList" resultMap="img"/>
+        <collection property="uploadList" resultMap="upload"/>
     </resultMap>
 
     <resultMap id="img" type="com.green.Library.web.img.vo.ImgVO">
@@ -21,6 +22,13 @@
         <result column="ATTACHED_FILE_NAME" property="attachedFileName"/>
         <result column="IS_MAIN" property="isMain"/>
         <result column="BOARD_NO" property="boardNo"/>
+    </resultMap>
+
+    <resultMap id="upload" type="com.green.Library.web.board.vo.UploadVO">
+        <id column="UPLOAD_CODE"                property="uploadCode"/>
+        <result column="UPLOAD_ORIGIN_FILE_NAME"    property="uploadOriginFileName"/>
+        <result column="UPLOAD_ATTACHED_FILE_NAME"  property="uploadAttachedFileName"/>
+        <result column="BOARD_NO"                   property="boardNo"/>
     </resultMap>
 
     <!--  게시글 작성   -->
@@ -126,6 +134,46 @@
         INNER JOIN IMAGE
         ON BOARD.BOARD_NO = IMAGE.BOARD_NO
     </select>
+
+    <!--  등록한 게시물 정보 리스트  -->
+    <select id="forumSelectBoardList" resultMap="board">
+        SELECT
+        BOARD.BOARD_NO
+        , BOARD_TITLE
+        , CONTENT
+        , BOARD_DATE
+        , BOARD.USER_CODE
+        , BOARD_CNT
+        , USER_ID
+        , USER_NAME
+        FROM board INNER JOIN USERS
+        ON BOARD.USER_CODE = USERS.USER_CODE
+        <if test='searchValue != null and !searchValue.equals("")'>
+            where ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+        ORDER BY BOARD_NO DESC
+        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
+    </select>
+
+    <!-- 업로드 파일 등록 -->
+    <insert id="insertUpload">
+        INSERT INTO UPLOADFILE (
+            UPLOAD_ORIGIN_FILE_NAME
+            , UPLOAD_ATTACHED_FILE_NAME
+            , BOARD_NO
+        )
+        VALUES
+        <foreach collection="uploadList" item="upload" separator=",">
+        (
+            #{upload.uploadOriginFileName}
+            , #{upload.uploadAttachedFileName}
+            , #{upload.boardNo}
+        )
+        </foreach>
+    </insert>
+
+
+
 </mapper>
 
 

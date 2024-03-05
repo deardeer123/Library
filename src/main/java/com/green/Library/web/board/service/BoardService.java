@@ -23,9 +23,12 @@ public interface BoardService {
     //게시판 개수
     int countBoard();
 
-<<<<<<< HEAD
-=======
     //상세 게시판
     BoardVO selectBoardDetail();
->>>>>>> 0c3b6763f5ba09e78a940f4ccd8d396d0d339ed3
+
+    //게시글 리스트
+    List<BoardVO> forumSelectBoardList(SearchVO searchVO);
+
+//    //업로드 파일
+//    void insertUploadFile (BoardVO boardVO);
 }
