@@ -40,10 +40,6 @@ public interface BoardService {
 
     //게시판 수정
     void updateBoard(BoardVO boardVO);
-<<<<<<< HEAD
->>>>>>> 0bbaaf2eaeeb5977377a82cc91efa83d44d01ef1
-=======
+
 }
 
-
->>>>>>> 5f84ecb36f202008100fd99f51e7c11ca00d6895
