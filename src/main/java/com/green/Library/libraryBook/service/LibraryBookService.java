@@ -12,4 +12,6 @@ public interface LibraryBookService {
     //카테고리 하나 찾기
     LibraryBookCategoryVO selectCateOne(int bookCateCode);
 
+
+
 }
