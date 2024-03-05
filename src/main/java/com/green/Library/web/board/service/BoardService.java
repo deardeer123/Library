@@ -44,5 +44,5 @@ public interface BoardService {
     void updateBoard(BoardVO boardVO);
 >>>>>>> 0bbaaf2eaeeb5977377a82cc91efa83d44d01ef1
 }
-
+gi
 
