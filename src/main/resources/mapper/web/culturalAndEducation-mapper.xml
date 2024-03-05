@@ -67,10 +67,6 @@
 <!--    </select>-->
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 0c3b6763f5ba09e78a940f4ccd8d396d0d339ed3
 <!--    &lt;!&ndash;  이미지 등록  &ndash;&gt;-->
 <!--    <insert id="insertImgList">-->
 <!--        INSERT INTO IMAGE(-->
@@ -92,10 +88,7 @@
 <!--        SELECT-->
 <!--            MAX(board_no) + 1-->
 <!--        FROM BOARD-->
-<<<<<<< HEAD
-=======
 
->>>>>>> 0c3b6763f5ba09e78a940f4ccd8d396d0d339ed3
 
 <!--    </select>-->
 
