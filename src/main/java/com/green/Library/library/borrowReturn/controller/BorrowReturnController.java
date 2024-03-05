@@ -1,8 +1,10 @@
 package com.green.Library.library.borrowReturn.controller;
 
 import com.green.Library.library.borrowReturn.service.BorrowReturnService;
+import com.green.Library.library.borrowReturn.vo.BookBorrowVO;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.user.vo.UserVO;
+import com.green.Library.web.member.vo.MemberVO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,29 +30,23 @@ public class BorrowReturnController {
         return "content/library/borrowReturn/borrowReturn";
     }
 
-    //이용자 대출 반납 조회 및 대출
+    //이용자 조회
     @ResponseBody
     @PostMapping("/selectBorrowInfo")
-//    public UserVO selectBorrowInfo(@RequestBody UserVO userVO){
-//
-//        // 대출번호가 데이터로 들어 올 때
-//        if(userVO.get() > 0){
-//
-//            return borrowReturnService.selectBorrowInfo(userVO);
-//
-//        }
-//        // 책 코드가 데이터로 들어 올 때
-//        else if (userVO.getBookBorrowList().contains("GR")) {
-//
-//
-//            return ;
-//        }
-//        // 둘 다 아닐 때
-//        else {
-//
-//            return ;
-//        }
-//    }
+    public MemberVO selectBorrowInfo(@RequestBody MemberVO inputData){
+
+        MemberVO memberInfo = new MemberVO();
+
+        // 대출번호가 데이터로 들어 올 때
+        if(inputData.getCardNum() > 0){
+            memberInfo = borrowReturnService.selectBorrowInfo(inputData);
+        }
+        return memberInfo;
+    }
+
+    //대출 기능
+
+
 
     //일관 반납
     @GetMapping("/consistentReturn")
