@@ -12,14 +12,6 @@ import java.util.List;
 @Setter
 @ToString
 public class ParticipationForumVO {
-    private int boardNo;
-    private String boardTitle;
-    private String content;
-    private String boardDate;
-    private int userCode;
-    private int boardCnt;
-    private int boardType;
-    private MemberVO memberVO;
-    private List<Image> images;
+
 
 }

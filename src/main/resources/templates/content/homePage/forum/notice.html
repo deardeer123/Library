@@ -22,21 +22,22 @@
       </div>
   
     <div class="row">
+      <form action="/notice" method="post">
         <div class="col-3">
           <div class="input-group mb-3">
-            <select class="form-select">
-              <option value="1">제목</option>
-              <option value="2">내용</option>
-              <option value="3">작성자</option>
+            <select class="form-select" name="searchType">
+              <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'boardTitle'}">제목</option>
+              <option value="USER_NAME" th:selected="${searchVO.searchType == 'userName'}">작성자</option>
             </select>
           </div>
           </div>
-          <div class="col-7">
-            <input type="text" class="form-control" aria-label="Text input with dropdown button">
+          <div class="col-5">
+            <input type="text" class="form-control" name="searchValue" th:value="${searchVO.searchValue}" aria-label="Text input with dropdown button">
           </div>
-        <div class="col-2">
-          <input class="btn btn-outline-secondary" value="검색" id="inputGroupFileAddon04">
-        </div>
+          <div class="col-2">
+            <input type="submit" class="btn btn-outline-secondary" value="검색" id="inputGroupFileAddon04">
+          </div>
+      </form>
     </div>
     
     전체게시글 수 총 N 개
@@ -61,8 +62,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr th:each="notice : ${noticeList}">
-                <td>[[${notice.boardNo}]]</td>
+            <tr th:each="notice,state : ${noticeList}">
+                <td>[[${#lists.size(noticeList) - state.index}]]</td>
                 <td th:onclick="location.href='/noticeDetail?boardNo=[[${notice.boardNo}]]'">
                   [[${notice.boardTitle}]]</td>
                 <td>[[${notice.memberVO.userName}]]</td>
@@ -73,11 +74,28 @@
         </table>
       </div>
     </div>
+    
+
+          <!-- 페이징처리 -->
+      <div class="col-12 text-center">
+        <th:block th:if="${searchVO.prev}">
+            <a th:href="@{/notice(nowPage=${searchVO.beginPage - 1})}">이전</a>
+        </th:block>
+        <th:block th:each=" i : ${#numbers.sequence(searchVO.beginPage, searchVO.endPage)}">
+            <a th:href="@{/notice(nowPage=${i})}">[[${i}]]</a>
+        </th:block>
+        <th:block th:if="${searchVO.next}">
+            <a th:href="@{/notice(nowPage=${searchVO.endPage + 1})}">다음</a>
+        </th:block>
+      </div>
+
     <input type="button" value="목록" onclick="location.href='/notice'">
-    <!-- <th:block th:if="${session.logiInfo.isMain == 'Y'}"> 지훈push해주면 테스트하자 -->
-      <input type="button" value="글쓰기" onclick="location.href='/noticeWrite'">
-    <!-- </th:block> -->
-  
+    
+    <th:block th:if="${session.loginInfo != null}">
+      <th:block th:if="${session.loginInfo.isAdmin == 'Y'}"> 
+        <input type="button" value="글쓰기" onclick="location.href='/noticeWrite'">
+      </th:block>
+    </th:block>
     
 </th:block>
 

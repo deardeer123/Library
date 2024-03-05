@@ -1,12 +1,11 @@
 package com.green.Library.library.borrowReturn.service;
 
-import com.green.Library.library.borrowReturn.vo.BookBorrowVO;
+import com.green.Library.library.user.vo.UserVO;
+import com.green.Library.web.member.vo.MemberVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service("borrowReturnService")
 public class BorrowReturnServiceImpl implements BorrowReturnService{
@@ -15,11 +14,15 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
 
     // 대출 정보 이력 조회
     @Override
-    public List<BookBorrowVO> selectBorrowInfo(int userCode) {
-        return sqlSession.selectList("borrowReturnMapper.selectBorrowInfo", userCode);
+    public MemberVO selectBorrowInfo(MemberVO memberVO) {
+        return sqlSession.selectOne("borrowReturnMapper.selectBorrowInfo", memberVO);
     }
 
-    // 대출 정보 INSERT 및 책 정보 UPDATE
-
+    // 대출 시 book_borrow의 exReturnDate 업데이트
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateExReturnDate(MemberVO memberVO) {
+        sqlSession.update("borrowReturnMapper.updateExReturnDate", memberVO);
+    }
 
 }

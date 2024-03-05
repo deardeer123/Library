@@ -3,55 +3,28 @@
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="participationForumMapper">
-    <resultMap id="culBoard" type="com.green.Library.web.participationForum.vo.ParticipationForumVO">
-    <id column="BOARD_NO"          property="boardNo"/>
-    <result column="BOARD_TITLE"   property="boardTitle"/>
-    <result column="CONTENT"       property="content"/>
-    <result column="BOARD_DATE"    property="boardDate"/>
-    <result column="USER_CODE"     property="userCode"/>
-    <result column="BOARD_CNT"     property="boardCnt"/>
-    <result column="BOARD_TYPE"     property="boardType"/>
-    <association property="memberVO"  resultMap="memberMapper.users" />
-    <collection property="images" resultMap="img"/>
-    </resultMap>
-
-<<<<<<< HEAD
-    <resultMap id="img" type="com.green.Library.web.img.vo.ImgVO">
-        <id column="IMG_CODE"          property="imgCode"/>
-=======
-    <resultMap id="img" type="com.green.Library.web.img.vo.imgVO">
-        <id column="IMG_CODE"               property="imgCode"/>
->>>>>>> UK
-        <result column="ORIGIN_FILE_NAME"   property="originFileName"/>
-        <result column="ATTACHED_FILE_NAME" property="attachedFileName"/>
-        <result column="IS_MAIN"            property="isMain"/>
-    </resultMap>
 
     <!-- 공지사항 등록-->
     <insert id="insertBoard">
         INSERT INTO BOARD (
-            BOARD_NO
-            , BOARD_TITLE
+            BOARD_TITLE
             , CONTENT
             , BOARD_DATE
             , BOARD_TYPE
             , USER_CODE
             , BOARD_CNT
-            , ATTACHED_FILE_NAME
         ) VALUES (
-            #{boardNo}
-            , #{boardTitle}
+            #{boardTitle}
             , #{content}
             , #{boardDate}
             , #{boardType}
             , #{userCode}
             , #{boardCnt}
-            , #{attachedFileName}
         )
     </insert>
 
     <!-- 공지사항 조회-->
-    <select id="selectNotice" resultMap="board">
+    <select id="selectNotice" resultMap="boardMapper.board">
         SELECT BOARD.BOARD_NO
             , BOARD_TITLE
             , CONTENT
@@ -61,6 +34,7 @@
             , BOARD_CNT
         FROM BOARD INNER JOIN USERS
         ON BOARD.USER_CODE = USERS.USER_CODE
+        ORDER BY BOARD_NO DESC
     </select>
 
     <!-- 조회수 증가-->
@@ -71,18 +45,30 @@
     </update>
 
     <!-- 공지사항 상세조회-->
-    <select id="noticeDetail" resultMap="board">
-            SELECT BOARD_NO
+    <select id="noticeDetail" resultMap="boardMapper.board">
+            SELECT BOARD.BOARD_NO
             , BOARD_TITLE
             , BOARD_DATE
             , BOARD_CNT
             , CONTENT
-<!--            , ATTACHED_FILE_NAME-->
-            FROM BOARD
-            WHERE BOARD_NO = #{boardNo}
+            , UPLOAD_ATTACHED_FILE_NAME
+            FROM BOARD INNER JOIN UPLOADFILE
+            ON BOARD.BOARD_NO = UPLOADFILE.BOARD_NO
+            WHERE BOARD.BOARD_NO = #{boardNo}
     </select>
-</mapper>
 
+    <!--  게시판 개수 조회 -->
+    <select id="partiCountBoard" resultType="int">
+        SELECT COUNT (BOARD_NO)
+        FROM BOARD inner join users
+        ON board.USER_CODE = users.USER_CODE
+        <if test='searchValue != null and !searchValue.equals("")'>
+            where ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+    </select>
+
+
+</mapper>
 
 
 

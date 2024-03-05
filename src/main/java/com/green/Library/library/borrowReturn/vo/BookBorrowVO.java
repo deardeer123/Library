@@ -11,11 +11,9 @@ import lombok.ToString;
 @ToString
 public class BookBorrowVO {
     private int brCode;
-    private String brDate;
-    private int bookCnt;
+    private String borrowDate;
     private String returnYN;
-    private String returnDate;
+    private String exReturnDate;
     private int userCode;
     private String bookCode;
-    private MemberVO memberVO;
 }

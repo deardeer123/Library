@@ -3,16 +3,12 @@ package com.green.Library.library.borrowReturn.controller;
 import com.green.Library.library.borrowReturn.service.BorrowReturnService;
 import com.green.Library.library.borrowReturn.vo.BookBorrowVO;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
+import com.green.Library.library.user.vo.UserVO;
 import com.green.Library.web.member.vo.MemberVO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/bookAdmin")
@@ -34,16 +30,23 @@ public class BorrowReturnController {
         return "content/library/borrowReturn/borrowReturn";
     }
 
-    //이용자 대출 반납 조회
+    //이용자 조회
+    @ResponseBody
     @PostMapping("/selectBorrowInfo")
-    public String selectBorrowInfo(@RequestParam(name = "userCode") int userCode, Model model){
+    public MemberVO selectBorrowInfo(@RequestBody MemberVO inputData){
 
-        List<BookBorrowVO> bookBorrowList = borrowReturnService.selectBorrowInfo(userCode);
+        MemberVO memberInfo = new MemberVO();
 
-        model.addAttribute("bookBorrowList", bookBorrowList);
-
-        return "redirect:/bookAdmin/borrowReturn";
+        // 대출번호가 데이터로 들어 올 때
+        if(inputData.getCardNum() > 0){
+            memberInfo = borrowReturnService.selectBorrowInfo(inputData);
+        }
+        return memberInfo;
     }
+
+    //대출 기능
+
+
 
     //일관 반납
     @GetMapping("/consistentReturn")

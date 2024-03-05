@@ -1,22 +1,24 @@
 package com.green.Library.web.participationForum.controller;
 
+import com.green.Library.util.FileUploadUtil;
+import com.green.Library.util.UploadUtil;
+import com.green.Library.web.board.service.BoardServiceImpl;
+import com.green.Library.web.board.vo.BoardVO;
+import com.green.Library.web.board.vo.SearchVO;
+import com.green.Library.web.board.vo.UploadVO;
 import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.participationForum.service.ParticipationForumService;
 import com.green.Library.web.participationForum.service.ParticipationForumServiceIMPL;
-import com.green.Library.web.participationForum.vo.ParticipationForumVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.Session;
-import lombok.Getter;
 import org.springframework.stereotype.Controller;
 import com.green.Library.web.webMenu.service.WebMenuService;
-import jakarta.annotation.Resource;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,12 +29,14 @@ public class ParticipationForumController {
     WebMenuService webMenuService;
     @Resource(name = "ParticipationForumService")
     private ParticipationForumServiceIMPL participationForumService;
+    @Resource(name = "boardService")
+    private BoardServiceImpl boardService;
 
     //    -------- 참여마당(forum)---------
 
     //공지사항조회
-    @GetMapping("/notice")
-    public String goNotice(ParticipationForumVO participationForumVO, Model model, HttpSession session){
+    @RequestMapping("/notice")
+    public String goNotice(Model model, SearchVO searchVO){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -47,10 +51,16 @@ public class ParticipationForumController {
 
         System.out.println("공지사항");
 
-        //글목록 조회
-        List<ParticipationForumVO> noticeList = participationForumService.selectNotice();
-        model.addAttribute("noticeList", noticeList);
+        //전체데이터수
+        int totalBoardCnt= participationForumService.partiCountBoard(searchVO);
+        searchVO.setTotalDataCnt(totalBoardCnt);
 
+        //페이지정보세팅
+        searchVO.setPageInfo();
+
+        //글목록 조회
+        List<BoardVO> noticeList = participationForumService.selectNotice();
+        model.addAttribute("noticeList", boardService.forumSelectBoardList(searchVO));
 
         return "content/homePage/forum/notice";
     }
@@ -62,27 +72,31 @@ public class ParticipationForumController {
 
     //공지사항 글쓰기
     @PostMapping("/noticeWrite")
-    public String noticeWrite(ParticipationForumVO participationForumVO, HttpSession session, Model model){
-
-        //로그인 정보 전달위함
+    public String noticeWrite(BoardVO boardVO, HttpSession session, Model model,
+                              @RequestParam(name = "files") MultipartFile[] uploadList){
+        //로그인 정보 전달
         MemberVO loginInfo = (MemberVO) session.getAttribute("loginInfo");
-        participationForumVO.setUserCode(loginInfo.getUserCode());
+        boardVO.setUserCode(loginInfo.getUserCode());
         model.addAttribute("loginInfo",loginInfo);
 
         //글등록
-        participationForumService.insertNotice(participationForumVO);
+        participationForumService.insertNotice(boardVO);
+
+        //첨부파일등록
+        List<UploadVO> upload = FileUploadUtil.multiFileUpload(uploadList);
+//        boardService.insertUploadFile(boardVO);
 
         return "redirect:/notice";
     }
     //공지사항 글 상세조회
     @GetMapping("/noticeDetail")
     public String noticeDetail(@RequestParam(name = "boardNo") int boardNo, Model model){
-
-        //공지 상세조회
-        participationForumService.noticeDetail(boardNo);
-
         //조회수 증가
         participationForumService.updateCnt(boardNo);
+
+        //공지 상세조회
+        BoardVO noticeDetail = participationForumService.noticeDetail(boardNo);
+        model.addAttribute("noticeDetail", noticeDetail);
 
         return "content/homePage/forum/noticeDetail";
     }

@@ -4,41 +4,66 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="borrowReturnMapper">
 
-<resultMap id="bookBorrow" type="com.green.Library.library.borrowReturn.vo.BookBorrowVO">
-    <id          column="BR_CODE"         property="brCode"/>
-    <result      column="BR_DATE"         property="brDate"/>
-    <result      column="BOOK_CNT"        property="bookCnt"/>
-    <result      column="RETURN_YN"       property="returnYN"/>
-    <result      column="RETURN_DATE"     property="returnDate"/>
-    <result      column="USER_CODE"       property="userCode"/>
-    <result      column="BOOK_CODE"       property="bookCode"/>
-    <association property="memberVO"        resultMap="memberMapper.users"/>
-</resultMap>
+    <resultMap id="bookBorrow" type="com.green.Library.library.borrowReturn.vo.BookBorrowVO">
+        <id     column="BR_CODE"          property="brCode"/>
+        <result column="BORROW_DATE"      property="borrowDate"/>
+        <result column="RETURN_YN"        property="returnYN"/>
+        <result column="EX_RETURN_DATE"   property="exReturnDate"/>
+        <result column="USER_CODE"        property="userCode"/>
+        <result column="BOOK_CODE"        property="bookCode"/>
+    </resultMap>
+
+    <resultMap id="bookReturn" type="com.green.Library.library.borrowReturn.vo.BookReturnVO">
+        <id     column="RT_CODE"     property="rtCode"/>
+        <result column="RETURN_DATE" property="returnDate"/>
+        <result column="USER_CODE"   property="userCode"/>
+        <result column="BOOK_CODE"   property="bookCode"/>
+    </resultMap>
+
+<!--    <select id="">-->
+<!--   유저 관리 기능 만들 때 다음 번호를 조회 후 insert로 cardNum 주기 -->
+<!--    <select id="selectNextCardNum" resultType="int">-->
+<!--        SELECT IFNULL(MAX(CARD_NUM), 0) + 1 FROM USERS-->
+<!--    </select>-->
+<!--    </select>-->
 
     <!-- 이용자의 대출 정보 조회-->
-    <select id="selectBorrowInfo" resultMap="bookBorrow">
-        SELECT USER.USER_CODE
+    <select id="selectBorrowInfo" resultMap="memberMapper.users">
+        SELECT CARD_NUM
+            , USER_INTRO
+            , U.USER_CODE
             , USER_NAME
             , USER_TEL
             , BR_CODE
-            , BR_DATE
-            , BOOK_CNT
+            , BORROW_DATE
             , RETURN_YN
+            , EX_RETURN_DATE
+            , RT_CODE
             , RETURN_DATE
-            , BB.BOOK_CODE
-            , BOOK_TITLE
-        FROM BOOK_BORROW AS BB
-        INNER JOIN USERS AS USER
-        ON USER.USER_CODE = BB.USER_CODE
-        INNER JOIN BOOK_INFO AS BI
-        ON BB.BOOK_CODE = BI.BOOK_CODE
-        INNER JOIN book AS B
-        ON B.BOOK_CODE = BB.BOOK_CODE
-        WHERE BB.USER_CODE = #{userCode}
-        ORDER BY BR_DATE
+            , BR.BOOK_CODE
+        FROM USERS AS U
+        LEFT JOIN BOOK_BORROW AS BB
+        ON U.USER_CODE = BB.BR_CODE
+        LEFT JOIN BOOK_RETURN AS BR
+        ON U.USER_CODE = BR.USER_CODE
+        WHERE CARD_NUM = #{cardNum}
+        ORDER BY BORROW_DATE DESC
     </select>
 
+    <!-- bookBorrow update -->
+    <update id="updateExReturnDate">
+        UPDATE BOOK_BORROW
+        SET
+            EX_RETURN_DATE = EX_RETURN_DATE + DATE_ADD(NOW(), INTERVAL +14 DAY)
+        WHERE BR_CODE = #{brCode}
+    </update>
 
+    <!-- 대출 후 select 해서 북 타이틀 등등 띄우기 -->
+
+    <!-- bookInfo update -->
+<!--    <update id="">-->
+
+<!--    </update>-->
 
 </mapper>
 
