@@ -5,7 +5,7 @@
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴 때 같이 실행되는 css -->
-    <!-- <link rel="stylesheet" href="/"> -->
+    <link rel="stylesheet" href="/">
 </th:block>
 
 <th:block layout:fragment="contentFragment">
@@ -15,7 +15,7 @@
             <h3>게시글 등록</h3>
         </div>
         <div class="col">
-            <form action="/cultureInsertBoard" method="post" enctype="multipart/form-data">
+            <form action="/guideInsertBoard" method="post" enctype="multipart/form-data">
                 <table class="align-middle">
                     <colgroup>
                     <col width="25%">
@@ -34,13 +34,14 @@
                             <td>카테고리</td>
                             <td>
                                 <select name="boardType">
-                                    <option value="21">도서관행사</option>
+                                    <option value="24">평생교육 강좌안내</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
                             <td>작성일</td>
-                            <td ><input type="date" name="boardDate"></td>
+                            <td ><input type="date" name="toDate" value="boardDate"></td>
+                            <tr> <input type="date" name="fromDate" value="boardDate"></tr>
                             <td>작성자</td>
                             <td >[[${session.loginInfo.userId}]]</td>
                         </tr>
@@ -70,6 +71,6 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴 때 같이 실행되는 js -->
-    <!-- <script src="/"></script> -->
+    <script src="/"></script>
 </th:block>
 </html>

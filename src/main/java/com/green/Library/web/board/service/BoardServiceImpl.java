@@ -10,21 +10,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service("boardService")
-public class BoardServiceImpl implements BoardService{
+public class BoardServiceImpl implements BoardService {
     @Autowired
     private SqlSessionTemplate sqlSession;
 
     @Override
     public void insertCulBoard(BoardVO boardVO) {
-        sqlSession.insert("boardMapper.insertCulBoard",boardVO);
-        sqlSession.insert("boardMapper.insertImgList",boardVO);
+        sqlSession.insert("boardMapper.insertCulBoard", boardVO);
+        sqlSession.insert("boardMapper.insertImgList", boardVO);
     }
 
 
     @Override
     public List<BoardVO> selectBoardList(SearchVO searchVO) {
-        return sqlSession.selectList("boardMapper.selectBoardList",searchVO);
+        return sqlSession.selectList("boardMapper.selectBoardList", searchVO);
     }
+
 
     @Override
     public int isNullBoardNo() {
@@ -37,16 +38,26 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-<<<<<<< HEAD
-    public int maxBoardNo() {
-        return sqlSession.selectOne("boardMapper.insertImgList");
+    public BoardVO selectBoardDetail(int boardNo) {
+        return sqlSession.selectOne("boardMapper.selectBoardDetail", boardNo);
+    }
+
+    @Override
+    public void boardCntUp(int boardNo) {
+        sqlSession.update("boardMapper.boardCntUp",boardNo);
+    }
+
+    @Override
+    public void deleteBoard(int boardNo) {
+        sqlSession.delete("boardMapper.deleteBoard",boardNo);
+    }
+
+    @Override
+    public void updateBoard(BoardVO boardVO) {
+        sqlSession.update("boardMapper.updateBoard",boardVO);
     }
 
 
-=======
-    public BoardVO selectBoardDetail() {
-        return sqlSession.selectOne("boardMapper.selectBoardDetail");
-    }
-
->>>>>>> 0c3b6763f5ba09e78a940f4ccd8d396d0d339ed3
 }
+
+

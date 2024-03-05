@@ -12,10 +12,10 @@
     <!-- html 코드 작성 -->
     <div class="row ">
         <div class="col-12">
-            <h3>게시글 등록</h3>
+            <h3>게시글 수정</h3>
         </div>
         <div class="col">
-            <form action="/cultureInsertBoard" method="post" enctype="multipart/form-data">
+            <form action="/culUpdateBoard" method="post">
                 <table class="align-middle">
                     <colgroup>
                     <col width="25%">
@@ -31,18 +31,8 @@
                             <td colspan="3"><input type="text" name="boardTitle"></td>
                         </tr>
                         <tr>
-                            <td>카테고리</td>
-                            <td>
-                                <select name="boardType">
-                                    <option value="21">도서관행사</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>작성일</td>
-                            <td ><input type="date" name="boardDate"></td>
                             <td>작성자</td>
-                            <td >[[${session.loginInfo.userId}]]</td>
+                            <td colspan="3">[[${session.loginInfo.userId}]]</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,15 +42,12 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="file" name="mainImg">대표 이미지</td>
-                            <td><input type="file" name="subImgs" multiple>서브 이미지</td>
-                        </tr>
-                        <tr>
                             <td>
-                                <div><input type="submit" value="등록하기"></div>
+                                <div><input type="submit" value="게시물 수정"></div>
                             </td>
                         </tr>
                     </tbody>
+                    <input type="hidden" name="boardNo" th:value="${board.boardNo}">
                     <input type="hidden" name="userCode" th:value="${session.loginInfo.userCode}">
                 </table>
             </form>

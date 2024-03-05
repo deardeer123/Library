@@ -16,16 +16,21 @@ public interface BoardService {
     List<BoardVO> selectBoardList(SearchVO searchVO);
 
     //게시글 큰 값
-    int maxBoardNo();
-
     int isNullBoardNo();
 
     //게시판 개수
     int countBoard();
 
-<<<<<<< HEAD
-=======
     //상세 게시판
-    BoardVO selectBoardDetail();
->>>>>>> 0c3b6763f5ba09e78a940f4ccd8d396d0d339ed3
+    BoardVO selectBoardDetail(int boardNo);
+
+    //조회수
+    void boardCntUp(int boardNo);
+
+    // 게시판 삭제
+    void deleteBoard(int boardNo);
+
+    //게시판 수정
+    void updateBoard(BoardVO boardVO);
 }
+
