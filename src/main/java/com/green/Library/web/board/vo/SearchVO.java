@@ -10,5 +10,7 @@ import lombok.ToString;
 public class SearchVO extends PageVO{
     private String searchValue;
     private String searchType;
-
+    private int boardType;
+    private String fromDate;
+    private String toDate;
 }
