@@ -19,6 +19,7 @@ public interface CulturalAndEducationService {
     //게시글 큰 값
     int culIsNullBoardNo();
 
+    int culCountBoard();
 
 //    //업로드 파일
 //    void insertUploadFile (BoardVO boardVO);

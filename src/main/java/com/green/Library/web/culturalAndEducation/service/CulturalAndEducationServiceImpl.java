@@ -34,6 +34,11 @@ public class CulturalAndEducationServiceImpl implements CulturalAndEducationServ
         return sqlSession.selectOne("culturalAndEducationMapper.culIsNullBoardNo");
     }
 
+    @Override
+    public int culCountBoard() {
+        return sqlSession.selectOne("culturalAndEducationMapper.culCountBoard");
+    }
+
 
     @Override
     public BoardVO culSelectBoardDetail(int boardNo) {

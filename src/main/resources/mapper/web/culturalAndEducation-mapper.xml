@@ -109,6 +109,12 @@
         WHERE BOARD.BOARD_NO = #{boardNo}
     </select>
 
+    <!--  게시판 개수  -->
+    <select id="culCountBoard" resultType="int">
+        SELECT COUNT (BOARD_NO)
+        FROM BOARD
+    </select>
+
     <!--  조회수 증가  -->
     <update id="culBoardCntUp">
         UPDATE BOARD
