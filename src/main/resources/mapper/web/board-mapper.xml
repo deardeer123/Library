@@ -136,7 +136,6 @@
         LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
     </select>
 
-<<<<<<< HEAD
     <!-- 업로드 파일 등록 -->
     <insert id="insertUpload">
         INSERT INTO UPLOADFILE (
