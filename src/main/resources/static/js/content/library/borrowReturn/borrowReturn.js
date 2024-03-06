@@ -12,6 +12,7 @@ function selectMemberInfo(){
     // 그림 그릴 대출반납 정보 태그 선택하기(Info)
     const brInfo = document.querySelector('#brInfo');
 
+    // 컨트롤러로 보낼 데이터 객체로 만들기
     let requestDataVO = {
         cardNum : !isNaN(parseInt(inputData, 10)) ? parseInt(inputData, 10) : null
         , bookCode : inputData
@@ -33,6 +34,11 @@ function selectMemberInfo(){
     })
     //fetch 통신 후 실행 영역
     .then((data) => {//data -> controller에서 리턴되는 데이터!
+
+        
+        // if(requestDataVO.cardNum > 0 && !requestDataVO.bookCode.){
+
+        // }
 
         console.log(data);
 
@@ -120,29 +126,32 @@ function selectMemberInfo(){
                 </div>
             </div>`; 
         } else {
-        str2 += `<div class="row tbody">
-            <div class="col">
-                표지
-            </div>
-            <div class="col">
-                등록번호
-            </div>
-            <div class="col">
-                서명
-            </div>
-            <div class="col">
-                청구기호
-            </div>
-            <div class="col">
-                대출일
-            </div>
-            <div class="col">
-                반납일(연체일)
-            </div>
-            <div class="col">
-                반납처리자
-            </div>
-        </div>`;   
+        str2 += `<div class="row tbody">`;
+            data.bookReturnList.forEach((bookReturnInfo) => {
+                str2 += `<div class="col">
+                            표지
+                        </div>
+                        <div class="col">
+                            등록번호
+                        </div>
+                        <div class="col">
+                            서명
+                        </div>
+                        <div class="col">
+                            청구기호
+                        </div>
+                        <div class="col">
+                            대출일
+                        </div>
+                        <div class="col">
+                            반납일(연체일)
+                        </div>
+                        <div class="col">
+                            반납처리자
+                        </div>`;
+            });
+            
+            `</div>`;   
         }              
         str2 += `
         <div class="row">
