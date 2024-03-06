@@ -76,18 +76,7 @@
         FROM BOARD
     </select>
 
-
-
-
     <!-- ///////////////////////////// 여기까지 공통 /////////////////////////////// -->
-
-
-
-
-
-
-
-
 
     <!--  게시판 개수  -->
     <select id="countBoard" resultType="int">
@@ -136,25 +125,8 @@
         LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
     </select>
 
-    <!-- 업로드 파일 등록 -->
-    <insert id="insertUpload">
-        INSERT INTO UPLOADFILE (
-            UPLOAD_ORIGIN_FILE_NAME
-            , UPLOAD_ATTACHED_FILE_NAME
-        )
-        VALUES
-        <foreach collection="uploadList" item="upload" separator=",">
-        (
-            #{upload.uploadOriginFileName}
-            , #{upload.uploadAttachedFileName}
-
-        )
-        </foreach>
-    </insert>
-
-=======
     <!--  조회수 증가  -->
->>>>>>> 2a348d185abfed8372e43d6c94fb9fc95156f432
+
     <update id="boardCntUp">
         UPDATE BOARD
         SET BOARD_CNT = BOARD_CNT + 1

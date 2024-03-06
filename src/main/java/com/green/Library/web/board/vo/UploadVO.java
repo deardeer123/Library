@@ -8,7 +8,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class UploadVO {
-    private int AttachedList;
+    private int AttachedCode;
     private String OriginFileName;
     private String AttachedFileName;
     private String isMain;
