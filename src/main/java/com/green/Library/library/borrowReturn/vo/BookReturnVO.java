@@ -1,5 +1,7 @@
 package com.green.Library.library.borrowReturn.vo;
 
+import com.green.Library.libraryBook.vo.LibraryBookInfoVO;
+import com.green.Library.libraryBook.vo.LibraryBookVO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,4 +14,6 @@ public class BookReturnVO {
     private String returnDate;
     private int userCode;
     private String bookCode;
+    private LibraryBookVO libraryBookVO;
+    private LibraryBookInfoVO libraryBookInfoVO;
 }
