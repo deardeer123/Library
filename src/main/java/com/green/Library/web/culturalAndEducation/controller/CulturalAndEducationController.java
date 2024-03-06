@@ -32,7 +32,7 @@ public class CulturalAndEducationController {
     @Resource(name = "boardService")
     BoardServiceImpl boardService;
     @Resource(name = "culturalAndEducationService")
-    CulturalAndEducationServiceImpl culturalAndEducationService;
+    CulturalAndEducationServiceImpl cultureService;
 
 
     //    -------- 문화행사/교육(culturalAndEducation)---------
@@ -56,12 +56,12 @@ public class CulturalAndEducationController {
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
 
         //전체 게시글 수
-        int totalBoardCnt= boardService.countBoard();
-        searchVO.setTotalDataCnt(totalBoardCnt);
+        int totalCulBoardCnt = cultureService.culCountBoard();
+        searchVO.setTotalDataCnt(totalCulBoardCnt);
         boardVO.setBoardType(21);
         searchVO.setPageInfo();
         searchVO.setBoardType(boardVO.getBoardType());
-        List<BoardVO> boardList = boardService.selectBoardList(searchVO);
+        List<BoardVO> boardList = cultureService.culSelectBoardList(searchVO);
         System.out.println(boardList);
 
         model.addAttribute("boardList",boardList);
@@ -103,7 +103,7 @@ public class CulturalAndEducationController {
         MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 
         //boardNo의 max값
-        int maxBoardNo = boardService.isNullBoardNo();
+        int maxBoardNo = cultureService.culIsNullBoardNo();
 
         // 단일 이미지 첨부 기능
         UploadVO mainFileVO = BoardUploadUtil.uploadFile(mainFile);
@@ -120,7 +120,7 @@ public class CulturalAndEducationController {
 
         boardVO.setBoardNo(maxBoardNo);
         System.out.println(boardVO);
-        boardService.insertCulBoard(boardVO);
+        cultureService.culInsertBoard(boardVO);
         memberVO.setUserCode(loginInfo.getUserCode());
 
 
@@ -142,8 +142,10 @@ public class CulturalAndEducationController {
         webMenuService.selectWebMenuList("member");
         System.out.println(webMenuService.selectWebMenuList("member"));
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
-        BoardVO board = boardService.selectBoardDetail(boardVO.getBoardNo());
-        boardService.boardCntUp(boardVO.getBoardNo());
+
+
+        BoardVO board = cultureService.culSelectBoardDetail(boardVO.getBoardNo());
+        cultureService.culBoardCntUp(boardVO.getBoardNo());
         model.addAttribute("board", board);
         System.out.println(board);
         return "content/homePage/culturalAndEducation/eventDetailBoard";
@@ -152,7 +154,7 @@ public class CulturalAndEducationController {
     //문화 게시판 삭제
     @GetMapping("/cuLDeleteBoard")
     public String deleteBoard(BoardVO boardVO){
-        boardService.deleteBoard(boardVO.getBoardNo());
+        cultureService.culDeleteBoard(boardVO.getBoardNo());
         return "redirect:/libraryEvent";
     }
 
