@@ -62,6 +62,8 @@
     </select>
 
 
+
+
     <!--  이미지 등록  -->
     <insert id="culInsertfileList">
         INSERT INTO ATTACHED_FILE(
