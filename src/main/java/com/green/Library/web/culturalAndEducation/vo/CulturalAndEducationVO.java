@@ -1,6 +1,6 @@
 package com.green.Library.web.culturalAndEducation.vo;
 
-import com.green.Library.web.img.vo.ImgVO;
+import com.green.Library.web.board.vo.UploadVO;
 import com.green.Library.web.member.vo.MemberVO;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +20,5 @@ public class CulturalAndEducationVO {
     private int boardCnt;
     private int boardType;
     private MemberVO memberVO;
-    private List<ImgVO> imgList;
+    private List<UploadVO> uploadList;
 }
