@@ -41,7 +41,7 @@
             , EX_RETURN_DATE
             , RT_CODE
             , RETURN_DATE
-            , BOOK_CODE
+            , BB.BOOK_CODE
         FROM USERS AS U
         LEFT JOIN BOOK_BORROW AS BB
         ON U.USER_CODE = BB.USER_CODE
