@@ -125,6 +125,20 @@
         LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
     </select>
 
+<<<<<<< HEAD
+=======
+    <!-- 업로드 파일 등록 -->
+    <insert id="insertUpload">
+        INSERT INTO UPLOADFILE (
+            UPLOAD_ORIGIN_FILE_NAME
+            , UPLOAD_ATTACHED_FILE_NAME
+        )
+        VALUES
+        <foreach collection="uploadList" item="upload" separator=",">
+        (
+            #{upload.uploadOriginFileName}
+            , #{upload.uploadAttachedFileName}
+>>>>>>> dev
 
     <!--  조회수 증가  -->
 
