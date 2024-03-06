@@ -27,9 +27,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="img : ${board.imgList}">
+                    <tr th:each="file : ${board.fileList}">
                         <td>
-                            <img th:src="@{'/upload/' + ${img.attachedFileName}}">
+                            <img th:src="@{'/upload/' + ${file.attachedFileName}}">
                         </td>
                     </tr>
                     <tr>

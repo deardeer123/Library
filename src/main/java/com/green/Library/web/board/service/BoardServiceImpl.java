@@ -2,7 +2,6 @@ package com.green.Library.web.board.service;
 
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
-import com.green.Library.web.img.vo.ImgVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

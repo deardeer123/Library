@@ -2,7 +2,7 @@ package com.green.Library.web.board.service;
 
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
-import com.green.Library.web.img.vo.ImgVO;
+
 
 import java.util.List;
 

@@ -1,13 +1,10 @@
 package com.green.Library.web.participationForum.controller;
 
-import com.green.Library.util.FileUploadUtil;
-import com.green.Library.util.UploadUtil;
 import com.green.Library.web.board.service.BoardServiceImpl;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.board.vo.UploadVO;
 import com.green.Library.web.member.vo.MemberVO;
-import com.green.Library.web.participationForum.service.ParticipationForumService;
 import com.green.Library.web.participationForum.service.ParticipationForumServiceIMPL;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
@@ -83,7 +80,7 @@ public class ParticipationForumController {
         participationForumService.insertNotice(boardVO);
         System.out.println(boardVO);
         //첨부파일등록
-        List<UploadVO> upload = FileUploadUtil.multiFileUpload(uploadList);
+//        List<UploadVO> upload = FileUploadUtil.multiFileUpload(uploadList);
 //        boardService.insertUploadFile(boardVO);
 
         return "redirect:/notice";
