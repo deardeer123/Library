@@ -141,7 +141,6 @@
         WHERE BOARD.BOARD_NO = #{boardNo}
     </select>
 
-<<<<<<< HEAD
     <!--  등록한 게시물 정보 리스트  -->
     <select id="forumSelectBoardList" resultMap="board">
         SELECT
@@ -178,7 +177,7 @@
         )
         </foreach>
     </insert>
-=======
+
     <update id="boardCntUp">
         UPDATE BOARD
         SET BOARD_CNT = BOARD_CNT + 1
@@ -200,7 +199,7 @@
         WHERE BOARD_NO = #{boardNo}
     </update>
 
->>>>>>> 0bbaaf2eaeeb5977377a82cc91efa83d44d01ef1
+
 
 
 
