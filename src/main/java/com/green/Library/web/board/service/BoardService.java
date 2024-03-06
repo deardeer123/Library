@@ -41,5 +41,7 @@ public interface BoardService {
     //게시판 수정
     void updateBoard(BoardVO boardVO);
 
+
+
 }
 

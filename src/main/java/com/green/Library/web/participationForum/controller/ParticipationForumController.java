@@ -1,5 +1,7 @@
 package com.green.Library.web.participationForum.controller;
 
+import com.green.Library.util.BoardUploadUtil;
+import com.green.Library.util.UploadUtil;
 import com.green.Library.web.board.service.BoardServiceImpl;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 @Controller
@@ -78,10 +81,10 @@ public class ParticipationForumController {
 
         //글등록
         participationForumService.insertNotice(boardVO);
-        System.out.println(boardVO);
         //첨부파일등록
-//        List<UploadVO> upload = FileUploadUtil.multiFileUpload(uploadList);
-//        boardService.insertUploadFile(boardVO);
+        List<UploadVO> upload = BoardUploadUtil.subImgUploadFile(uploadList);
+        int boardNo = participationForumService.selectNextBoardCode();
+        boardVO.setBoardNo(boardNo);
 
         return "redirect:/notice";
     }

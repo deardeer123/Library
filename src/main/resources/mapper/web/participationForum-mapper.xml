@@ -23,6 +23,23 @@
         )
     </insert>
 
+    <!--  첨부파일 등록  -->
+    <insert id="insertUploadFile">
+        INSERT INTO ATTACHED_FILE(
+        ORIGIN_FILE_NAME
+        ,ATTACHED_FILE_NAME
+        ,IS_MAIN
+        ,BOARD_NO
+        )
+        VALUES
+        <foreach collection="fileList" item="file" separator=",">
+            (#{file.originFileName}
+            ,#{file.attachedFileName}
+            ,#{file.isMain}
+            ,#{file.boardNo})
+        </foreach>
+    </insert>
+
     <!-- 공지사항 조회-->
     <select id="selectNotice" resultMap="boardMapper.board">
         SELECT BOARD.BOARD_NO
@@ -35,21 +52,6 @@
         FROM BOARD INNER JOIN USERS
         ON BOARD.USER_CODE = USERS.USER_CODE
         WHERE BOARD_TYPE = '31'
-        ORDER BY BOARD_NO DESC
-    </select>
-
-    <!-- 묻고답하기 조회-->
-    <select id="selectQna" resultMap="boardMapper.board">
-        SELECT BOARD.BOARD_NO
-        , BOARD_TITLE
-        , CONTENT
-        , BOARD_DATE
-        , BOARD.USER_CODE
-        , USERS.USER_NAME
-        , BOARD_CNT
-        FROM BOARD INNER JOIN USERS
-        ON BOARD.USER_CODE = USERS.USER_CODE
-        WHERE BOARD_TYPE = '32'
         ORDER BY BOARD_NO DESC
     </select>
 
@@ -81,8 +83,29 @@
         <if test='searchValue != null and !searchValue.equals("")'>
             where ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
         </if>
+
+    </select>
+    <!-- 다음에 insert 할 Code-->
+    <select id="selectNextBoardCode" resultType="int">
+        SELECT IFNULL(MAX(BOARD_NO), 0) + 1 FROM BOARD
     </select>
 
+    <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 묻고답하기 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
+
+    <!-- 묻고답하기 조회-->
+    <select id="selectQna" resultMap="boardMapper.board">
+        SELECT BOARD.BOARD_NO
+        , BOARD_TITLE
+        , CONTENT
+        , BOARD_DATE
+        , BOARD.USER_CODE
+        , USERS.USER_NAME
+        , BOARD_CNT
+        FROM BOARD INNER JOIN USERS
+        ON BOARD.USER_CODE = USERS.USER_CODE
+        WHERE BOARD_TYPE = '32'
+        ORDER BY BOARD_NO DESC
+    </select>
 
 </mapper>
 

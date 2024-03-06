@@ -2,7 +2,6 @@ package com.green.Library.web.participationForum.service;
 
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
-import com.green.Library.web.participationForum.vo.ParticipationForumVO;
 
 import java.util.List;
 
@@ -25,5 +24,8 @@ ParticipationForumService {
 
     //묻고답하기 조회
     List<BoardVO> selectQna();
+
+    //다음에 들어갈 BoardCode 조회
+    int selectNextBoardCode();
 
 }
