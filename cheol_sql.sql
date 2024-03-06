@@ -207,6 +207,13 @@ CREATE TABLE BOOK_MID_CATEGORY(
 
 -- DROP TABLE BOOK_MID_CATEGORY;
 
+SELECT * FROM book_mid_category;
+
+UPDATE book_mid_category
+SET BOOK_MID_CATE_NAME = '회화,도화'
+WHERE BOOK_MID_CATE_CODE = 59;
+
+
 INSERT INTO BOOK_MID_CATEGORY(
 	BOOK_MID_CATE_NAME ,
 	BOOK_MID_CATE_INDEX ,
@@ -277,7 +284,7 @@ INSERT INTO BOOK_MID_CATEGORY(
 	('조각,조형,예술' , 2 , 7) ,
 	('공예,장식미술' , 3 , 7) ,
 	('서예' , 4 , 7) ,
-	('호회,도화' , 5 , 7) ,
+	('회화,도화' , 5 , 7) ,
 	('사진예술' , 6 , 7) ,
 	('음악' , 7 , 7) ,
 	('공연예술,매체예술' , 8 , 7) ,
@@ -448,6 +455,32 @@ CREATE TABLE BOOK_BORROW(
 
 SELECT * FROM book;
 -- DROP TABLE book_info;
+CREATE VIEW find_book_view as
+SELECT
+   book.BOOK_CODE ,
+   book.BOOK_TITLE ,
+   book.BOOK_WRITER ,
+   book.BOOK_PUB ,
+   book.BOOK_YEAR ,
+   book_info.book_intro,
+   book_info.BOOK_INFO_ATTACHED_FILE_NAME ,
+   book_category.BOOK_CATE_NAME ,
+   book_mid_category.BOOK_MID_CATE_NAME,
+   book_info.BOOK_REGDATE
+FROM
+   book INNER JOIN book_info
+   ON book.BOOK_CODE = book_info.BOOK_CODE
+   INNER JOIN book_category
+   ON book_info.BOOK_CATE_CODE = book_category.BOOK_CATE_CODE
+   INNER JOIN book_mid_category
+   ON book_info.BOOK_MID_CATE_CODE = book_mid_category.BOOK_MID_CATE_CODE
+WHERE
+   1 = 1 
+ORDER BY book_code;
+
+SELECT * FROM find_book_view
+LIMIT 20 OFFSET 0;
+        
 
 
 
