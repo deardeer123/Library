@@ -23,5 +23,7 @@ ParticipationForumService {
     //게시물 갯수 조회
     int partiCountBoard(SearchVO searchVO);
 
+    //묻고답하기 조회
+    List<BoardVO> selectQna();
 
 }

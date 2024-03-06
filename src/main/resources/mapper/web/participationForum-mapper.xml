@@ -34,6 +34,22 @@
             , BOARD_CNT
         FROM BOARD INNER JOIN USERS
         ON BOARD.USER_CODE = USERS.USER_CODE
+        WHERE BOARD_TYPE = '31'
+        ORDER BY BOARD_NO DESC
+    </select>
+
+    <!-- 묻고답하기 조회-->
+    <select id="selectQna" resultMap="boardMapper.board">
+        SELECT BOARD.BOARD_NO
+        , BOARD_TITLE
+        , CONTENT
+        , BOARD_DATE
+        , BOARD.USER_CODE
+        , USERS.USER_NAME
+        , BOARD_CNT
+        FROM BOARD INNER JOIN USERS
+        ON BOARD.USER_CODE = USERS.USER_CODE
+        WHERE BOARD_TYPE = '32'
         ORDER BY BOARD_NO DESC
     </select>
 

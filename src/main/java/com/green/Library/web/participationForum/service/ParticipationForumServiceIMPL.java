@@ -45,5 +45,10 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
         return sqlSession.selectOne("participationForumMapper.partiCountBoard",searchVO);
     }
 
+    @Override
+    public List<BoardVO> selectQna() {
+        return sqlSession.selectList("participationForumMapper.selectQna");
+    }
+
 
 }
