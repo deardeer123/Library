@@ -28,7 +28,7 @@ public class BorrowReturnController {
     @GetMapping("/borrowReturn")
     public String goBorrowReturn(Model model){
         //이동하기전 메뉴리스트 가져가기
-        //model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
         System.out.println("대출반납으로 이동");
         return "content/library/borrowReturn/borrowReturn.html";
