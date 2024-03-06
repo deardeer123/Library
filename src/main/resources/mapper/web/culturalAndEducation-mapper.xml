@@ -1,142 +1,142 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
 
-<!-- 해당 파일에 모든 쿼리문을 작성 -->
-<mapper namespace="culturalAndEducationMapper">
-
-
-    <!--  게시글 등록  -->
-    <insert id="insertCulBoard">
-        INSERT INTO BOARD(
-        BOARD_TITLE
-        , CONTENT
-        , BOARD_DATE
-        , BOARD_TYPE
-        , USER_CODE
-        , BOARD_CNT
-        , BOARD_NO
-        )
-        VALUES(
-        #{boardTitle}
-        ,#{content}
-        ,#{boardDate}
-        ,#{boardType}
-        ,#{userCode}
-        ,#{boardCnt}
-        ,#{boardNo}
-        )
-    </insert>
+<!--&lt;!&ndash; 해당 파일에 모든 쿼리문을 작성 &ndash;&gt;-->
+<!--<mapper namespace="culturalAndEducationMapper">-->
 
 
-    <!--  등록한 게시물 정보 리스트  -->
-    <select id="selectBoardList" resultMap="boardMapper.board">
-        SELECT
-            BOARD.BOARD_NO
-            , BOARD_TITLE
-            , CONTENT
-            , BOARD_DATE
-            , BOARD.USER_CODE
-            , BOARD_CNT
-            , USER_ID
-            , ATTACHED_CODE
-            , ORIGIN_FILE_NAME
-            , ATTACHED_FILE_NAME
-            , IS_MAIN
-            , BOARD_TYPE
-        FROM board INNER JOIN USERS
-        ON BOARD.USER_CODE = USERS.USER_CODE
-        INNER JOIN ATTACHED_FILE AS FILE
-        ON BOARD.BOARD_NO = FILE.BOARD_NO
-        WHERE BOARD_TYPE = ${boardType}
-        <if test='searchValue != null and !searchValue.equals("")'>
-            where ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
-        </if>
-        <if test='fromDate != null and !fromDate.equals("")'>
-            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') &gt;= #{fromDate}
-        </if>
-        <if test='toDate != null and !toDate.equals("")'>
-            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') &lt;= #{toDate}
-        </if>
-        ORDER BY BOARD_NO DESC
-        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
-
-    </select>
-
-    <!--  이미지 등록  -->
-    <insert id="insertfileList">
-        INSERT INTO ATTACHED_FILE(
-        ORIGIN_FILE_NAME
-        ,ATTACHED_FILE_NAME
-        ,IS_MAIN
-        ,BOARD_NO
-        )
-        VALUES
-        <foreach collection="fileList" item="file" separator=",">
-            (#{img.originFileName}
-            ,#{img.attachedFileName}
-            ,#{img.isMain}
-            ,#{img.boardNo})
-        </foreach>
-    </insert>
-
-    <!--  게시판 개수 + 1  -->
-    <select id="isNullBoardNo" resultType="int">
-        SELECT CASE WHEN
-        MAX(BOARD_NO) IS NULL
-        THEN 1
-        ELSE MAX(BOARD_NO) + 1
-        END
-        FROM BOARD
-    </select>
-
-    <!--  게시물 상세보기  -->
-    <select id="selectBoardDetail" resultMap="board">
-        SELECT
-        BOARD.BOARD_NO
-        ,BOARD.USER_CODE
-        ,BOARD_TITLE
-        ,BOARD_DATE
-        ,BOARD_CNT
-        ,CONTENT
-        ,USER_ID
-        ,ATTACHED_FILE_NAME
-        ,IS_MAIN
-        FROM BOARD
-        INNER JOIN USERS
-        ON BOARD.USER_CODE = USERS.USER_CODE
-        INNER JOIN ATTACHED_FILE AS FILE
-        ON BOARD.BOARD_NO = FILE.BOARD_NO
-        WHERE BOARD.BOARD_NO = #{boardNo}
-    </select>
-
-    <!--  조회수 증가  -->
-    <update id="boardCntUp">
-        UPDATE BOARD
-        SET BOARD_CNT = BOARD_CNT + 1
-        WHERE BOARD_NO
-    </update>
-
-    <!--  게시판 삭제  -->
-    <delete id="deleteBoard">
-        DELETE FROM BOARD
-        WHERE BOARD_NO = #{boardNo}
-    </delete>
-
-    <!--  게시판 수정  -->
-    <update id="updateBoard">
-        UPDATE BOARD
-        SET
-        BOARD_TITLE = #{boardTitle}
-        ,CONTENT = #{content}
-        WHERE BOARD_NO = #{boardNo}
-    </update>
+<!--    &lt;!&ndash;  게시글 등록  &ndash;&gt;-->
+<!--    <insert id="insertCulBoard">-->
+<!--        INSERT INTO BOARD(-->
+<!--        BOARD_TITLE-->
+<!--        , CONTENT-->
+<!--        , BOARD_DATE-->
+<!--        , BOARD_TYPE-->
+<!--        , USER_CODE-->
+<!--        , BOARD_CNT-->
+<!--        , BOARD_NO-->
+<!--        )-->
+<!--        VALUES(-->
+<!--        #{boardTitle}-->
+<!--        ,#{content}-->
+<!--        ,#{boardDate}-->
+<!--        ,#{boardType}-->
+<!--        ,#{userCode}-->
+<!--        ,#{boardCnt}-->
+<!--        ,#{boardNo}-->
+<!--        )-->
+<!--    </insert>-->
 
 
+<!--    &lt;!&ndash;  등록한 게시물 정보 리스트  &ndash;&gt;-->
+<!--    <select id="selectBoardList" resultMap="boardMapper.board">-->
+<!--        SELECT-->
+<!--            BOARD.BOARD_NO-->
+<!--            , BOARD_TITLE-->
+<!--            , CONTENT-->
+<!--            , BOARD_DATE-->
+<!--            , BOARD.USER_CODE-->
+<!--            , BOARD_CNT-->
+<!--            , USER_ID-->
+<!--            , ATTACHED_CODE-->
+<!--            , ORIGIN_FILE_NAME-->
+<!--            , ATTACHED_FILE_NAME-->
+<!--            , IS_MAIN-->
+<!--            , BOARD_TYPE-->
+<!--        FROM board INNER JOIN USERS-->
+<!--        ON BOARD.USER_CODE = USERS.USER_CODE-->
+<!--        INNER JOIN ATTACHED_FILE AS FILE-->
+<!--        ON BOARD.BOARD_NO = FILE.BOARD_NO-->
+<!--        WHERE BOARD_TYPE = ${boardType}-->
+<!--        <if test='searchValue != null and !searchValue.equals("")'>-->
+<!--            where ${searchType} LIKE CONCAT('%', #{searchValue} , '%')-->
+<!--        </if>-->
+<!--        <if test='fromDate != null and !fromDate.equals("")'>-->
+<!--            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') &gt;= #{fromDate}-->
+<!--        </if>-->
+<!--        <if test='toDate != null and !toDate.equals("")'>-->
+<!--            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') &lt;= #{toDate}-->
+<!--        </if>-->
+<!--        ORDER BY BOARD_NO DESC-->
+<!--        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}-->
+
+<!--    </select>-->
+
+<!--    &lt;!&ndash;  이미지 등록  &ndash;&gt;-->
+<!--    <insert id="insertfileList">-->
+<!--        INSERT INTO ATTACHED_FILE(-->
+<!--        ORIGIN_FILE_NAME-->
+<!--        ,ATTACHED_FILE_NAME-->
+<!--        ,IS_MAIN-->
+<!--        ,BOARD_NO-->
+<!--        )-->
+<!--        VALUES-->
+<!--        <foreach collection="fileList" item="file" separator=",">-->
+<!--            (#{img.originFileName}-->
+<!--            ,#{img.attachedFileName}-->
+<!--            ,#{img.isMain}-->
+<!--            ,#{img.boardNo})-->
+<!--        </foreach>-->
+<!--    </insert>-->
+
+<!--    &lt;!&ndash;  게시판 개수 + 1  &ndash;&gt;-->
+<!--    <select id="isNullBoardNo" resultType="int">-->
+<!--        SELECT CASE WHEN-->
+<!--        MAX(BOARD_NO) IS NULL-->
+<!--        THEN 1-->
+<!--        ELSE MAX(BOARD_NO) + 1-->
+<!--        END-->
+<!--        FROM BOARD-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;  게시물 상세보기  &ndash;&gt;-->
+<!--    <select id="selectBoardDetail" resultMap="board">-->
+<!--        SELECT-->
+<!--        BOARD.BOARD_NO-->
+<!--        ,BOARD.USER_CODE-->
+<!--        ,BOARD_TITLE-->
+<!--        ,BOARD_DATE-->
+<!--        ,BOARD_CNT-->
+<!--        ,CONTENT-->
+<!--        ,USER_ID-->
+<!--        ,ATTACHED_FILE_NAME-->
+<!--        ,IS_MAIN-->
+<!--        FROM BOARD-->
+<!--        INNER JOIN USERS-->
+<!--        ON BOARD.USER_CODE = USERS.USER_CODE-->
+<!--        INNER JOIN ATTACHED_FILE AS FILE-->
+<!--        ON BOARD.BOARD_NO = FILE.BOARD_NO-->
+<!--        WHERE BOARD.BOARD_NO = #{boardNo}-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;  조회수 증가  &ndash;&gt;-->
+<!--    <update id="boardCntUp">-->
+<!--        UPDATE BOARD-->
+<!--        SET BOARD_CNT = BOARD_CNT + 1-->
+<!--        WHERE BOARD_NO-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash;  게시판 삭제  &ndash;&gt;-->
+<!--    <delete id="deleteBoard">-->
+<!--        DELETE FROM BOARD-->
+<!--        WHERE BOARD_NO = #{boardNo}-->
+<!--    </delete>-->
+
+<!--    &lt;!&ndash;  게시판 수정  &ndash;&gt;-->
+<!--    <update id="updateBoard">-->
+<!--        UPDATE BOARD-->
+<!--        SET-->
+<!--        BOARD_TITLE = #{boardTitle}-->
+<!--        ,CONTENT = #{content}-->
+<!--        WHERE BOARD_NO = #{boardNo}-->
+<!--    </update>-->
 
 
 
 
-</mapper>
+
+
+<!--</mapper>-->
 
 
 
