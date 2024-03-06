@@ -1,6 +1,6 @@
 package com.green.Library.util;
 
-import com.green.Library.web.img.vo.ImgVO;
+import com.green.Library.web.board.vo.UploadVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -20,13 +20,13 @@ public class BoardUploadUtil {
     }
 
     //이미지 올리기 리턴값은 imgVO
-    public static ImgVO uploadFile(MultipartFile upLoadFile){
+    public static UploadVO uploadFile(MultipartFile upLoadFile){
         //파일 첨부 기능
         //(첨부한 파일이 존재할 때 실행함)
-        ImgVO imgVO = null;
+        UploadVO uploadVO = null;
 
         if(!upLoadFile.isEmpty()){
-            imgVO = new ImgVO();
+            uploadVO = new UploadVO();
 
             //확장자
             String extension = getBoardExtension(upLoadFile.getOriginalFilename());
@@ -37,30 +37,30 @@ public class BoardUploadUtil {
             // 파일 첨부
             try {
                 File mainFile = new File(ConstantVariable.UPLOAD_PATH + boardFileName);
-                imgVO.setAttachedFileName(boardFileName);
-                imgVO.setOriginFileName(upLoadFile.getOriginalFilename());
+                uploadVO.setAttachedFileName(boardFileName);
+                uploadVO.setOriginFileName(upLoadFile.getOriginalFilename());
 
 
                 upLoadFile.transferTo(mainFile);
-                imgVO.setIsMain("Y");
+                uploadVO.setIsMain("Y");
             } catch (Exception e) {
                 System.out.println("예외발생");
                 e.printStackTrace();
             }
         }
-            return imgVO;
+            return uploadVO;
     }
 
     // 다중 이미지 첨부 파일 기능
-    public static List<ImgVO> subImgUploadFile(MultipartFile[] uploadFiles){
-        List<ImgVO> imgList = new ArrayList<>();
+    public static List<UploadVO> subImgUploadFile(MultipartFile[] uploadFiles){
+        List<UploadVO> fileList = new ArrayList<>();
         for (MultipartFile uploadFile : uploadFiles){
-            ImgVO img = uploadFile(uploadFile);
-            if (img != null){
-                img.setIsMain("N");
-                imgList.add(img);
+            UploadVO file = uploadFile(uploadFile);
+            if (file != null){
+                file.setIsMain("N");
+                fileList.add(file);
             }
         }
-        return imgList;
+        return fileList;
     }
 }

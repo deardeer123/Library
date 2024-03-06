@@ -1,13 +1,10 @@
 package com.green.Library.web.participationForum.controller;
 
-import com.green.Library.util.FileUploadUtil;
-import com.green.Library.util.UploadUtil;
 import com.green.Library.web.board.service.BoardServiceImpl;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.board.vo.UploadVO;
 import com.green.Library.web.member.vo.MemberVO;
-import com.green.Library.web.participationForum.service.ParticipationForumService;
 import com.green.Library.web.participationForum.service.ParticipationForumServiceIMPL;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
@@ -81,9 +78,9 @@ public class ParticipationForumController {
 
         //글등록
         participationForumService.insertNotice(boardVO);
-
+        System.out.println(boardVO);
         //첨부파일등록
-        List<UploadVO> upload = FileUploadUtil.multiFileUpload(uploadList);
+//        List<UploadVO> upload = FileUploadUtil.multiFileUpload(uploadList);
 //        boardService.insertUploadFile(boardVO);
 
         return "redirect:/notice";
@@ -103,7 +100,7 @@ public class ParticipationForumController {
 
     //묻고답하기
     @GetMapping("/askAndAnswer")
-    public String goAskAndAnswer(Model model){
+    public String goAskAndAnswer(Model model, SearchVO searchVO){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -118,6 +115,18 @@ public class ParticipationForumController {
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
 
         System.out.println("묻고답하기");
+
+        //전체데이터수
+        int totalBoardCnt= participationForumService.partiCountBoard(searchVO);
+        searchVO.setTotalDataCnt(totalBoardCnt);
+
+        //페이지정보세팅
+        searchVO.setPageInfo();
+
+        //글목록 조회
+        List<BoardVO> noticeList = participationForumService.selectQna();
+        model.addAttribute("noticeList", boardService.forumSelectBoardList(searchVO));
+
         return "content/homePage/forum/askAndAnswer";
     }
     @GetMapping("/bookDonation")

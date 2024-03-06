@@ -12,6 +12,7 @@
         <result      column="USER_CODE"        property="userCode"/>
         <result      column="BOOK_CODE"        property="bookCode"/>
         <association property="libraryBookVO"  resultMap="libraryBookMapper.libraryBook"/>
+        <association property="libraryBookInfoVO" resultMap="libraryBookMapper.LibraryBookInfo"/>
     </resultMap>
 
     <resultMap id="bookReturn" type="com.green.Library.library.borrowReturn.vo.BookReturnVO">
@@ -19,6 +20,8 @@
         <result column="RETURN_DATE" property="returnDate"/>
         <result column="USER_CODE"   property="userCode"/>
         <result column="BOOK_CODE"   property="bookCode"/>
+        <association property="libraryBookVO" resultMap="libraryBookMapper.libraryBook"/>
+        <association property="libraryBookInfoVO" resultMap="libraryBookMapper.LibraryBookInfo"/>
     </resultMap>
 
 <!--    <select id="">-->
@@ -41,7 +44,7 @@
             , EX_RETURN_DATE
             , RT_CODE
             , RETURN_DATE
-            , BOOK_CODE
+            , BB.BOOK_CODE
         FROM USERS AS U
         LEFT JOIN BOOK_BORROW AS BB
         ON U.USER_CODE = BB.USER_CODE
@@ -52,19 +55,21 @@
     </select>
 
     <!-- bookBorrow update -->
-    <update id="updateExReturnDate">
+    <update id="updateBookBorrow">
         UPDATE BOOK_BORROW
         SET
             EX_RETURN_DATE = EX_RETURN_DATE + DATE_ADD(NOW(), INTERVAL +14 DAY)
-        WHERE BR_CODE = #{brCode}
+        WHERE BOOK_CODE = #{bookCode}
     </update>
 
-    <!-- 대출 후 select 해서 북 타이틀 등등 띄우기 -->
-
     <!-- bookInfo update -->
-<!--    <update id="">-->
-
-<!--    </update>-->
+    <update id="updateBookInfo">
+        UPDATE BOOK_INFO
+        SET
+            BOOK_BORROW_AVAILABLE = 'N'
+            , BOOK_BORROW_CNT = BOOK_BORROW_CNT + 1
+        WHERE BOOK_CODE = #{bookCode}
+    </update>
 
 </mapper>
 

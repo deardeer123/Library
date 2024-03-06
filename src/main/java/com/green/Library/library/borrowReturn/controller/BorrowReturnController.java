@@ -49,9 +49,13 @@ public class BorrowReturnController {
         if(memberInfo.getCardNum() > 0 && !requestDataVO.getBookCode().contains("GR")){
             memberInfo = borrowReturnService.selectBorrowInfo(memberInfo);
             System.out.println(memberInfo);
-        }
-        return memberInfo;
 
+        } else if (memberInfo.getCardNum() > 0 && requestDataVO.getBookCode().contains("GR")) {
+            borrowReturnService.updateBookBorrow(requestDataVO.getBookCode());
+
+        }
+
+        return memberInfo;
     }
 
     //대출 기능

@@ -10,7 +10,99 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    묻고 답하기
+    <div class="row">
+        <div class="col">
+          <h3>
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="50" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+              <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+            </svg>
+           / 참여마당 / 묻고 답하기</h3>
+        </div>
+  
+      </div>
+  
+    <div class="row">
+      <form action="/notice" method="post">
+        <div class="col-3">
+          <div class="input-group mb-3">
+            <select class="form-select" name="searchType">
+              <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'boardTitle'}">제목</option>
+            </select>
+          </div>
+          </div>
+          <div class="col-5">
+            <input type="text" class="form-control" name="searchValue" th:value="${searchVO.searchValue}" aria-label="Text input with dropdown button">
+          </div>
+          <div class="col-2">
+            <input type="submit" class="btn btn-outline-secondary" value="검색" id="inputGroupFileAddon04">
+          </div>
+      </form>
+    </div>
+    
+    전체게시글 수 총 N 개
+  
+    <div class="row">
+      <div class="col">
+        <table class="table table-bordered align-middle text-center" style="width: 100%;">
+          <colgroup>
+            <col width="10%">
+            <col width="*">
+            <col width="15%">
+            <col width="15%">
+            <col width="15%">
+          </colgroup>
+          <thead>
+            <tr>
+              <td>번호</td>
+              <td>제목</td>
+              <td>작성자</td>
+              <td>등록일</td>
+              <td>조회수</td>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 조회된 데이터가 없으면 -->
+            <th:block th:if="${#lists.isEmpty(noticeList)}">
+                    <tr>
+                        <td colspan="5">등록된 게시글이 없습니다.</td>
+                    </tr>
+            </th:block>
+            <th:block th:unless="${#lists.isEmpty(noticeList)}">
+            <tr th:each="notice,state : ${noticeList}">
+                <td>[[${#lists.size(noticeList) - state.index}]]</td>
+                <td th:onclick="location.href='/noticeDetail?boardNo=[[${notice.boardNo}]]'">
+                  [[${notice.boardTitle}]]</td>
+                <td>[[${notice.memberVO.userName}]]</td>
+                <td>[[${notice.boardDate}]]</td>
+                <td>[[${notice.boardCnt}]]</td>
+            </tr>
+            </th:block>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+
+          <!-- 페이징처리 -->
+      <div class="col-12 text-center">
+        <th:block th:if="${searchVO.prev}">
+            <a th:href="@{/notice(nowPage=${searchVO.beginPage - 1})}">이전</a>
+        </th:block>
+        <th:block th:each=" i : ${#numbers.sequence(searchVO.beginPage, searchVO.endPage)}">
+            <a th:href="@{/notice(nowPage=${i})}">[[${i}]]</a>
+        </th:block>
+        <th:block th:if="${searchVO.next}">
+            <a th:href="@{/notice(nowPage=${searchVO.endPage + 1})}">다음</a>
+        </th:block>
+      </div>
+
+    <input type="button" value="목록" onclick="location.href='/notice'">
+    
+    <th:block th:if="${session.loginInfo != null}">
+      <th:block th:if="${session.loginInfo.isAdmin}"> 
+        <input type="button" value="글쓰기" onclick="location.href='/noticeWrite'">
+      </th:block>
+    </th:block>
 </th:block>
 
 <th:block layout:fragment="content_js">
