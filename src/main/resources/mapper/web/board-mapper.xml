@@ -140,6 +140,10 @@
         WHERE BOARD.BOARD_NO = #{boardNo}
     </select>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7d0e5a01943fc6a94c2f7f69f443d3eb9dea4d0f
     <!--  등록한 게시물 정보 리스트  -->
     <select id="forumSelectBoardList" resultMap="board">
         SELECT
@@ -198,7 +202,10 @@
         WHERE BOARD_NO = #{boardNo}
     </update>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7d0e5a01943fc6a94c2f7f69f443d3eb9dea4d0f
 
 
 
