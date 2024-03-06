@@ -12,7 +12,11 @@
         <result column="BOARD_CNT"     property="boardCnt"/>
         <result column="BOARD_TYPE"     property="boardType"/>
         <association property="memberVO" resultMap="memberMapper.users"/>
+<<<<<<< HEAD
         <collection property="fileList" resultMap="file"/>
+=======
+        <collection property="AttachedList" resultMap="file"/>
+>>>>>>> UK
     </resultMap>
 
     <resultMap id="file" type="com.green.Library.web.board.vo.UploadVO">
@@ -47,6 +51,7 @@
         )
     </insert>
 
+<<<<<<< HEAD
 
     <!--  이미지 등록  -->
     <insert id="insertFileList">
@@ -65,6 +70,8 @@
         </foreach>
     </insert>
 
+=======
+>>>>>>> UK
     <!--  게시판 개수 + 1  -->
     <select id="isNullBoardNo" resultType="int">
         SELECT CASE WHEN
