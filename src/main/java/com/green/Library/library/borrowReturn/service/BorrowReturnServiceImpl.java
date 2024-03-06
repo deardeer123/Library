@@ -21,8 +21,10 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
     // 대출 시 book_borrow의 exReturnDate 업데이트
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int updateExReturnDate(MemberVO memberVO) {
-        return sqlSession.update("borrowReturnMapper.updateExReturnDate", memberVO);
+    public void updateBookBorrow(String bookCode) {
+        sqlSession.update("borrowReturnMapper.updateBookBorrow", bookCode);
+        sqlSession.update("borrowReturnMapper.updateBookInfo", bookCode);
     }
+
 
 }

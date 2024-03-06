@@ -9,7 +9,7 @@ public interface BorrowReturnService {
     MemberVO selectBorrowInfo(MemberVO memberVO);
 
     // 대출 시 book_borrow의 exReturnDate 업데이트
-    int updateExReturnDate(MemberVO memberVO);
+    void updateBookBorrow(String bookCode);
 
     // 이용자 반납 update 및 대출 가능 여부 update
 }
