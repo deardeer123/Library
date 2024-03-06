@@ -1,6 +1,6 @@
 package com.green.Library.web.board.vo;
 
-import com.green.Library.web.img.vo.ImgVO;
+
 import com.green.Library.web.member.vo.MemberVO;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +20,5 @@ public class BoardVO {
     private int boardCnt;
     private int boardType;
     private MemberVO memberVO;
-    private List<ImgVO> imgList;
-    private List<UploadVO> uploadList;
+    private List<UploadVO> AttachedList;
 }

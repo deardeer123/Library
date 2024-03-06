@@ -6,9 +6,9 @@ import com.green.Library.web.board.service.BoardService;
 import com.green.Library.web.board.service.BoardServiceImpl;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
+import com.green.Library.web.board.vo.UploadVO;
 import com.green.Library.web.culturalAndEducation.service.CulturalAndEducationServiceImpl;
 import com.green.Library.web.culturalAndEducation.vo.CulturalAndEducationVO;
-import com.green.Library.web.img.vo.ImgVO;
 import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.participationForum.vo.ParticipationForumVO;
 import com.green.Library.web.webMenu.service.WebMenuService;
@@ -84,8 +84,8 @@ public class CulturalAndEducationController {
                                      BoardVO boardVO,
                                      MemberVO memberVO,
                                      HttpSession session,
-                                     @RequestParam(name = "mainImg") MultipartFile mainImg,
-                                     @RequestParam(name = "subImgs") MultipartFile[] subImgs){
+                                     @RequestParam(name = "mainFile") MultipartFile mainFile,
+                                     @RequestParam(name = "subFile") MultipartFile[] subFile){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -106,16 +106,16 @@ public class CulturalAndEducationController {
         int maxBoardNo = boardService.isNullBoardNo();
 
         // 단일 이미지 첨부 기능
-        ImgVO mainImgVO = BoardUploadUtil.uploadFile(mainImg);
-        mainImgVO.setBoardNo(maxBoardNo);
+        UploadVO mainFileVO = BoardUploadUtil.uploadFile(mainFile);
+        mainFileVO.setBoardNo(maxBoardNo);
 
         // 멀티 이미지 첨부 기능
-        List<ImgVO> imgList = BoardUploadUtil.subImgUploadFile(subImgs);
-        for (ImgVO img : imgList){
+        List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(subFile);
+        for (UploadVO img : fileList){
             img.setBoardNo(maxBoardNo);
         }
-        imgList.add(mainImgVO);
-        boardVO.setImgList(imgList);
+        fileList.add(mainFileVO);
+        boardVO.setAttachedList(fileList);
         System.out.println(boardVO);
 
         boardVO.setBoardNo(maxBoardNo);
@@ -250,7 +250,7 @@ public class CulturalAndEducationController {
 
 
         List<BoardVO> boardList =  boardService.selectBoardList(searchVO);
-        System.out.println(searchVO);
+        System.out.println("---------------------------------------------"+searchVO);
         model.addAttribute("guideBoardList",boardList);
 
 
@@ -270,8 +270,8 @@ public class CulturalAndEducationController {
                                      BoardVO boardVO,
                                      MemberVO memberVO,
                                      HttpSession session,
-                                     @RequestParam(name = "mainImg") MultipartFile mainImg,
-                                     @RequestParam(name = "subImgs") MultipartFile[] subImgs) {
+                                     @RequestParam(name = "mainFile") MultipartFile mainFile,
+                                     @RequestParam(name = "subFiles") MultipartFile[] subFiles) {
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -291,16 +291,16 @@ public class CulturalAndEducationController {
         int maxBoardNo = boardService.isNullBoardNo();
 
         // 단일 이미지 첨부 기능
-        ImgVO mainImgVO = BoardUploadUtil.uploadFile(mainImg);
-        mainImgVO.setBoardNo(maxBoardNo);
+        UploadVO mainFileVO = BoardUploadUtil.uploadFile(mainFile);
+        mainFileVO.setBoardNo(maxBoardNo);
 
         // 멀티 이미지 첨부 기능
-        List<ImgVO> imgList = BoardUploadUtil.subImgUploadFile(subImgs);
-        for (ImgVO img : imgList) {
-            img.setBoardNo(maxBoardNo);
+        List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(subFiles);
+        for (UploadVO file : fileList) {
+            file.setBoardNo(maxBoardNo);
         }
-        imgList.add(mainImgVO);
-        boardVO.setImgList(imgList);
+        fileList.add(mainFileVO);
+        boardVO.setAttachedList(fileList);
         System.out.println(boardVO);
 
         boardVO.setBoardNo(maxBoardNo);
