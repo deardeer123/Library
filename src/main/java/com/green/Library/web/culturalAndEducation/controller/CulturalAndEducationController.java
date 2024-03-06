@@ -115,7 +115,7 @@ public class CulturalAndEducationController {
             img.setBoardNo(maxBoardNo);
         }
         fileList.add(mainFileVO);
-        boardVO.setAttachedList(fileList);
+        boardVO.setFileList(fileList);
         System.out.println(boardVO);
 
         boardVO.setBoardNo(maxBoardNo);
@@ -244,14 +244,14 @@ public class CulturalAndEducationController {
         System.out.println(webMenuService.selectWebMenuList("member"));
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
 
-        int totalBoardCnt= boardService.countBoard();
+        int totalBoardCnt= cultureService.culCountBoard();
         searchVO.setTotalDataCnt(totalBoardCnt);
         boardVO.setBoardType(24);
         searchVO.setPageInfo();
         searchVO.setBoardType(boardVO.getBoardType());
 
 
-        List<BoardVO> boardList =  boardService.selectBoardList(searchVO);
+        List<BoardVO> boardList =  cultureService.culSelectBoardList(searchVO);
         System.out.println("---------------------------------------------"+searchVO);
         model.addAttribute("guideBoardList",boardList);
 
@@ -290,7 +290,7 @@ public class CulturalAndEducationController {
         MemberVO loginInfo = (MemberVO) session.getAttribute("loginInfo");
 
         //boardNo의 max값
-        int maxBoardNo = boardService.isNullBoardNo();
+        int maxBoardNo = cultureService.culIsNullBoardNo();
 
         // 단일 이미지 첨부 기능
         UploadVO mainFileVO = BoardUploadUtil.uploadFile(mainFile);
@@ -302,12 +302,12 @@ public class CulturalAndEducationController {
             file.setBoardNo(maxBoardNo);
         }
         fileList.add(mainFileVO);
-        boardVO.setAttachedList(fileList);
+        boardVO.setFileList(fileList);
         System.out.println(boardVO);
 
         boardVO.setBoardNo(maxBoardNo);
         System.out.println(boardVO);
-        boardService.insertCulBoard(boardVO);
+        cultureService.culInsertBoard(boardVO);
         memberVO.setUserCode(loginInfo.getUserCode());
 
 

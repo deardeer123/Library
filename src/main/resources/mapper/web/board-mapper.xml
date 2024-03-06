@@ -12,8 +12,7 @@
         <result column="BOARD_CNT"     property="boardCnt"/>
         <result column="BOARD_TYPE"     property="boardType"/>
         <association property="memberVO" resultMap="memberMapper.users"/>
-        <collection property="imgList" resultMap="img"/>
-        <collection property="uploadList" resultMap="upload"/>
+        <collection property="fileList" resultMap="file"/>
     </resultMap>
 
     <resultMap id="file" type="com.green.Library.web.board.vo.UploadVO">
@@ -50,19 +49,19 @@
 
 
     <!--  이미지 등록  -->
-    <insert id="insertfileList">
+    <insert id="insertFileList">
         INSERT INTO ATTACHED_FILE(
-        ORIGIN_FILE_NAME
-        ,ATTACHED_FILE_NAME
-        ,IS_MAIN
-        ,BOARD_NO
+            ORIGIN_FILE_NAME
+            ,ATTACHED_FILE_NAME
+            ,IS_MAIN
+            ,BOARD_NO
         )
         VALUES
         <foreach collection="fileList" item="file" separator=",">
-            (#{img.originFileName}
-            ,#{img.attachedFileName}
-            ,#{img.isMain}
-            ,#{img.boardNo})
+            (#{file.originFileName}
+            ,#{file.attachedFileName}
+            ,#{file.isMain}
+            ,#{file.boardNo})
         </foreach>
     </insert>
 

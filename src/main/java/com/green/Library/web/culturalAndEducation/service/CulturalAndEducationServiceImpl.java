@@ -21,7 +21,7 @@ public class CulturalAndEducationServiceImpl implements CulturalAndEducationServ
     @Override
     public void culInsertBoard(BoardVO boardVO) {
         sqlSession.insert("culturalAndEducationMapper.culInsertBoard", boardVO);
-        sqlSession.insert("culturalAndEducationMapper.culInsertfileList", boardVO);
+        sqlSession.insert("culturalAndEducationMapper.culInsertFileList", boardVO);
     }
 
     @Override

@@ -34,7 +34,7 @@
             BOARD.BOARD_NO
             , BOARD_TITLE
             , CONTENT
-            , BOARD_DATE
+            , DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') AS BOARD_DATE
             , BOARD.USER_CODE
             , BOARD_CNT
             , USER_ID
@@ -52,10 +52,10 @@
             where ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
         </if>
         <if test='fromDate != null and !fromDate.equals("")'>
-            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') &gt;= #{fromDate}
+            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') = #{fromDate}
         </if>
         <if test='toDate != null and !toDate.equals("")'>
-            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') &lt;= #{toDate}
+            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') = #{toDate}
         </if>
         ORDER BY BOARD_NO DESC
         LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
@@ -65,7 +65,7 @@
 
 
     <!--  이미지 등록  -->
-    <insert id="culInsertfileList">
+    <insert id="culInsertFileList">
         INSERT INTO ATTACHED_FILE(
         ORIGIN_FILE_NAME
         ,ATTACHED_FILE_NAME
@@ -74,10 +74,10 @@
         )
         VALUES
         <foreach collection="fileList" item="file" separator=",">
-            (#{img.originFileName}
-            ,#{img.attachedFileName}
-            ,#{img.isMain}
-            ,#{img.boardNo})
+            (#{file.originFileName}
+            ,#{file.attachedFileName}
+            ,#{file.isMain}
+            ,#{file.boardNo})
         </foreach>
     </insert>
 
@@ -94,15 +94,15 @@
     <!--  게시물 상세보기  -->
     <select id="culSelectBoardDetail" resultMap="boardMapper.board">
         SELECT
-        BOARD.BOARD_NO
-        ,BOARD.USER_CODE
-        ,BOARD_TITLE
-        ,BOARD_DATE
-        ,BOARD_CNT
-        ,CONTENT
-        ,USER_ID
-        ,ATTACHED_FILE_NAME
-        ,IS_MAIN
+            BOARD.BOARD_NO
+            ,BOARD.USER_CODE
+            ,BOARD_TITLE
+            ,DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') AS BOARD_DATE
+            ,BOARD_CNT
+            ,CONTENT
+            ,USER_ID
+            ,ATTACHED_FILE_NAME
+            ,IS_MAIN
         FROM BOARD
         INNER JOIN USERS
         ON BOARD.USER_CODE = USERS.USER_CODE
