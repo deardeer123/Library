@@ -6,7 +6,7 @@
 
 
     <!--  게시글 등록  -->
-    <insert id="insertCulBoard">
+    <insert id="culInsertBoard">
         INSERT INTO BOARD(
         BOARD_TITLE
         , CONTENT
@@ -29,7 +29,7 @@
 
 
     <!--  등록한 게시물 정보 리스트  -->
-    <select id="selectBoardList" resultMap="boardMapper.board">
+    <select id="culSelectBoardList" resultMap="boardMapper.board">
         SELECT
             BOARD.BOARD_NO
             , BOARD_TITLE
@@ -63,7 +63,7 @@
     </select>
 
     <!--  이미지 등록  -->
-    <insert id="insertfileList">
+    <insert id="culInsertfileList">
         INSERT INTO ATTACHED_FILE(
         ORIGIN_FILE_NAME
         ,ATTACHED_FILE_NAME
@@ -80,7 +80,7 @@
     </insert>
 
     <!--  게시판 개수 + 1  -->
-    <select id="isNullBoardNo" resultType="int">
+    <select id="culIsNullBoardNo" resultType="int">
         SELECT CASE WHEN
         MAX(BOARD_NO) IS NULL
         THEN 1
@@ -90,7 +90,7 @@
     </select>
 
     <!--  게시물 상세보기  -->
-    <select id="selectBoardDetail" resultMap="board">
+    <select id="culSelectBoardDetail" resultMap="boardMapper.board">
         SELECT
         BOARD.BOARD_NO
         ,BOARD.USER_CODE
@@ -110,20 +110,20 @@
     </select>
 
     <!--  조회수 증가  -->
-    <update id="boardCntUp">
+    <update id="culBoardCntUp">
         UPDATE BOARD
         SET BOARD_CNT = BOARD_CNT + 1
         WHERE BOARD_NO
     </update>
 
     <!--  게시판 삭제  -->
-    <delete id="deleteBoard">
+    <delete id="culDeleteBoard">
         DELETE FROM BOARD
         WHERE BOARD_NO = #{boardNo}
     </delete>
 
     <!--  게시판 수정  -->
-    <update id="updateBoard">
+    <update id="culUpdateBoard">
         UPDATE BOARD
         SET
         BOARD_TITLE = #{boardTitle}
