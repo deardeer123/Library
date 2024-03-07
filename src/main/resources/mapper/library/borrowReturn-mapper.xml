@@ -54,10 +54,22 @@
         ORDER BY BORROW_DATE DESC
     </select>
 
+    <!-- 대출내역 insert -->
+    <insert id="insertBorrow">
+        INSERT INTO BOOK_BORROW (
+            USER_CODE
+            , BOOK_CODE
+        ) VALUES (
+            #{userCode}
+            , #{bookCode}
+        )
+    </insert>
+
     <!-- bookBorrow update -->
     <update id="updateBookBorrow">
         UPDATE BOOK_BORROW
         SET
+            BOOK_CODE = #{bookCode}
             EX_RETURN_DATE = EX_RETURN_DATE + DATE_ADD(NOW(), INTERVAL +14 DAY)
         WHERE BOOK_CODE = #{bookCode}
     </update>
