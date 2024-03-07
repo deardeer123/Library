@@ -1,5 +1,7 @@
 package com.green.Library.web.findBook.controller;
 
+import com.green.Library.library.regAndView.service.BookSearchVO;
+import com.green.Library.web.findBook.service.FindBookService;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
@@ -13,8 +15,11 @@ public class FindBookController {
     @Resource(name ="webMenuService")
     WebMenuService webMenuService;
 
+    @Resource(name= "findBookService")
+    FindBookService findBookService;
+
     @GetMapping("/findFullBook")
-    public String goFindFullBook(Model model){
+    public String goFindFullBook(Model model, BookSearchVO bookSearchVO){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -28,7 +33,23 @@ public class FindBookController {
         System.out.println(webMenuService.selectWebMenuList("member"));
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
 
+
+        //페이징
+        System.out.println(bookSearchVO.getNowPage());
+        bookSearchVO.setNowPage(bookSearchVO.getNowPage());
+
+        //전체 게시물 갯수 설정
+        int totalDataCnt = findBookService.selectFindBookCnt(bookSearchVO);
+        bookSearchVO.setTotalDataCnt(totalDataCnt);
+
+        //페이지 정보 세팅
+        bookSearchVO.setPageInfo();
+
+        //책 리스트 보내기
+        model.addAttribute("bookList", findBookService.findBookList(bookSearchVO));
+
         System.out.println("전체자료찾기");
+
         return "content/homePage/findBook/findFullBook";
     }
     @GetMapping("/newBook")
