@@ -58,9 +58,12 @@ public class ParticipationForumController {
         //페이지정보세팅
         searchVO.setPageInfo();
 
+        searchVO.setBoardType(31);
+        System.out.println(searchVO);
+        System.out.println(participationForumService.forumSelectBoardList(searchVO));
         //글목록 조회
-        List<BoardVO> noticeList = participationForumService.selectNotice();
-        model.addAttribute("noticeList", boardService.forumSelectBoardList(searchVO));
+        //List<BoardVO> noticeList = participationForumService.selectNotice();
+        model.addAttribute("noticeList", participationForumService.forumSelectBoardList(searchVO));
 
         return "content/homePage/forum/notice";
     }
@@ -128,7 +131,7 @@ public class ParticipationForumController {
 
         //글목록 조회
         List<BoardVO> noticeList = participationForumService.selectQna();
-        model.addAttribute("noticeList", boardService.forumSelectBoardList(searchVO));
+        model.addAttribute("noticeList", participationForumService.forumSelectBoardList(searchVO));
 
         return "content/homePage/forum/askAndAnswer";
     }

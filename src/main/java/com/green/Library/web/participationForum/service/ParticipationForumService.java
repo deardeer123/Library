@@ -28,4 +28,8 @@ ParticipationForumService {
     //다음에 들어갈 BoardCode 조회
     int selectNextBoardCode();
 
+    //게시글 리스트
+    List<BoardVO> forumSelectBoardList(SearchVO searchVO);
+
+
 }

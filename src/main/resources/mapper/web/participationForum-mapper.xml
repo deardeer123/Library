@@ -51,7 +51,7 @@
             , BOARD_CNT
         FROM BOARD INNER JOIN USERS
         ON BOARD.USER_CODE = USERS.USER_CODE
-        WHERE BOARD_TYPE = '31'
+        WHERE BOARD_TYPE = 31
         ORDER BY BOARD_NO DESC
     </select>
 
@@ -105,6 +105,27 @@
         ON BOARD.USER_CODE = USERS.USER_CODE
         WHERE BOARD_TYPE = '32'
         ORDER BY BOARD_NO DESC
+    </select>
+
+    <!--  등록한 게시물 정보 리스트  -->
+    <select id="forumSelectBoardList" resultMap="boardMapper.board">
+        SELECT
+        BOARD.BOARD_NO
+        , BOARD_TITLE
+        , CONTENT
+        , BOARD_DATE
+        , BOARD.USER_CODE
+        , BOARD_CNT
+        , USER_ID
+        , USER_NAME
+        FROM board INNER JOIN USERS
+        ON BOARD.USER_CODE = USERS.USER_CODE
+        where BOARD_TYPE = #{boardType}
+        <if test='searchValue != null and !searchValue.equals("")'>
+            and ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+        ORDER BY BOARD_NO DESC
+        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
     </select>
 
 </mapper>

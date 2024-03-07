@@ -54,5 +54,9 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
         return sqlSession.selectOne("participationForumMapper.selectNextBoardCode");
     }
 
+    @Override
+    public List<BoardVO> forumSelectBoardList(SearchVO searchVO) {
+        return sqlSession.selectList("participationForumMapper.forumSelectBoardList",searchVO);
+    }
 
 }
