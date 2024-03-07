@@ -76,16 +76,21 @@ public class ParticipationForumController {
     //공지사항 글쓰기
     @PostMapping("/noticeWrite")
     public String noticeWrite(BoardVO boardVO, HttpSession session, Model model,
-                              @RequestParam(name = "files") MultipartFile[] uploadList){
+                              @RequestParam(name = "files") MultipartFile[] files){
         //로그인 정보 전달
         MemberVO loginInfo = (MemberVO) session.getAttribute("loginInfo");
         boardVO.setUserCode(loginInfo.getUserCode());
         model.addAttribute("loginInfo",loginInfo);
+        //첨부파일등록
+        List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(files);
+        boardVO.setFileList(fileList);
 
         //글등록
         participationForumService.insertNotice(boardVO);
-        //첨부파일등록
-        List<UploadVO> upload = BoardUploadUtil.subImgUploadFile(uploadList);
+
+
+
+
         int boardNo = participationForumService.selectNextBoardCode();
         boardVO.setBoardNo(boardNo);
 

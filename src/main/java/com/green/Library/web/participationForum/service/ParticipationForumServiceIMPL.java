@@ -18,7 +18,7 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
     @Override
     public void insertNotice(BoardVO boardVO) {
         sqlSession.insert("participationForumMapper.insertBoard", boardVO);
-        sqlSession.insert("participationForumMapper.insertUploadFile");
+        sqlSession.insert("participationForumMapper.insertUploadFile", boardVO);
     }
 
     //공지사항조회

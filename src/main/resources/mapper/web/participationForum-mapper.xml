@@ -26,17 +26,17 @@
     <!--  첨부파일 등록  -->
     <insert id="insertUploadFile">
         INSERT INTO ATTACHED_FILE(
-        ORIGIN_FILE_NAME
-        ,ATTACHED_FILE_NAME
-        ,IS_MAIN
-        ,BOARD_NO
+            ORIGIN_FILE_NAME
+            ,ATTACHED_FILE_NAME
+            ,BOARD_NO
+
         )
         VALUES
         <foreach collection="fileList" item="file" separator=",">
             (#{file.originFileName}
             ,#{file.attachedFileName}
-            ,#{file.isMain}
-            ,#{file.boardNo})
+            ,#{file.boardNo}
+            )
         </foreach>
     </insert>
 
