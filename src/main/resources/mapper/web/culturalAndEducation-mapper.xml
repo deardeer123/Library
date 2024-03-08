@@ -3,7 +3,20 @@
 
 <!--&lt;!&ndash; 해당 파일에 모든 쿼리문을 작성 &ndash;&gt;-->
 <mapper namespace="culturalAndEducationMapper">
-
+    <resultMap id="event" type="com.green.Library.web.culturalAndEducation.vo.EventBoardVO">
+        <id column="EVENT_CODE" property="eventCode"/>
+        <result column="EVENT_TITLE" property="eventTitle"/>
+        <result column="TEACHER" property="teacher"/>
+        <result column="TARGET" property="target"/>
+        <result column="EVENT_OPEN" property="eventOpen"/>
+        <result column="EVENT_CLOSE" property="eventClose"/>
+        <result column="TO_DATE" property="toDate"/>
+        <result column="FROM_DATE" property="fromDate"/>
+        <result column="PERSONNEL" property="personnel"/>
+        <result column="MAXIMUM_PERSON" property="maximumPerson"/>
+        <result column="STATUS_INDEX" property="statusIndex"/>
+        <result column="BOARD_NO" property="boardNo"/>
+    </resultMap>
 
     <!--  게시글 등록  -->
     <insert id="culInsertBoard">
@@ -139,6 +152,35 @@
         WHERE BOARD_NO = #{boardNo}
     </update>
 
+
+
+
+<!--  ///////////////////////////////이벤트 보드//////////////////////////////  -->
+    <insert id="insertEventBoard">
+        INSERT INTO EVENT_TABLE(
+            EVENT_TITLE
+            ,TEACHER
+            ,TARGET
+            ,EVENT_OPEN
+            ,EVENT_CLOSE
+            ,TO_DATE
+            ,FROM_DATE
+            ,PERSONNEL
+            ,MAXIMUM_PERSON
+            ,STATUS_INDEX
+        )VALUES(
+            #{eventTitle}
+            #{teacher}
+            #{target}
+            #{eventOpen}
+            #{eventClose}
+            #{toDate}
+            #{fromDate}
+            #{personnel}
+            #{maximumPerson}
+            #{statusIndex}
+        )
+    </insert>
 </mapper>
 
 

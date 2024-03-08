@@ -37,7 +37,7 @@ public class BorrowReturnController {
     //이용자 조회
     @ResponseBody
     @PostMapping("/selectBorrowInfo")
-    public MemberVO selectBorrowInfo(@RequestBody RequestDataVO requestDataVO){
+    public MemberVO selectBorrowInfo(@RequestBody RequestDataVO requestDataVO, BookBorrowVO bookBorrowVO){
 
         System.out.println(requestDataVO);
 
@@ -51,7 +51,8 @@ public class BorrowReturnController {
             System.out.println(memberInfo);
 
         } else if (memberInfo.getCardNum() > 0 && requestDataVO.getBookCode().contains("GR")) {
-            borrowReturnService.updateBookBorrow(requestDataVO.getBookCode());
+            bookBorrowVO.setBookCode(requestDataVO.getBookCode());
+            borrowReturnService.updateBookBorrow(bookBorrowVO);
 
         }
 
@@ -59,7 +60,12 @@ public class BorrowReturnController {
     }
 
     //대출 기능
-
+//    @ResponseBody
+//    @PostMapping("/updateBorrowInfo")
+//    public MemberVO updateBorrowInfo(@RequestBody RequestDataVO requestDataVO){
+//
+//
+//    }
 
 
     //일관 반납

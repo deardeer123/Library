@@ -14,7 +14,7 @@ function selectMemberInfo(){
 
     // 컨트롤러로 보낼 데이터 객체로 만들기
     let requestDataVO = {
-        cardNum : !isNaN(parseInt(inputData, 10)) ? parseInt(inputData, 10) : null
+        cardNum : !isNaN(parseInt(inputData, 10)) ? parseInt(inputData, 10) : 0
         , bookCode : inputData
     }
 
@@ -40,7 +40,7 @@ function selectMemberInfo(){
         userInfo.innerHTML = '';
         
         let str1 = '';
-
+        
         str1= `
         <div class="row">
             <div class="col" id="cardNum">
@@ -65,8 +65,6 @@ function selectMemberInfo(){
 
         let str2 = '';
 
-        if(data.bookCode == null){
-
             str2 +=`
         <div class="row">
             <div class="col" id="borrowInfo">
@@ -192,136 +190,15 @@ function selectMemberInfo(){
             </div>
         </div>
         `;
-
-        }
 
         if(data.bookCode != null){
-            str2 +=`
-        <div class="row">
-            <div class="col" id="borrowInfo">
-                자관대출 (0/5)        
-            </div>
-        </div>`;
+            alert('!')
+            let str3 = ''
+        str3 += `
 
-        if(data.bookBorrowList.length == 1 && data.bookBorrowList[0].bookCode == null){
-            str2 +=   `<div class="row tbody">
-                <div class="col text-center">
-                    대출 내역이 없습니다.
-                </div>
-            </div>`; 
-        } else {
-            str2 += `<div class="row tbody">`;
-            data.bookBorrowList.forEach((bookBorrowInfo) => {
-                str2+=`
-                <div class="col">
-                    표지
-                </div>
-                <div class="col">
-                    ${bookBorrowInfo.bookCode}
-                </div>
-                <div class="col">
-                    ${bookBorrowInfo.libraryBookVO.bookTitle}
-                </div>
-                <div class="col">
-                    청구기호
-                </div>
-                <div class="col">
-                    ${bookBorrowInfo.borrowDate}
-                </div>
-                <div class="col">
-                    ${bookBorrowInfo.exReturnDate}
-                </div>
-                <div class="col">
-                    대출처리자
-                </div>`;
-            });               
-            str2 += `</div>`;   
-        }                     
-
-        str2 += `
-        <div class="row">
-            <div class="col" id="returnInfo">
-                반납 (0)        
-            </div>
-        </div>
-        `;
-        if(data.bookReturnList.length == 1 && data.bookReturnList[0].bookCode == null){
-            str2 +=   `<div class="row tbody">
-                <div class="col text-center">
-                    반납 내역이 없습니다.
-                </div>
-            </div>`; 
-        } else {
-        str2 += `<div class="row tbody">`;
-            data.bookReturnList.forEach((bookReturnInfo) => {
-                str2 += `<div class="col">
-                            표지
-                        </div>
-                        <div class="col">
-                            등록번호
-                        </div>
-                        <div class="col">
-                            서명
-                        </div>
-                        <div class="col">
-                            청구기호
-                        </div>
-                        <div class="col">
-                            대출일
-                        </div>
-                        <div class="col">
-                            반납일(연체일)
-                        </div>
-                        <div class="col">
-                            반납처리자
-                        </div>`;
-            });
-            
-            `</div>`;   
-        }              
-        str2 += `
-        <div class="row">
-            <div class="col" id="bookCodeInfo">
-                예약 (예약가능 건수 : 0)  예약 내역은 db쪽으로 더 생각해 봐야 할 것 같아서 다음에 다시 올 거예요.      
-            </div>
-        </div>
-        `;
-        str2 +=   `<div class="row tbody">
-                <div class="col text-center">
-                    
-                </div>
-            </div>`; 
-        str2 += `<div class="row tbody">
-            <div class="col">
-                표지
-            </div>
-            <div class="col">
-                등록번호
-            </div>
-            <div class="col">
-                서명
-            </div>
-            <div class="col">
-                청구기호
-            </div>
-            <div class="col">
-                대출일
-            </div>
-            <div class="col">
-                반납일(연체일)
-            </div>
-            <div class="col">
-                반납처리자
-            </div>
-        </div>`;   
-        str2 += `
-        <div class="row">
-            <div class="col" id="returnInfo">
-                당일처리내역 여기도 조회, 대출, 반납 모두 떠야해서 이용자 먼저 하고 올게요.      
-            </div>
-        </div>
-        `;
+        `
         }
+        
 
         brInfo.insertAdjacentHTML("afterbegin", str2);
     })

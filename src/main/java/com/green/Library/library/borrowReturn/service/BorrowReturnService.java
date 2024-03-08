@@ -1,5 +1,6 @@
 package com.green.Library.library.borrowReturn.service;
 
+import com.green.Library.library.borrowReturn.vo.BookBorrowVO;
 import com.green.Library.library.user.vo.UserVO;
 import com.green.Library.web.member.vo.MemberVO;
 
@@ -9,7 +10,7 @@ public interface BorrowReturnService {
     MemberVO selectBorrowInfo(MemberVO memberVO);
 
     // 대출 시 book_borrow의 exReturnDate 업데이트
-    void updateBookBorrow(String bookCode);
+    void updateBookBorrow(BookBorrowVO bookBorrowVO);
 
     // 이용자 반납 update 및 대출 가능 여부 update
 }
