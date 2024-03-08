@@ -44,7 +44,9 @@
                     <tr >
                         <td colspan="4">
                             <div class="row">
+                                <div><input type="checkbox" id="allChk" onclick="allchk()" checked></div>
                                 <div class="col-4 card" th:each="board : ${boardList}">
+                                    <input type="checkbox" class="chk" checked>
                                     <a th:href="@{/eventDetailBoard(boardNo=${board.boardNo})}">
                                         <img th:src="@{'/upload/' + ${board.fileList[0].attachedFileName}}" class="card-img-top" alt="...">
                                     </a>
@@ -81,6 +83,7 @@
                 <th:block th:if="${session.loginInfo != null}">
                     <th:block th:if="${session.loginInfo.isAdmin == 'Y'}">
                         <input type="button" value="게시글 작성" onclick="location.href='goEventBoard'">
+                        <input type="button" value="게시글 삭제" th:onclick="culDeleteBoard(boardNo)">
                     </th:block>
                 </th:block>
             </div>
@@ -90,6 +93,6 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <!-- <script src="/"></script> -->
+    <script src="/js/content/culture/culture.js"></script>
 </th:block>
 </html>

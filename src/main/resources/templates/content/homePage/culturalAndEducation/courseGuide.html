@@ -26,8 +26,8 @@
                 <tr>
                     <td colspan="4">
                         <select name="searchType">
-                            <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'boardTitle'}">제목</option>
-                            <option value="USER_ID" th:selected="${searchVO.searchType == 'userId'}">작성자</option>
+                            <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'boardTitle'}">강좌명</option>
+                            <option value="USER_NAME" th:selected="${searchVO.searchType == 'userName'}">강사명</option>
                         </select>
                         <input type="search" name="searchValue" th:value="${searchVO.searchValue}">
                         <input type="submit" value="검색">
@@ -38,28 +38,43 @@
         <div class="col">
             <table class="table">
                 <thead>
-                    <colgroup>
+                    <!-- <colgroup>
                     <col width="10%">
                     <col width="30%">
                     <col width="20%">
                     <col width="20%">
                     <col width="20%">
-                    </colgroup>
+                    </colgroup> -->
                     <tr>
                         <td>번호</td>
-                        <td>제목</td>
-                        <td>작성자</td>
-                        <td>등록일</td>
-                        <td>조회수</td>
+                        <td>강좌명</td>
+                        <td>강사명</td>
+                        <td>대상</td>
+                        <td>운영기간</td>
+                        <td>신청기간</td>
+                        <td>정원</td>
+                        <td>상태</td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="board : ${guideBoardList}">
                         <td>번호</td>
                         <td>[[${board.boardTitle}]]</td>
-                        <td>[[${board.memberVO.userId}]]</td>
-                        <td></td>
-                        <td>[[${board.boardCnt}]]</td>
+                        <td>[[${board.BoardPlusVO.teacher}]]</td>
+                        <td>[[${board.BoardPlusVO.target}]]</td>
+                        <td>[[${board.BoardPlusVO.openDate}]] 
+                            ~ 
+                            [[${board.BoardPlusVO.closeDate}]]
+                        </td>
+                        <td>
+                            [[${board.BoardPlusVO.fromDate}]]
+                            [[${board.BoardPlusVO.toDate}]]
+                        </td>
+                        <td>
+                            [[${board.BoardPlusVO.personnel}]] /
+                            [[${board.BoardPlusVO.maximumPerson}]]
+                        </td>
+                        <td>[[${board.BoardPlusVO.eventStatus}]]</td>
                     </tr>
                 </tbody>
             </table>

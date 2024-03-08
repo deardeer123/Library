@@ -21,4 +21,5 @@ public class BoardVO {
     private int boardType;
     private MemberVO memberVO;
     private List<UploadVO> fileList;
+    private BoardPlusVO boardPlusVO;
 }

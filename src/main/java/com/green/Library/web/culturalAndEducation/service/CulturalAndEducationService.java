@@ -1,9 +1,8 @@
 package com.green.Library.web.culturalAndEducation.service;
 
+import com.green.Library.web.board.vo.BoardPlusVO;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
-import com.green.Library.web.culturalAndEducation.vo.CulturalAndEducationVO;
-import com.green.Library.web.participationForum.vo.ParticipationForumVO;
 
 import java.util.List;
 
@@ -21,8 +20,6 @@ public interface CulturalAndEducationService {
 
     int culCountBoard();
 
-//    //업로드 파일
-//    void insertUploadFile (BoardVO boardVO);
 
     BoardVO culSelectBoardDetail(int boardNo);
 
@@ -30,8 +27,15 @@ public interface CulturalAndEducationService {
     void culBoardCntUp(int boardNo);
 
     // 게시판 삭제
-    void culDeleteBoard(int boardNo);
+    void culDeleteBoard(BoardVO boardVO);
 
     //게시판 수정
     void culUpdateBoard(BoardVO boardVO);
+
+    //이벤트 게시판 작성문
+    void insertEventBoard(BoardVO boardVO);
+
+    //이벤트 게시판 리스트
+    List<BoardVO> selectEventBoard(SearchVO searchVO);
+
 }
