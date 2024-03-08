@@ -12,6 +12,7 @@
         <result column="BOARD_CNT"     property="boardCnt"/>
         <result column="BOARD_TYPE"     property="boardType"/>
         <association property="memberVO" resultMap="memberMapper.users"/>
+        <association property="boardPlusVO" resultMap="culturalAndEducationMapper.plus"/>
         <collection property="fileList" resultMap="file"/>
     </resultMap>
 
@@ -23,6 +24,35 @@
         <result column="BOARD_NO" property="boardNo"/>
     </resultMap>
 
+<<<<<<< HEAD
+=======
+
+
+<!-- /////////////////////////////공통/////////////////////////////// -->
+    <!--  게시글 작성   -->
+    <insert id="insertCulBoard">
+        INSERT INTO BOARD(
+            BOARD_TITLE
+            , CONTENT
+            , BOARD_DATE
+            , BOARD_TYPE
+            , USER_CODE
+            , BOARD_CNT
+            , BOARD_NO
+        )
+        VALUES(
+            #{boardTitle}
+            ,#{content}
+            ,#{boardDate}
+            ,#{boardType}
+            ,#{userCode}
+            ,#{boardCnt}
+            ,#{boardNo}
+        )
+    </insert>
+
+
+>>>>>>> dev-nam
     <!--  이미지 등록  -->
     <insert id="insertFileList">
         INSERT INTO ATTACHED_FILE(

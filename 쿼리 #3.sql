@@ -17,3 +17,6 @@ SET MEMBER_ROLL = 'MANAGER'
 WHERE MEMBER_ID = 'manager';
 
 COMMIT;
+
+
+
