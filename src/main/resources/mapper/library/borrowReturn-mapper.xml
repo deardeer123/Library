@@ -103,6 +103,8 @@
         WHERE BOOK_CODE = #{bookCode}
     </update>
 
+    <!-- 반납 테이블 INSERT -->
+
 </mapper>
 
 
