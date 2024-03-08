@@ -23,6 +23,24 @@
         )
     </insert>
 
+    <!--  첨부파일 등록  -->
+    <insert id="insertUploadFile">
+        INSERT INTO ATTACHED_FILE(
+            ORIGIN_FILE_NAME
+            , ATTACHED_FILE_NAME
+            , BOARD_NO
+        )
+        VALUES
+        <if test="fileList != null">
+            <foreach collection="fileList" item="file" separator=",">
+                (#{file.originFileName}
+                , #{file.attachedFileName}
+                , #{file.boardNo})
+            </foreach>
+        </if>
+
+    </insert>
+
     <!-- 공지사항 조회-->
     <select id="selectNotice" resultMap="boardMapper.board">
         SELECT BOARD.BOARD_NO
@@ -34,22 +52,7 @@
             , BOARD_CNT
         FROM BOARD INNER JOIN USERS
         ON BOARD.USER_CODE = USERS.USER_CODE
-        WHERE BOARD_TYPE = '31'
-        ORDER BY BOARD_NO DESC
-    </select>
-
-    <!-- 묻고답하기 조회-->
-    <select id="selectQna" resultMap="boardMapper.board">
-        SELECT BOARD.BOARD_NO
-        , BOARD_TITLE
-        , CONTENT
-        , BOARD_DATE
-        , BOARD.USER_CODE
-        , USERS.USER_NAME
-        , BOARD_CNT
-        FROM BOARD INNER JOIN USERS
-        ON BOARD.USER_CODE = USERS.USER_CODE
-        WHERE BOARD_TYPE = '32'
+        WHERE BOARD_TYPE = 31
         ORDER BY BOARD_NO DESC
     </select>
 
@@ -67,9 +70,9 @@
             , BOARD_DATE
             , BOARD_CNT
             , CONTENT
-            , UPLOAD_ATTACHED_FILE_NAME
-            FROM BOARD INNER JOIN UPLOADFILE
-            ON BOARD.BOARD_NO = UPLOADFILE.BOARD_NO
+            , ATTACHED_FILE_NAME
+            FROM BOARD INNER JOIN ATTACHED_FILE
+            ON BOARD.BOARD_NO = ATTACHED_FILE.BOARD_NO
             WHERE BOARD.BOARD_NO = #{boardNo}
     </select>
 
@@ -81,7 +84,51 @@
         <if test='searchValue != null and !searchValue.equals("")'>
             where ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
         </if>
+
     </select>
+    <!-- 다음에 insert 할 Code-->
+    <select id="selectNextBoardCode" resultType="int">
+        SELECT IFNULL(MAX(BOARD_NO), 0) + 1 FROM BOARD
+    </select>
+
+    <!--  등록한 게시물 정보 리스트  -->
+    <select id="forumSelectBoardList" resultMap="boardMapper.board">
+        SELECT
+        BOARD.BOARD_NO
+        , BOARD_TITLE
+        , CONTENT
+        , BOARD_DATE
+        , BOARD.USER_CODE
+        , BOARD_CNT
+        , USER_ID
+        , USER_NAME
+        FROM board INNER JOIN USERS
+        ON BOARD.USER_CODE = USERS.USER_CODE
+        WHERE BOARD_TYPE = '31'
+        <if test='searchValue != null and !searchValue.equals("")'>
+            and ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+        ORDER BY BOARD_NO DESC
+        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
+    </select>
+
+    <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 묻고답하기 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
+
+    <!-- 묻고답하기 조회-->
+    <select id="selectQna" resultMap="boardMapper.board">
+        SELECT BOARD.BOARD_NO
+        , BOARD_TITLE
+        , CONTENT
+        , BOARD_DATE
+        , BOARD.USER_CODE
+        , USERS.USER_NAME
+        , BOARD_CNT
+        FROM BOARD INNER JOIN USERS
+        ON BOARD.USER_CODE = USERS.USER_CODE
+        WHERE BOARD_TYPE = #{boardType}
+        ORDER BY BOARD_NO DESC
+    </select>
+
 
 
 </mapper>

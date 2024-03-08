@@ -45,10 +45,7 @@ public class BoardServiceImpl implements BoardService {
         return sqlSession.selectOne("boardMapper.selectBoardDetail");
     }
 
-    @Override
-    public List<BoardVO> forumSelectBoardList(SearchVO searchVO) {
-        return sqlSession.selectList("boardMapper.forumSelectBoardList",searchVO);
-    }
+
 
 //    @Override
 //    public void insertUploadFile(BoardVO boardVO) {

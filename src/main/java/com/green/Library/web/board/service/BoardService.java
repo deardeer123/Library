@@ -24,8 +24,6 @@ public interface BoardService {
     //상세 게시판
     BoardVO selectBoardDetail();
 
-    //게시글 리스트
-    List<BoardVO> forumSelectBoardList(SearchVO searchVO);
 
 //    //업로드 파일
 //    void insertUploadFile (BoardVO boardVO);
@@ -40,6 +38,8 @@ public interface BoardService {
 
     //게시판 수정
     void updateBoard(BoardVO boardVO);
+
+
 
 }
 

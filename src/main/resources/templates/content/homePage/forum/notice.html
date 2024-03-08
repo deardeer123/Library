@@ -62,14 +62,21 @@
             </tr>
           </thead>
           <tbody>
-            <tr th:each="notice,state : ${noticeList}">
-                <td>[[${#lists.size(noticeList) - state.index}]]</td>
-                <td th:onclick="location.href='/noticeDetail?boardNo=[[${notice.boardNo}]]'">
+            <th:block th:if="${#lists.isEmpty(noticeList)}">
+                <tr>
+                    <td colspan="5">등록된 게시글이 없습니다.</td>
+                </tr>
+            </th:block>
+            <th:block th:unless="${#lists.isEmpty(noticeList)}">
+              <tr th:each="notice,state : ${noticeList}">
+                <td>[[${notice.boardNo}]]</td>
+                <td th:onclick="location.href='/noticeDetail?boardNo=[[${notice.boardNo == 31}]]'">
                   [[${notice.boardTitle}]]</td>
                 <td>[[${notice.memberVO.userName}]]</td>
                 <td>[[${notice.boardDate}]]</td>
                 <td>[[${notice.boardCnt}]]</td>
-            </tr>
+              </tr>
+            </th:block>
           </tbody>
         </table>
       </div>

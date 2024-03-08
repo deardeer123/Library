@@ -1,15 +1,28 @@
 package com.green.Library.library.borrowReturn.service;
 
+import com.green.Library.library.borrowReturn.vo.BookBorrowVO;
 import com.green.Library.library.user.vo.UserVO;
 import com.green.Library.web.member.vo.MemberVO;
 
 public interface BorrowReturnService {
 
+    ////////////////////이용자 정보 조회/////////////////////
     // 이용자의 대출정보 조회
     MemberVO selectBorrowInfo(MemberVO memberVO);
 
+    //////////////////////대출 기능////////////////////////
     // 대출 시 book_borrow의 exReturnDate 업데이트
-    void updateBookBorrow(String bookCode);
+    void insertBorrow(BookBorrowVO bookBorrowVO);
+
+    // input 태그에 입력한 책코드가 유효한 데이터인지 검사
+    boolean isCorrectBookCode(String bookCode);
+
+    // 조회 할 이용자 카드 번호 조회
+    int selectUserCode(int cardNum);
+
+    ////////////////////반납 기능///////////////////////
+    // 책 이용 상태 조회
+    boolean selectBookAvailable(String bookCode);
 
     // 이용자 반납 update 및 대출 가능 여부 update
 }

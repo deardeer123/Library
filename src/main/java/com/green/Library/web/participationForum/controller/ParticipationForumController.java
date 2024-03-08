@@ -1,5 +1,7 @@
 package com.green.Library.web.participationForum.controller;
 
+import com.green.Library.util.BoardUploadUtil;
+import com.green.Library.util.UploadUtil;
 import com.green.Library.web.board.service.BoardServiceImpl;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
@@ -10,6 +12,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import com.green.Library.web.webMenu.service.WebMenuService;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 @Controller
@@ -56,11 +60,15 @@ public class ParticipationForumController {
         searchVO.setPageInfo();
 
         //글목록 조회
-        List<BoardVO> noticeList = participationForumService.selectNotice();
-        model.addAttribute("noticeList", boardService.forumSelectBoardList(searchVO));
+        model.addAttribute("noticeList", participationForumService.forumSelectBoardList(searchVO));
+
+
+
 
         return "content/homePage/forum/notice";
     }
+
+
     //공지사항 글쓰기 페이지이동
     @GetMapping("/noticeWrite")
     public String noticeWrite (){
@@ -70,18 +78,25 @@ public class ParticipationForumController {
     //공지사항 글쓰기
     @PostMapping("/noticeWrite")
     public String noticeWrite(BoardVO boardVO, HttpSession session, Model model,
-                              @RequestParam(name = "files") MultipartFile[] uploadList){
+                              @RequestParam(name = "files") MultipartFile[] files){
         //로그인 정보 전달
         MemberVO loginInfo = (MemberVO) session.getAttribute("loginInfo");
         boardVO.setUserCode(loginInfo.getUserCode());
         model.addAttribute("loginInfo",loginInfo);
 
+        //게시글 다음 최대값 조회
+        int boardNo = participationForumService.selectNextBoardCode();
+        boardVO.setBoardNo(boardNo);
+
+        //첨부파일등록
+        List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(files);
+        for (UploadVO file : fileList){
+            file.setBoardNo(boardNo);
+        }
+        boardVO.setFileList(fileList);
+
         //글등록
         participationForumService.insertNotice(boardVO);
-        System.out.println(boardVO);
-        //첨부파일등록
-//        List<UploadVO> upload = FileUploadUtil.multiFileUpload(uploadList);
-//        boardService.insertUploadFile(boardVO);
 
         return "redirect:/notice";
     }
@@ -94,6 +109,8 @@ public class ParticipationForumController {
         //공지 상세조회
         BoardVO noticeDetail = participationForumService.noticeDetail(boardNo);
         model.addAttribute("noticeDetail", noticeDetail);
+
+        System.out.println("************************************" + noticeDetail);
 
         return "content/homePage/forum/noticeDetail";
     }
@@ -124,8 +141,7 @@ public class ParticipationForumController {
         searchVO.setPageInfo();
 
         //글목록 조회
-        List<BoardVO> noticeList = participationForumService.selectQna();
-        model.addAttribute("noticeList", boardService.forumSelectBoardList(searchVO));
+        model.addAttribute("qnaList", participationForumService.forumSelectBoardList(searchVO));
 
         return "content/homePage/forum/askAndAnswer";
     }

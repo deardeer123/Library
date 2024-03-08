@@ -12,7 +12,7 @@ import lombok.ToString;
 public class BookReturnVO {
     private int rtCode;
     private String returnDate;
-    private int userCode;
+    private int returnUserCode;
     private String bookCode;
     private LibraryBookVO libraryBookVO;
     private LibraryBookInfoVO libraryBookInfoVO;
