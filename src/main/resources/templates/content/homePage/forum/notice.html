@@ -69,8 +69,8 @@
             </th:block>
             <th:block th:unless="${#lists.isEmpty(noticeList)}">
               <tr th:each="notice,state : ${noticeList}">
-                <td>[[${#lists.size(noticeList) - state.index}]]</td>
-                <td th:onclick="location.href='/noticeDetail?boardNo=[[${notice.boardNo}]]'">
+                <td>[[${notice.boardNo}]]</td>
+                <td th:onclick="location.href='/noticeDetail?boardNo=[[${notice.boardNo == 31}]]'">
                   [[${notice.boardTitle}]]</td>
                 <td>[[${notice.memberVO.userName}]]</td>
                 <td>[[${notice.boardDate}]]</td>

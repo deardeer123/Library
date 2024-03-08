@@ -12,6 +12,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import com.green.Library.web.webMenu.service.WebMenuService;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,15 +59,16 @@ public class ParticipationForumController {
         //페이지정보세팅
         searchVO.setPageInfo();
 
-        searchVO.setBoardType(31);
-        System.out.println(searchVO);
-        System.out.println(participationForumService.forumSelectBoardList(searchVO));
         //글목록 조회
-        //List<BoardVO> noticeList = participationForumService.selectNotice();
         model.addAttribute("noticeList", participationForumService.forumSelectBoardList(searchVO));
+
+
+
 
         return "content/homePage/forum/notice";
     }
+
+
     //공지사항 글쓰기 페이지이동
     @GetMapping("/noticeWrite")
     public String noticeWrite (){
@@ -81,18 +83,20 @@ public class ParticipationForumController {
         MemberVO loginInfo = (MemberVO) session.getAttribute("loginInfo");
         boardVO.setUserCode(loginInfo.getUserCode());
         model.addAttribute("loginInfo",loginInfo);
+
+        //게시글 다음 최대값 조회
+        int boardNo = participationForumService.selectNextBoardCode();
+        boardVO.setBoardNo(boardNo);
+
         //첨부파일등록
         List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(files);
+        for (UploadVO file : fileList){
+            file.setBoardNo(boardNo);
+        }
         boardVO.setFileList(fileList);
 
         //글등록
         participationForumService.insertNotice(boardVO);
-
-
-
-
-        int boardNo = participationForumService.selectNextBoardCode();
-        boardVO.setBoardNo(boardNo);
 
         return "redirect:/notice";
     }
@@ -105,6 +109,8 @@ public class ParticipationForumController {
         //공지 상세조회
         BoardVO noticeDetail = participationForumService.noticeDetail(boardNo);
         model.addAttribute("noticeDetail", noticeDetail);
+
+        System.out.println("************************************" + noticeDetail);
 
         return "content/homePage/forum/noticeDetail";
     }
@@ -135,8 +141,7 @@ public class ParticipationForumController {
         searchVO.setPageInfo();
 
         //글목록 조회
-        List<BoardVO> noticeList = participationForumService.selectQna();
-        model.addAttribute("noticeList", participationForumService.forumSelectBoardList(searchVO));
+        model.addAttribute("qnaList", participationForumService.forumSelectBoardList(searchVO));
 
         return "content/homePage/forum/askAndAnswer";
     }

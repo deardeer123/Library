@@ -62,19 +62,19 @@
           </thead>
           <tbody>
             <!-- 조회된 데이터가 없을 시 -->
-            <th:block th:if="${#lists.isEmpty(noticeList)}">
+            <th:block th:if="${#lists.isEmpty(qnaList)}">
                     <tr>
                         <td colspan="5">등록된 게시글이 없습니다.</td>
                     </tr>
             </th:block>
-            <th:block th:unless="${#lists.isEmpty(noticeList)}">
-            <tr th:each="notice,state : ${noticeList}">
-                <td>[[${#lists.size(noticeList) - state.index}]]</td>
-                <td th:onclick="location.href='/noticeDetail?boardNo=[[${notice.boardNo}]]'">
-                  [[${notice.boardTitle}]]</td>
-                <td>[[${notice.memberVO.userName}]]</td>
-                <td>[[${notice.boardDate}]]</td>
-                <td>[[${notice.boardCnt}]]</td>
+            <th:block th:unless="${#lists.isEmpty(qnaList)}">
+            <tr th:each="qna,state : ${qnaList}">
+                <td>[[${#lists.size(qnaList) - state.index}]]</td>
+                <td th:onclick="">
+                  [[${qnaList.boardTitle}]]</td>
+                <td>[[${qnaList.memberVO.userName}]]</td>
+                <td>[[${qnaList.boardDate}]]</td>
+                <td>[[${qnaList.boardCnt}]]</td>
             </tr>
             </th:block>
           </tbody>
@@ -84,6 +84,7 @@
     
 
           <!-- 페이징처리 -->
+      
       <div class="col-12 text-center">
         <th:block th:if="${searchVO.prev}">
             <a th:href="@{/notice(nowPage=${searchVO.beginPage - 1})}">이전</a>
@@ -98,11 +99,11 @@
 
     <input type="button" value="목록" onclick="location.href='/notice'">
     
-    <th:block th:if="${session.loginInfo != null}">
-      <th:block th:if="${session.loginInfo.isAdmin}"> 
+  
+      <th:block th:if="${session.loginInfo}"> 
         <input type="button" value="글쓰기" onclick="location.href='/noticeWrite'">
       </th:block>
-    </th:block>
+   
 </th:block>
 
 <th:block layout:fragment="content_js">

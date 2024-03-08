@@ -5,6 +5,7 @@ import com.green.Library.web.board.vo.SearchVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
 
     //공지사항작성
     @Override
+//    @Transactional(rollbackFor = Exception.class)
     public void insertNotice(BoardVO boardVO) {
         sqlSession.insert("participationForumMapper.insertBoard", boardVO);
         sqlSession.insert("participationForumMapper.insertUploadFile", boardVO);
@@ -58,5 +60,7 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
     public List<BoardVO> forumSelectBoardList(SearchVO searchVO) {
         return sqlSession.selectList("participationForumMapper.forumSelectBoardList",searchVO);
     }
+
+
 
 }

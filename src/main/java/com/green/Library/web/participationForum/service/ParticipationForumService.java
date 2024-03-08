@@ -31,5 +31,4 @@ ParticipationForumService {
     //게시글 리스트
     List<BoardVO> forumSelectBoardList(SearchVO searchVO);
 
-
 }

@@ -21,23 +21,23 @@
 
     <div class="row">
       <div class="col-12" style="border-top: 1px solid black;">
-          <div style="float: left;">제목 : []</div>
-          <div style="float: right;">작성일 : [작성일데이터불러]</div>
+          <div style="float: left;">제목 : [[${noticeDetail.boardTitle}]]</div>
+          <div style="float: right;">작성일 : [[${noticeDetail.boardDate}]]</div>
       </div>
         <div class="col-12" style="border-bottom: 1px solid black;">
-          <div style="float: right;">조회수 : [조회수데이터불러]</div>
+          <div style="float: right;">조회수 : [[${noticeDetail.boardCnt}]]</div>
         </div>
     </div>
 
     <div class="row">
       <div class="col" style="border-bottom: 1px solid black;">
-        내용부
+        [[${noticeDetail.content}]]
       </div>
     </div>
 
     <div class="row">
       <div class="col">
-        첨부파일 넣을영역
+        
       </div>
     </div>
 
