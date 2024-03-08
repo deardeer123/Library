@@ -16,6 +16,7 @@ public class FindBookVO {
     private String bookWriter;
     private String bookPub;
     private String bookYear;
+    private String bookBorrowAvailable;
     private String bookIntro;
     private String bookInfoAttachedFileName;
     private String bookCateName;

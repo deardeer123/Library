@@ -2,12 +2,12 @@ package com.green.Library.web.findBook.controller;
 
 import com.green.Library.library.regAndView.service.BookSearchVO;
 import com.green.Library.web.findBook.service.FindBookService;
+import com.green.Library.web.findBook.vo.FindBookVO;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/")
@@ -18,7 +18,8 @@ public class FindBookController {
     @Resource(name= "findBookService")
     FindBookService findBookService;
 
-    @GetMapping("/findFullBook")
+
+    @RequestMapping("/findFullBook")
     public String goFindFullBook(Model model, BookSearchVO bookSearchVO){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
@@ -40,18 +41,38 @@ public class FindBookController {
 
         //전체 게시물 갯수 설정
         int totalDataCnt = findBookService.selectFindBookCnt(bookSearchVO);
+        System.out.println(totalDataCnt);
         bookSearchVO.setTotalDataCnt(totalDataCnt);
+
+
 
         //페이지 정보 세팅
         bookSearchVO.setPageInfo();
 
+        if(totalDataCnt == 0){
+            bookSearchVO.setEndPage(1);
+        }
+
         //책 리스트 보내기
         model.addAttribute("bookList", findBookService.findBookList(bookSearchVO));
+
 
         System.out.println("전체자료찾기");
 
         return "content/homePage/findBook/findFullBook";
     }
+
+    
+    //책 하나 정보 얻기
+    @ResponseBody
+    @PostMapping("/findBookDetail")
+    public FindBookVO findBookDetail(@RequestParam(name = "bookCode") String bookCode){
+        FindBookVO findBookVO = findBookService.findBookOne(bookCode);
+        System.out.println(findBookVO);
+        return findBookVO;
+    }
+
+//    ------------------------------------------------------------------------------------------------
     @GetMapping("/newBook")
     public String goNewBook(Model model){
         //드가기전 메뉴 정보좀 들고옴

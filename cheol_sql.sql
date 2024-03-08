@@ -455,6 +455,7 @@ CREATE TABLE BOOK_BORROW(
 
 SELECT * FROM book;
 -- DROP TABLE book_info;
+-- DROP VIEW find_book_view;
 CREATE VIEW find_book_view as
 SELECT
    book.BOOK_CODE ,
@@ -462,6 +463,7 @@ SELECT
    book.BOOK_WRITER ,
    book.BOOK_PUB ,
    book.BOOK_YEAR ,
+   book_info.BOOK_BORROW_AVAILABLE,
    book_info.book_intro,
    book_info.BOOK_INFO_ATTACHED_FILE_NAME ,
    book_category.BOOK_CATE_NAME ,
@@ -479,6 +481,7 @@ WHERE
 ORDER BY book_code;
 
 SELECT * FROM find_book_view
+WHERE book_code = 'GR0000000001'
 LIMIT 20 OFFSET 0;
         
 
@@ -528,3 +531,17 @@ LOAD DATA LOCAL INFILE 'C:/bookdata/insertData_2.csv'
 INTO TABLE BOOK
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n';
+
+SELECT ITEM_CODE
+	, ITEM_NAME
+	, ITEM_STOCK
+	, ITEM_STATUS
+	, IF(ITEM_STATUS = 1 , '준비중' , IF(ITEM_STATUS = 2, '판매중', '매진')) AS '상태1'
+	, 
+	CASE
+		WHEN ITEM_STATUS = 1 THEN '준비 중'
+		WHEN ITEM_STATUS = 2 THEN '판매 중'
+		ELSE '매진'
+	END AS STR_STATUS
+FROM
+	shop_item;

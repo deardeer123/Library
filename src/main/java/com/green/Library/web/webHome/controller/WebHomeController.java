@@ -1,5 +1,6 @@
 package com.green.Library.web.webHome.controller;
 
+import com.green.Library.library.regAndView.service.BookSearchVO;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,7 @@ public class WebHomeController {
 
 
     @GetMapping("/home")
-    public String goHome(Model model){
+    public String goHome(Model model , BookSearchVO bookSearchVO){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -29,6 +30,11 @@ public class WebHomeController {
         webMenuService.selectWebMenuList("member");
         System.out.println(webMenuService.selectWebMenuList("member"));
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+
+
+        //검색 기능 필요해요
+
+
 
         System.out.println("홈");
         return "content/homePage/home";

@@ -9,6 +9,7 @@
         <result column="BOOK_WRITER" property="bookWriter" />
         <result column="BOOK_PUB" property="bookPub" />
         <result column="BOOK_YEAR" property="bookYear" />
+        <result column="BOOK_BORROW_AVAILABLE" property="bookBorrowAvailable" />
         <result column="book_intro" property="bookIntro" />
         <result column="BOOK_INFO_ATTACHED_FILE_NAME" property="bookInfoAttachedFileName" />
         <result column="BOOK_CATE_NAME" property="bookCateName" />
@@ -37,6 +38,11 @@
         </if>
     </select>
 
+    <select id="findBookOne" resultMap="findBook">
+        SELECT *
+        FROM find_book_view
+        WHERE book_code = #{bookCode}
+    </select>
 
 </mapper>
 
