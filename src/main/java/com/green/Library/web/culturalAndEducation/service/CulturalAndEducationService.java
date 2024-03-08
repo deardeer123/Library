@@ -1,6 +1,5 @@
 package com.green.Library.web.culturalAndEducation.service;
 
-import com.green.Library.web.board.vo.BoardPlusVO;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
 
@@ -21,10 +20,10 @@ public interface CulturalAndEducationService {
     int culCountBoard();
 
 
-    BoardVO culSelectBoardDetail(int boardNo);
+    BoardVO culSelectBoardDetail(BoardVO boardVO);
 
     //조회수 증가
-    void culBoardCntUp(int boardNo);
+    void culBoardCntUp(BoardVO boardVO);
 
     // 게시판 삭제
     void culDeleteBoard(BoardVO boardVO);

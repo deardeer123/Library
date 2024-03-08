@@ -16,7 +16,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void insertCulBoard(BoardVO boardVO) {
         sqlSession.insert("boardMapper.insertCulBoard", boardVO);
-        sqlSession.insert("boardMapper.insertImgList", boardVO);
+        sqlSession.insert("boardMapper.insertFileList", boardVO);
     }
 
 

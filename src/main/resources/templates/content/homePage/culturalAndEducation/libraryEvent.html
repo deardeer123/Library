@@ -83,7 +83,7 @@
                 <th:block th:if="${session.loginInfo != null}">
                     <th:block th:if="${session.loginInfo.isAdmin == 'Y'}">
                         <input type="button" value="게시글 작성" onclick="location.href='goEventBoard'">
-                        <input type="button" value="게시글 삭제" th:onclick="culDeleteBoard(boardNo)">
+                        <input type="button" value="게시글 삭제" th:onclick="culDeleteBoard(boardNum)">
                     </th:block>
                 </th:block>
             </div>

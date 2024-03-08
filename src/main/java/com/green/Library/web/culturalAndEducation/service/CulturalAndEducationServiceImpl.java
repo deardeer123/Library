@@ -1,6 +1,5 @@
 package com.green.Library.web.culturalAndEducation.service;
 
-import com.green.Library.web.board.vo.BoardPlusVO;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -41,13 +40,13 @@ public class CulturalAndEducationServiceImpl implements CulturalAndEducationServ
 
 
     @Override
-    public BoardVO culSelectBoardDetail(int boardNo) {
-        return sqlSession.selectOne("culturalAndEducationMapper.culSelectBoardDetail", boardNo);
+    public BoardVO culSelectBoardDetail(BoardVO boardVO) {
+        return sqlSession.selectOne("culturalAndEducationMapper.culSelectBoardDetail", boardVO);
     }
 
     @Override
-    public void culBoardCntUp(int boardNo) {
-        sqlSession.update("culturalAndEducationMapper.culBoardCntUp", boardNo);
+    public void culBoardCntUp(BoardVO boardVO) {
+        sqlSession.update("culturalAndEducationMapper.culBoardCntUp", boardVO);
     }
 
     @Override
