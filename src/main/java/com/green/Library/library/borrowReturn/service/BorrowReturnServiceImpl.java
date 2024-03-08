@@ -22,11 +22,29 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
     // 대출 시 book_borrow의 exReturnDate 업데이트
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateBookBorrow(BookBorrowVO bookBorrowVO) {
+    public void insertBorrow(BookBorrowVO bookBorrowVO) {
         sqlSession.insert("borrowReturnMapper.insertBorrow", bookBorrowVO);
-        sqlSession.update("borrowReturnMapper.updateBookBorrow", bookBorrowVO.getBookCode());
         sqlSession.update("borrowReturnMapper.updateBookInfo", bookBorrowVO.getBookCode());
     }
+
+    @Override
+    public boolean isCorrectBookCode(String bookCode) {
+
+        return sqlSession.selectOne("borrowReturnMapper.isCorrectBookCode", bookCode) == null ? false : true;
+    }
+
+    @Override
+    public int selectUserCode(int cardNum) {
+        return sqlSession.selectOne("borrowReturnMapper.selectUserCode", cardNum);
+    }
+
+    // 반납 수행 시 책의 이용 가능 여부 조회
+    @Override
+    public boolean selectBookAvailable(String bookCode) {
+        return sqlSession.selectOne("borrowReturnMapper.selectBookAvailable", bookCode).equals("Y") ? true : false;
+    }
+
+
 
 
 }

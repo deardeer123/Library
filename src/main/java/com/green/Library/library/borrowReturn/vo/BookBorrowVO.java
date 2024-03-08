@@ -16,7 +16,7 @@ public class BookBorrowVO {
     private String borrowDate;
     private String returnYN;
     private String exReturnDate;
-    private int userCode;
+    private int borrowUserCode;
     private String bookCode;
     private LibraryBookVO libraryBookVO;
     private LibraryBookInfoVO libraryBookInfoVO;
