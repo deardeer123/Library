@@ -5,22 +5,22 @@
 <mapper namespace="borrowReturnMapper">
 
     <resultMap id="bookBorrow" type="com.green.Library.library.borrowReturn.vo.BookBorrowVO">
-        <id          column="BR_CODE"          property="brCode"/>
-        <result      column="BORROW_DATE"      property="borrowDate"/>
-        <result      column="RETURN_YN"        property="returnYN"/>
-        <result      column="EX_RETURN_DATE"   property="exReturnDate"/>
-        <result      column="USER_CODE"        property="userCode"/>
-        <result      column="BOOK_CODE"        property="bookCode"/>
-        <association property="libraryBookVO"  resultMap="libraryBookMapper.libraryBook"/>
+        <id          column="BR_CODE"             property="brCode"/>
+        <result      column="BORROW_DATE"         property="borrowDate"/>
+        <result      column="RETURN_YN"           property="returnYN"/>
+        <result      column="EX_RETURN_DATE"      property="exReturnDate"/>
+        <result      column="BORROW_USER_CODE"    property="borrowUserCode"/>
+        <result      column="BOOK_CODE"           property="bookCode"/>
+        <association property="libraryBookVO"     resultMap="libraryBookMapper.libraryBook"/>
         <association property="libraryBookInfoVO" resultMap="libraryBookMapper.LibraryBookInfo"/>
     </resultMap>
 
     <resultMap id="bookReturn" type="com.green.Library.library.borrowReturn.vo.BookReturnVO">
-        <id     column="RT_CODE"     property="rtCode"/>
-        <result column="RETURN_DATE" property="returnDate"/>
-        <result column="USER_CODE"   property="userCode"/>
-        <result column="BOOK_CODE"   property="bookCode"/>
-        <association property="libraryBookVO" resultMap="libraryBookMapper.libraryBook"/>
+        <id     column="RT_CODE"                  property="rtCode"/>
+        <result column="RETURN_DATE"              property="returnDate"/>
+        <result column="RETURN_USER_CODE"         property="returnUserCode"/>
+        <result column="BOOK_CODE"                property="bookCode"/>
+        <association property="libraryBookVO"     resultMap="libraryBookMapper.libraryBook"/>
         <association property="libraryBookInfoVO" resultMap="libraryBookMapper.LibraryBookInfo"/>
     </resultMap>
 
@@ -47,32 +47,33 @@
             , BB.BOOK_CODE
         FROM USERS AS U
         LEFT JOIN BOOK_BORROW AS BB
-        ON U.USER_CODE = BB.USER_CODE
+        ON U.USER_CODE = BB.BORROW_USER_CODE
         LEFT JOIN BOOK_RETURN AS BR
-        ON U.USER_CODE = BR.USER_CODE
+        ON U.USER_CODE = BR.RETURN_USER_CODE
         WHERE U.CARD_NUM = #{cardNum}
         ORDER BY BORROW_DATE DESC
+    </select>
+
+    <!-- 데이터베이스에 존재하는 책인지 확인 -->
+    <select id="isCorrectBookCode" resultType="String">
+        SELECT
+            BOOK_CODE
+        FROM BOOK
+        WHERE BOOK_CODE = #{bookCode}
     </select>
 
     <!-- 대출내역 insert -->
     <insert id="insertBorrow">
         INSERT INTO BOOK_BORROW (
-            USER_CODE
+            BORROW_USER_CODE
             , BOOK_CODE
+            , EX_RETURN_DATE
         ) VALUES (
-            #{userCode}
+            #{borrowUserCode}
             , #{bookCode}
+            , EX_RETURN_DATE + DATE_ADD(NOW(), INTERVAL +14 DAY)
         )
     </insert>
-
-    <!-- bookBorrow update -->
-    <update id="updateBookBorrow">
-        UPDATE BOOK_BORROW
-        SET
-            BOOK_CODE = #{bookCode}
-            EX_RETURN_DATE = EX_RETURN_DATE + DATE_ADD(NOW(), INTERVAL +14 DAY)
-        WHERE BOOK_CODE = #{bookCode}
-    </update>
 
     <!-- bookInfo update -->
     <update id="updateBookInfo">
@@ -80,6 +81,25 @@
         SET
             BOOK_BORROW_AVAILABLE = 'N'
             , BOOK_BORROW_CNT = BOOK_BORROW_CNT + 1
+        WHERE BOOK_CODE = #{bookCode}
+    </update>
+
+    <select id="selectUserCode" resultType="int">
+        SELECT USER_CODE
+        FROM USERS
+        WHERE CARD_NUM = #{cardNum}
+    </select>
+
+    <select id="selectBookAvailable" resultType="String">
+        SELECT BOOK_BORROW_AVAILABLE
+        FROM BOOK_INFO
+        WHERE BOOK_CODE = #{bookCode}
+    </select>
+
+    <update id="updateReturnBookInfo">
+        UPDATE BOOK_INFO
+        SET
+        BOOK_BORROW_AVAILABLE = 'Y'
         WHERE BOOK_CODE = #{bookCode}
     </update>
 
