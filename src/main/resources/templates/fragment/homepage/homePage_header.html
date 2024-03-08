@@ -74,7 +74,7 @@
                                         <th:block th:each="e1:${e.webSideMenuVOList}">
                                             <li>
                                                 <a class="dropdown-item"
-                                                    th:onclick="goPage([[${e1.sideMenuPage}]])">[[${e1.sideMenuName}]]</a>
+                                                    th:onclick="goPage([[${e1.sideMenuPage}]], [[${e1.sideMenuNum}]])">[[${e1.sideMenuName}]]</a>
                                             </li>
                                         </th:block>
                                     </ul>
@@ -89,9 +89,9 @@
     </div>
 
     <script>
-        function goPage(page) {
+        function goPage(page, sideMenuNum) {
             alert(`${page}로 이동합니다.`)
-            location.href = `/${page}`
+            location.href = `/${page}?boardType=${sideMenuNum}`
         }
     </script>
 

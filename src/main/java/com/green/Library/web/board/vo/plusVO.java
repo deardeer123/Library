@@ -3,7 +3,7 @@ package com.green.Library.web.board.vo;
 import lombok.Data;
 
 @Data
-public class BoardPlusVO {
+public class plusVO {
     private int plusCode;
     private String teacher;
     private String target;
@@ -14,5 +14,5 @@ public class BoardPlusVO {
     private int personnel;
     private int maximumPerson;
     private String eventStatus;
-    private int boardNo;
+    private int boardNum;
 }

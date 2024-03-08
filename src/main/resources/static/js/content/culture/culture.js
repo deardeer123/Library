@@ -1,4 +1,4 @@
-function culDeleteBoard(boardNo){
+function culDeleteBoard(boardNum){
     const chks = document.querySelectorAll('.chk')
 
     if(chks.length == 0){
@@ -6,12 +6,12 @@ function culDeleteBoard(boardNo){
         return ;
     }
 
-    const boardNo = []
+    const boardNum = []
     for(const chk of chks){
-        boardNo.push(chk.value);
+        boardNum.push(chk.value);
     }
 
-    location=`/cuLDeleteBoard?boardNo=${boardNo}`;
+    location=`/cuLDeleteBoard?boardNum=${boardNum}`;
 
 }
 

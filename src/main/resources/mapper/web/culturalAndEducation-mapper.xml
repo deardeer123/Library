@@ -3,45 +3,32 @@
 
 <!--&lt;!&ndash; 해당 파일에 모든 쿼리문을 작성 &ndash;&gt;-->
 <mapper namespace="culturalAndEducationMapper">
-    <resultMap id="plus" type="com.green.Library.web.board.vo.BoardPlusVO">
-        <id column="PLUS_CODE" property="plusCode"/>
-        <result column="TEACHER" property="teacher"/>
-        <result column="TARGET" property="target"/>
-        <result column="OPEN_DATE" property="openDate"/>
-        <result column="CLOSE_DATE" property="closeDate"/>
-        <result column="TO_DATE" property="toDate"/>
-        <result column="FROM_DATE" property="fromDate"/>
-        <result column="PERSONNEL" property="personnel"/>
-        <result column="MAXIMUM_PERSON" property="maximumPerson"/>
-        <result column="EVENT_STATUS" property="eventStatus"/>
-        <result column="BOARD_NO" property="boardNo"/>
-    </resultMap>
 
     <!--  게시글 등록  -->
     <insert id="culInsertBoard">
         INSERT INTO BOARD(
-        BOARD_TITLE
-        , CONTENT
-        , BOARD_DATE
-        , BOARD_TYPE
-        , USER_CODE
-        , BOARD_CNT
-        , BOARD_NO
+            BOARD_TITLE
+            , CONTENT
+            , BOARD_DATE
+            , BOARD_TYPE
+            , USER_CODE
+            , BOARD_CNT
+            , BOARD_NO
         )
         VALUES(
-        #{boardTitle}
-        ,#{content}
-        ,#{boardDate}
-        ,#{boardType}
-        ,#{userCode}
-        ,#{boardCnt}
-        ,#{boardNo}
+            #{boardTitle}
+            ,#{content}
+            ,#{boardDate}
+            ,#{boardType}
+            ,#{userCode}
+            ,#{boardCnt}
+            ,#{boardNo}
         )
     </insert>
 
 
     <!--  등록한 게시물 정보 리스트  -->
-    <select id="culSelectBoardList" resultMap="boardMapper.board">
+    <select id="selectBoardList" resultMap="boardMapper.board">
         SELECT
             BOARD.BOARD_NO
             , BOARD_TITLE
