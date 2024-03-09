@@ -72,18 +72,54 @@
                                 <tbody>
                                     <tr>
                                         <td>2024-03-08</td>
-                                        <td>대충 도서관 공지사항123</td>
+                                        <td>그린 도서관 공지사항123</td>
                                     </tr>
                                     <tr>
                                         <td>2024-03-08</td>
-                                        <td>대충 도서관 공지사항345</td>
+                                        <td>그린 도서관 공지사항345</td>
                                     </tr>
                                     <tr>
                                         <td>2024-03-08</td>
-                                        <td>집에 가고 싶어요</td>
+                                        <td>그린 도서관 공지사항789</td>
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    <!-- 행사정보 -->
+                    <div class="row mt-1">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>행사 정보</h3>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <table class="table">
+                                        <colgroup>
+                                            <col width="30%">
+                                            <col width="*">
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <td>2024-03-08</td>
+                                                <td>그린 도서관 행사123</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024-03-08</td>
+                                                <td>그린 도서관 행사345</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024-03-08</td>
+                                                <td>그린 도서관 행사789</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -91,7 +127,8 @@
                 <div class="col-6">
                     <!-- 달력 -->
                     <div class="row">
-                        <div class="col">
+                        <div class="col-2"></div>
+                        <div class="col ">
                             <div id='calendar' style="width: 350px; height: 300px; font-size: 10px;"></div>
                         </div>
                     </div>
@@ -102,10 +139,53 @@
             </div>
 
             <div class="row">
-                <div class="col">
+                <div class="col-6">
                     <!-- 책 추천, 새로 들어온 책,  -->
+                    <div class="row mt-2 mb-2">
+                        <div class="col">
+                            <h3>추천 도서 / 새로 들어온 책 / 대출이 많은 책</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 text-center">
+                            <div class="row">
+                                <div class="col">
+                                    <img src="/upload/3e31c603-944f-4457-9d17-d9e330a55042.jpg" width="50%" alt="">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    햄스터
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4  text-center">
+                            <div class="row">
+                                <div class="col">
+                                    <img src="/upload/3e31c603-944f-4457-9d17-d9e330a55042.jpg" width="50%" alt="">
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col">
+                                    햄스터
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div class="row">
+                                <div class="col">
+                                    <img src="/upload/3e31c603-944f-4457-9d17-d9e330a55042.jpg" width="50%" alt="">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    햄스터
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col">
+                <div class="col-6">
                     <!-- 행사 -->
                 </div>
             </div>
@@ -153,9 +233,9 @@
                     var calendarEl = document.getElementById('calendar');
                     var calendar = new FullCalendar.Calendar(calendarEl, {
                         //높이 조절
-                        height: 400,
+                        height: 330,
                         // 컨텐츠 높이 조절
-                        contentHeight: 300,
+                        contentHeight: 250,
 
                         //비율 조절
                         aspectRatio: 1,

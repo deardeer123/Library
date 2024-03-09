@@ -110,6 +110,10 @@ INSERT INTO side_menu(
 	('도서관 현황', 'libraryStatus', 3 , 10) ,
 	('찾아오시는 길', 'libraryCome', 4, 10) ; 
 	
+	 DROP TABLE book_borrow;
+	 DROP TABLE book_return;
+	DROP table users;
+	
 -- 헤더 윗 부분(로그인/회원가입/아이디,비밀번호 찾기)를 위한 데이터
 -- 회원 탈퇴 부분은 마이페이지이런곳에 들어가서 할 수 있도록 만들어야 할듯
 INSERT INTO side_menu(
@@ -213,6 +217,9 @@ UPDATE book_mid_category
 SET BOOK_MID_CATE_NAME = '회화,도화'
 WHERE BOOK_MID_CATE_CODE = 59;
 
+SELECT * FROM users;
+
+COMMbook_borrowIT;
 
 INSERT INTO BOOK_MID_CATEGORY(
 	BOOK_MID_CATE_NAME ,
@@ -382,8 +389,10 @@ INSERT INTO book_info(
 	'',
 	1,
 	'GR0000000001'
-	)
-	
+	);
+
+
+
 -- 책 검색하기
 SELECT
             BOOK.BOOK_CODE,
@@ -391,6 +400,8 @@ SELECT
             BOOK.BOOK_WRITER,
             BOOK.BOOK_PUB,
             BOOK.BOOK_YEAR,
+            book_info.BOOK_BORROW_AVAILABLE,
+            book_info.BOOK_BORROW_CNT,
             book_info.BOOK_INFO_ORIGIN_FILE_NAME,
             book_info.BOOK_INFO_ATTACHED_FILE_NAME,
             book_info.BOOK_INTRO,
@@ -504,23 +515,23 @@ LIMIT 10 OFFSET 30;
 SELECT *
 FROM book_info;
 
--- 테스트 입니다.
+-- 캘린더
 CREATE TABLE calendar(
 	CALENDAR_NUM INT AUTO_INCREMENT PRIMARY KEY ,
 	CALENDAR_TITLE VARCHAR(50) NOT NULL ,
 	CALENDAR_START DATETIME NOT NULL
 	);
 	
-DROP TABLE calendar;
+SELECT * FROM calendar;
 
+-- 캘린더 데이터
 INSERT INTO calendar(
 	CALENDAR_TITLE ,
-	CALENDAR_START ,
-	CALENDAR_END )
+	CALENDAR_START )
 	VALUES
 	('테스트1' , '2024-03-06') ,
 	('테스트2' , '2024-03-07') ,
-	('테스트3' , '2024-03-08');
+	('테스트3' , '2024-03-08') ;
 	
 SELECT * FROM calendar;
 
