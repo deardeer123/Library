@@ -18,7 +18,8 @@
         <div class="col">
 
             <!-- Modal -->
-            <div class="modal fade" id="book-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="book-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
 
@@ -30,7 +31,8 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <!-- 책 사진 들어가는곳  -->
-                                            <img src="/upload/book_character_smile.png" width="261px" height="383px" alt="">
+                                            <img src="/upload/book_character_smile.png" width="261px" height="383px"
+                                                alt="">
                                         </div>
 
                                         <div class="col-6">
@@ -106,9 +108,21 @@
             </div>
 
 
-            <div class="row">
+            <div class="row mt-2 mb-2">
                 <div class="col">
-                    <p class="fs-1 text-center">전체 자료 찾기</p>
+                    <!-- 안내문 -->
+                    <div class="border border-success mb-2 rounded-4">
+                        <div class="row">
+                            <div class="col-2">
+                                <img src="/upload/book_character_smile.png" width="100%">
+                            </div>
+                            <div class="col-10">
+                                <p>대출예약신청 로그인 한 다음 자료를 검색한 후 대출 중인 자료(자료상태:대출중)에 한하여 예약이 가능합니다.</p>
+                                <p>예약된 도서는 문자 수신후 다음날까지 도서관에서 찾아가시기 바랍니다.</p>
+                                <p>(기간내 대출하지 않으면 자동 예약취소됨)</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -279,9 +293,9 @@
                     let modal_body_Tag = document.querySelector(".modal-body");
 
                     //안에내용 갈아엎기
-                    modal_body_Tag.innerHTML=''
+                    modal_body_Tag.innerHTML = ''
 
-                    let str =`
+                    let str = `
                              <div class="row">
                                 <div class="col">
                                     <!-- 책 상세 정보들 넣어주기 -->
@@ -355,10 +369,10 @@
                             </div>
                     `
 
-                    modal_body_Tag.insertAdjacentHTML("afterbegin",str)
+                    modal_body_Tag.insertAdjacentHTML("afterbegin", str)
                     book_modal.show();
 
-                 
+
                 })
                 //fetch 통신 실패 시 실행 영역
                 .catch(err => {

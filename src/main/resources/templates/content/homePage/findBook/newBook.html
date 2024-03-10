@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
@@ -10,11 +9,58 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    새로드로운책
+    <div class="row">
+        <div class="col">
+            <!-- 새로 들어온책  -->
+            <div class="row">
+                <div class="col">
+
+                    <!-- 상세페이지로 들어오면 그거에 해당하는 헤더도 필요한거 같음 -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <h4>📖신착자료</h4>
+                        </div>
+                    </div>
+
+                    <!-- 책 검색 -->
+                    <div class="row">
+                        <div class="col"> 
+                            <!-- 대분류 -->
+                            <select>
+                                <option selected>대분류</option>
+                            </select>
+                        </div>
+
+                        <!-- 중분류 -->
+                        <div class="col">
+                            <select>
+                                <option selected>중분류</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <!-- 검색 -->
+                            <input type="date">
+                        </div>
+                            
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <!-- 검색된 책 정보 나오는곳 -->
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
     <script src="/"></script>
 </th:block>
+
 </html>

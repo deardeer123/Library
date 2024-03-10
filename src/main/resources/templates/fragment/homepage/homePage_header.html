@@ -11,7 +11,9 @@
                     <!-- 네비게이션 -->
                     <nav class="navbar navbar-expand-lg bg-body-tertiary">
                         <div class="container-fluid">
-                            <a class="navbar-brand" onclick="location.href='/home'">Navbar w/ text</a>
+                            <a class="navbar-brand" onclick="location.href='/home'">
+                                <img src="/upload/greenLibraryMark.png" alt="greenLibraryMark">
+                            </a>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false"
                                 aria-label="Toggle navigation">
@@ -43,7 +45,7 @@
                                         [[${session.loginInfo.userId}]]님
                                         <span onclick="logout()">로그아웃</span>
                                     </th:block>
-                                    
+
 
                                 </span>
                             </div>
@@ -85,6 +87,58 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-2"></div>
+
+                <div class="col-10 bg-success-subtle">
+                    <!-- 선택한 메뉴의 이름 -->
+                    <th:block th:if="${selectedMenuIndex != null}">
+
+                        <th:block th:each="e:${menuList}" th:if="${e.menuIndex == selectedMenuIndex}">
+                            <th:block th:each="e1:${e.webSideMenuVOList}"
+                                th:if="${e1.sideMenuIndex == selectedSideMenuIndex}">
+
+                                <div class="row">
+                                    <div class="col">
+                                        <!-- 선택한 사이드 메뉴의 이름 -->
+                                        <h1>[[${e1.sideMenuName}]]</h1>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <!-- 메뉴 > 사이드 메뉴  -->
+                                        <h3>📖 [[${e.menuName}]] > [[${e1.sideMenuName}]] </h3>
+                                    </div>
+                                </div>
+
+                            </th:block>
+                        </th:block>
+
+                    </th:block>
+
+                    <th:block th:if="${selectedMenuIndex == null}">
+
+                        <!-- <div class="row">
+                            <div class="col">
+                                <h2>선택한 사이드 메뉴의 이름</h3>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <h3>📖 메뉴 > 사이드 메뉴</h3>
+                            </div>
+                        </div> -->
+
+
+                    </th:block>
+
+                </div>
+            </div>
+
+
         </div>
     </div>
 

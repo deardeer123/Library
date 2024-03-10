@@ -53,8 +53,7 @@
                 </div>
             </div>
 
-
-            <div class="row mt-5">
+            <div class="row mt-3">
                 <div class="col-6">
                     <!-- 공지사항 -->
                     <div class="row">
@@ -125,11 +124,18 @@
                 </div>
 
                 <div class="col-6">
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col">
+                            <h3>도서관 일정</h3>
+                        </div>
+                    </div>
+                    
                     <!-- 달력 -->
                     <div class="row">
-                        <div class="col-2"></div>
+                        <div class="col-1"></div>
                         <div class="col ">
-                            <div id='calendar' style="width: 350px; height: 300px; font-size: 10px;"></div>
+                            <div id='calendar' style="width: 500px; font-size: 10px;"></div>
                         </div>
                     </div>
                 </div>
@@ -187,6 +193,40 @@
                 </div>
                 <div class="col-6">
                     <!-- 행사 -->
+                    <div class="row mt-2 mb-2">
+                        <div class="col1"></div>
+                        <div class="col">
+                            <h3>행사정보</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="carouselExampleIndicators" class="carousel slide">
+                            <div class="carousel-indicators">
+                              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            </div>
+                            <div class="carousel-inner">
+                              <div class="carousel-item active">
+                                <img src="/upload/f4d4330e-9b95-44fa-8243-db2a0141de89.jpg" width="100%" height="50%" alt="...">
+                              </div>
+                              <div class="carousel-item">
+                                <img src="/upload/3a5b56c7-9516-4584-8292-ba1957b6e315.jpg" width="100%" height="50%" alt="...">
+                              </div>
+                              <div class="carousel-item">
+                                <img src="/upload/f4d4330e-9b95-44fa-8243-db2a0141de89.jpg" width="100%" height="50%" alt="...">
+                              </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Next</span>
+                            </button>
+                          </div>
+                    </div>
                 </div>
             </div>
 
@@ -235,10 +275,10 @@
                         //높이 조절
                         height: 330,
                         // 컨텐츠 높이 조절
-                        contentHeight: 250,
+                        contentHeight: 300,
 
                         //비율 조절
-                        aspectRatio: 1,
+                        //aspectRatio: 1.8,
 
                         themeSystem: 'bootstrap5',
                         //헤더
