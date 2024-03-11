@@ -394,24 +394,30 @@ INSERT INTO book_info(
 
 
 -- 책 검색하기
-SELECT
-            BOOK.BOOK_CODE,
-            BOOK.BOOK_TITLE,
-            BOOK.BOOK_WRITER,
-            BOOK.BOOK_PUB,
-            BOOK.BOOK_YEAR,
-            book_info.BOOK_BORROW_AVAILABLE,
-            book_info.BOOK_BORROW_CNT,
-            book_info.BOOK_INFO_ORIGIN_FILE_NAME,
-            book_info.BOOK_INFO_ATTACHED_FILE_NAME,
-            book_info.BOOK_INTRO,
-            book_info.BOOK_CATE_CODE
+			SELECT
+         BOOK.BOOK_CODE ,
+         BOOK.BOOK_TITLE ,
+         BOOK.BOOK_WRITER ,
+         BOOK.BOOK_PUB ,
+         BOOK.BOOK_YEAR ,
+         book_info.BOOK_BORROW_AVAILABLE ,
+         book_info.BOOK_BORROW_CNT ,
+         book_info.BOOK_INFO_ORIGIN_FILE_NAME ,
+         book_info.BOOK_INFO_ATTACHED_FILE_NAME ,
+         book_info.BOOK_INTRO ,
+         book_info.BOOK_CATE_CODE ,
+         book_borrow.BR_CODE ,
+         book_borrow.BORROW_DATE ,
+         book_borrow.EX_RETURN_DATE ,
+         book_borrow.BORROW_USER_CODE
         FROM
-            book LEFT OUTER JOIN book_info
-        ON
-            book.BOOK_CODE = book_info.BOOK_CODE
-        WHERE
-            book.BOOK_CODE = 'GR0000000001';
+         book LEFT OUTER join book_info
+        	ON BOOK.BOOK_CODE = book_info.BOOK_CODE
+        	LEFT OUTER JOIN book_borrow 
+			ON BOOK.BOOK_CODE = book_borrow.BOOK_CODE
+			WHERE BOOK.book_code = 'GR0000000001';
+        	
+      
 
 UPDATE book_info
         SET
@@ -459,6 +465,15 @@ CREATE TABLE BOOK_BORROW(
     , USER_CODE INT REFERENCES USERS(USER_CODE)
     , BOOK_CODE VARCHAR(15) REFERENCES BOOK(BOOK_CODE)
 );
+
+SELECT * FROM book_borrow;
+
+SELECT 
+	book.BOOK_CODE ,
+	book_borrow.BR_CODE
+FROM
+	book left OUTER JOIN book_borrow
+	ON book.BOOK_CODE = book_borrow.BOOK_CODE;
 
 
 
