@@ -47,7 +47,7 @@
                                 <div><input type="checkbox" id="allChk" onclick="allchk()" checked></div>
                                 <div class="col-4 card" th:each="board : ${boardList}">
                                     <input type="checkbox" class="chk" checked>
-                                    <a th:href="@{/eventDetailBoard(boardNo=${board.boardNo})}">
+                                    <a th:href="@{/eventDetailBoard(boardNum=${board.boardNum})}">
                                         <img th:src="@{'/upload/' + ${board.fileList[0].attachedFileName}}" class="card-img-top" alt="...">
                                     </a>
                                     <div class="card-body">
@@ -82,7 +82,7 @@
             <div>
                 <th:block th:if="${session.loginInfo != null}">
                     <th:block th:if="${session.loginInfo.isAdmin == 'Y'}">
-                        <input type="button" value="게시글 작성" onclick="location.href='goEventBoard'">
+                        <input type="button" value="게시글 작성" onclick="location='goEventBoard'">
                         <input type="button" value="게시글 삭제" th:onclick="culDeleteBoard(boardNum)">
                     </th:block>
                 </th:block>
