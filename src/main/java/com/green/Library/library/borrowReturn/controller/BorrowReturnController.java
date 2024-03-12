@@ -1,20 +1,15 @@
 package com.green.Library.library.borrowReturn.controller;
 
 import com.green.Library.library.borrowReturn.service.BorrowReturnService;
-import com.green.Library.library.borrowReturn.vo.BookBorrowVO;
-import com.green.Library.library.borrowReturn.vo.BookReturnVO;
-import com.green.Library.library.borrowReturn.vo.RequestDataVO;
+import com.green.Library.library.borrowReturn.vo.BookBNRVO;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
-import com.green.Library.library.user.vo.UserVO;
 import com.green.Library.web.member.vo.MemberVO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/bookAdmin")
@@ -39,7 +34,7 @@ public class BorrowReturnController {
     //이용자 조회와 대출반납 실행
     @ResponseBody
     @PostMapping("/selectBorrowInfo")
-    public MemberVO selectBorrowInfo(@RequestBody Map<String, String> inputData, BookBorrowVO bookBorrowVO){
+    public MemberVO selectBorrowInfo(@RequestBody Map<String, String> inputData, BookBNRVO bookBNRVO){
         //input 태그에 입력한 데이터
         String cardNumOrBookCode = inputData.get("inputValue");
         //받아온 selectedCardNum이 0이면 선택한 카드번호가 없다는 뜻
@@ -79,9 +74,9 @@ public class BorrowReturnController {
                 int userCode = borrowReturnService.selectUserCode(cardNum);
 
                 //대출 내역을 insert
-                bookBorrowVO.setBookCode(bookCode);
-                bookBorrowVO.setBorrowUserCode(userCode);
-                borrowReturnService.insertBorrow(bookBorrowVO);
+                bookBNRVO.setBookCode(bookCode);
+                bookBNRVO.setUserCode(userCode);
+                borrowReturnService.insertBorrow(bookBNRVO);
 
                 //다시 대출자의 모든 대출 내역을 조회
                 MemberVO vo = new MemberVO();

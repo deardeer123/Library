@@ -2,24 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
-<mapper namespace="borrowReturnMapper">
+<mapper namespace="bnrMapper">
 
-    <resultMap id="bookBorrow" type="com.green.Library.library.borrowReturn.vo.BookBorrowVO">
-        <id          column="BR_CODE"             property="brCode"/>
+    <resultMap id="bookBNR" type="com.green.Library.library.borrowReturn.vo.BookBNRVO">
+        <id          column="BORROW_CODE"             property="borrowCode"/>
         <result      column="BORROW_DATE"         property="borrowDate"/>
         <result      column="RETURN_YN"           property="returnYN"/>
         <result      column="EX_RETURN_DATE"      property="exReturnDate"/>
-        <result      column="BORROW_USER_CODE"    property="borrowUserCode"/>
+        <result      column="RETURN_DATE"      property="returnDate"/>
+        <result      column="USER_CODE"           property="userCode"/>
         <result      column="BOOK_CODE"           property="bookCode"/>
-        <association property="libraryBookVO"     resultMap="libraryBookMapper.libraryBook"/>
-        <association property="libraryBookInfoVO" resultMap="libraryBookMapper.LibraryBookInfo"/>
-    </resultMap>
-
-    <resultMap id="bookReturn" type="com.green.Library.library.borrowReturn.vo.BookReturnVO">
-        <id     column="RT_CODE"                  property="rtCode"/>
-        <result column="RETURN_DATE"              property="returnDate"/>
-        <result column="RETURN_USER_CODE"         property="returnUserCode"/>
-        <result column="BOOK_CODE"                property="bookCode"/>
         <association property="libraryBookVO"     resultMap="libraryBookMapper.libraryBook"/>
         <association property="libraryBookInfoVO" resultMap="libraryBookMapper.LibraryBookInfo"/>
     </resultMap>
@@ -38,21 +30,20 @@
             , U.USER_CODE
             , USER_NAME
             , USER_TEL
-            , BR_CODE
+            , BORROW_CODE
             , BORROW_DATE
             , RETURN_YN
             , EX_RETURN_DATE
-            , RT_CODE
             , RETURN_DATE
             , BB.BOOK_CODE
         FROM USERS AS U
-        LEFT JOIN BOOK_BORROW AS BB
-        ON U.USER_CODE = BB.BORROW_USER_CODE
-        LEFT JOIN BOOK_RETURN AS BR
-        ON U.USER_CODE = BR.RETURN_USER_CODE
+        LEFT JOIN BOOK_BNR AS BBR
+        ON U.USER_CODE = BBR.USER_CODE
         WHERE U.CARD_NUM = #{cardNum}
         ORDER BY BORROW_DATE DESC
     </select>
+
+<!-- ///////////////////// 대출 ///////////////////////// -->
 
     <!-- 데이터베이스에 존재하는 책인지 확인 -->
     <select id="isCorrectBookCode" resultType="String">
@@ -62,14 +53,14 @@
         WHERE BOOK_CODE = #{bookCode}
     </select>
 
-    <!-- 대출내역 insert -->
+    <!-- 대출 진행 시 insert -->
     <insert id="insertBorrow">
-        INSERT INTO BOOK_BORROW (
-            BORROW_USER_CODE
+        INSERT INTO BOOK_BNR (
+            USER_CODE
             , BOOK_CODE
             , EX_RETURN_DATE
         ) VALUES (
-            #{borrowUserCode}
+            #{userCode}
             , #{bookCode}
             , EX_RETURN_DATE + DATE_ADD(NOW(), INTERVAL +14 DAY)
         )
@@ -90,12 +81,18 @@
         WHERE CARD_NUM = #{cardNum}
     </select>
 
+<!-- ///////////////////////////////////////////////////////////   -->
+
+<!-- //////////////////////// 반납 //////////////////////////// -->
+
+    <!-- 책이 대출되어 있는 지 확인 -->
     <select id="selectBookAvailable" resultType="String">
         SELECT BOOK_BORROW_AVAILABLE
         FROM BOOK_INFO
         WHERE BOOK_CODE = #{bookCode}
     </select>
 
+    <!-- bookInfo update -->
     <update id="updateReturnBookInfo">
         UPDATE BOOK_INFO
         SET
@@ -103,7 +100,16 @@
         WHERE BOOK_CODE = #{bookCode}
     </update>
 
-    <!-- 반납 테이블 INSERT -->
+    <!-- 반납 진행 시 update -->
+    <update id="updateReturnInfo">
+        UPDATE BOOK_BNR
+        SET
+            RETURN_YN = 'Y'
+            , RETURN_DATE = NOW()
+        WHERE BOOK_CODE = #{bookCode}
+    </update>
+
+
 
 </mapper>
 
