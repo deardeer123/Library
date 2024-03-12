@@ -25,9 +25,9 @@ import java.util.List;
 @RequestMapping("/")
 public class CulturalAndEducationController {
     @Resource(name ="webMenuService")
-    WebMenuService webMenuService;
+    private WebMenuService webMenuService;
     @Resource(name = "boardService")
-    BoardServiceImpl boardService;
+    private BoardServiceImpl boardService;
 
 
     //    -------- 문화행사/교육(culturalAndEducation)---------
@@ -66,7 +66,7 @@ public class CulturalAndEducationController {
 
     //게시판 등록 페이지
     @GetMapping("/goEventBoard")
-    public String goEventBoard(){
+    public String goEventBoard(SearchVO searchVO){
         return "content/homePage/culturalAndEducation/event_board";
     }
 
@@ -138,6 +138,7 @@ public class CulturalAndEducationController {
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
 
 
+
         BoardVO board = boardService.selectBoardDetail(boardVO.getBoardNum());
         boardService.boardCntUp(boardVO.getBoardNum());
         model.addAttribute("board", board);
@@ -151,6 +152,15 @@ public class CulturalAndEducationController {
         boardService.deleteBoard(boardVO.getBoardNum());
         return "redirect:/libraryEvent";
     }
+
+    //다중 삭제
+    @GetMapping("/selectDeletes")
+    public String selectDeletes(BoardVO boardVO){
+        boardService.selectDeletes(boardVO);
+        return "redirect:/libraryEvent";
+    }
+
+
 
     //문화 게시판 수정
     @GetMapping("/culUpdate")

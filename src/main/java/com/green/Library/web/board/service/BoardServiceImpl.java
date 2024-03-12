@@ -70,6 +70,10 @@ public class BoardServiceImpl implements BoardService {
         sqlSession.update("boardMapper.updateBoard",boardVO);
     }
 
+    @Override
+    public void selectDeletes(BoardVO boardVO) {
+        sqlSession.delete("boardMapper.selectDeletes",boardVO);
+    }
 
 
 }
