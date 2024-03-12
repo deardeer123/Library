@@ -84,6 +84,7 @@ public class CulturalAndEducationController {
         System.out.println(webMenuService.selectWebMenuList("web"));
         model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
 
+
         //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
         //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
         //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고

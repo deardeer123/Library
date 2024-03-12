@@ -25,7 +25,7 @@
         <collection property="fileList" resultMap="file"/>
     </resultMap>
 
-    <resultMap id="plus" type="com.green.Library.web.board.vo.BoardVO">
+    <resultMap id="plus" type="com.green.Library.web.board.vo.plusVO">
         <id column="PLUS_CODE"          property="plusCode"/>
         <result column="TEACHER"        property="teacher"/>
         <result column="TARGET"         property="target"/>
@@ -48,8 +48,6 @@
         <result column="BOARD_NUM" property="boardNum"/>
     </resultMap>
 
-<<<<<<< HEAD
-=======
 
 <!--  //////////////////// 기본 게시글 /////////////////  -->
     <!--  게시글 작성   -->
@@ -109,7 +107,6 @@
     </insert>
 
 
->>>>>>> dev-nam
     <!--  이미지 등록  -->
     <insert id="insertFileList">
         INSERT INTO ATTACHED_FILE(
@@ -123,7 +120,7 @@
             (#{file.originFileName}
             ,#{file.attachedFileName}
             ,#{file.isMain}
-            ,#{file.boardNUM})
+            ,#{file.boardNum})
         </foreach>
     </insert>
 
@@ -136,15 +133,12 @@
         END
         FROM BOARD
     </select>
-
-<<<<<<< HEAD
     <!--  게시판 개수  -->
     <select id="countBoard" resultType="int">
         SELECT COUNT (BOARD_NO)
         FROM BOARD
     </select>
 
-=======
 
     <!--  게시물 상세보기  -->
     <select id="selectBoardDetail" resultMap="board">
@@ -177,7 +171,6 @@
         WHERE BOARD_NUM
     </update>
 
->>>>>>> dev-nam
     <!--  게시판 삭제  -->
     <delete id="deleteBoard">
         DELETE FROM BOARD
