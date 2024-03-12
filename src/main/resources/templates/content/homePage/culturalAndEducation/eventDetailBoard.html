@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+
+<th:block layout:fragment="content_css">
+    <!-- html 파일이 열릴 때 같이 실행되는 css -->
+    <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+    <!-- html 코드 작성 -->
+    <div class="row">
+        <div class="col">
+            <table>
+                <thead>
+                    <tr>
+                        <td>[[${board.boardTitle}]]</td>
+                    </tr>
+                    <tr>
+                        <td>작성자</td>
+                        <td>[[${board.memberVO.userId}]]</td>
+                        <td>작성일</td>
+                        <td>[[${board.boardDate}]]</td>
+                        <td>조회수</td>
+                        <td>[[${board.boardCnt}]]</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="file : ${board.fileList}">
+                        <td>
+                            <img th:src="@{'/upload/' + ${file.attachedFileName}}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>[[${board.content}]]</td>
+                    </tr>
+                </tbody>
+            </table>
+            <th:block th:if="${session.loginInfo != null}">
+                <th:block th:if="${session.loginInfo.isAdmin == 'Y'}">
+                    <input type="button" value="게시글 수정" th:onclick="|location.href='@{/culUpdate(boardNo=${board.boardNo})}'|">
+                </th:block>
+            </th:block>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="content_js">
+    <!-- html 파일이 열릴 때 같이 실행되는 js -->
+    <!-- <script src="/"></script> -->
+</th:block>
+</html>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<mapper namespace="memberMapper">
+    <resultMap id="users" type="com.green.Library.web.member.vo.MemberVO">
+        <result property="userCode" column="USER_CODE"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="userPw" column="USER_PW"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="userTel" column="USER_TEL"/>
+        <result property="postCode" column="POST_CODE"/>
+        <result property="userAddr" column="USER_ADDR"/>
+        <result property="addrDetail" column="ADDR_DETAIL"/>
+        <result property="gender" column="GENDER"/>
+        <result property="email" column="EMAIL"/>
+        <result property="isAdmin" column="IS_ADMIN"/>
+        <result property="cardNum" column="CARD_NUM"/>
+        <result property="publishDate" column="PUBLISH_DATE"/>
+        <result property="userIntro" column="USER_INTRO"/>
+        <result property="cardStatus" column="CARD_STATUS"/>
+        <collection property="bookBorrowList" resultMap="borrowReturnMapper.bookBorrow"/>
+        <collection property="bookReturnList" resultMap="borrowReturnMapper.bookReturn"/>
+    </resultMap>
+    <insert id="insertMember">
+        INSERT INTO USERS(
+            USER_ID
+            , USER_PW
+            , USER_TEL
+            , USER_NAME
+            , POST_CODE
+            , USER_ADDR
+            , ADDR_DETAIL
+            , GENDER
+            , EMAIL
+        )VALUES(
+            #{userId}
+            ,#{userPw}
+            ,#{userTel}
+            ,#{userName}
+            ,#{postCode}
+            ,#{userAddr}
+            ,#{addrDetail}
+            ,#{gender}
+            ,#{email}
+        )
+    </insert>
+
+    <select id="login" resultMap="users">
+        SELECT
+            USER_ID
+            ,USER_NAME
+            ,USER_CODE
+            ,IS_ADMIN
+        FROM USERS
+        WHERE USER_ID = #{userId}
+        AND USER_PW = #{userPw}
+    </select>
+
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

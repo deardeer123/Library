@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
+
+<th:block layout:fragment="content_css">
+    <!-- html 파일이 열릴때 같이 실행되는 css -->
+    <!-- <link rel="stylesheet" href="/"> -->
+
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+    <style>
+    
+    </style>
+
+    <!-- html 코드 작성 -->
+    <div class="row">
+        <div class="col">
+
+            <div class="row">
+                <div class="col">
+                    <p class="fs-1 text-center">전체 자료 찾기</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <!-- 검색기능 -->
+
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-2">
+                            <!-- 카테고리 -->
+                            <select class="form-select" aria-label="Default select example" name="searchType"
+                                id="search-type">
+                                <option value="BOOK_TITLE">책이름</option>
+                                <option value="BOOK_WRITER">저자</option>
+                                <option value="BOOK_PUB">출판사</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <!-- 검색 -->
+                            <input type="text" class="form-control" name="searchValue" id="search-value">
+                        </div>
+                        <div class="col">
+                            <!-- 검색 버튼 -->
+                            <input type="button" class="btn btn-primary" value="검색" onclick="search()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col">
+                    <!-- 책들 들어가는곳!!1 -->
+                    <div class="row g-2">
+                        <th:block th:each="e:${bookList}">
+                            <!-- 호버기능 어려워서 그냥 자바스크립트로 구현함 아 클래스로 bookInfo준거 계속 내려와서 그냥 col에 높이 고정시킴-->
+                            <div class="col-3 bookdiv" onmouseover="bookinfo1(this)" onmouseout="bookinfo2(this)" style="height: 383px;">
+                        
+                                <div class="text-center">
+                                    <img th:src="@{/upload/} + ${e.bookInfoAttachedFileName}" class="rounded" alt="..."
+                                        width="261px" height="383px">
+                                </div>
+                                <!-- 배경색 투명하게 하고 글자색은 하얀색 그리고 일단 none 처리 -->
+                                <div class="bookInfo"style="background-color: rgba(0, 0, 0, 0.8); color: white; position: relative; top: -150px; display: none;" >
+                                    <!-- 아래 스타일준건 옆으로 튀어나면 ... 이런식으로 나오게 하는 코드 -->
+                                    <p class="h6"
+                                        style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 200px;">
+                                        [[${e.bookTitle}]]</p>
+                                    <p class="h6"
+                                        style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 200px;">
+                                        [[${e.bookWriter}]]</p>
+                                    <p class="h6"
+                                        style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 200px;">
+                                        [[${e.bookPub}]]</p>
+                                    <p class="h6"
+                                        style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 200px;">
+                                        [[${e.bookYear}]]</p>
+                                    <div class="row text-center">
+                                        <div class="col d-grid">
+                                            <input type="button" class="btn btn-primary" value="상세보기">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                              
+
+
+                                <!-- 책 정보는 일단 안보이게 해놓고 이미지에 마우스 올리면 보이게 -->
+                                <!-- display: none; -->
+
+
+                            </div>
+                        </th:block>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function bookinfo1(tags){
+            //console.log(`들어옴 ${tags}`)
+            //console.log(tags.children[1])
+            tags.children[1].style.display = 'block'
+            
+        }
+
+        function bookinfo2(tags){
+            //console.log(`나감 ${tags}`)
+            //console.log(tags.children[1])
+            tags.children[1].style.display = 'none'
+        }
+    </script>
+</th:block>
+
+<th:block layout:fragment="content_js">
+    <!-- html 파일이 열릴때 같이 실행되는 js -->
+    <script src="/"></script>
+</th:block>
+
+</html>

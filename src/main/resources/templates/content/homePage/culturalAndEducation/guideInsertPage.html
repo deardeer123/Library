@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+
+<th:block layout:fragment="content_css">
+    <!-- html 파일이 열릴 때 같이 실행되는 css -->
+    <link rel="stylesheet" href="/">
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+    <!-- html 코드 작성 -->
+    <div class="row ">
+        <div class="col-12">
+            <h3>게시글 등록</h3>
+        </div>
+        <div class="col">
+            <form action="/guideInsertBoard" method="post" enctype="multipart/form-data">
+                <table class="align-middle">
+                    <colgroup>
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <td>카테고리</td>
+                            <td>
+                                <select name="boardType">
+                                    <option value="24">평생교육 강좌안내</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                강좌명
+                            </td>
+                            <td colspan="3"><input type="text" name="boardTitle"></td>
+                        </tr>
+                        <tr>
+                            <td>강사명</td>
+                            <td colspan="3"><input type="text" name="teacher"></td>
+                        </tr>
+                        <tr>
+                            <td>대상</td>
+                            <select name="target">
+                                <option value="유치원생(7세 이하)">유치원생(7세 이하)</option>
+                                <option value="초등 1~3학년">초등 1~3학년</option>
+                                <option value="초등 4~6학년">초등 4~6학년</option>
+                                <option value="청소년(만 13세 ~ 만 19세)">청소년(만 13세 ~ 만19세)</option>
+                                <option value="성인">성인</option>
+                            </select>
+                        </tr>
+                        <tr>
+                            <td>운영기간</td>
+                            <td ><input type="date" name="openDate"></td>
+                            <td> <input type="date" name="closeDate"></td>
+                        </tr>
+                        <tr>
+                            <td>신청기간</td>
+                            <td ><input type="date" name="fromDate"></td>
+                            <td> <input type="date" name="toDate"></td>
+                        </tr>
+                        <tr>
+                            <td>정원 인원</td>
+                            <td><input type="number" name="maximumPerson"></td>
+                        </tr>
+                        <tr>
+                            <td>상태</td>
+                            <td>
+                                <input type="radio" value="진행중" name="eventStatus" checked>진행중
+                                <input type="radio" value="진행예정" name="eventStatus">진행예정
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="4">
+                                <textarea name="content" cols="100" rows="20"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="file" name="files" multiple>서브 이미지</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div><input type="submit" value="등록하기"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <input type="hidden" name="userCode" th:value="${session.loginInfo.userCode}">
+                </table>
+            </form>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="content_js">
+    <!-- html 파일이 열릴 때 같이 실행되는 js -->
+    <script src="/"></script>
+</th:block>
+</html>

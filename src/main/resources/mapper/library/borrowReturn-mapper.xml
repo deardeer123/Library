@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<mapper namespace="borrowReturnMapper">
+
+    <resultMap id="bookBorrow" type="com.green.Library.library.borrowReturn.vo.BookBorrowVO">
+        <id          column="BR_CODE"             property="brCode"/>
+        <result      column="BORROW_DATE"         property="borrowDate"/>
+        <result      column="RETURN_YN"           property="returnYN"/>
+        <result      column="EX_RETURN_DATE"      property="exReturnDate"/>
+        <result      column="BORROW_USER_CODE"    property="borrowUserCode"/>
+        <result      column="BOOK_CODE"           property="bookCode"/>
+        <association property="libraryBookVO"     resultMap="libraryBookMapper.libraryBook"/>
+        <association property="libraryBookInfoVO" resultMap="libraryBookMapper.LibraryBookInfo"/>
+    </resultMap>
+
+    <resultMap id="bookReturn" type="com.green.Library.library.borrowReturn.vo.BookReturnVO">
+        <id     column="RT_CODE"                  property="rtCode"/>
+        <result column="RETURN_DATE"              property="returnDate"/>
+        <result column="RETURN_USER_CODE"         property="returnUserCode"/>
+        <result column="BOOK_CODE"                property="bookCode"/>
+        <association property="libraryBookVO"     resultMap="libraryBookMapper.libraryBook"/>
+        <association property="libraryBookInfoVO" resultMap="libraryBookMapper.LibraryBookInfo"/>
+    </resultMap>
+
+<!--    <select id="">-->
+<!--   유저 관리 기능 만들 때 다음 번호를 조회 후 insert로 cardNum 주기 -->
+<!--    <select id="selectNextCardNum" resultType="int">-->
+<!--        SELECT IFNULL(MAX(CARD_NUM), 0) + 1 FROM USERS-->
+<!--    </select>-->
+<!--    </select>-->
+
+    <!-- 이용자의 대출 정보 조회-->
+    <select id="selectBorrowInfo" resultMap="memberMapper.users">
+        SELECT CARD_NUM
+            , USER_INTRO
+            , U.USER_CODE
+            , USER_NAME
+            , USER_TEL
+            , BR_CODE
+            , BORROW_DATE
+            , RETURN_YN
+            , EX_RETURN_DATE
+            , RT_CODE
+            , RETURN_DATE
+            , BB.BOOK_CODE
+        FROM USERS AS U
+        LEFT JOIN BOOK_BORROW AS BB
+        ON U.USER_CODE = BB.BORROW_USER_CODE
+        LEFT JOIN BOOK_RETURN AS BR
+        ON U.USER_CODE = BR.RETURN_USER_CODE
+        WHERE U.CARD_NUM = #{cardNum}
+        ORDER BY BORROW_DATE DESC
+    </select>
+
+    <!-- 데이터베이스에 존재하는 책인지 확인 -->
+    <select id="isCorrectBookCode" resultType="String">
+        SELECT
+            BOOK_CODE
+        FROM BOOK
+        WHERE BOOK_CODE = #{bookCode}
+    </select>
+
+    <!-- 대출내역 insert -->
+    <insert id="insertBorrow">
+        INSERT INTO BOOK_BORROW (
+            BORROW_USER_CODE
+            , BOOK_CODE
+            , EX_RETURN_DATE
+        ) VALUES (
+            #{borrowUserCode}
+            , #{bookCode}
+            , EX_RETURN_DATE + DATE_ADD(NOW(), INTERVAL +14 DAY)
+        )
+    </insert>
+
+    <!-- bookInfo update -->
+    <update id="updateBookInfo">
+        UPDATE BOOK_INFO
+        SET
+            BOOK_BORROW_AVAILABLE = 'N'
+            , BOOK_BORROW_CNT = BOOK_BORROW_CNT + 1
+        WHERE BOOK_CODE = #{bookCode}
+    </update>
+
+    <select id="selectUserCode" resultType="int">
+        SELECT USER_CODE
+        FROM USERS
+        WHERE CARD_NUM = #{cardNum}
+    </select>
+
+    <select id="selectBookAvailable" resultType="String">
+        SELECT BOOK_BORROW_AVAILABLE
+        FROM BOOK_INFO
+        WHERE BOOK_CODE = #{bookCode}
+    </select>
+
+    <update id="updateReturnBookInfo">
+        UPDATE BOOK_INFO
+        SET
+        BOOK_BORROW_AVAILABLE = 'Y'
+        WHERE BOOK_CODE = #{bookCode}
+    </update>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

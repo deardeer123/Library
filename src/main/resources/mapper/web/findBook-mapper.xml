@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<mapper namespace="findBookMapper">
+    <resultMap id="findBook" type="com.green.Library.web.findBook.vo.FindBookVO">
+        <result column="BOOK_CODE" property="bookCode" />
+        <result column="BOOK_TITLE" property="bookTitle" />
+        <result column="BOOK_WRITER" property="bookWriter" />
+        <result column="BOOK_PUB" property="bookPub" />
+        <result column="BOOK_YEAR" property="bookYear" />
+        <result column="book_intro" property="bookIntro" />
+        <result column="BOOK_INFO_ATTACHED_FILE_NAME" property="bookInfoAttachedFileName" />
+        <result column="BOOK_CATE_NAME" property="bookCateName" />
+        <result column="BOOK_MID_CATE_NAME" property="bookMidCateName" />
+        <result column="BOOK_REGDATE" property="bookRegDate" />
+    </resultMap>
+<!--    책 검색-->
+    <select id="findBookList" resultMap="findBook">
+        select *
+        from find_book_view
+        where 1 = 1
+        <if test='searchValue != null and !searchValue.equals("")'>
+            AND ${searchType} LIKE CONCAT('%',#{searchValue},'%')
+        </if>
+        LIMIT ${displayDataCnt} offset ${(displayDataCnt) * (nowPage - 1)}
+    </select>
+
+    <!--    책 갯수-->
+    <select id="selectFindBookCnt" resultType="int">
+        select count(*)
+        from book
+        where
+        1 = 1
+        <if test='searchValue != null and !searchValue.equals("")'>
+            and ${searchType} LIKE CONCAT('%',#{searchValue},'%')
+        </if>
+    </select>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

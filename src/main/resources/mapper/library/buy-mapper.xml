@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<mapper namespace="buyMapper">
+
+    <insert id="regBookInfo">
+        INSERT INTO BOOK_INFO(
+        BOOK_INFO_ATTACHED_FILE_NAME,
+        BOOK_INFO_ORIGIN_FILE_NAME ,
+        BOOK_INTRO ,
+        BOOK_CATE_CODE ,
+        BOOK_CODE)
+        VALUES(
+        #{libraryBookInfoVO.bookInfoAttachedFileName},
+        #{libraryBookInfoVO.bookInfoOriginFileName},
+        #{libraryBookInfoVO.bookIntro},
+        #{libraryBookInfoVO.bookCateCode},
+        #{libraryBookInfoVO.bookCode})
+    </insert>
+
+    <insert id="regBook">
+        INSERT INTO BOOK(
+        BOOK_CODE ,
+        BOOK_TITLE ,
+        BOOK_WRITER ,
+        BOOK_PUB ,
+        BOOK_YEAR) VALUES(
+        #{bookCode},
+        #{bookTitle},
+        #{bookWriter},
+        #{bookPub},
+        #{bookYear})
+    </insert>
+
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

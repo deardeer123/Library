@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/library/library_detail_layout}">
+
+<th:block layout:fragment="content_css">
+    <!-- html 파일이 열릴때 같이 실행되는 css -->
+    <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+    <!-- html 코드 작성 -->
+    <div class="row">
+        <div class="col">
+            <!-- 책 정보가 변경되었으면 실행되는 코드 -->
+            <th:block th:if="${update == 1}">
+                <input type="hidden" value="1" id="is-update">
+            </th:block>
+
+            <th:block th:if="${update != 1}">
+                <input type="hidden" value="0" id="is-update">
+            </th:block>
+            <!-- 책 삭제 -->
+            <th:block th:if="${delete == 1}">
+                <input type="hidden" value="1" id="is-delete">
+            </th:block>
+
+            <th:block th:if="${delete != 1}">
+                <input type="hidden" value="0" id="is-delete">
+            </th:block>
+
+            <div class="row mb-3">
+                <div class="col">
+                    <!-- 이제 여기다가 조회된 책들 검색되게 뭐 검색창 하나 넣을듯 -->
+                    <!-- Button trigger modal -->
+                    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Launch demo modal
+                    </button> -->
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-2">
+                            <!-- 카테고리 -->
+                            <select class="form-select" aria-label="Default select example" name="searchType"
+                                id="search-type">
+                                <option value="BOOK_TITLE">책이름</option>
+                                <option value="BOOK_WRITER">저자</option>
+                                <option value="BOOK_PUB">출판사</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <!-- 검색 -->
+                            <input type="text" class="form-control" name="searchValue" id="search-value">
+                        </div>
+                        <div class="col">
+                            <!-- 검색 버튼 -->
+                            <input type="button" class="btn btn-primary" value="검색" onclick="search()">
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <table class="table table-striped">
+                        <colgroup>
+                            <col width="13%">
+                            <col width="*%">
+                            <col width="25%">
+                            <col width="15%">
+                            <col width="10%">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <td>책 코드</td>
+                                <td>책 제목</td>
+                                <td>책 저자</td>
+                                <td>책 출판사</td>
+                                <td>출판년도</td>
+                            </tr>
+                        </thead>
+
+                        <tbody id="book-list">
+                            <th:block th:each="e:${bookList}">
+                                <tr th:onclick="goChange([[${e.bookCode}]])">
+                                    <td>[[${e.bookCode}]]</td>
+                                    <td>[[${e.bookTitle}]]</td>
+                                    <td>[[${e.bookWriter}]]</td>
+                                    <td>[[${e.bookPub}]]</td>
+                                    <td>[[${e.bookYear}]]</td>
+                                </tr>
+                            </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 페이징 -->
+            <div class="row mt-3">
+                <div class="col">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center" id="paging-tag">
+                            <th:block>
+                                <li class="page-item disabled">
+                                    <a class="page-link">Previous</a>
+                                    <!-- classappend 추가해야함 -->
+                                </li>
+                            </th:block>
+                            
+                            <th:block th:each="e: ${#numbers.sequence(bookSearchVO.beginPage,bookSearchVO.endPage)}">
+                                <li class="page-item"><a class="page-link" 
+                                    th:href="@{/bookAdmin/workingBook(nowPage=${e},searchType=${bookSearchVO.searchType},searchValue=${bookSearchVO.searchValue})}">[[${e}]]</a></li>
+                            </th:block>
+                            
+                            <th:block>
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#">Next</a>
+                                    <!-- classappend 추가해야함 -->
+                                </li>
+                            </th:block>
+                            
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        updateCheck()
+        deleteCheck()
+
+        function updateCheck() {
+            let is_update = document.querySelector("#is-update").value
+            console.log(is_update);
+            if (is_update == 1) {
+                alert("책 정보가 변경되었습니다.")
+            }
+        }
+
+        function deleteCheck() {
+            let is_delete = document.querySelector("#is-delete").value
+            console.log(is_delete);
+            if (is_delete == 1) {
+                alert("책이 삭제 되었습니다.");
+            }
+        }
+
+        function goChange(bookCode) {
+            alert(`변경하고자 하는 책 코드 : ${bookCode}`)
+            location.href = `/bookAdmin/changeBook?bookCode=${bookCode}`;
+        }
+
+        //페이징
+        function paging(nowPage) {
+            const search_type = document.querySelector("#search-type").value
+            const search_value = document.querySelector("#search-value").value
+            let tbodyTag = document.querySelector("#book-list")
+            tbodyTag.innerHTML = '';
+
+            console.log(search_type)
+            console.log(search_value)
+            console.log(nowPage)
+
+             // ------------------- 첫번째 방식 ---------------//
+             fetch('/bookAdmin/searchBook', { //요청경로
+                method: 'POST',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                //컨트롤러로 전달할 데이터
+                body: new URLSearchParams({
+                    // 데이터명 : 데이터값
+                    searchType: search_type,
+                    searchValue: search_value,
+                    nowPage : nowPage
+                })
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                        return;
+                    }
+
+                    //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+                    return response.json(); //나머지 경우에 사용
+                })
+                //fetch 통신 후 실행 영역
+                .then((data) => {//data -> controller에서 리턴되는 데이터!
+                    console.log(data)
+                    console.log(data.libraryBookVOList)
+
+                    for (let e of data.libraryBookVOList) {
+                        let str = `
+                            <tr onclick='goChange(${e.bookCode})'>
+                                <td>${e.bookCode}</td>
+                                <td>${e.bookTitle}</td>
+                                <td>${e.bookWriter}</td>
+                                <td>${e.bookPub}</td>
+                                <td>${e.bookYear}</td>
+                            </tr>
+                        `
+                        tbodyTag.insertAdjacentHTML('beforeend', str)
+                    }
+
+                    const paging_tag = document.querySelector("#paging-tag");
+                    paging_tag.innerHTML='';
+                    
+                    // 이전 버튼 누를수 있고 못누르게 하는건 if문으로
+                    let str1 = `
+                        <li class="page-item disabled">
+                            <a class="page-link">Previous</a>
+                        </li>
+                    `;
+                    for(let i = data.bookSearchVO.beginPage; i<=data.bookSearchVO.endPage; i++){
+                        str1 = str1 + `
+                        <li class="page-item"><a class="page-link"
+                                    onclick='paging(${i})'>${i}</a></li>
+                        `
+                    }
+                    //href='/bookAdmin/workingBook?nowPage=${i}&searchType=${data.bookSearchVO.searchType}&searchValue=${data.bookSearchVO.searchValue}'
+                    //값을 제대로 안넘겨주는거 같음 
+                    // 다음 버튼 누를수 있고 못누르게 하는건 if문으로 할것
+                    str1 = str1 + `
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    `
+                    
+                    paging_tag.insertAdjacentHTML("beforeend", str1);
+
+
+
+                })
+                //fetch 통신 실패 시 실행 영역
+                .catch(err => {
+                    alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+                    console.log(err);
+                });
+
+        }
+
+        function search() {
+            let tbodyTag = document.querySelector("#book-list")
+            tbodyTag.innerHTML = '';
+            const search_type = document.querySelector("#search-type").value
+            const search_value = document.querySelector("#search-value").value
+
+            console.log(search_type)
+            console.log(search_value)
+
+            // ------------------- 첫번째 방식 ---------------//
+            fetch('/bookAdmin/searchBook', { //요청경로
+                method: 'POST',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                //컨트롤러로 전달할 데이터
+                body: new URLSearchParams({
+                    // 데이터명 : 데이터값
+                    searchType: search_type,
+                    searchValue: search_value
+                })
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                        return;
+                    }
+
+                    //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+                    return response.json(); //나머지 경우에 사용
+                })
+                //fetch 통신 후 실행 영역
+                .then((data) => {//data -> controller에서 리턴되는 데이터!
+                    console.log(data)
+                    console.log(data.libraryBookVOList)
+
+                    
+
+                    for (let e of data.libraryBookVOList) {
+                        let str = `
+                            <tr onclick='goChange("${e.bookCode}")'>
+                                <td>${e.bookCode}</td>
+                                <td>${e.bookTitle}</td>
+                                <td>${e.bookWriter}</td>
+                                <td>${e.bookPub}</td>
+                                <td>${e.bookYear}</td>
+                            </tr>
+                        `
+                        tbodyTag.insertAdjacentHTML('beforeend', str)
+                    }
+
+                    const paging_tag = document.querySelector("#paging-tag");
+                    paging_tag.innerHTML='';
+                    
+                    // 이전 버튼 누를수 있고 못누르게 하는건 if문으로
+                    let str1 = `
+                        <li class="page-item disabled">
+                            <a class="page-link">Previous</a>
+                        </li>
+                    `;
+                    for(let i = data.bookSearchVO.beginPage; i<=data.bookSearchVO.endPage; i++){
+                        str1 = str1 + `
+                        <li class="page-item"><a class="page-link"
+                                    onclick='paging(${i})'>${i}</a></li>
+                        `
+                    }
+                    //href='/bookAdmin/workingBook?nowPage=${i}&searchType=${data.bookSearchVO.searchType}&searchValue=${data.bookSearchVO.searchValue}'>${i}
+                    //값을 제대로 안넘겨주는거 같음 
+                    // 다음 버튼 누를수 있고 못누르게 하는건 if문으로 할것
+                    str1 = str1 + `
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    `
+                    
+                    paging_tag.insertAdjacentHTML("beforeend", str1);
+
+
+
+                })
+                //fetch 통신 실패 시 실행 영역
+                .catch(err => {
+                    alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+                    console.log(err);
+                });
+
+
+
+        }
+    </script>
+</th:block>
+
+<th:block layout:fragment="content_js">
+    <!-- html 파일이 열릴때 같이 실행되는 js -->
+    <!-- <script src="/"></script> -->
+</th:block>
+
+</html>
