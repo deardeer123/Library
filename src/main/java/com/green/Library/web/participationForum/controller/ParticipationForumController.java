@@ -86,12 +86,12 @@ public class ParticipationForumController {
 
         //게시글 다음 최대값 조회
         int boardNo = participationForumService.selectNextBoardCode();
-        boardVO.setBoardNo(boardNo);
+        boardVO.setBoardNum(boardNo);
 
         //첨부파일등록
         List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(files);
         for (UploadVO file : fileList){
-            file.setBoardNo(boardNo);
+            file.setBoardNum(boardNo);
         }
         boardVO.setFileList(fileList);
 

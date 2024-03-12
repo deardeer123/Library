@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LibraryController {
 
     @GetMapping("/")
-    public String goHome(){
+    public String goHome() {
         System.out.println("홈");
         return "content/library/home";
     }
+}
