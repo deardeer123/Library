@@ -2,8 +2,6 @@ package com.green.Library.web.culturalAndEducation.service;
 
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
-import com.green.Library.web.culturalAndEducation.vo.CulturalAndEducationVO;
-import com.green.Library.web.participationForum.vo.ParticipationForumVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +17,7 @@ public class CulturalAndEducationServiceImpl implements CulturalAndEducationServ
 
 
     @Override
+    @Transactional(rollbackFor = ExportException.class)
     public void culInsertBoard(BoardVO boardVO) {
         sqlSession.insert("culturalAndEducationMapper.culInsertBoard", boardVO);
         sqlSession.insert("culturalAndEducationMapper.culInsertFileList", boardVO);
@@ -41,22 +40,35 @@ public class CulturalAndEducationServiceImpl implements CulturalAndEducationServ
 
 
     @Override
-    public BoardVO culSelectBoardDetail(int boardNo) {
-        return sqlSession.selectOne("culturalAndEducationMapper.culSelectBoardDetail", boardNo);
+    public BoardVO culSelectBoardDetail(BoardVO boardVO) {
+        return sqlSession.selectOne("culturalAndEducationMapper.culSelectBoardDetail", boardVO);
     }
 
     @Override
-    public void culBoardCntUp(int boardNo) {
-        sqlSession.update("culturalAndEducationMapper.culBoardCntUp", boardNo);
+    public void culBoardCntUp(BoardVO boardVO) {
+        sqlSession.update("culturalAndEducationMapper.culBoardCntUp", boardVO);
     }
 
     @Override
-    public void culDeleteBoard(int boardNo) {
-        sqlSession.delete("culturalAndEducationMapper.culDeleteBoard",boardNo);
+    public void culDeleteBoard(BoardVO boardVO) {
+        sqlSession.delete("culturalAndEducationMapper.culDeleteBoard",boardVO);
     }
 
     @Override
     public void culUpdateBoard(BoardVO boardVO) {
         sqlSession.update("culturalAndEducationMapper.culUpdateBoard",boardVO);
+    }
+
+    @Override
+    @Transactional(rollbackFor = ExportException.class)
+    public void insertEventBoard(BoardVO boardVO) {
+        sqlSession.insert("culturalAndEducationMapper.culInsertBoard", boardVO);
+        sqlSession.insert("culturalAndEducationMapper.insertEventBoard", boardVO);
+        sqlSession.insert("culturalAndEducationMapper.culInsertFileList", boardVO);
+    }
+
+    @Override
+    public List<BoardVO> selectEventBoard(SearchVO searchVO) {
+        return sqlSession.selectList("culturalAndEducationMapper.selectEventBoard", searchVO);
     }
 }
