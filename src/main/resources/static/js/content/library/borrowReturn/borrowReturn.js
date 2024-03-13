@@ -80,47 +80,72 @@ function selectMemberInfo(){
         let str2 = '';
 
             str2 +=`
-        <div class="row">
-            <div class="col thead" id="borrow">
-                자관대출 (0/5)        
-            </div>
-        </div>`;
-
-        if(data.bookBorrowList.length == 0){
-            str2 +=   `<div class="row tbody borrowInfo">
-                <div class="col text-center">
-                    대출 내역이 없습니다.
-                </div>
-            </div>`; 
-        } else {
+                <div class="row">
+                    <div class="col thead" id="borrow">
+                        자관대출 (0/5)        
+                    </div>
+                </div>`;
 
             str2 += `<div class="row tbody borrowInfo">`;
+            ////////////////////////////////////////////////////
+
+            const data_cnt = data.bookBorrowList.length;
+
+            //대출 및 반납 내역을 없을 
+            if(data_cnt == 1 && data.bookBorrowList[0].bookCode == null){
+                str2 += `
+                    <div class="col text-center">
+                        대출 내역이 없습니다.
+                    </div>
+                </div>`; 
+            }
+            else{
+                data.bookBorrowList.forEach((bookBorrowInfo, idx) => {
+                    
+                });
+            }
+
+
+            //////////////////////////////////////////
             data.bookBorrowList.forEach((bookBorrowInfo) => {
-                str2+=`
-                <div class="col">
-                    표지
-                </div>
-                <div class="col">
-                    ${bookBorrowInfo.bookCode}
-                </div>
-                <div class="col">
-                    ${bookBorrowInfo.libraryBookVO.bookTitle}
-                </div>
-                <div class="col">
-                    청구기호
-                </div>
-                <div class="col">
-                    ${bookBorrowInfo.borrowDate}
-                </div>
-                <div class="col">
-                    ${bookBorrowInfo.exReturnDate}
-                </div>
-                <div class="col">
-                    대출처리자
-                </div>`;
+                
+                if(bookBorrowInfo.bookCode == null){
+                    str2 +=   `
+                        <div class="col text-center">
+                            대출 내역이 없습니다.
+                        </div>
+                    </div>`; 
+                } 
+                else {
+                    
+
+
+                    str2+=`
+                    <div class="col">
+                        표지
+                    </div>
+                    <div class="col">
+                        ${bookBorrowInfo.bookCode}
+                    </div>
+                    <div class="col">
+                        ${bookBorrowInfo.libraryBookVO.bookTitle}
+                    </div>
+                    <div class="col">
+                        청구기호
+                    </div>
+                    <div class="col">
+                        ${bookBorrowInfo.borrowDate}
+                    </div>
+                    <div class="col">
+                        ${bookBorrowInfo.exReturnDate}
+                    </div>
+                    <div class="col">
+                        대출처리자
+                    </div>`;
+                }
             });               
-            str2 += `</div>`;   
-        }                     
+
+            str2 += `</div>`;                       
 
         str2 += `
         <div class="row">
@@ -129,41 +154,43 @@ function selectMemberInfo(){
             </div>
         </div>
         `;
-
-        if(data.bookReturnList.length == 0){
-            str2 +=   `<div class="row tbody thead returnInfo">
-                <div class="col text-center">
-                    반납 내역이 없습니다.
-                </div>
-            </div>`; 
-        } else {
+        
         str2 += `<div class="row tbody returnInfo">`;
-            data.bookReturnList.forEach((bookReturnInfo) => {
+            data.bookBorrowList.forEach((bookReturnInfo) => {
+
+                if(bookReturnInfo.returnDate == null){
+                    str2 +=   `
+                        <div class="col text-center">
+                            반납 내역이 없습니다.
+                        </div>
+                    </div>`; 
+                } else {
+
                 str2 += `<div class="col">
                             표지
                         </div>
                         <div class="col">
-                            등록번호
+                            ${bookReturnInfo.bookCode}
                         </div>
                         <div class="col">
-                            서명
+                            ${bookReturnInfo.libraryBookVO.bookTitle}
                         </div>
                         <div class="col">
                             청구기호
                         </div>
                         <div class="col">
-                            대출일
+                            ${bookReturnInfo.borrowDate}
                         </div>
                         <div class="col">
-                            반납일(연체일)
+                            ${bookReturnInfo.returnDate}
                         </div>
                         <div class="col">
                             반납처리자
                         </div>`;
-            });
+            }});
             
             `</div>`;   
-        }              
+
         str2 += `
         <div class="row">
             <div class="col" id="reserveInfo">
@@ -209,7 +236,7 @@ function selectMemberInfo(){
         
         brInfo.insertAdjacentHTML("afterbegin", str2);
 
-        } 
+        }})
 
         /////////////////////////////////////////////////////////////
         
@@ -249,7 +276,6 @@ function selectMemberInfo(){
         //     })
         // };
         
-    })
     //fetch 통신 실패 시 실행 영역
     .catch(err=>{
         alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');

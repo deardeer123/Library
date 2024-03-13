@@ -44,7 +44,7 @@ public class BorrowReturnController {
         int cardNum = 0 ;
         String bookCode = null;
 
-        // 카드번호가 데이터로 들어 올 때
+        // 카드번호가 데이터로 들어 올 때 대출 할 이용자 정보 조회
         if(isNumberic(cardNumOrBookCode) && Integer.parseInt(cardNumOrBookCode) > 0 && !String.valueOf(cardNumOrBookCode).contains("GR")){
             cardNum = Integer.parseInt(cardNumOrBookCode);
             bookCode = null;
@@ -60,7 +60,7 @@ public class BorrowReturnController {
             return memberInfo == null ? new MemberVO() : memberInfo;
 
         }
-        //책 번호를 입력했을 경우
+        //책 번호를 입력했을 경우 카드넘을 통해 이용자 코드를 가져와서 대출
         else if (String.valueOf(cardNumOrBookCode).contains("GR") && selectedCardNum != 0) {
             bookCode = String.valueOf(cardNumOrBookCode);
             cardNum = selectedCardNum;
@@ -86,13 +86,20 @@ public class BorrowReturnController {
                 return borrowReturnService.selectBorrowInfo(vo);
 
             }
-//            else if (borrowReturnService.isCorrectBookCode(bookCode) && !borrowReturnService.selectBookAvailable(bookCode)) {
-//
-//
-//
-//                return ;
-//
-//            }
+            // 책 번호를 입력하고, 해당 책이 대출 중인 상태일 때 반납 진행
+            else if (borrowReturnService.isCorrectBookCode(bookCode) && !borrowReturnService.selectBookAvailable(bookCode)) {
+
+                // 반납 내역을 update
+                borrowReturnService.updateReturnInfo(bookCode);
+
+                //다시 대출자의 모든 대출 내역을 조회
+                MemberVO vo = new MemberVO();
+                vo.setCardNum(cardNum);
+
+                //사용자 정보 및 대출내역  조회
+                return borrowReturnService.selectBorrowInfo(vo);
+
+            }
             else{
                 return new MemberVO();
             }
@@ -104,15 +111,6 @@ public class BorrowReturnController {
         }
 
     }
-
-    //대출 기능
-//    @ResponseBody
-//    @PostMapping("/updateBorrowInfo")
-//    public MemberVO updateBorrowInfo(@RequestBody RequestDataVO requestDataVO){
-//
-//
-//    }
-
 
     //일관 반납
     @GetMapping("/consistentReturn")
