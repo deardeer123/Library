@@ -34,6 +34,7 @@ public class CulturalAndEducationController {
     @RequestMapping("/libraryEvent")
     public String goLibraryEvent(Model model,
                                  HttpSession session,
+                                 MemberVO memberVO,
                                  SearchVO searchVO,
                                  BoardVO boardVO){
         //드가기전 메뉴 정보좀 들고옴
@@ -74,9 +75,9 @@ public class CulturalAndEducationController {
     // 문화 게시판 등록
     @PostMapping("/cultureInsertBoard")
     public String cultureInsertBoard(Model model,
+                                     HttpSession session,
                                      BoardVO boardVO,
                                      MemberVO memberVO,
-                                     HttpSession session,
                                      @RequestParam(name = "mainFile") MultipartFile mainFile,
                                      @RequestParam(name = "subFile") MultipartFile[] subFile){
         //드가기전 메뉴 정보좀 들고옴
@@ -93,8 +94,6 @@ public class CulturalAndEducationController {
         System.out.println(webMenuService.selectWebMenuList("member"));
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
 
-
-        MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 
         //boardNo의 max값
         int maxBoardNum = boardService.isNullBoardNo();
@@ -115,8 +114,10 @@ public class CulturalAndEducationController {
         boardVO.setBoardNum(maxBoardNum);
         System.out.println(boardVO);
         boardService.insertCulBoard(boardVO);
-        memberVO.setUserCode(loginInfo.getUserCode());
 
+        MemberVO loginInfo = (MemberVO) session.getAttribute("userCode");
+        boardVO.setUserCode(loginInfo.getUserCode());
+        model.addAttribute("loginInfo",loginInfo);
 
         return "redirect:/libraryEvent";
     }

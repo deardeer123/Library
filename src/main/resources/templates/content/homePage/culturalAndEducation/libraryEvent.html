@@ -79,13 +79,9 @@
                   </li>
                 </ul>
               </nav>
-            <div>
-                <th:block th:if="${session.loginInfo != null}">
-                    <th:block th:if="${session.loginInfo.isAdmin == 'Y'}">
-                        <input type="button" value="게시글 작성" onclick="location.href='/goEventBoard'">
-                        <input type="button" value="게시글 삭제" th:onclick="culDeleteBoard()">
-                    </th:block>
-                </th:block>
+            <div sec:authorize="hasRole('ROLE_Y')">
+                <input type="button" value="게시글 작성" onclick="location.href='/goEventBoard'">
+                <input type="button" value="게시글 삭제" th:onclick="culDeleteBoard()">
             </div>
         </div>
     </div>

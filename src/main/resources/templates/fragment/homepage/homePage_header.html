@@ -30,21 +30,16 @@
                                     </li> -->
                                 </ul>
                                 <span class="navbar-text">
-                                    <th:block th:if="${session.loginInfo == null}">
                                         <th:block th:each="e:${memberMenuList}">
                                             <th:block th:each="e1:${e.webSideMenuVOList}">
-                                                <a th:onclick="goPage([[${e1.sideMenuPage}]])">[[${e1.sideMenuName}]]
+                                                <a sec:authorize="isAnonymous()" th:onclick="goPage([[${e1.sideMenuPage}]])">[[${e1.sideMenuName}]]
                                                 </a>
                                             </th:block>
                                         </th:block>
-                                    </th:block>
-
-                                    <th:block th:if="${session.loginInfo != null}">
-                                        [[${session.loginInfo.userId}]]님
-                                        <span onclick="logout()">로그아웃</span>
-                                    </th:block>
-                                    
-
+                                        <th:block sec:authorize="isAuthenticated()">
+                                            <span>[[${#authentication.name}]]님</span>
+                                            <span onclick="logout()">로그아웃</span>
+                                        </th:block>
                                 </span>
                             </div>
                         </div>
@@ -91,7 +86,7 @@
     <script>
         function goPage(page, sideMenuNum) {
             alert(`${page}로 이동합니다.`)
-            location.href = `/${page}?boardType=${sideMenuNum}`
+            location.href = `/${page}`
         }
     </script>
 
