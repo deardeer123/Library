@@ -32,9 +32,17 @@
                         </tr>
                         <tr>
                             <td>작성일</td>
-                            <td ></td>
+                            <td><input type="date"></td>
                             <td>작성자</td>
                             <td >[[${session.loginInfo.userId}]]</td>
+                        </tr>
+                        <tr>
+                            <td>분류</td>
+                            <td>
+                                <select name="boardType">
+                                    <option th:value="${menuList}" th:each=" menu: ${menuList}">[[${menu}]]</option>
+                                </select>
+                            </td>
                         </tr>
                     </thead>
                     <tbody>

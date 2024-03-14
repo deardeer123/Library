@@ -33,21 +33,16 @@ public class ParticipationForumController {
     @Resource(name = "boardService")
     private BoardServiceImpl boardService;
 
+
     //    -------- 참여마당(forum)---------
 
     //공지사항조회
     @RequestMapping("/notice")
     public String goNotice(Model model, SearchVO searchVO){
-        //드가기전 메뉴 정보좀 들고옴
-        //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
+        //메뉴 정보
         model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
 
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
+        //상단 네비게이션 정보
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
 
         System.out.println("공지사항");
@@ -64,15 +59,20 @@ public class ParticipationForumController {
 
 
 
-
         return "content/homePage/forum/notice";
     }
 
 
     //공지사항 글쓰기 페이지이동
     @GetMapping("/noticeWrite")
-    public String noticeWrite (){
-        return "content/homePage/forum/noticeWrite";
+    public String noticeWrite (Model model){
+        //메뉴 정보
+        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
+        //상단 네비게이션 정보
+        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+
+
+        return "content/homePage/forum/noticeWrite2";
     }
 
     //공지사항 글쓰기
@@ -86,12 +86,12 @@ public class ParticipationForumController {
 
         //게시글 다음 최대값 조회
         int boardNo = participationForumService.selectNextBoardCode();
-        boardVO.setBoardNo(boardNo);
+        boardVO.setBoardNum(boardNo);
 
         //첨부파일등록
         List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(files);
         for (UploadVO file : fileList){
-            file.setBoardNo(boardNo);
+            file.setBoardNum(boardNo);
         }
         boardVO.setFileList(fileList);
 

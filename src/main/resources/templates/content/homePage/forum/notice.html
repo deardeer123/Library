@@ -97,6 +97,8 @@
       </div>
 
     <input type="button" value="목록" onclick="location.href='/notice'">
+
+    <input type="button" value="글쓰기" onclick="location.href='/noticeWrite'">
     
     <th:block th:if="${session.loginInfo != null}">
       <th:block th:if="${session.loginInfo.isAdmin == 'Y'}"> 
