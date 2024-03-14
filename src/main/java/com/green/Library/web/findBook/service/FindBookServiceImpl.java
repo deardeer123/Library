@@ -19,6 +19,11 @@ public class FindBookServiceImpl implements FindBookService{
     }
 
     @Override
+    public FindBookVO findBookOne(String bookCode) {
+        return sqlSession.selectOne("findBookMapper.findBookOne", bookCode);
+    }
+
+    @Override
     public int selectFindBookCnt(BookSearchVO bookSearchVO) {
         return sqlSession.selectOne("selectFindBookCnt",bookSearchVO);
     }

@@ -34,6 +34,9 @@ public class ParticipationForumController {
     private BoardServiceImpl boardService;
 
 
+    private final int selectedMenuIndex = 4;
+
+
     //    -------- 참여마당(forum)---------
 
     //공지사항조회
@@ -41,9 +44,14 @@ public class ParticipationForumController {
     public String goNotice(Model model, SearchVO searchVO){
         //메뉴 정보
         model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
         //상단 네비게이션 정보
+
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        //선택한 메뉴의 인덱스 번호 보내주기
+        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
+        //선택한 사이드메뉴 인덱스 번호 보내주기
+        int selectedSideMenuIndex = 1;
+        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
 
         System.out.println("공지사항");
 
@@ -118,18 +126,15 @@ public class ParticipationForumController {
     //묻고답하기
     @GetMapping("/askAndAnswer")
     public String goAskAndAnswer(Model model, SearchVO searchVO){
-        //드가기전 메뉴 정보좀 들고옴
-        //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
+        //메뉴 정보
         model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
+        //네비게이션
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        //선택한 메뉴의 인덱스 번호 보내주기
+        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
+        //선택한 사이드메뉴 인덱스 번호 보내주기
+        int selectedSideMenuIndex = 2;
+        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
 
         System.out.println("묻고답하기");
 
@@ -147,36 +152,32 @@ public class ParticipationForumController {
     }
     @GetMapping("/bookDonation")
     public String goBookDonation(Model model){
-        //드가기전 메뉴 정보좀 들고옴
-        //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
+        ///메뉴 정보
         model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
+        //네비게이션
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        //선택한 메뉴의 인덱스 번호 보내주기
+        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
+        //선택한 사이드메뉴 인덱스 번호 보내주기
+        int selectedSideMenuIndex = 3;
+        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
+
+
 
         System.out.println("자료기증");
         return "content/homePage/forum/bookDonation";
     }
     @GetMapping("/lockerReservation")
     public String goLockerReservation(Model model){
-        //드가기전 메뉴 정보좀 들고옴
-        //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
+        //메뉴 정보
         model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
+        //네비게이션
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        //선택한 메뉴의 인덱스 번호 보내주기
+        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
+        //선택한 사이드메뉴 인덱스 번호 보내주기
+        int selectedSideMenuIndex = 4;
+        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
 
         System.out.println("사물함예약");
         return "content/homePage/forum/lockerReservation";

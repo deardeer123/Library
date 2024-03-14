@@ -69,6 +69,9 @@ public class PageVO {
     public int getDisplayDataCnt(){
         return displayDataCnt;
     }
+    public void setEndPage(int a){
+        this.endPage = a;
+    }
 
     public void setTotalDataCnt(int a){
         this.totalDataCnt = a;
