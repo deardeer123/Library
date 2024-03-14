@@ -392,33 +392,7 @@ INSERT INTO book_info(
 	'GR0000000001'
 	);
 
-
-
--- 책 검색하기
-			SELECT
-         BOOK.BOOK_CODE ,
-         BOOK.BOOK_TITLE ,
-         BOOK.BOOK_WRITER ,
-         BOOK.BOOK_PUB ,
-         BOOK.BOOK_YEAR ,
-         book_info.BOOK_BORROW_AVAILABLE ,
-         book_info.BOOK_BORROW_CNT ,
-         book_info.BOOK_INFO_ORIGIN_FILE_NAME ,
-         book_info.BOOK_INFO_ATTACHED_FILE_NAME ,
-         book_info.BOOK_INTRO ,
-         book_info.BOOK_CATE_CODE ,
-         book_borrow.BR_CODE ,
-         book_borrow.BORROW_DATE ,
-         book_borrow.EX_RETURN_DATE ,
-         book_borrow.BORROW_USER_CODE
-        FROM
-         book LEFT OUTER join book_info
-        	ON BOOK.BOOK_CODE = book_info.BOOK_CODE
-        	LEFT OUTER JOIN book_borrow 
-			ON BOOK.BOOK_CODE = book_borrow.BOOK_CODE
-			WHERE BOOK.book_code = 'GR0000000001';
         	
-      
 
 UPDATE book_info
         SET
@@ -482,7 +456,44 @@ FROM
 
 SELECT * FROM book;
 -- DROP TABLE book_info;
--- DROP VIEW find_book_view;
+-- DROP VIEW BOOK_DETAIL_VIEW;
+
+-- 책  상세 검색하기
+
+CREATE VIEW BOOK_DETAIL_VIEW AS
+		SELECT
+         BOOK.BOOK_CODE ,
+         BOOK.BOOK_TITLE ,
+         BOOK.BOOK_WRITER ,
+         BOOK.BOOK_PUB ,
+         BOOK.BOOK_YEAR ,
+         book_info.BOOK_BORROW_AVAILABLE ,
+         book_info.BOOK_BORROW_CNT ,
+         book_info.BOOK_INFO_ORIGIN_FILE_NAME ,
+         book_info.BOOK_INFO_ATTACHED_FILE_NAME ,
+         book_info.BOOK_INTRO ,
+         book_info.BOOK_CATE_CODE ,
+      	book_category.BOOK_CATE_NAME ,
+         book_info.BOOK_MID_CATE_CODE ,
+         book_mid_category.BOOK_MID_CATE_NAME ,
+         book_borrow.BR_CODE ,
+         book_borrow.BORROW_DATE ,
+         book_borrow.EX_RETURN_DATE ,
+         book_borrow.BORROW_USER_CODE
+      FROM
+         book LEFT OUTER join book_info
+        	ON BOOK.BOOK_CODE = book_info.BOOK_CODE
+        	LEFT OUTER JOIN book_category
+        	ON book_info.BOOK_CATE_CODE = book_category.BOOK_CATE_CODE
+        	LEFT OUTER JOIN book_mid_category
+        	ON book_info.BOOK_MID_CATE_CODE = book_mid_category.BOOK_MID_CATE_CODE
+        	LEFT OUTER JOIN book_borrow
+			ON BOOK.BOOK_CODE = book_borrow.BOOK_CODE
+		ORDER BY book.BOOK_CODE;
+
+SELECT * FROM BOOK_DETAIL_VIEW WHERE book_code = 'GR0000000001';
+
+-- 책 검색 뷰
 CREATE VIEW find_book_view as
 SELECT
    book.BOOK_CODE ,

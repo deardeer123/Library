@@ -4,6 +4,7 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="regAndViewMapper">
 
+
 <!--    책 정보 끌고오기-->
     <select id="selectBookList" resultMap="libraryBookMapper.libraryBook">
         SELECT
@@ -107,6 +108,12 @@
         ORDER BY book_code
         LIMIT ${displayDataCnt} offset ${(displayDataCnt) * (nowPage - 1)}
     </select>
+
+<!--    책 상세 정보 보기!!-->
+    <select id="" resultMap="borrowReturnMapper.bookBorrow">
+
+    </select>
+
 
 
 <!--    프로시져 쓸 줄 몰라서 쓴 초기화 쿼리문임 가능하면 건드지 마십쇼-->

@@ -41,6 +41,8 @@
     </resultMap>
 
 
+
+
 <!--    제일 큰 값 구하기-->
     <select id="searchMaxCode" resultType="String">
         SELECT CONCAT('GR',LPAD( (SELECT MAX(CAST(SUBSTRING((BOOK_CODE),3) AS INT)+1) FROM book) , 10 ,'0'))

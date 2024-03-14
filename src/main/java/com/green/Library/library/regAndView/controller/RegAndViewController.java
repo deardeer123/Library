@@ -42,7 +42,6 @@ public class RegAndViewController {
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
-
         System.out.println(bookSearchVO);
 
         System.out.println("------------------------"+ bookSearchVO.getNowPage());
@@ -264,9 +263,21 @@ public class RegAndViewController {
     }
 
 
+    //이건
     @ResponseBody
     @PostMapping("/modal")
     public Map<String,Object> modal(@RequestParam(name="bookCode")String bookCode) {
+        System.out.println(bookCode);
+        Map<String,Object> bookInfo = new HashMap<>();
+        bookInfo.put("book",regAndViewService.selectOneBook(bookCode));
+        bookInfo.put("cateList",libraryBookService.selectCateList());
+
+        return bookInfo;
+    }
+
+    @ResponseBody
+    @PostMapping("/bookDetailInfo")
+    public Map<String,Object> modal2(@RequestParam(name="bookCode")String bookCode) {
         System.out.println(bookCode);
         Map<String,Object> bookInfo = new HashMap<>();
         bookInfo.put("book",regAndViewService.selectOneBook(bookCode));
