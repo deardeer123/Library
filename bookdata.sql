@@ -10,6 +10,7 @@ DROP TABLE users;
 DROP TABLE book_RETURN;
 
 SELECT * FROM book_borrow;
+SELECT * FROM book_return;
 
 -- 대출 테이블
 CREATE TABLE BOOK_BORROW(

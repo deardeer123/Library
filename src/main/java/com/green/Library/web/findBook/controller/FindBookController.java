@@ -18,7 +18,7 @@ public class FindBookController {
     @Resource(name= "findBookService")
     FindBookService findBookService;
 
-    private int selectedMenuIndex = 1;
+    private final int selectedMenuIndex = 1;
 
 
     @RequestMapping("/findFullBook")
@@ -33,6 +33,7 @@ public class FindBookController {
         int selectedSideMenuIndex = 1;
         model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
 
+
         //페이징
         System.out.println(bookSearchVO.getNowPage());
         bookSearchVO.setNowPage(bookSearchVO.getNowPage());
@@ -41,7 +42,6 @@ public class FindBookController {
         int totalDataCnt = findBookService.selectFindBookCnt(bookSearchVO);
         System.out.println(totalDataCnt);
         bookSearchVO.setTotalDataCnt(totalDataCnt);
-
 
         //페이지 정보 세팅
         bookSearchVO.setPageInfo();
@@ -82,6 +82,7 @@ public class FindBookController {
         //선택한 사이드 메뉴의 인덱스 번호 보내주기
         int selectedSideMenuIndex = 2;
         model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
+
 
         System.out.println("새로 들어온 책");
         return "content/homePage/findBook/newBook";

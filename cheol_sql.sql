@@ -155,7 +155,7 @@ FROM
 	header_menu INNER JOIN side_menu
 	ON header_menu.MENU_NUM = side_menu.MENU_NUM 
 WHERE
-	header_menu.MENU_TYPE = 'web';
+	header_menu.MENU_TYPE = 'web' AND header_menu.MENU_NUM = 10;
 	
 SELECT 
 	header_menu.MENU_NUM ,
