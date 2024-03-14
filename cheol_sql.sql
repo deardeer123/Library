@@ -19,6 +19,7 @@ CREATE TABLE SIDE_MENU(
 -- 갈아엎기
 -- DROP TABLE side_menu;
 
+SELECT * FROM board;
 -- 헤더 파일 데이터 도서 관리쪽임
 INSERT INTO HEADER_MENU(
 	MENU_NAME , MENU_PAGE , MENU_INDEX , MENU_TYPE)
@@ -110,6 +111,10 @@ INSERT INTO side_menu(
 	('도서관 현황', 'libraryStatus', 3 , 10) ,
 	('찾아오시는 길', 'libraryCome', 4, 10) ; 
 	
+	 DROP TABLE book_borrow;
+	 DROP TABLE book_return;
+	DROP table users;
+	
 -- 헤더 윗 부분(로그인/회원가입/아이디,비밀번호 찾기)를 위한 데이터
 -- 회원 탈퇴 부분은 마이페이지이런곳에 들어가서 할 수 있도록 만들어야 할듯
 INSERT INTO side_menu(
@@ -151,7 +156,7 @@ FROM
 	header_menu INNER JOIN side_menu
 	ON header_menu.MENU_NUM = side_menu.MENU_NUM 
 WHERE
-	header_menu.MENU_TYPE = 'web';
+	header_menu.MENU_TYPE = 'web' AND header_menu.MENU_NUM = 10;
 	
 SELECT 
 	header_menu.MENU_NUM ,
@@ -213,6 +218,9 @@ UPDATE book_mid_category
 SET BOOK_MID_CATE_NAME = '회화,도화'
 WHERE BOOK_MID_CATE_CODE = 59;
 
+SELECT * FROM users;
+
+COMMbook_borrowIT;
 
 INSERT INTO BOOK_MID_CATEGORY(
 	BOOK_MID_CATE_NAME ,
@@ -382,25 +390,35 @@ INSERT INTO book_info(
 	'',
 	1,
 	'GR0000000001'
-	)
-	
+	);
+
+
+
 -- 책 검색하기
-SELECT
-            BOOK.BOOK_CODE,
-            BOOK.BOOK_TITLE,
-            BOOK.BOOK_WRITER,
-            BOOK.BOOK_PUB,
-            BOOK.BOOK_YEAR,
-            book_info.BOOK_INFO_ORIGIN_FILE_NAME,
-            book_info.BOOK_INFO_ATTACHED_FILE_NAME,
-            book_info.BOOK_INTRO,
-            book_info.BOOK_CATE_CODE
+			SELECT
+         BOOK.BOOK_CODE ,
+         BOOK.BOOK_TITLE ,
+         BOOK.BOOK_WRITER ,
+         BOOK.BOOK_PUB ,
+         BOOK.BOOK_YEAR ,
+         book_info.BOOK_BORROW_AVAILABLE ,
+         book_info.BOOK_BORROW_CNT ,
+         book_info.BOOK_INFO_ORIGIN_FILE_NAME ,
+         book_info.BOOK_INFO_ATTACHED_FILE_NAME ,
+         book_info.BOOK_INTRO ,
+         book_info.BOOK_CATE_CODE ,
+         book_borrow.BR_CODE ,
+         book_borrow.BORROW_DATE ,
+         book_borrow.EX_RETURN_DATE ,
+         book_borrow.BORROW_USER_CODE
         FROM
-            book LEFT OUTER JOIN book_info
-        ON
-            book.BOOK_CODE = book_info.BOOK_CODE
-        WHERE
-            book.BOOK_CODE = 'GR0000000001';
+         book LEFT OUTER join book_info
+        	ON BOOK.BOOK_CODE = book_info.BOOK_CODE
+        	LEFT OUTER JOIN book_borrow 
+			ON BOOK.BOOK_CODE = book_borrow.BOOK_CODE
+			WHERE BOOK.book_code = 'GR0000000001';
+        	
+      
 
 UPDATE book_info
         SET
@@ -449,12 +467,22 @@ CREATE TABLE BOOK_BORROW(
     , BOOK_CODE VARCHAR(15) REFERENCES BOOK(BOOK_CODE)
 );
 
+SELECT * FROM book_borrow;
+
+SELECT 
+	book.BOOK_CODE ,
+	book_borrow.BR_CODE
+FROM
+	book left OUTER JOIN book_borrow
+	ON book.BOOK_CODE = book_borrow.BOOK_CODE;
+
 
 
 
 
 SELECT * FROM book;
 -- DROP TABLE book_info;
+-- DROP VIEW find_book_view;
 CREATE VIEW find_book_view as
 SELECT
    book.BOOK_CODE ,
@@ -462,6 +490,7 @@ SELECT
    book.BOOK_WRITER ,
    book.BOOK_PUB ,
    book.BOOK_YEAR ,
+   book_info.BOOK_BORROW_AVAILABLE,
    book_info.book_intro,
    book_info.BOOK_INFO_ATTACHED_FILE_NAME ,
    book_category.BOOK_CATE_NAME ,
@@ -479,6 +508,7 @@ WHERE
 ORDER BY book_code;
 
 SELECT * FROM find_book_view
+WHERE book_code = 'GR0000000001'
 LIMIT 20 OFFSET 0;
         
 
@@ -501,23 +531,23 @@ LIMIT 10 OFFSET 30;
 SELECT *
 FROM book_info;
 
--- 테스트 입니다.
+-- 캘린더
 CREATE TABLE calendar(
 	CALENDAR_NUM INT AUTO_INCREMENT PRIMARY KEY ,
 	CALENDAR_TITLE VARCHAR(50) NOT NULL ,
 	CALENDAR_START DATETIME NOT NULL
 	);
 	
-DROP TABLE calendar;
+SELECT * FROM calendar;
 
+-- 캘린더 데이터
 INSERT INTO calendar(
 	CALENDAR_TITLE ,
-	CALENDAR_START ,
-	CALENDAR_END )
+	CALENDAR_START )
 	VALUES
 	('테스트1' , '2024-03-06') ,
 	('테스트2' , '2024-03-07') ,
-	('테스트3' , '2024-03-08');
+	('테스트3' , '2024-03-08') ;
 	
 SELECT * FROM calendar;
 
@@ -528,3 +558,17 @@ LOAD DATA LOCAL INFILE 'C:/bookdata/insertData_2.csv'
 INTO TABLE BOOK
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n';
+
+SELECT ITEM_CODE
+	, ITEM_NAME
+	, ITEM_STOCK
+	, ITEM_STATUS
+	, IF(ITEM_STATUS = 1 , '준비중' , IF(ITEM_STATUS = 2, '판매중', '매진')) AS '상태1'
+	, 
+	CASE
+		WHEN ITEM_STATUS = 1 THEN '준비 중'
+		WHEN ITEM_STATUS = 2 THEN '판매 중'
+		ELSE '매진'
+	END AS STR_STATUS
+FROM
+	shop_item;

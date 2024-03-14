@@ -133,6 +133,8 @@
         END
         FROM BOARD
     </select>
+
+
     <!--  게시판 개수  -->
     <select id="countBoard" resultType="int">
         SELECT COUNT (BOARD_NO)
@@ -186,6 +188,24 @@
         WHERE BOARD_NUM = #{boardNum}
     </update>
 
+    <delete id="selectDeletes">
+        DELETE
+        FROM BOARD
+        WHERE BOARD_NUM IN
+        <foreach collection="boardNums" item="boardNum" separator="," open="(" close=")">
+            #{boardNum}
+        </foreach>
+    </delete>
+
+    <delete id="selectDeleteFiles">
+        DELETE
+        FROM ATTACHED_FILE
+        WHERE BOARD_NUM IN
+        <foreach collection="boardNums" item="boardNum" separator="," open="(" close=")">
+            #{boardNum}
+        </foreach>
+
+    </delete>
 
 
 

@@ -32,17 +32,9 @@
                         </tr>
                         <tr>
                             <td>작성일</td>
-                            <td><input type="date"></td>
+                            <td><input type="date" name="boardDate"></td>
                             <td>작성자</td>
-                            <td >[[${session.loginInfo.userId}]]</td>
-                        </tr>
-                        <tr>
-                            <td>분류</td>
-                            <td>
-                                <select name="boardType">
-                                    <option th:value="${menuList}" th:each=" menu: ${menuList}">[[${menu}]]</option>
-                                </select>
-                            </td>
+                            <td sec:authorize="isAuthenticated()" sec:authentication="name"></td>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,8 +52,8 @@
                                 <div><input type="submit" value="등록하기"></div>
                             </td>
                         </tr>
+                        <input type="hidden" name="boardType" value="24">
                     </tbody>
-                    <input type="hidden" name="userCode" th:value="${session.loginInfo.userCode}">
                 </table>
             </form>
         </div>
