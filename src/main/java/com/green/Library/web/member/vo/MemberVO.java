@@ -1,8 +1,6 @@
 package com.green.Library.web.member.vo;
 
-import com.green.Library.library.borrowReturn.vo.BookBorrowVO;
-import com.green.Library.library.borrowReturn.vo.BookReturnVO;
-import com.green.Library.libraryMember.vo.LibraryMemberVO;
+import com.green.Library.library.borrowReturn.vo.BookBNRVO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -28,6 +26,5 @@ public class MemberVO {
     private String publishDate;
     private String userIntro;
     private String cardStatus;
-    private List<BookBorrowVO> bookBorrowList;
-    private List<BookReturnVO> bookReturnList;
+    private List<BookBNRVO> bookBorrowList;
 }

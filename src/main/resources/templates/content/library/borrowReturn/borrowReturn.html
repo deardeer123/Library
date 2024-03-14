@@ -63,34 +63,244 @@
                             </div>
                         </div>
                         
-                        
-
                         <div class="col-9" id="brInfo">
                             <div class="row">
                                 <div class="col">
-                                    자관대출        
+
+                                    <table class="table">
+                                        <colgroup>
+                                            <col width="10%">
+                                            <col width="20%">
+                                            <col width="25%">
+                                            <col width="15%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                        </colgroup>
+                                        <tr class="table-active" id="borrow-header">
+                                            <td colspan="7">
+                                                <b>자관대출 (0/5)</b>
+                                            </td>
+                                        </tr>
+                                        <tr class="table-light text-center">
+                                            <td>표지</td>
+                                            <td>등록번호</td>
+                                            <td>서명</td>
+                                            <td>청구기호</td>
+                                            <td>대출일</td>
+                                            <td>반납예정일(연체일)</td>
+                                            <td>대출처리자</td>
+                                        </tr>
+                                        <tr id="borrow-tr">
+                                            
+                                        </tr>                               
+                                    </table>
+    
+                                    <table class="table">
+                                        <colgroup>
+                                            <col width="10%">
+                                            <col width="20%">
+                                            <col width="25%">
+                                            <col width="15%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                        </colgroup>
+                                        <tr class="table-active" id="return-header">
+                                            <td colspan="7">
+                                                <b>반납 (0)</b>
+                                            </td>
+                                        </tr>
+                                        <tr class="table-light text-center">
+                                            <td>표지</td>
+                                            <td>등록번호</td>
+                                            <td>서명</td>
+                                            <td>청구기호</td>
+                                            <td>대출일</td>
+                                            <td>반납예정일(연체일)</td>
+                                            <td>반납처리자</td>
+                                        </tr>
+                                        <tr id="return-tr">
+                                            
+                                        </tr>                               
+                                    </table>
+    
+                                    <table class="table">
+                                        <colgroup>
+                                            <col width="10%">
+                                            <col width="20%">
+                                            <col width="25%">
+                                            <col width="15%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                        </colgroup>
+                                        <tr class="table-active" id="reserve-header">
+                                            <td colspan="7">
+                                                <b>예약 (예약 가능 건수 : 0)</b>
+                                            </td>
+                                        </tr>
+                                        <tr class="table-light text-center">
+                                            <td>표지</td>
+                                            <td>등록번호</td>
+                                            <td>서명</td>
+                                            <td>청구기호</td>
+                                            <td>대출일</td>
+                                            <td>반납예정일(연체일)</td>
+                                            <td>대출처리자</td>
+                                        </tr>
+                                        <tr id="reserve-tr">
+                                            
+                                        </tr>                               
+                                    </table>
+
+                                    <table class="table">
+                                        <tr class="table-active">
+                                            <td>
+                                                <b>당일 처리한 내역</b>
+                                            </td>
+                                        </tr>
+                                        <tr id="history">
+                                            
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                                
+
+
+
+                            <!-- <div class="row">
+                                <div class="col">
+                                    <b>자관대출 (0/5)</b>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    타관대출
+                                    <table class="table table-bordered">
+                                        <tr class="thead">
+                                            <td>표지</td>
+                                            <td>등록번호</td>
+                                            <td>서명</td>
+                                            <td>청구기호</td>
+                                            <td>대출일</td>
+                                            <td>반납예정일(연체일)</td>
+                                            <td>대출처리자</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                대출 내역들
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    예약내역
+                                    <b>반납 (0)</b>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    반납내역
+                                    <table class="table table-bordered">
+                                        <tr class="thead">
+                                            <td>표지</td>
+                                            <td>등록번호</td>
+                                            <td>서명</td>
+                                            <td>청구기호</td>
+                                            <td>대출일</td>
+                                            <td>반납예정일(연체일)</td>
+                                            <td>대출처리자</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                반납 내역들
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <b>예약 (예약 가능 건수 : 0)</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <table class="table table-bordered">
+                                        <tr class="thead">
+                                            <td>표지</td>
+                                            <td>등록번호</td>
+                                            <td>서명</td>
+                                            <td>청구기호</td>
+                                            <td>대출일</td>
+                                            <td>반납예정일(연체일)</td>
+                                            <td>대출처리자</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                예약 내역들
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <b>당일 처리한 내역</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" colspan="7">
+                                    당일 처리한 내역들
+                                </div>
+                            </div> -->
+                            
+                                
+                            <!-- <div class="row">
+                                <div class="col table-light">
+                                    자관대출 (0/5)      
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    대출 내역들
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    반납 (0)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    반납 내역들
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
                                     관리자가 당일 처리한 대출 반납 내역
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

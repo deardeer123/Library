@@ -1,7 +1,6 @@
 package com.green.Library.library.borrowReturn.service;
 
-import com.green.Library.library.borrowReturn.vo.BookBorrowVO;
-import com.green.Library.library.user.vo.UserVO;
+import com.green.Library.library.borrowReturn.vo.BookBNRVO;
 import com.green.Library.web.member.vo.MemberVO;
 
 public interface BorrowReturnService {
@@ -12,7 +11,7 @@ public interface BorrowReturnService {
 
     //////////////////////대출 기능////////////////////////
     // 대출 시 book_borrow의 exReturnDate 업데이트
-    void insertBorrow(BookBorrowVO bookBorrowVO);
+    void insertBorrow(BookBNRVO bookBNRVO);
 
     // input 태그에 입력한 책코드가 유효한 데이터인지 검사
     boolean isCorrectBookCode(String bookCode);
@@ -24,5 +23,7 @@ public interface BorrowReturnService {
     // 책 이용 상태 조회
     boolean selectBookAvailable(String bookCode);
 
-    // 이용자 반납 update 및 대출 가능 여부 update
+    // 이용자 반납 insert 및 대출 가능 여부 update
+    void updateReturnInfo(String bookCode);
+
 }
