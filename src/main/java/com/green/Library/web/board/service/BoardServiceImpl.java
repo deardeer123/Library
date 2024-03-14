@@ -5,7 +5,9 @@ import com.green.Library.web.board.vo.SearchVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.rmi.server.ExportException;
 import java.util.List;
 
 @Service("boardService")
@@ -14,6 +16,7 @@ public class BoardServiceImpl implements BoardService {
     private SqlSessionTemplate sqlSession;
 
     @Override
+    @Transactional(rollbackFor = ExportException.class)
     public void insertCulBoard(BoardVO boardVO) {
         sqlSession.insert("boardMapper.insertCulBoard", boardVO);
         sqlSession.insert("boardMapper.insertFileList", boardVO);
@@ -71,7 +74,9 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional(rollbackFor = ExportException.class)
     public void selectDeletes(BoardVO boardVO) {
+        sqlSession.delete("boardMapper.selectDeleteFiles", boardVO);
         sqlSession.delete("boardMapper.selectDeletes",boardVO);
     }
 

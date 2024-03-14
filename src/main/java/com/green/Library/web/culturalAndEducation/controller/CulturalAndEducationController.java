@@ -68,6 +68,7 @@ public class CulturalAndEducationController {
     //게시판 등록 페이지
     @GetMapping("/goEventBoard")
     public String goEventBoard(SearchVO searchVO){
+
         return "content/homePage/culturalAndEducation/event_board";
     }
 
@@ -115,9 +116,8 @@ public class CulturalAndEducationController {
         System.out.println(boardVO);
         boardService.insertCulBoard(boardVO);
 
-        MemberVO loginInfo = (MemberVO) session.getAttribute("userCode");
-        boardVO.setUserCode(loginInfo.getUserCode());
-        model.addAttribute("loginInfo",loginInfo);
+        session.setAttribute("userCode",memberVO.getUserCode());
+
 
         return "redirect:/libraryEvent";
     }
