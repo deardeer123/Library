@@ -43,7 +43,12 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
         return sqlSession.selectOne("bnrMapper.selectBookAvailable", bookCode).equals("Y") ? true : false;
     }
 
-
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateReturnInfo(String bookCode) {
+        sqlSession.update("bnrMapper.updateReturnInfo", bookCode);
+        sqlSession.update("bnrMapper.updateReturnBookInfo", bookCode);
+    }
 
 
 }
