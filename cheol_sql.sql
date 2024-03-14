@@ -538,11 +538,9 @@ CREATE TABLE calendar(
 	CALENDAR_START DATETIME NOT NULL
 	);
 	
-<<<<<<< HEAD
--- DROP TABLE calendar;
-=======
+
 SELECT * FROM calendar;
->>>>>>> b56a598911adc9077da0c23f3dd987173ed1970a
+
 
 -- 캘린더 데이터
 INSERT INTO calendar(
@@ -553,7 +551,7 @@ INSERT INTO calendar(
 	('테스트2' , '2024-03-07') ,
 	('테스트3' , '2024-03-08') ;
 	
-SELECT * FROM calendar;
+
 
 -- 책 정보
 

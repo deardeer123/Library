@@ -27,7 +27,7 @@
                     <td colspan="4">
                         <select name="searchType">
                             <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'boardTitle'}">강좌명</option>
-                            <option value="TEACHER" th:selected="${searchVO.searchType == 'teacher'}">강사명</option>
+                            <option value="USER_NAME" th:selected="${searchVO.searchType == 'userName'}">강사명</option>
                         </select>
                         <input type="search" name="searchValue" th:value="${searchVO.searchValue}">
                         <input type="submit" value="검색">

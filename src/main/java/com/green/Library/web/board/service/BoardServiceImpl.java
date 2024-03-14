@@ -1,6 +1,7 @@
 package com.green.Library.web.board.service;
 
 import com.green.Library.web.board.vo.BoardVO;
+import com.green.Library.web.board.vo.PlusVO;
 import com.green.Library.web.board.vo.SearchVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,19 @@ public class BoardServiceImpl implements BoardService {
     public void selectDeletes(BoardVO boardVO) {
         sqlSession.delete("boardMapper.selectDeleteFiles", boardVO);
         sqlSession.delete("boardMapper.selectDeletes",boardVO);
+    }
+
+    @Override
+    public List<BoardVO> selectPlusList(SearchVO searchVO) {
+        return sqlSession.selectList("boardMapper.selectPlusList", searchVO);
+    }
+
+    @Override
+    @Transactional(rollbackFor = ExportException.class)
+    public void insertParticipation(BoardVO boardVO) {
+        sqlSession.insert("boardMapper.insertParticipation",boardVO);
+        sqlSession.insert("boardMapper.insertParticipationPlus",boardVO);
+        sqlSession.insert("boardMapper.insertEventFileList", boardVO);
     }
 
 
