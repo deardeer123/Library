@@ -11,21 +11,12 @@
         <result column="USER_CODE"      property="userCode"/>
         <result column="BOARD_CNT"      property="boardCnt"/>
         <result column="BOARD_TYPE"     property="boardType"/>
-        <result column="TEACHER"        property="teacher"/>
-        <result column="TARGET"         property="target"/>
-        <result column="OPEN_DATE"      property="openDate"/>
-        <result column="CLOSE_DATE"     property="closeDate"/>
-        <result column="TO_DATE"        property="toDate"/>
-        <result column="FROM_DATE"      property="fromDate"/>
-        <result column="PERSONNEL"      property="personnel"/>
-        <result column="MAXIMUM_PERSON" property="maximumPerson"/>
-        <result column="EVENT_STATUS"   property="eventStatus"/>
         <association property="plusVO" resultMap="plus"/>
         <association property="memberVO" resultMap="memberMapper.users"/>
         <collection property="fileList" resultMap="file"/>
     </resultMap>
 
-    <resultMap id="plus" type="com.green.Library.web.board.vo.plusVO">
+    <resultMap id="plus" type="com.green.Library.web.board.vo.PlusVO">
         <id column="PLUS_CODE"          property="plusCode"/>
         <result column="TEACHER"        property="teacher"/>
         <result column="TARGET"         property="target"/>
@@ -70,7 +61,7 @@
         ON BOARD.USER_CODE = USERS.USER_CODE
         INNER JOIN ATTACHED_FILE AS FILE
         ON BOARD.BOARD_NUM = FILE.BOARD_NUM
-        WHERE BOARD_TYPE = ${boardType}
+        WHERE BOARD_TYPE = #{boardType}
         <if test='searchValue != null and !searchValue.equals("")'>
             AND ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
         </if>
@@ -207,8 +198,92 @@
 
     </delete>
 
+    <select id="selectPlusList" resultMap="board">
+        SELECT
+            PLUS_CODE
+            ,B.BOARD_NUM
+            ,BOARD_TITLE
+            ,BOARD_TYPE
+            ,TEACHER
+            ,TARGET
+            ,OPEN_DATE
+            ,CLOSE_DATE
+            ,TO_DATE
+            ,FROM_DATE
+            ,PERSONNEL
+            ,MAXIMUM_PERSON
+            ,EVENT_STATUS
+        FROM BOARD AS B
+        INNER JOIN BOARD_PLUS AS P
+        ON B.BOARD_NUM = P.BOARD_NUM
+        WHERE BOARD_TYPE = #{boardType}
+        <if test='searchValue != null and !searchValue.equals("")'>
+            AND ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+        <if test='fromDate != null and !fromDate.equals("")'>
+            AND DATE_FORMAT(FROM_DATE, '%Y-%m-%d') = #{fromDate}
+        </if>
+        <if test='toDate != null and !toDate.equals("")'>
+            AND DATE_FORMAT(TO_DATE, '%Y-%m-%d') = #{toDate}
+        </if>
+        ORDER BY BOARD_NUM DESC
+        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
+    </select>
 
 
+    <insert id="insertParticipation">
+        INSERT INTO BOARD(
+            BOARD_TITLE
+            ,BOARD_TYPE
+            ,CONTENT
+            ,BOARD_NUM
+        )VALUES(
+            #{boardTitle}
+            ,#{boardType}
+            ,#{content}
+            ,#{boardNum}
+        )
+    </insert>
+    <insert id="insertParticipationPlus">
+        INSERT INTO BOARD_PLUS(
+            TEACHER
+            ,OPEN_DATE
+            ,CLOSE_DATE
+            ,TO_DATE
+            ,FROM_DATE
+            ,TARGET
+            ,PERSONNEL
+            ,MAXIMUM_PERSON
+            ,EVENT_STATUS
+            ,BOARD_NUM
+        )VALUES(
+            #{plusVO.teacher}
+            ,#{plusVO.openDate}
+            ,#{plusVO.closeDate}
+            ,#{plusVO.toDate}
+            ,#{plusVO.fromDate}
+            ,#{plusVO.target}
+            ,#{plusVO.personnel}
+            ,#{plusVO.maximumPerson}
+            ,#{plusVO.eventStatus}
+            ,#{boardNum}
+        )
+    </insert>
+
+    <!--  첨부파일 등록  -->
+    <insert id="insertEventFileList">
+        INSERT INTO ATTACHED_FILE(
+            ORIGIN_FILE_NAME
+            ,ATTACHED_FILE_NAME
+            ,BOARD_NUM
+        )
+        VALUES
+        <foreach collection="fileList" item="file" separator=",">
+            (#{file.originFileName}
+            ,#{file.attachedFileName}
+            ,#{file.boardNum})
+        </foreach>
+    </insert>
 <!--  ////////////////////////이벤트 게시물///////////////////  -->
 
 </mapper>

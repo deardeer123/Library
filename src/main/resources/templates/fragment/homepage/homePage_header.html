@@ -38,21 +38,10 @@
                                                 </a>
                                             </th:block>
                                         </th:block>
-<<<<<<< HEAD
-                                    </th:block>
-
-                                    <th:block th:if="${session.loginInfo != null}">
-                                        [[${session.loginInfo.userId}]]님
-                                        <span onclick="logout()">로그아웃</span>
-                                    </th:block>
-
-
-=======
                                         <th:block sec:authorize="isAuthenticated()">
                                             <span>[[${#authentication.name}]]님</span>
                                             <span onclick="logout()">로그아웃</span>
                                         </th:block>
->>>>>>> 06eba80885f754b4422300b6ed741d1e7d495076
                                 </span>
                             </div>
                         </div>

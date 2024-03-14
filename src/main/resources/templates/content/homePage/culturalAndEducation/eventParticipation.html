@@ -4,7 +4,7 @@
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
-    <link rel="stylesheet" href="/">
+    <!-- <link rel="stylesheet" href="/"> -->
 </th:block>
 
 <th:block layout:fragment="contentFragment">
@@ -33,7 +33,7 @@
                         <td colspan="4">
                             <select name="searchType">
                                 <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'boardTitle'}">제목</option>
-                                <option value="USER_ID" th:selected="${searchVO.searchType == 'userId'}">작성자</option>
+                                <option value="USER_NAME" th:selected="${searchVO.searchType == 'userName'}">작성자</option>
                             </select>
                             <input type="search" name="searchValue" th:value="${searchVO.searchValue}">
                             <input type="submit" value="검색">
@@ -41,9 +41,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr >
+                        <td>프로그램명</td>
+                        <td>강사명</td>
+                        <td>대상</td>
+                        <td>운영기간</td>
+                        <td>신청기간</td>
+                        <td>정원</td>
+                        <td>상태</td>
+                    </tr>
+                    <tr th:each="board : ${boardList}">
                         <td></td>
-                        <td></td>
+                        <td>아아</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -52,12 +61,8 @@
                     </tr>
                 </tbody>
             </table>
-            <div>
-                <th:block th:if="${session.loginInfo != null}">
-                    <th:block th:if="${session.loginInfo.isAdmin == 'Y'}">
-                        <input type="button" value="게시글 작성" onclick="location.href='/eventBoard'">
-                    </th:block>
-                </th:block>
+            <div sec:authorize="hasRole('ROLE_Y')">
+                <input type="button" value="게시글 작성" onclick="location.href='/goParticipation'">
             </div>
         </div>
     </div>
@@ -66,7 +71,7 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <script src="/"></script>
+    <!-- <script src="/"></script> -->
 </th:block>
 
 </html>

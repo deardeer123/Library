@@ -20,7 +20,7 @@ public class BoardVO {
     private int boardCnt;
     private int boardType;
     private MemberVO memberVO;
-    private plusVO plusVO;
+    private PlusVO plusVO;
     private List<Integer> boardNums;
     private List<UploadVO> fileList;
 }

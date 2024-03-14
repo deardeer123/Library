@@ -4,9 +4,11 @@ import com.green.Library.util.BoardUploadUtil;
 import com.green.Library.web.board.service.BoardService;
 import com.green.Library.web.board.service.BoardServiceImpl;
 import com.green.Library.web.board.vo.BoardVO;
+import com.green.Library.web.board.vo.PlusVO;
 import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.board.vo.UploadVO;
 import com.green.Library.web.culturalAndEducation.service.CulturalAndEducationServiceImpl;
+import com.green.Library.web.member.service.MemberServiceImpl;
 import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
@@ -54,12 +56,15 @@ public class CulturalAndEducationController {
         int totalCulBoardCnt = boardService.isNullBoardNo();
         searchVO.setTotalDataCnt(totalCulBoardCnt);
         searchVO.setPageInfo();
+        searchVO.setBoardType(24);
 
+        boardVO.setMemberVO((MemberVO) session.getAttribute("userName"));
         List<BoardVO> boardList = boardService.selectBoardList(searchVO);
-
+        System.out.println(boardList);
 
         model.addAttribute("boardList",boardList);
-
+        System.out.println();
+        System.out.println(session.getAttribute("userCode"));
         System.out.println("도서관행사");
 
         return "content/homePage/culturalAndEducation/libraryEvent";
@@ -78,7 +83,6 @@ public class CulturalAndEducationController {
     public String cultureInsertBoard(Model model,
                                      HttpSession session,
                                      BoardVO boardVO,
-                                     MemberVO memberVO,
                                      @RequestParam(name = "mainFile") MultipartFile mainFile,
                                      @RequestParam(name = "subFile") MultipartFile[] subFile){
         //드가기전 메뉴 정보좀 들고옴
@@ -110,11 +114,10 @@ public class CulturalAndEducationController {
         }
         fileList.add(mainFileVO);
         boardVO.setFileList(fileList);
-        System.out.println(boardVO);
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@타입넘버" + boardVO.getBoardType());
         boardVO.setBoardNum(maxBoardNum);
-        System.out.println(boardVO);
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+session.getId());
+
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+session.getAttribute("userCode"));
+        boardVO.setUserCode((Integer) session.getAttribute("userCode"));
         boardService.insertCulBoard(boardVO);
 
 
@@ -206,12 +209,70 @@ public class CulturalAndEducationController {
         searchVO.setTotalDataCnt(totalBoardCnt);
 
         searchVO.setPageInfo();
-        List<BoardVO> boardList =  boardService.selectBoardList(searchVO);
+        boardVO.setBoardType(25);
+
+        List<BoardVO> boardList =  boardService.selectPlusList(searchVO);
         model.addAttribute("boardList",boardList);
         System.out.println(boardList);
         System.out.println("행사 참가신청");
         return "content/homePage/culturalAndEducation/eventParticipation";
     }
+
+    // 참가신청 게시글 등록 페이지 이동
+    @GetMapping("/goParticipation")
+    public String goParticipation(){
+        return "content/homePage/culturalAndEducation/goParticipation";
+    }
+
+    // 참가신청 게시글 등록
+    @PostMapping("/insertParticipation")
+    public String insertParticipation(Model model,
+                                      BoardVO boardVO,
+                                      PlusVO plusVO,
+                                      HttpSession session,
+                                      @RequestParam(name = "files") MultipartFile[] files){
+
+        System.out.println(webMenuService.selectWebMenuList("web"));
+        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
+
+        webMenuService.selectWebMenuList("member");
+        System.out.println(webMenuService.selectWebMenuList("member"));
+        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+
+        //boardNo의 max값
+        int maxBoardNum = boardService.isNullBoardNo();
+
+        System.out.println(plusVO);
+        System.out.println(boardVO);
+        // 멀티 이미지 첨부 기능
+        List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(files);
+        for (UploadVO file : fileList){
+            file.setBoardNum(maxBoardNum);
+        }
+
+        boardVO.setPlusVO(plusVO);
+        boardVO.setFileList(fileList);
+        boardVO.setBoardNum(maxBoardNum);
+
+
+        boardVO.setUserCode((Integer) session.getAttribute("userCode"));
+        System.out.println(boardVO);
+        boardService.insertParticipation(boardVO);
+        return "redirect:/eventParticipation";
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
     @GetMapping("/movie")
     public String goMovie(Model model){
         //드가기전 메뉴 정보좀 들고옴
