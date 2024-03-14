@@ -40,7 +40,9 @@ public interface BoardService {
     void updateBoard(BoardVO boardVO);
 
     //선택 삭제
+    //선택 이미지 삭제
     void selectDeletes(BoardVO boardVO);
+
 
 
 }

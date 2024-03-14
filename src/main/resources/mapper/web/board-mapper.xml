@@ -195,6 +195,15 @@
         </foreach>
     </delete>
 
+    <delete id="selectDeleteFiles">
+        DELETE
+        FROM ATTACHED_FILE
+        WHERE BOARD_NUM IN
+        <foreach collection="boardNums" item="boardNum" separator="," open="(" close=")">
+            #{boardNum}
+        </foreach>
+
+    </delete>
 
 
 
