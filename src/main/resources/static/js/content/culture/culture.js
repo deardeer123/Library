@@ -2,13 +2,17 @@
 
 
 
+function deleteBoard(){
+    if(confirm('게시물을 삭제하시겠습니까')){
+        location.href='/cuLDeleteBoard';
+    }
+}
 
-
-function culDeleteBoard(boardNum){
-    const chks = document.querySelectorAll('.chk')
+function culDeleteBoard(){
+    const chks = document.querySelectorAll('.chk:checked')
 
     if(chks.length == 0){
-        alert('게시물을 선택하세요')
+        alert('삭제 할 게시물을 선택하세요')
         return ;
     }
 
@@ -17,7 +21,7 @@ function culDeleteBoard(boardNum){
         boardNum.push(chk.value);
     }
 
-    location=`/cuLDeleteBoard?boardNum=${boardNum}`;
+    location=`/selectDeletes?boardNums=${boardNum}`;
 
 }
 

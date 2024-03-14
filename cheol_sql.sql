@@ -19,6 +19,7 @@ CREATE TABLE SIDE_MENU(
 -- 갈아엎기
 -- DROP TABLE side_menu;
 
+SELECT * FROM board;
 -- 헤더 파일 데이터 도서 관리쪽임
 INSERT INTO HEADER_MENU(
 	MENU_NAME , MENU_PAGE , MENU_INDEX , MENU_TYPE)
