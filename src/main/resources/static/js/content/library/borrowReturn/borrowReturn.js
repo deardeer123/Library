@@ -16,9 +16,12 @@ function selectMemberInfo(){
     // 1. 대출 내역 테이블 tbody
     const borrow_list_tbody = document.querySelector('.borrow-list-table tbody');
     // 2. 반납 내역 테이블 tbody
-    const return_list_table = document.querySelector('.return-list-table');
+    const return_list_tbody = document.querySelector('.return-list-table tbody');
     // 3. 예약 내역 테이블 tbody
-    const reserve_list_table = document.querySelector('.reserve-list-table');
+    const reserve_list_tbody = document.querySelector('.reserve-list-table tbody');
+
+    // 내역에 책 이미지 삽입
+    const img = new Image();
 
     // 들어오는 데이터 관리
     const inputValue = inputData;
@@ -52,6 +55,7 @@ function selectMemberInfo(){
 
         //selectedCardNum 값을 이전에 입력한 값으로 저장
         //조회가 됐으면 조회된 데이터, 아니면 0이 들어감
+
         document.querySelector('input[name="selectedCardNum"]').value = data.cardNum;
 
         userInfo.innerHTML = '';
@@ -84,8 +88,8 @@ function selectMemberInfo(){
         // ---------------  각 테이블을 조회한 데이터를 바탕으로 다시 그림 ------------------------//
 
         borrow_list_tbody.innerHTML = '';
-        return_list_table.innerHTML = '';
-        reserve_list_table.innerHTML = '';
+        return_list_tbody.innerHTML = '';
+        reserve_list_tbody.innerHTML = '';
 
         let str2 = '';
         let str3 = '';
@@ -113,35 +117,74 @@ function selectMemberInfo(){
                     </td>`;
 
         borrow_list_tbody.insertAdjacentHTML("afterbegin", str2);
-        return_list_table.insertAdjacentHTML("afterbegin", str3);
-        reserve_list_table.insertAdjacentHTML("afterbegin", str4);
+        return_list_tbody.insertAdjacentHTML("afterbegin", str3);
+        reserve_list_tbody.insertAdjacentHTML("afterbegin", str4);
 
             }
             else{
+
                 data.bookBorrowList.forEach((bookBorrowInfo, idx) => {
-                    str2 += `
-                    <td>
-                        ${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}
-                    </td>
-                    <td>
-                        ${bookBorrowInfo.bookCode}
-                    </td>
-                    <td>
-                        ${bookBorrowInfo.bookTitle}
-                    </td>
-                    <td>
-                        ${bookBorrowInfo.bookCateCode} + '' + ${bookBorrowInfo.bookMidCateCode}
-                    </td>
-                        `;
+                    if(bookBorrowInfo.returnYN == 'N'){
+                        str2 += `
+                        <tr>
+                            <td>
+                                <img width="70px" src="/upload/${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}">
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.bookCode}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.libraryBookVO.bookTitle}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookCateCode}${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookMidCateCode}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.borrowDate}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.exReturnDate}
+                            </td>
+                            <td>
+                                
+                            </td>
+                        </tr>`;
 
-                    str3 += `
+                        
+                    }
                     
-                    `;
 
-
-                    borrowHeaderTd.insertAdjacentHTML("afterbegin", str2);
-                    borrowTr.insertAdjacentHTML("afterbegin", str3);
+                    if(bookBorrowInfo.returnYN == 'Y'){
+                        str3 += `
+                        <tr>
+                            <td>
+                                <img width="70px" src="/upload/${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}">
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.bookCode}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.libraryBookVO.bookTitle}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookCateCode}${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookMidCateCode}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.borrowDate}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.returnDate}
+                            </td>
+                            <td>
+                                
+                            </td>
+                        </tr>`;
+                    }
+                    
                 });
+
+                borrow_list_tbody.insertAdjacentHTML("afterbegin", str2);
+                return_list_tbody.insertAdjacentHTML("afterbegin", str3);
             }
 
 

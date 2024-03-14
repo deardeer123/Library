@@ -46,6 +46,9 @@ public class BorrowReturnController {
 
         // 카드번호가 데이터로 들어 올 때 대출 할 이용자 정보 조회
         if(isNumberic(cardNumOrBookCode) && Integer.parseInt(cardNumOrBookCode) > 0 && !String.valueOf(cardNumOrBookCode).contains("GR")){
+
+            System.out.println("@@@@" + cardNum);
+
             cardNum = Integer.parseInt(cardNumOrBookCode);
             bookCode = null;
 
