@@ -12,5 +12,5 @@ public class UploadVO {
     private String OriginFileName;
     private String AttachedFileName;
     private String isMain;
-    private int boardNo;
+    private int boardNum;
 }

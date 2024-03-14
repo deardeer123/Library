@@ -28,21 +28,13 @@
                             <td>
                                 제목
                             </td>
-                            <td colspan="3"><input type="text" name="eventTitle"></td>
-                        </tr>
-                        <tr>
-                            <td>카테고리</td>
-                            <td>
-                                <select name="boardType">
-                                    <option value="21">도서관행사</option>
-                                </select>
-                            </td>
+                            <td colspan="3"><input type="text" name="boardTitle"></td>
                         </tr>
                         <tr>
                             <td>작성일</td>
-                            <td ></td>
+                            <td><input type="date" name="boardDate"></td>
                             <td>작성자</td>
-                            <td >[[${session.loginInfo.userId}]]</td>
+                            <td sec:authorize="isAuthenticated()" sec:authentication="name"></td>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,8 +52,8 @@
                                 <div><input type="submit" value="등록하기"></div>
                             </td>
                         </tr>
+                        <input type="hidden" name="boardType" value="24">
                     </tbody>
-                    <input type="hidden" name="userCode" th:value="${session.loginInfo.userCode}">
                 </table>
             </form>
         </div>

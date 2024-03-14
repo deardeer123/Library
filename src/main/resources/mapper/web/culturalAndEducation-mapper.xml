@@ -3,46 +3,32 @@
 
 <!--&lt;!&ndash; 해당 파일에 모든 쿼리문을 작성 &ndash;&gt;-->
 <mapper namespace="culturalAndEducationMapper">
-    <resultMap id="event" type="com.green.Library.web.culturalAndEducation.vo.EventBoardVO">
-        <id column="EVENT_CODE" property="eventCode"/>
-        <result column="EVENT_TITLE" property="eventTitle"/>
-        <result column="TEACHER" property="teacher"/>
-        <result column="TARGET" property="target"/>
-        <result column="EVENT_OPEN" property="eventOpen"/>
-        <result column="EVENT_CLOSE" property="eventClose"/>
-        <result column="TO_DATE" property="toDate"/>
-        <result column="FROM_DATE" property="fromDate"/>
-        <result column="PERSONNEL" property="personnel"/>
-        <result column="MAXIMUM_PERSON" property="maximumPerson"/>
-        <result column="STATUS_INDEX" property="statusIndex"/>
-        <result column="BOARD_NO" property="boardNo"/>
-    </resultMap>
 
     <!--  게시글 등록  -->
     <insert id="culInsertBoard">
         INSERT INTO BOARD(
-        BOARD_TITLE
-        , CONTENT
-        , BOARD_DATE
-        , BOARD_TYPE
-        , USER_CODE
-        , BOARD_CNT
-        , BOARD_NO
+            BOARD_TITLE
+            , CONTENT
+            , BOARD_DATE
+            , BOARD_TYPE
+            , USER_CODE
+            , BOARD_CNT
+            , BOARD_NO
         )
         VALUES(
-        #{boardTitle}
-        ,#{content}
-        ,#{boardDate}
-        ,#{boardType}
-        ,#{userCode}
-        ,#{boardCnt}
-        ,#{boardNo}
+            #{boardTitle}
+            ,#{content}
+            ,#{boardDate}
+            ,#{boardType}
+            ,#{userCode}
+            ,#{boardCnt}
+            ,#{boardNo}
         )
     </insert>
 
 
     <!--  등록한 게시물 정보 리스트  -->
-    <select id="culSelectBoardList" resultMap="boardMapper.board">
+    <select id="selectBoardList" resultMap="boardMapper.board">
         SELECT
             BOARD.BOARD_NO
             , BOARD_TITLE
@@ -50,7 +36,7 @@
             , DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') AS BOARD_DATE
             , BOARD.USER_CODE
             , BOARD_CNT
-            , USER_ID
+            , USER_NAME
             , ATTACHED_CODE
             , ORIGIN_FILE_NAME
             , ATTACHED_FILE_NAME
@@ -62,7 +48,7 @@
         ON BOARD.BOARD_NO = FILE.BOARD_NO
         WHERE BOARD_TYPE = ${boardType}
         <if test='searchValue != null and !searchValue.equals("")'>
-            where ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+            AND ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
         </if>
         <if test='fromDate != null and !fromDate.equals("")'>
             AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') = #{fromDate}
@@ -140,7 +126,10 @@
     <!--  게시판 삭제  -->
     <delete id="culDeleteBoard">
         DELETE FROM BOARD
-        WHERE BOARD_NO = #{boardNo}
+        WHERE BOARD_NO IN
+        <foreach collection="boardNos" item="boardNo" separator="," open="(" close=")">
+            #{boardNo}
+        </foreach>
     </delete>
 
     <!--  게시판 수정  -->
@@ -155,32 +144,64 @@
 
 
 
+
 <!--  ///////////////////////////////이벤트 보드//////////////////////////////  -->
+<!--  평생교육 강좌안내 글 등록  -->
+
     <insert id="insertEventBoard">
-        INSERT INTO EVENT_TABLE(
-            EVENT_TITLE
+        INSERT INTO BOARD_PLUS(
+            TEACHER
+            ,TARGET
+            ,OPEN_DATE
+            ,CLOSE_DATE
+            ,TO_DATE
+            ,FROM_DATE
+            ,MAXIMUM_PERSON
+            ,EVENT_STATUS
+            ,BOARD_NO
+        )VALUES(
+            #{boardPlusVO.teacher}
+            ,#{boardPlusVO.target}
+            ,#{boardPlusVO.openDate}
+            ,#{boardPlusVO.closeDate}
+            ,#{boardPlusVO.toDate}
+            ,#{boardPlusVO.fromDate}
+            ,#{boardPlusVO.maximumPerson}
+            ,#{boardPlusVO.eventStatus}
+            ,#{boardPlusVO.boardNo}
+        )
+    </insert>
+
+    <!--  평생교육 강좌안내 게시판 리스트  -->
+    <select id="selectEventBoard" resultMap="boardMapper.board">
+        SELECT
+            BOARD_TITLE
             ,TEACHER
             ,TARGET
-            ,EVENT_OPEN
-            ,EVENT_CLOSE
+            ,OPEN_DATE
+            ,CLOSE_DATE
             ,TO_DATE
             ,FROM_DATE
             ,PERSONNEL
             ,MAXIMUM_PERSON
-            ,STATUS_INDEX
-        )VALUES(
-            #{eventTitle}
-            #{teacher}
-            #{target}
-            #{eventOpen}
-            #{eventClose}
-            #{toDate}
-            #{fromDate}
-            #{personnel}
-            #{maximumPerson}
-            #{statusIndex}
-        )
-    </insert>
+            ,EVENT_STATUS
+            ,B.BOARD_NO
+        FROM BOARD B INNER JOIN BOARD_PLUS P
+        ON B.BOARD_NO = P.BOARD_NO
+        WHERE BOARD_TYPE = ${boardType}
+        <if test='searchValue != null and !searchValue.equals("")'>
+            AND ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+        <if test='fromDate != null and !fromDate.equals("")'>
+            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') = #{fromDate}
+        </if>
+        <if test='toDate != null and !toDate.equals("")'>
+            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') = #{toDate}
+        </if>
+        ORDER BY BOARD_NO DESC
+        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
+
+    </select>
 </mapper>
 
 

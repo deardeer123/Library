@@ -4,24 +4,108 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="boardMapper">
     <resultMap id="board" type="com.green.Library.web.board.vo.BoardVO">
-        <id column="BOARD_NO"          property="boardNo"/>
-        <result column="BOARD_TITLE"   property="boardTitle"/>
-        <result column="CONTENT"       property="content"/>
-        <result column="BOARD_DATE"    property="boardDate"/>
-        <result column="USER_CODE"     property="userCode"/>
-        <result column="BOARD_CNT"     property="boardCnt"/>
+        <id column="BOARD_NUM"          property="boardNum"/>
+        <result column="BOARD_TITLE"    property="boardTitle"/>
+        <result column="CONTENT"        property="content"/>
+        <result column="BOARD_DATE"     property="boardDate"/>
+        <result column="USER_CODE"      property="userCode"/>
+        <result column="BOARD_CNT"      property="boardCnt"/>
         <result column="BOARD_TYPE"     property="boardType"/>
+        <result column="TEACHER"        property="teacher"/>
+        <result column="TARGET"         property="target"/>
+        <result column="OPEN_DATE"      property="openDate"/>
+        <result column="CLOSE_DATE"     property="closeDate"/>
+        <result column="TO_DATE"        property="toDate"/>
+        <result column="FROM_DATE"      property="fromDate"/>
+        <result column="PERSONNEL"      property="personnel"/>
+        <result column="MAXIMUM_PERSON" property="maximumPerson"/>
+        <result column="EVENT_STATUS"   property="eventStatus"/>
+        <association property="plusVO" resultMap="plus"/>
         <association property="memberVO" resultMap="memberMapper.users"/>
         <collection property="fileList" resultMap="file"/>
     </resultMap>
+
+    <resultMap id="plus" type="com.green.Library.web.board.vo.plusVO">
+        <id column="PLUS_CODE"          property="plusCode"/>
+        <result column="TEACHER"        property="teacher"/>
+        <result column="TARGET"         property="target"/>
+        <result column="OPEN_DATE"      property="openDate"/>
+        <result column="CLOSE_DATE"     property="closeDate"/>
+        <result column="TO_DATE"        property="toDate"/>
+        <result column="FROM_DATE"      property="fromDate"/>
+        <result column="PERSONNEL"      property="personnel"/>
+        <result column="MAXIMUM_PERSON" property="maximumPerson"/>
+        <result column="EVENT_STATUS"   property="eventStatus"/>
+        <result column="BOARD_NUM"      property="boardNum"/>
+    </resultMap>
+
 
     <resultMap id="file" type="com.green.Library.web.board.vo.UploadVO">
         <id column="ATTACHED_CODE" property="attachedCode"/>
         <result column="ORIGIN_FILE_NAME" property="originFileName"/>
         <result column="ATTACHED_FILE_NAME" property="attachedFileName"/>
         <result column="IS_MAIN" property="isMain"/>
-        <result column="BOARD_NO" property="boardNo"/>
+        <result column="BOARD_NUM" property="boardNum"/>
     </resultMap>
+
+
+<!--  //////////////////// 기본 게시글 /////////////////  -->
+    <!--  게시글 작성   -->
+    <!--  등록한 게시물 정보 리스트  -->
+    <select id="selectBoardList" resultMap="boardMapper.board">
+        SELECT
+            BOARD.BOARD_NUM
+            , BOARD_TITLE
+            , CONTENT
+            , DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') AS BOARD_DATE
+            , BOARD.USER_CODE
+            , BOARD_CNT
+            , USER_NAME
+            , ATTACHED_CODE
+            , ORIGIN_FILE_NAME
+            , ATTACHED_FILE_NAME
+            , IS_MAIN
+            , BOARD_TYPE
+        FROM board INNER JOIN USERS
+        ON BOARD.USER_CODE = USERS.USER_CODE
+        INNER JOIN ATTACHED_FILE AS FILE
+        ON BOARD.BOARD_NUM = FILE.BOARD_NUM
+        WHERE BOARD_TYPE = ${boardType}
+        <if test='searchValue != null and !searchValue.equals("")'>
+            AND ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+        <if test='fromDate != null and !fromDate.equals("")'>
+            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') = #{fromDate}
+        </if>
+        <if test='toDate != null and !toDate.equals("")'>
+            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') = #{toDate}
+        </if>
+        ORDER BY BOARD_NUM DESC
+        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
+    </select>
+
+
+    <insert id="insertCulBoard">
+        INSERT INTO BOARD(
+            BOARD_TITLE
+            , CONTENT
+            , BOARD_DATE
+            , BOARD_TYPE
+            , USER_CODE
+            , BOARD_CNT
+            , BOARD_NUM
+        )
+        VALUES(
+            #{boardTitle}
+            ,#{content}
+            ,#{boardDate}
+            ,#{boardType}
+            ,#{userCode}
+            ,#{boardCnt}
+            ,#{boardNum}
+        )
+    </insert>
+
 
     <!--  이미지 등록  -->
     <insert id="insertFileList">
@@ -29,26 +113,27 @@
             ORIGIN_FILE_NAME
             ,ATTACHED_FILE_NAME
             ,IS_MAIN
-            ,BOARD_NO
+            ,BOARD_NUM
         )
         VALUES
         <foreach collection="fileList" item="file" separator=",">
             (#{file.originFileName}
             ,#{file.attachedFileName}
             ,#{file.isMain}
-            ,#{file.boardNo})
+            ,#{file.boardNum})
         </foreach>
     </insert>
 
     <!--  게시판 개수 + 1  -->
     <select id="isNullBoardNo" resultType="int">
         SELECT CASE WHEN
-        MAX(BOARD_NO) IS NULL
+        MAX(BOARD_NUM) IS NULL
         THEN 1
-        ELSE MAX(BOARD_NO) + 1
+        ELSE MAX(BOARD_NUM) + 1
         END
         FROM BOARD
     </select>
+
 
     <!--  게시판 개수  -->
     <select id="countBoard" resultType="int">
@@ -56,10 +141,42 @@
         FROM BOARD
     </select>
 
+
+    <!--  게시물 상세보기  -->
+    <select id="selectBoardDetail" resultMap="board">
+        SELECT
+            BOARD.BOARD_NUM
+            ,BOARD.USER_CODE
+            ,BOARD_TITLE
+            ,BOARD_DATE
+            ,BOARD_CNT
+            ,CONTENT
+            ,USER_ID
+            ,ATTACHED_FILE_NAME
+            ,IS_MAIN
+        FROM BOARD
+        INNER JOIN USERS
+        ON BOARD.USER_CODE = USERS.USER_CODE
+        INNER JOIN ATTACHED_FILE AS FILE
+        ON BOARD.BOARD_NUM = FILE.BOARD_NUM
+        WHERE BOARD.BOARD_NUM = #{boardNum}
+    </select>
+
+
+
+
+    <!--  조회수 증가  -->
+
+    <update id="boardCntUp">
+        UPDATE BOARD
+        SET BOARD_CNT = BOARD_CNT + 1
+        WHERE BOARD_NUM
+    </update>
+
     <!--  게시판 삭제  -->
     <delete id="deleteBoard">
         DELETE FROM BOARD
-        WHERE BOARD_NO = #{boardNo}
+        WHERE BOARD_NUM = #{boardNum}
     </delete>
 
     <!--  게시판 수정  -->
@@ -68,9 +185,31 @@
         SET
         BOARD_TITLE = #{boardTitle}
         ,CONTENT = #{content}
-        WHERE BOARD_NO = #{boardNo}
+        WHERE BOARD_NUM = #{boardNum}
     </update>
 
+    <delete id="selectDeletes">
+        DELETE
+        FROM BOARD
+        WHERE BOARD_NUM IN
+        <foreach collection="boardNums" item="boardNum" separator="," open="(" close=")">
+            #{boardNum}
+        </foreach>
+    </delete>
+
+    <delete id="selectDeleteFiles">
+        DELETE
+        FROM ATTACHED_FILE
+        WHERE BOARD_NUM IN
+        <foreach collection="boardNums" item="boardNum" separator="," open="(" close=")">
+            #{boardNum}
+        </foreach>
+
+    </delete>
+
+
+
+<!--  ////////////////////////이벤트 게시물///////////////////  -->
 
 </mapper>
 

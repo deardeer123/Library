@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @ToString
 public class BoardVO {
-    private int boardNo;
+    private int boardNum;
     private String boardTitle;
     private String content;
     private String boardDate;
@@ -20,5 +20,7 @@ public class BoardVO {
     private int boardCnt;
     private int boardType;
     private MemberVO memberVO;
+    private plusVO plusVO;
+    private List<Integer> boardNums;
     private List<UploadVO> fileList;
 }

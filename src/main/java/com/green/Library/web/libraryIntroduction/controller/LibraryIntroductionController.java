@@ -13,75 +13,68 @@ public class LibraryIntroductionController {
     @Resource(name ="webMenuService")
     WebMenuService webMenuService;
 
+
+    //도서관 소개의 인덱스 변호
+    private final int selectedMenuIndex = 5;
+
+
     //    -------- 도서관소개(libraryintroduction)---------
     @GetMapping("/greeting")
     public String goGreeting(Model model){
-        //드가기전 메뉴 정보좀 들고옴
-        //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
+        //메뉴 정보
         model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
+        //네비게이션
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        //선택한 메뉴의 인덱스 번호 보내주기
+        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
+        //선택한 사이드 메뉴의 인덱스 번호 보내주기
+        int selectedSideMenuIndex = 1;
+        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
 
         System.out.println("희망도서신청");
         return "content/homePage/libraryintroduction/greeting";
     }
     @GetMapping("/history")
     public String goHistory(Model model){
-        //드가기전 메뉴 정보좀 들고옴
-        //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
+        //메뉴 정보
         model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
+        //네비게이션
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        //선택한 메뉴의 인덱스 번호 보내주기
+        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
+        //선택한 사이드 메뉴의 인덱스 번호 보내주기
+        int selectedSideMenuIndex = 2;
+        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
 
         System.out.println("희망도서신청");
         return "content/homePage/libraryintroduction/history";
     }
     @GetMapping("/libraryStatus")
     public String goLibraryStatus(Model model){
-        //드가기전 메뉴 정보좀 들고옴
-        //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
+        //메뉴 정보
         model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
+        //네비게이션
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        //선택한 메뉴의 인덱스 번호 보내주기
+        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
+        //선택한 사이드 메뉴의 인덱스 번호 보내주기
+        int selectedSideMenuIndex = 3;
+        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
 
         System.out.println("희망도서신청");
         return "content/homePage/libraryintroduction/libraryStatus";
     }
     @GetMapping("/libraryCome")
     public String goLibraryCome(Model model){
-        //드가기전 메뉴 정보좀 들고옴
-        //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
+        //메뉴 정보
         model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
+        //네비게이션
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        //선택한 메뉴의 인덱스 번호 보내주기
+        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
+        //선택한 사이드 메뉴의 인덱스 번호 보내주기
+        int selectedSideMenuIndex = 4;
+        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
 
         System.out.println("희망도서신청");
         return "content/homePage/libraryintroduction/libraryCome";

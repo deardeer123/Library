@@ -8,7 +8,7 @@ public interface MemberService {
 
     void insertMember(MemberVO memberVO);
 
-    MemberVO login(MemberVO memberVO);
+    MemberVO login(String memberId);
 
 
 
