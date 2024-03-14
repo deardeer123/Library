@@ -110,8 +110,57 @@
     </select>
 
 <!--    책 상세 정보 보기!!-->
-    <select id="" resultMap="borrowReturnMapper.bookBorrow">
+    <select id="bookDetailInfo" resultMap="memberMapper.users">
+        SELECT
+            BOOK.BOOK_CODE ,
+            BOOK.BOOK_TITLE ,
+            BOOK.BOOK_WRITER ,
+            BOOK.BOOK_PUB ,
+            BOOK.BOOK_YEAR ,
+            book_info.BOOK_BORROW_AVAILABLE ,
+            book_info.BOOK_BORROW_CNT ,
+            book_info.BOOK_INFO_ORIGIN_FILE_NAME ,
+            book_info.BOOK_INFO_ATTACHED_FILE_NAME ,
+            book_info.BOOK_INTRO ,
+            book_info.BOOK_REGDATE,
+            book_info.BOOK_CATE_CODE ,
+            book_category.BOOK_CATE_NAME ,
+            book_info.BOOK_MID_CATE_CODE ,
+            book_mid_category.BOOK_MID_CATE_NAME ,
+            book_bnr.BORROW_CODE ,
+            book_bnr.BORROW_DATE ,
+            book_bnr.RETURN_YN,
+            book_bnr.EX_RETURN_DATE ,
+            booK_bnr.RETURN_DATE,
+            book_bnr.USER_CODE ,
+            users.USER_NAME,
+            users.USER_ID
+        FROM
+            book LEFT OUTER join book_info
+            ON BOOK.BOOK_CODE = book_info.BOOK_CODE
+            LEFT OUTER JOIN book_category
+            ON book_info.BOOK_CATE_CODE = book_category.BOOK_CATE_CODE
+            LEFT OUTER JOIN book_mid_category
+            ON book_info.BOOK_MID_CATE_CODE = book_mid_category.BOOK_MID_CATE_CODE
+            LEFT OUTER JOIN booK_bnr
+            ON BOOK.BOOK_CODE = booK_bnr.BOOK_CODE
+            LEFT OUTER JOIN users
+            ON book_bnr.USER_CODE = users.USER_CODE
+        where
+            BOOK.book_code = #{bookCode}
+        ORDER BY book.BOOK_CODE;
+    </select>
 
+<!--    카테고리 이름 구하기-->
+    <select id="selectCateNameOne" resultMap="libraryBookMapper.LibraryCate">
+        SELECT
+        book_cate_name ,
+        book_mid_cate_name
+        FROM book_info INNER JOIN book_category
+        ON book_info.BOOK_CATE_CODE = book_category.BOOK_CATE_CODE
+        INNER JOIN book_mid_category
+        ON book_info.BOOK_MID_CATE_CODE = book_mid_category.BOOK_MID_CATE_CODE
+        WHERE book_code = #{bookCode};
     </select>
 
 

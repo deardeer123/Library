@@ -112,7 +112,7 @@
                 aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                        <div class="modal-body">
+                        <div class="modal-body" id="book-detail-modal">
                             <!-- 북 상세보기 모달 -->
                             <div class="row">
                                 <div class="col">
@@ -258,6 +258,141 @@
                 //fetch 통신 후 실행 영역
                 .then((data) => {//data -> controller에서 리턴되는 데이터!
                     console.log(data);
+                    const bookBorrowList = data.memberVO.bookBorrowList[0]
+                    console.log("bookBorrowList")
+                    console.log(bookBorrowList);
+                    const libraryVO = bookBorrowList.libraryBookVO;
+                    console.log("libraryVO")
+                    console.log(libraryVO);
+                    const libraryBookInfoVO = libraryVO.libraryBookInfoVO;
+                    console.log("libraryBookInfoVO")
+                    console.log(libraryBookInfoVO);
+
+                    console.log(data.libraryBookCategoryVO.bookCateName);
+                    console.log(data.libraryBookCategoryVO.libraryBookMidCategoryVOList[0].bookMidCateName);
+
+                    let book_modal_body = document.querySelector("#book-detail-modal")
+                    book_modal_body.innerHTML ='';
+                    let str = `
+                    <div class="row">
+                                <div class="col">
+                                    <!-- 책 상세 정보들 넣어주기 -->
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <!-- 책 사진 들어가는곳  -->
+                                            <img src="/upload/${libraryBookInfoVO.bookInfoAttachedFileName}" height="383px"
+                                                alt="">
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="row mt-3">
+                                                <!-- 북 코드 -->
+                                                <div class="col-2">코드 :</div>
+                                                <div class="col">${libraryVO.bookCode}</div>
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                <!-- 제목 -->
+                                                <div class="col-2">제목 :</div>
+                                                <div class="col">${libraryVO.bookTitle}
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                <!-- 저자 -->
+                                                <div class="col-2">저자 :</div>
+                                                <div class="col">${libraryVO.bookWriter}</div>
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                <!-- 출판사 -->
+                                                <div class="col-3">출판사 :</div>
+                                                <div class="col">${libraryVO.bookPub}</div>
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                <!-- 현재 이 책을 빌릴 수 있는지 확인 -->
+                                                <div class="col-4">대출 여부 :</div>
+                                                <div class="col">${libraryBookInfoVO.bookBorrowAvailable}</div>
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                <div class="col-4">빌린 횟수 :</div>
+                                                <div class="col">${libraryBookInfoVO.bookBorrowCnt}</div>
+                                            </div>
+
+                                            <!-- 만약 빌린 사람이 있는 경우는 아래의 정보 출력해야함  -->
+                                            <div class="row mt-1">
+                                                <div class="col-4">회원 코드 :</div>
+                                                <div class="col">${data.memberVO.userCode}</div>
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                <div class="col-4">회원 아이디 :</div>
+                                                <div class="col">${data.memberVO.userId}</div>
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                <div class="col-4">회원 이름 :</div>
+                                                <div class="col">${data.memberVO.userName}</div>
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                <div class="col-4">대출 일자 :</div>
+                                                <div class="col">${bookBorrowList.borrowDate}</div>
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                <div class="col-4">반납 예정일 :</div>
+                                                <div class="col">${bookBorrowList.exReturnDate}</div>
+                                            </div>
+                                            
+
+                                            <div class="row mt-2">
+                                                <div class="col-4">대츨 코드 :</div>
+                                                <div class="col">${bookBorrowList.borrowCode}</div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class="col-4">반납 일자:</div>
+                                                <div class="col">${bookBorrowList.returnDate}</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row text-center mt-2">
+                                        <!-- 카테고리 -->
+                                        <div class="col-2">카테고리 :</div>
+                                        <div class="col-5">${data.libraryBookCategoryVO.bookCateName}</div>
+                                        <div class="col-5">${data.libraryBookCategoryVO.libraryBookMidCategoryVOList[0].bookMidCateName}</div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <!-- 책 소개 -->
+                                        <div class="col">
+                                            <div class="row  text-center">
+                                                <div class="col" style="border-bottom: solid 1px black;">
+                                                    책소개
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col">
+                                                   ${libraryBookInfoVO.bookIntro}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                        
+                    `
+                    book_modal_body.insertAdjacentHTML('beforeend', str)
                     book_modal.show();
 
                 })

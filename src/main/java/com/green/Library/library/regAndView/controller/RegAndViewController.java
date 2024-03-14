@@ -1,5 +1,6 @@
 package com.green.Library.library.regAndView.controller;
 
+import com.green.Library.library.borrowReturn.vo.BookBNRVO;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.regAndView.service.BookSearchVO;
 import com.green.Library.library.regAndView.service.RegAndViewService;
@@ -9,7 +10,9 @@ import com.green.Library.libraryBook.vo.LibraryBookInfoVO;
 import com.green.Library.libraryBook.vo.LibraryBookMidCategoryVO;
 import com.green.Library.libraryBook.vo.LibraryBookVO;
 import com.green.Library.util.UploadUtil;
+import com.green.Library.web.member.vo.MemberVO;
 import jakarta.annotation.Resource;
+import org.apache.ibatis.annotations.One;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -277,12 +280,13 @@ public class RegAndViewController {
 
     @ResponseBody
     @PostMapping("/bookDetailInfo")
-    public Map<String,Object> modal2(@RequestParam(name="bookCode")String bookCode) {
+    public Map<String,Object> bookInfo(@RequestParam(name="bookCode")String bookCode) {
         System.out.println(bookCode);
-        Map<String,Object> bookInfo = new HashMap<>();
-        bookInfo.put("book",regAndViewService.selectOneBook(bookCode));
-        bookInfo.put("cateList",libraryBookService.selectCateList());
-
+        Map<String, Object> bookInfo = new HashMap<>();
+        MemberVO memberVO = regAndViewService.bookDetailInfo(bookCode);
+        LibraryBookCategoryVO libraryBookCategoryVO = regAndViewService.selectCateNameOne(bookCode);
+        bookInfo.put("memberVO",memberVO);
+        bookInfo.put("libraryBookCategoryVO",libraryBookCategoryVO);
         return bookInfo;
     }
 
