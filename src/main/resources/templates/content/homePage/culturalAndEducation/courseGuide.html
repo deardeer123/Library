@@ -27,7 +27,7 @@
                     <td colspan="4">
                         <select name="searchType">
                             <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'boardTitle'}">강좌명</option>
-                            <option value="USER_NAME" th:selected="${searchVO.searchType == 'userName'}">강사명</option>
+                            <option value="TEACHER" th:selected="${searchVO.searchType == 'teacher'}">강사명</option>
                         </select>
                         <input type="search" name="searchValue" th:value="${searchVO.searchValue}">
                         <input type="submit" value="검색">
@@ -78,12 +78,8 @@
                     </tr>
                 </tbody>
             </table>
-            <div>
-                <th:block th:if="${session.loginInfo != null}">
-                    <th:block th:if="${session.loginInfo.isAdmin == 'Y'}">
-                        <input type="button" value="게시글 작성" onclick="location.href='/goGuideInsertPage'">
-                    </th:block>
-                </th:block>
+            <div sec:authorize="hasRole('ROLE_Y')">
+                <input type="button" value="게시글 작성" onclick="location.href='/goGuideInsertPage'">
             </div>
         </div>
     </div>

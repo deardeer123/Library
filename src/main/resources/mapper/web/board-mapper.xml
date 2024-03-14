@@ -135,7 +135,7 @@
     </select>
     <!--  게시판 개수  -->
     <select id="countBoard" resultType="int">
-        SELECT COUNT (BOARD_NO)
+        SELECT COUNT (BOARD_NUM)
         FROM BOARD
     </select>
 

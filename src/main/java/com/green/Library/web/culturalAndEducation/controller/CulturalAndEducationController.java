@@ -114,9 +114,10 @@ public class CulturalAndEducationController {
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@타입넘버" + boardVO.getBoardType());
         boardVO.setBoardNum(maxBoardNum);
         System.out.println(boardVO);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+session.getId());
         boardService.insertCulBoard(boardVO);
 
-        session.setAttribute("userCode",memberVO.getUserCode());
+
 
 
         return "redirect:/libraryEvent";
@@ -253,15 +254,15 @@ public class CulturalAndEducationController {
 
         int totalBoardCnt= boardService.countBoard();
         searchVO.setTotalDataCnt(totalBoardCnt);
-        boardVO.setBoardType(24);
+        boardVO.setBoardType(27);
         searchVO.setPageInfo();
         searchVO.setBoardType(boardVO.getBoardType());
 
 
-//        List<BoardVO> boardList =  cultureService.selectEventBoard(searchVO);
-//        System.out.println("---------------------------------------------"+searchVO);
-//        System.out.println(boardList);
-//        model.addAttribute("guideBoardList",boardList);
+        List<BoardVO> boardList =  boardService.selectBoardList(searchVO);
+        System.out.println("---------------------------------------------"+searchVO);
+        System.out.println(boardList);
+        model.addAttribute("guideBoardList",boardList);
 
 
 
