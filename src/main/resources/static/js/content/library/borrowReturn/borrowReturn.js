@@ -107,12 +107,10 @@ function selectMemberInfo(){
 
             const data_cnt = data.bookBorrowList.length;
 
-            //대출 및 반납, 예약 내역이 없을 
+            //대출 및 반납, 예약 내역이 없을 경우
             if(data_cnt == 1 && data.bookBorrowList[0].bookCode == null){
                 str2 += `
-                    <td colspan="7">
-                        <b>자관대출 (0/5)</b>
-                    </td>`;
+                        <b>자관대출 (0/5)</b>`;
 
                 str3 += `
                     <td colspan="7">
@@ -148,13 +146,31 @@ function selectMemberInfo(){
 
             }
             else{
-                str2 += `
-                    <td colspan="7">
-                        <b>자관대출 (/5)</b>
-                    </td>`;
-
                 data.bookBorrowList.forEach((bookBorrowInfo, idx) => {
-                    
+                    str2 += `
+                        <b>자관대출 (`
+                        if(data.bookBorrowList.returnYN){
+                            `${data.bookBorrowList.length}
+                            `
+                        }
+                        `/5)</b>`;
+
+                    str3 += `
+                    <td>
+                        표지
+                    </td>
+                    <td>
+                        ${bookBorrowInfo.bookCode}
+                    </td>
+                    <td>
+                        ${bookBorrowInfo.bookCode}
+                    </td>
+
+                    `;
+
+
+                    borrowHeaderTd.insertAdjacentHTML("afterbegin", str2);
+                    borrowTr.insertAdjacentHTML("afterbegin", str3);
                 });
             }
 
