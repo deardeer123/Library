@@ -17,12 +17,25 @@
         <div class="row">
             <div class="col">
                 <!--fragement폴더 안에 있는 user_header를 가지고 올것. 그걸 headerFragment라고 부름-->
+<<<<<<< HEAD
+                <th:block th:replace="~{fragment/library_header::headerFragment}"></th:block>
+=======
                 <th:block th:replace="~{fragment/library/library_header::headerFragment}"></th:block>
+>>>>>>> dev
             </div>
         </div>
 
         <div class="row">
+<<<<<<< HEAD
+            
+            <div class="col-2">
+                <th:block th:replace="~{fragment/library_side::sideFragment}"></th:block>       
+            </div>
+
+            <div class="col-10">
+=======
             <div class="col">
+>>>>>>> dev
                 <th:block layout:fragment="contentFragment"></th:block>
             </div>
         </div>

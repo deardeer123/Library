@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragment/homepage/homePage_detail_layout}">
+
+<!-- html 파일이 열릴때 같이 실행되는 css-->
+<th:block layout:fragment="content_css">
+  <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+  <!-- html code 작성-->
+  <!-- ck 에디터 style -->
+  <style>
+    .ck-editor__editable {
+      height: 400px;
+    }
+
+    .ck-content {
+      font-size: 12px;
+    }
+  </style>
+  <div class="row">
+    <div class="col">
+      <h1>CKEditor</h1>
+      <form action="" method="POST">
+        <textarea name="text" id="editor"></textarea>
+        <p><input type="submit" value="전송"></p>
+    </div>
+  </div>
+  <!-- ck에디터 불러오는 주소 -->
+  <script src="/ckeditor5/build/ckeditor.js"></script>
+
+  <script>
+
+    let editor
+
+    ClassicEditor
+      .create(document.querySelector('#editor'), {
+        language: "ko"
+      })
+      .then(newEditor => {
+        editor = newEditor;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    
+      editor.getData();
+
+      editor.setData('<p>example</p>');
+
+  </script>
+</th:block>
+
+<th:block layout:fragment="content_js">
+  <!-- html 파일이 열릴때 같이 실행되는 css-->
+  <!-- <script src="/"></script> -->
+</th:block>
+
+</html>
