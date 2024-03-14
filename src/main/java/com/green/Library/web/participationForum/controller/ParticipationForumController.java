@@ -33,7 +33,9 @@ public class ParticipationForumController {
     @Resource(name = "boardService")
     private BoardServiceImpl boardService;
 
+
     private final int selectedMenuIndex = 4;
+
 
     //    -------- 참여마당(forum)---------
 
@@ -42,7 +44,8 @@ public class ParticipationForumController {
     public String goNotice(Model model, SearchVO searchVO){
         //메뉴 정보
         model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        //네비게이션
+        //상단 네비게이션 정보
+
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
         //선택한 메뉴의 인덱스 번호 보내주기
         model.addAttribute("selectedMenuIndex", selectedMenuIndex);
@@ -64,15 +67,20 @@ public class ParticipationForumController {
 
 
 
-
         return "content/homePage/forum/notice";
     }
 
 
     //공지사항 글쓰기 페이지이동
     @GetMapping("/noticeWrite")
-    public String noticeWrite (){
-        return "content/homePage/forum/noticeWrite";
+    public String noticeWrite (Model model){
+        //메뉴 정보
+        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
+        //상단 네비게이션 정보
+        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+
+
+        return "content/homePage/forum/noticeWrite2";
     }
 
     //공지사항 글쓰기

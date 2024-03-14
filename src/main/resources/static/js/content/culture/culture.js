@@ -1,3 +1,9 @@
+
+
+
+
+
+
 function culDeleteBoard(boardNum){
     const chks = document.querySelectorAll('.chk')
 
