@@ -13,7 +13,6 @@
         <result      column="USER_CODE"           property="userCode"/>
         <result      column="BOOK_CODE"           property="bookCode"/>
         <association property="libraryBookVO"     resultMap="libraryBookMapper.libraryBook"/>
-        <association property="libraryBookInfoVO" resultMap="libraryBookMapper.LibraryBookInfo"/>
     </resultMap>
 
 <!--    <select id="">-->
@@ -62,7 +61,7 @@
         ) VALUES (
             #{userCode}
             , #{bookCode}
-            , EX_RETURN_DATE + DATE_ADD(NOW(), INTERVAL +14 DAY)
+            , DATE_ADD(NOW(), INTERVAL +14 DAY)
         )
     </insert>
 

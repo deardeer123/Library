@@ -18,5 +18,4 @@ public class BookBNRVO {
     private int userCode;
     private String bookCode;
     private LibraryBookVO libraryBookVO;
-    private LibraryBookInfoVO libraryBookInfoVO;
 }
