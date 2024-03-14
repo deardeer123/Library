@@ -9,11 +9,13 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class BookReturnVO {
-    private int rtCode;
+public class BookBNRVO {
+    private int borrowCode;
+    private String borrowDate;
+    private String returnYN;
+    private String exReturnDate;
     private String returnDate;
-    private int returnUserCode;
+    private int userCode;
     private String bookCode;
     private LibraryBookVO libraryBookVO;
-    private LibraryBookInfoVO libraryBookInfoVO;
 }
