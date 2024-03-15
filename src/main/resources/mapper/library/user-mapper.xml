@@ -4,7 +4,6 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="userMenuMapper">
 
-
 </mapper>
 
 
