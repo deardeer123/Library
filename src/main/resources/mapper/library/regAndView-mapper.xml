@@ -4,7 +4,6 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="regAndViewMapper">
 
-
 <!--    책 정보 끌고오기-->
     <select id="selectBookList" resultMap="libraryBookMapper.libraryBook">
         SELECT
@@ -24,8 +23,12 @@
             BOOK.BOOK_WRITER,
             BOOK.BOOK_PUB,
             BOOK.BOOK_YEAR,
+            book_info.BOOK_INFO_NUM,
+            book_info.BOOK_BORROW_CNT,
+            book_info.BOOK_BORROW_AVAILABLE,
             book_info.BOOK_INFO_ORIGIN_FILE_NAME,
             book_info.BOOK_INFO_ATTACHED_FILE_NAME,
+            book_info.BOOK_REGDATE,
             book_info.BOOK_INTRO,
             book_info.BOOK_CATE_CODE,
             book_info.BOOK_MID_CATE_CODE
@@ -35,10 +38,6 @@
             book.BOOK_CODE = book_info.BOOK_CODE
         WHERE
             book.BOOK_CODE = #{bookCode};
-    </select>
-
-    <select id="selectOneBookDetail" resultMap="libraryBookMapper.libraryBook">
-
     </select>
 
 
@@ -67,17 +66,6 @@
         WHERE
             BOOK_CODE = #{libraryBookInfoVO.bookCode}
     </update>
-
-<!--    책 삭제하기전 처음할거-->
-    <delete id="DeleteBookOne">
-        DELETE FROM book_info
-        WHERE book_code = #{bookCode}
-    </delete>
-<!-- 두번째로 할거-->
-    <delete id="DeleteBookTwo">
-        DELETE FROM book
-        WHERE book_code = #{bookCode}
-    </delete>
 
 <!--    책 갯수-->
     <select id="selectBookCnt" resultType="int">
@@ -162,6 +150,67 @@
         ON book_info.BOOK_MID_CATE_CODE = book_mid_category.BOOK_MID_CATE_CODE
         WHERE book_code = #{bookCode};
     </select>
+
+
+    <!--    책 제외 하기전 처음할거-->
+    <delete id="DeleteBookOne">
+        DELETE FROM book_info
+        WHERE book_code = #{bookCode}
+    </delete>
+    <!-- 책 제외 하기전 두번째로 할거-->
+    <delete id="DeleteBookTwo">
+        DELETE FROM book
+        WHERE book_code = #{bookCode}
+    </delete>
+
+<!--    파손된 책 테이블로 옮기기 1-->
+    <insert id="insertBookBreakageOne">
+        INSERT INTO BOOK_BREAKAGE (
+        BOOK_CODE ,
+        BOOK_TITLE ,
+        BOOK_WRITER ,
+        BOOK_PUB ,
+        BOOK_YEAR)
+        VALUES (
+        #{bookCode} ,
+        #{bookTitle} ,
+        #{bookWriter} ,
+        #{bookPub} ,
+        #{bookYear})
+    </insert>
+
+
+    <!--    파손된책 테이블로 옮기기 2-->
+    <insert id="insertBookBreakageInfoOne">
+        INSERT INTO BOOK_BREAKAGE_INFO (
+            BOOK_INFO_NUM,
+            BOOK_INFO_ATTACHED_FILE_NAME ,
+            BOOK_INFO_ORIGIN_FILE_NAME ,
+            BOOK_BORROW_AVAILABLE ,
+            BOOK_BORROW_CNT ,
+            BOOK_INTRO ,
+            BOOK_REGDATE ,
+            BOOK_CATE_CODE ,
+            BOOK_MID_CATE_CODE ,
+            BOOK_CODE)
+        VALUES(
+            #{libraryBookInfoVO.bookInfoNum},
+            #{libraryBookInfoVO.bookInfoAttachedFileName},
+            #{libraryBookInfoVO.bookInfoOriginFileName},
+            #{libraryBookInfoVO.bookBorrowAvailable},
+            #{libraryBookInfoVO.bookBorrowCnt},
+            #{libraryBookInfoVO.bookIntro},
+            #{libraryBookInfoVO.bookRegTime},
+            #{libraryBookInfoVO.bookCateCode},
+            #{libraryBookInfoVO.bookMidCateCode},
+            #{bookCode})
+    </insert>
+
+
+
+
+
+
 
 
 

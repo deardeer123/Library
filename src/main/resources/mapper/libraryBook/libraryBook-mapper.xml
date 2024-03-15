@@ -40,6 +40,28 @@
         <result column="BOOK_CODE" property="bookCode" />
     </resultMap>
 
+    <resultMap id="LibraryBookBreakage" type="com.green.Library.libraryBook.vo.LibraryBookBreakageVO">
+        <id column="BOOK_CODE" property="bookCode" />
+        <result column="BOOK_TITLE" property="bookTitle" />
+        <result column="BOOK_WRITER" property="bookWriter" />
+        <result column="BOOK_PUB" property="bookPub" />
+        <result column="BOOK_YEAR" property="bookYear" />
+        <association property="libraryBookBreakageInfoVO" resultMap="LibraryBookBreakageInfo" />
+    </resultMap>
+
+    <resultMap id="LibraryBookBreakageInfo" type="com.green.Library.libraryBook.vo.LibraryBookBreakageInfoVO">
+        <id column="BOOK_INFO_NUM" property="bookInfoNum"/>
+        <result column="BOOK_INFO_ATTACHED_FILE_NAME" property="bookInfoAttachedFileName" />
+        <result column="BOOK_INFO_ORIGIN_FILE_NAME" property="bookInfoOriginFileName" />
+        <result column="BOOK_BORROW_AVAILABLE" property="bookBorrowAvailable" />
+        <result column="BOOK_BORROW_CNT" property="bookBorrowCnt" />
+        <result column="BOOK_INTRO" property="bookIntro" />
+        <result column="BOOK_REGDATE" property="bookRegTime"/>
+        <result column="BOOK_CATE_CODE" property="bookCateCode" />
+        <result column="BOOK_MID_CATE_CODE" property="bookMidCateCode"/>
+        <result column="BOOK_CODE" property="bookCode" />
+    </resultMap>
+
 
 
 

@@ -1,6 +1,7 @@
 package com.green.Library.library.regAndView.service;
 
 import com.green.Library.library.borrowReturn.vo.BookBNRVO;
+import com.green.Library.libraryBook.vo.LibraryBookBreakageVO;
 import com.green.Library.libraryBook.vo.LibraryBookCategoryVO;
 import com.green.Library.libraryBook.vo.LibraryBookVO;
 import com.green.Library.web.member.vo.MemberVO;
@@ -70,6 +71,13 @@ public class RegAndViewServiceImpl implements RegAndViewService{
     @Override
     public LibraryBookCategoryVO selectCateNameOne(String bookCode) {
         return sqlSession.selectOne("regAndViewMapper.selectCateNameOne",bookCode);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void insertBookBreakageOne(LibraryBookVO libraryBookVO) {
+        sqlSession.insert("regAndViewMapper.insertBookBreakageOne",libraryBookVO);
+        sqlSession.insert("regAndViewMapper.insertBookBreakageInfoOne",libraryBookVO);
     }
 
     //    책 상세보기 초기화
