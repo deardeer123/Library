@@ -33,6 +33,71 @@
         #{bookYear})
     </insert>
 
+<!--    파손된 책 갯수 세기-->
+    <select id="selectCntLibraryBookBreakage" resultType="int">
+        SELECT
+            COUNT(BOOK_CODE)
+        FROM
+        book_breakage
+        WHERE
+        1 = 1
+        <if test='searchValue != null and !searchValue.equals("")'>
+            and ${searchType} LIKE CONCAT('%',#{searchValue},'%')
+        </if>
+    </select>
+
+    <!--    파손 같은 이유로 책을 진옇하지 못하고 따로 빼놔야하는 책들 검색-->
+    <select id="selectLibraryBookBreakageList" resultMap="libraryBookMapper.LibraryBookBreakage">
+        SELECT
+        book_breakage.BOOK_CODE,
+        book_breakage.BOOK_TITLE,
+        book_breakage.BOOK_WRITER,
+        book_breakage.BOOK_PUB,
+        book_breakage.BOOK_YEAR,
+        book_breakage_info.BOOK_INFO_ORIGIN_FILE_NAME,
+        book_breakage_info.BOOK_INFO_ATTACHED_FILE_NAME,
+        book_breakage_info.BOOK_INTRO,
+        book_breakage_info.BOOK_CATE_CODE,
+        book_breakage_info.BOOK_MID_CATE_CODE
+        FROM
+        book_breakage LEFT OUTER JOIN book_breakage_info
+        ON
+        book_breakage.BOOK_CODE = book_breakage_info.BOOK_CODE
+        WHERE
+        1 = 1
+        <if test='searchValue != null and !searchValue.equals("")'>
+            AND ${searchType} LIKE CONCAT('%',#{searchValue},'%')
+        </if>
+        ORDER BY book_code
+        LIMIT ${displayDataCnt} offset ${(displayDataCnt) * (nowPage - 1)}
+    </select>
+
+    <select id="searchBookBreakageDetail" resultMap="libraryBookMapper.LibraryBookBreakage">
+        SELECT
+            *
+        FROM
+        book_breakage INNER JOIN book_breakage_info
+        on book_breakage.book_code = book_breakage_info.book_code
+        WHERE
+        book_breakage.book_code = #{bookCode}
+    </select>
+
+
+    <!--    망가진책 카테고리 이름 구하기-->
+    <select id="selectCateNameOne" resultMap="libraryBookMapper.LibraryCate">
+        SELECT
+        book_cate_name ,
+        book_mid_cate_name
+        FROM book_breakage_info INNER JOIN book_category
+        ON book_breakage_info.BOOK_CATE_CODE = book_category.BOOK_CATE_CODE
+        INNER JOIN book_mid_category
+        ON book_breakage_info.BOOK_MID_CATE_CODE = book_mid_category.BOOK_MID_CATE_CODE
+        WHERE book_code = #{bookCode};
+    </select>
+
+<!--    망가진책 삭제하고 재진열하는 쿼리문-->
+
+
 
 
 

@@ -137,7 +137,7 @@
                             </div>
 
                             <div class="col d-grid">
-                                <button type="button" class="btn btn-primary" onclick="goDelete()">삭제 하기</button>
+                                <button type="button" class="btn btn-primary" onclick="goDelete()">제외 하기</button>
                             </div>
 
                         </div>
@@ -218,7 +218,7 @@
             const book_code = document.querySelector("#book_code").value
             console.log(book_code);
 
-            if (confirm('삭제 하실건가요?')) {
+            if (confirm('제외 하시겠어요?')) {
                 location.href = `/bookAdmin/deleteBook1?bookCode=${book_code}`
             }
             else {

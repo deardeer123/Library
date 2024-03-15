@@ -1,6 +1,10 @@
 package com.green.Library.library.regAndView.service;
 
+import com.green.Library.library.borrowReturn.vo.BookBNRVO;
+import com.green.Library.libraryBook.vo.LibraryBookBreakageVO;
+import com.green.Library.libraryBook.vo.LibraryBookCategoryVO;
 import com.green.Library.libraryBook.vo.LibraryBookVO;
+import com.green.Library.web.member.vo.MemberVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,11 +63,29 @@ public class RegAndViewServiceImpl implements RegAndViewService{
         return sqlSession.selectOne("regAndViewMapper.selectBookCnt",bookSearchVO);
     }
 
+    @Override
+    public MemberVO bookDetailInfo(String bookCode) {
+        return sqlSession.selectOne("regAndViewMapper.bookDetailInfo",bookCode);
+    }
+    //책 상세보기 할때 카테고리 이름
+    @Override
+    public LibraryBookCategoryVO selectCateNameOne(String bookCode) {
+        return sqlSession.selectOne("regAndViewMapper.selectCateNameOne",bookCode);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void insertBookBreakageOne(LibraryBookVO libraryBookVO) {
+        sqlSession.insert("regAndViewMapper.insertBookBreakageOne",libraryBookVO);
+        sqlSession.insert("regAndViewMapper.insertBookBreakageInfoOne",libraryBookVO);
+    }
+
     //    책 상세보기 초기화
     @Override
     public void bookInfoInit(List<Integer> initList) {
         sqlSession.insert("regAndViewMapper.bookInfoInit", initList);
     }
+
 
 
 }

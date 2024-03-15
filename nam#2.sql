@@ -356,4 +356,30 @@ SELECT
 FROM board;
 
 
+SELECT * 
+FROM board P
+INNER JOIN board_plus B
+ON P.BOARD_NUM = B.BOARD_NUM;
 
+SELECT
+            PLUS_CODE
+            ,B.BOARD_NUM
+            ,BOARD_TITLE
+            ,BOARD_TYPE
+            ,TEACHER
+            ,TARGET
+            , DATE_FORMAT(OPEN_DATE, '%Y-%m-%d') AS OPEN_DATE
+            , DATE_FORMAT(CLOSE_DATE, '%Y-%m-%d') AS CLOSE_DATE
+            , DATE_FORMAT(TO_DATE, '%Y-%m-%d') AS TO_DATE
+            , DATE_FORMAT(FROM_DATE, '%Y-%m-%d') AS FROM_DATE
+            ,PERSONNEL
+            ,MAXIMUM_PERSON
+            ,EVENT_STATUS
+            ,B.USER_CODE
+            ,USER_ID
+        FROM BOARD AS B
+        INNER JOIN BOARD_PLUS AS P
+        ON B.BOARD_NUM = P.BOARD_NUM
+        OUTER LEFT JOIN USERS U
+        ON B.USER_CODE = U.USER_CODE
+        WHERE b.BOARD_NUM = 34;

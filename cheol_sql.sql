@@ -220,7 +220,20 @@ WHERE BOOK_MID_CATE_CODE = 59;
 
 SELECT * FROM users;
 
-COMMbook_borrowIT;
+DROP TABLE book_borrow;
+DROP table book_return;
+
+CREATE TABLE BOOK_BNR(
+	BORROW_CODE INT PRIMARY KEY AUTO_INCREMENT
+	, BORROW_DATE DATETIME DEFAULT CURRENT_TIMESTAMP
+	, RETURN_YN VARCHAR(2) DEFAULT 'N'
+	, EX_RETURN_DATE DATETIME
+	, RETURN_DATE DATETIME
+	, USER_CODE INT REFERENCES users(USER_CODE)
+	, BOOK_CODE VARCHAR(20) REFERENCES BOOK(BOOK_CODE)
+);
+
+SELECT * FROM book_bnr;
 
 INSERT INTO BOOK_MID_CATEGORY(
 	BOOK_MID_CATE_NAME ,
@@ -376,6 +389,32 @@ SELECT * FROM book_info;
 
 -- DELETE FROM book_info;
 
+CREATE TABLE BOOK_BREAKAGE(
+   BOOK_CODE VARCHAR(15) PRIMARY KEY,
+   BOOK_TITLE VARCHAR(100) NOT NULL,
+   BOOK_WRITER VARCHAR(100) NOT NULL,
+   BOOK_PUB VARCHAR(30) NOT NULL,
+   BOOK_YEAR VARCHAR(20) NOT NULL);
+
+-- DROP TABLE book_breakage;
+
+-- 작살난 책 상세 테이블
+CREATE TABLE BOOK_BREAKAGE_INFO(
+	BOOK_INFO_NUM INT AUTO_INCREMENT PRIMARY KEY ,
+	BOOK_INFO_ATTACHED_FILE_NAME VARCHAR(100) ,		
+	BOOK_INFO_ORIGIN_FILE_NAME VARCHAR(100) , 			
+	BOOK_BORROW_AVAILABLE VARCHAR(3) DEFAULT 'Y', 					
+	BOOK_BORROW_CNT INT DEFAULT 0, 								
+	BOOK_INTRO VARCHAR(2000) , -- 2024-02-29 변경함
+	BOOK_REGDATE DATETIME DEFAULT CURRENT_TIMESTAMP , -- 2024-02-29 변경함  								
+	BOOK_CATE_CODE INT REFERENCES BOOK_CATEGORY(BOOK_CATE_CODE) ,
+	BOOK_MID_CATE_CODE INT REFERENCES BOOK_MID_CATEGORY(BOOK_MID_CATE_CODE) ,
+	BOOK_CODE VARCHAR(15) REFERENCES BOOK_BREAKAGE(BOOK_CODE)); 
+
+-- DROP TABLE book_breakage;
+-- DROP TABLE BOOK_BREAKAGE_INFO;
+
+
 
 INSERT INTO book_info(
 	BOOK_INFO_ATTACHED_FILE_NAME ,
@@ -392,33 +431,7 @@ INSERT INTO book_info(
 	'GR0000000001'
 	);
 
-
-
--- 책 검색하기
-			SELECT
-         BOOK.BOOK_CODE ,
-         BOOK.BOOK_TITLE ,
-         BOOK.BOOK_WRITER ,
-         BOOK.BOOK_PUB ,
-         BOOK.BOOK_YEAR ,
-         book_info.BOOK_BORROW_AVAILABLE ,
-         book_info.BOOK_BORROW_CNT ,
-         book_info.BOOK_INFO_ORIGIN_FILE_NAME ,
-         book_info.BOOK_INFO_ATTACHED_FILE_NAME ,
-         book_info.BOOK_INTRO ,
-         book_info.BOOK_CATE_CODE ,
-         book_borrow.BR_CODE ,
-         book_borrow.BORROW_DATE ,
-         book_borrow.EX_RETURN_DATE ,
-         book_borrow.BORROW_USER_CODE
-        FROM
-         book LEFT OUTER join book_info
-        	ON BOOK.BOOK_CODE = book_info.BOOK_CODE
-        	LEFT OUTER JOIN book_borrow 
-			ON BOOK.BOOK_CODE = book_borrow.BOOK_CODE
-			WHERE BOOK.book_code = 'GR0000000001';
         	
-      
 
 UPDATE book_info
         SET
@@ -450,39 +463,76 @@ CREATE TABLE USERS(
 	, EMAIL VARCHAR(50) NOT NULL
 	, IS_ADMIN VARCHAR(2) DEFAULT 'N'); -- N,Y
 	
--- 반납 테이블
-CREATE TABLE BOOK_RETURN(
-   	RT_CODE INT AUTO_INCREMENT PRIMARY KEY
-    , RT_DATE DATETIME DEFAULT CURRENT_TIMESTAMP
-    , USER_CODE INT REFERENCES USERS(USER_CODE)
-    , BOOK_CODE VARCHAR(15) REFERENCES BOOK(BOOK_CODE)
-);
-	
--- 대출 테이블
-CREATE TABLE BOOK_BORROW(
-   BR_CODE INT AUTO_INCREMENT PRIMARY KEY
-    , BR_DATE DATETIME DEFAULT CURRENT_TIMESTAMP
-    , RT_CODE INT REFERENCES BOOK_RETURN(RT_CODE)
-    , USER_CODE INT REFERENCES USERS(USER_CODE)
-    , BOOK_CODE VARCHAR(15) REFERENCES BOOK(BOOK_CODE)
-);
-
-SELECT * FROM book_borrow;
-
-SELECT 
-	book.BOOK_CODE ,
-	book_borrow.BR_CODE
-FROM
-	book left OUTER JOIN book_borrow
-	ON book.BOOK_CODE = book_borrow.BOOK_CODE;
-
 
 
 
 
 SELECT * FROM book;
 -- DROP TABLE book_info;
--- DROP VIEW find_book_view;
+-- DROP VIEW BOOK_DETAIL_VIEW;
+
+-- 대출 반납 테이블 (24.03.12 생성)
+CREATE TABLE BOOK_BNR(
+	BORROW_CODE INT PRIMARY KEY AUTO_INCREMENT
+	, BORROW_DATE DATETIME DEFAULT CURRENT_TIMESTAMP
+	, RETURN_YN VARCHAR(2) DEFAULT 'N'
+	, EX_RETURN_DATE DATETIME
+	, RETURN_DATE DATETIME
+	, USER_CODE INT REFERENCES users(USER_CODE)
+	, BOOK_CODE VARCHAR(20) REFERENCES BOOK(BOOK_CODE)
+);
+
+SELECT * FROM book_bnr;
+SELECT * FROM book;
+SELECT * FROM book_info;
+SELECT * FROM users;
+
+SELECT * FROM book_breakage;
+SELECT * FROM book_breakage_info;
+
+-- 책  상세 검색하기
+
+		SELECT
+         BOOK.BOOK_CODE ,
+         BOOK.BOOK_TITLE ,
+         BOOK.BOOK_WRITER ,
+         BOOK.BOOK_PUB ,
+         BOOK.BOOK_YEAR ,
+         book_info.BOOK_BORROW_AVAILABLE ,
+         book_info.BOOK_BORROW_CNT ,
+         book_info.BOOK_INFO_ORIGIN_FILE_NAME ,
+         book_info.BOOK_INFO_ATTACHED_FILE_NAME ,
+         book_info.BOOK_INTRO ,
+         book_info.BOOK_CATE_CODE ,
+      	book_category.BOOK_CATE_NAME ,
+         book_info.BOOK_MID_CATE_CODE ,
+         book_mid_category.BOOK_MID_CATE_NAME ,
+         book_bnr.BORROW_CODE ,
+         book_bnr.BORROW_DATE ,
+         book_bnr.RETURN_YN,
+         book_bnr.EX_RETURN_DATE ,
+         booK_bnr.RETURN_DATE,
+         book_bnr.USER_CODE,
+         users.USER_NAME,
+         users.USER_ID
+      FROM
+         book LEFT OUTER join book_info
+        	ON BOOK.BOOK_CODE = book_info.BOOK_CODE
+        	LEFT OUTER JOIN book_category
+        	ON book_info.BOOK_CATE_CODE = book_category.BOOK_CATE_CODE
+        	LEFT OUTER JOIN book_mid_category
+        	ON book_info.BOOK_MID_CATE_CODE = book_mid_category.BOOK_MID_CATE_CODE
+        	LEFT OUTER JOIN booK_bnr
+			ON BOOK.BOOK_CODE = booK_bnr.BOOK_CODE
+			LEFT OUTER JOIN users
+			ON book_bnr.USER_CODE = users.USER_CODE
+		where
+			BOOK.book_code = 'GR0000000001'
+		ORDER BY book.BOOK_CODE;
+
+SELECT * FROM BOOK_DETAIL_VIEW WHERE book_code = 'GR0000000001';
+
+-- 책 검색 뷰
 CREATE VIEW find_book_view as
 SELECT
    book.BOOK_CODE ,
@@ -510,7 +560,15 @@ ORDER BY book_code;
 SELECT * FROM find_book_view
 WHERE book_code = 'GR0000000001'
 LIMIT 20 OFFSET 0;
-        
+
+SELECT
+	book_cate_name ,
+	book_mid_cate_name
+FROM book_info INNER JOIN book_category
+ON book_info.BOOK_CATE_CODE = book_category.BOOK_CATE_CODE
+INNER JOIN book_mid_category
+ON book_info.BOOK_MID_CATE_CODE = book_mid_category.BOOK_MID_CATE_CODE
+WHERE book_code = 'GR0000000001';
 
 
 
@@ -574,3 +632,26 @@ SELECT ITEM_CODE
 	END AS STR_STATUS
 FROM
 	shop_item;
+	
+SELECT
+        book_breakage.BOOK_CODE,
+        book_breakage.BOOK_TITLE,
+        book_breakage.BOOK_WRITER,
+        book_breakage.BOOK_PUB,
+        book_breakage.BOOK_YEAR,
+        book_breakage_info.BOOK_INFO_ORIGIN_FILE_NAME,
+        book_breakage_info.BOOK_INFO_ATTACHED_FILE_NAME,
+        book_breakage_info.BOOK_INTRO,
+        book_breakage_info.BOOK_CATE_CODE,
+        book_breakage_info.BOOK_MID_CATE_CODE
+        FROM
+        book_breakage LEFT OUTER JOIN book_breakage_info
+        ON
+        book_breakage.BOOK_CODE = book_breakage_info.BOOK_CODE;
+        
+        
+        
+ SELECT
+            COUNT(BOOK_CODE)
+        FROM
+        book_breakage;

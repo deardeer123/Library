@@ -12,16 +12,18 @@ function selectMemberInfo(){
     const userName = document.querySelector('#user-name');
     const tel = document.querySelector('#tel');
 
-    // 그림 그릴 대출반납 정보 태그 선택하기(Info)
-    const brInfo = document.querySelector('#brInfo');
-    const borrowHeaderTd = document.querySelector('#borrow-header').children[0];
-    const borrowTr = document.querySelector('#borrow-tr');
-    const returnHeaderTd = document.querySelector('#return-header').children[0];
-    const returnTr = document.querySelector('#return-tr');
-    const reserveHeaderTd = document.querySelector('#reserve-header').children[0];
-    const reserveTr = document.querySelector('#reserve-tr');
-    const history = document.querySelector('#history');
+    // 모든 테이블의 tbody 태그 선택
+    // 1. 대출 내역 테이블 tbody
+    const borrow_list_tbody = document.querySelector('.borrow-list-table tbody');
+    // 2. 반납 내역 테이블 tbody
+    const return_list_tbody = document.querySelector('.return-list-table tbody');
+    // 3. 예약 내역 테이블 tbody
+    const reserve_list_tbody = document.querySelector('.reserve-list-table tbody');
 
+    // 내역에 책 이미지 삽입
+    const img = new Image();
+
+    // 들어오는 데이터 관리
     const inputValue = inputData;
     const selectedCardNum = document.querySelector('input[name="selectedCardNum"]').value
 
@@ -53,6 +55,7 @@ function selectMemberInfo(){
 
         //selectedCardNum 값을 이전에 입력한 값으로 저장
         //조회가 됐으면 조회된 데이터, 아니면 0이 들어감
+
         document.querySelector('input[name="selectedCardNum"]').value = data.cardNum;
 
         userInfo.innerHTML = '';
@@ -82,26 +85,15 @@ function selectMemberInfo(){
 
         userInfo.insertAdjacentHTML('afterbegin', str1);
 
-        borrowHeaderTd.innerHTML = '';
-        borrowTr.innerHTML = '';
-        returnHeaderTd.innerHTML = '';
-        returnTr.innerHTML = '';
-        reserveHeaderTd.innerHTML = '';
-        reserveTr.innerHTML = '';
-        history.innerHTML = '';
+        // ---------------  각 테이블을 조회한 데이터를 바탕으로 다시 그림 ------------------------//
 
+        borrow_list_tbody.innerHTML = '';
+        return_list_tbody.innerHTML = '';
+        reserve_list_tbody.innerHTML = '';
 
         let str2 = '';
         let str3 = '';
-
         let str4 = '';
-        let str5 = '';
-
-        let str6 = '';
-        let str7 = '';
-
-        let str8 = '';
-
 
             ////////////////////////////////////////////////////
 
@@ -110,68 +102,89 @@ function selectMemberInfo(){
             //대출 및 반납, 예약 내역이 없을 경우
             if(data_cnt == 1 && data.bookBorrowList[0].bookCode == null){
                 str2 += `
-                        <b>자관대출 (0/5)</b>`;
-
-                str3 += `
                     <td colspan="7">
                         대출 내역이 없습니다.
                     </td>`;
 
-                str4 += `
-                    <td colspan="7">
-                        <b>반납 (0)</b>
-                    </td>`;
-
-                str5 += `
+                str3 += `
                     <td colspan="7">
                         반납 내역이 없습니다.
                     </td>`;
 
-                str6 += `
-                    <td colspan="7">
-                        <b>예약 (예약 가능 건수 : 5)</b>
-                    </td>`;
-
-                str7 += `
+                str4 += `
                     <td colspan="7">
                         예약 내역이 없습니다.
                     </td>`;
 
-            borrowHeaderTd.insertAdjacentHTML("afterbegin", str2);
-            borrowTr.insertAdjacentHTML("afterbegin", str3);
-            returnHeaderTd.insertAdjacentHTML("afterbegin", str4);
-            returnTr.insertAdjacentHTML("afterbegin", str5);
-            reserveHeaderTd.insertAdjacentHTML("afterbegin", str6);
-            reserveTr.insertAdjacentHTML("afterbegin", str7);
+        borrow_list_tbody.insertAdjacentHTML("afterbegin", str2);
+        return_list_tbody.insertAdjacentHTML("afterbegin", str3);
+        reserve_list_tbody.insertAdjacentHTML("afterbegin", str4);
 
             }
             else{
+
                 data.bookBorrowList.forEach((bookBorrowInfo, idx) => {
-                    str2 += `
-                        <b>자관대출 (`
-                        if(data.bookBorrowList.returnYN){
-                            `${data.bookBorrowList.length}
-                            `
-                        }
-                        `/5)</b>`;
+                    if(bookBorrowInfo.returnYN == 'N'){
+                        str2 += `
+                        <tr>
+                            <td>
+                                <img width="70px" src="/upload/${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}">
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.bookCode}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.libraryBookVO.bookTitle}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookCateCode}${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookMidCateCode}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.borrowDate}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.exReturnDate}
+                            </td>
+                            <td>
+                                
+                            </td>
+                        </tr>`;
 
-                    str3 += `
-                    <td>
-                        표지
-                    </td>
-                    <td>
-                        ${bookBorrowInfo.bookCode}
-                    </td>
-                    <td>
-                        ${bookBorrowInfo.bookCode}
-                    </td>
+                        
+                    }
+                    
 
-                    `;
-
-
-                    borrowHeaderTd.insertAdjacentHTML("afterbegin", str2);
-                    borrowTr.insertAdjacentHTML("afterbegin", str3);
+                    if(bookBorrowInfo.returnYN == 'Y'){
+                        str3 += `
+                        <tr>
+                            <td>
+                                <img width="70px" src="/upload/${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}">
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.bookCode}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.libraryBookVO.bookTitle}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookCateCode}${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookMidCateCode}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.borrowDate}
+                            </td>
+                            <td>
+                                ${bookBorrowInfo.returnDate}
+                            </td>
+                            <td>
+                                
+                            </td>
+                        </tr>`;
+                    }
+                    
                 });
+
+                borrow_list_tbody.insertAdjacentHTML("afterbegin", str2);
+                return_list_tbody.insertAdjacentHTML("afterbegin", str3);
             }
 
 

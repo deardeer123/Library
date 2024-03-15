@@ -30,11 +30,7 @@
 
             <div class="row mb-3">
                 <div class="col">
-                    <!-- 이제 여기다가 조회된 책들 검색되게 뭐 검색창 하나 넣을듯 -->
-                    <!-- Button trigger modal -->
-                    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Launch demo modal
-                    </button> -->
+
                     <div class="row">
                         <div class="col-2"></div>
                         <div class="col-2">
@@ -106,44 +102,25 @@
                                     <!-- classappend 추가해야함 -->
                                 </li>
                             </th:block>
-                            
+
                             <th:block th:each="e: ${#numbers.sequence(bookSearchVO.beginPage,bookSearchVO.endPage)}">
-                                <li class="page-item"><a class="page-link" 
-                                    th:href="@{/bookAdmin/workingBook(nowPage=${e},searchType=${bookSearchVO.searchType},searchValue=${bookSearchVO.searchValue})}">[[${e}]]</a></li>
+                                <li class="page-item"><a class="page-link"
+                                        th:href="@{/bookAdmin/workingBook(nowPage=${e},searchType=${bookSearchVO.searchType},searchValue=${bookSearchVO.searchValue})}">[[${e}]]</a>
+                                </li>
                             </th:block>
-                            
+
                             <th:block>
                                 <li class="page-item disabled">
                                     <a class="page-link" href="#">Next</a>
                                     <!-- classappend 추가해야함 -->
                                 </li>
                             </th:block>
-                            
+
                         </ul>
                     </nav>
                 </div>
             </div>
 
-
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            ...
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
         </div>
     </div>
@@ -185,8 +162,8 @@
             console.log(search_value)
             console.log(nowPage)
 
-             // ------------------- 첫번째 방식 ---------------//
-             fetch('/bookAdmin/searchBook', { //요청경로
+            // ------------------- 첫번째 방식 ---------------//
+            fetch('/bookAdmin/searchBook', { //요청경로
                 method: 'POST',
                 cache: 'no-cache',
                 headers: {
@@ -197,7 +174,7 @@
                     // 데이터명 : 데이터값
                     searchType: search_type,
                     searchValue: search_value,
-                    nowPage : nowPage
+                    nowPage: nowPage
                 })
             })
                 .then((response) => {
@@ -228,15 +205,15 @@
                     }
 
                     const paging_tag = document.querySelector("#paging-tag");
-                    paging_tag.innerHTML='';
-                    
+                    paging_tag.innerHTML = '';
+
                     // 이전 버튼 누를수 있고 못누르게 하는건 if문으로
                     let str1 = `
                         <li class="page-item disabled">
                             <a class="page-link">Previous</a>
                         </li>
                     `;
-                    for(let i = data.bookSearchVO.beginPage; i<=data.bookSearchVO.endPage; i++){
+                    for (let i = data.bookSearchVO.beginPage; i <= data.bookSearchVO.endPage; i++) {
                         str1 = str1 + `
                         <li class="page-item"><a class="page-link"
                                     onclick='paging(${i})'>${i}</a></li>
@@ -250,7 +227,7 @@
                             <a class="page-link" href="#">Next</a>
                         </li>
                     `
-                    
+
                     paging_tag.insertAdjacentHTML("beforeend", str1);
 
 
@@ -301,7 +278,7 @@
                     console.log(data)
                     console.log(data.libraryBookVOList)
 
-                    
+
 
                     for (let e of data.libraryBookVOList) {
                         let str = `
@@ -317,15 +294,15 @@
                     }
 
                     const paging_tag = document.querySelector("#paging-tag");
-                    paging_tag.innerHTML='';
-                    
+                    paging_tag.innerHTML = '';
+
                     // 이전 버튼 누를수 있고 못누르게 하는건 if문으로
                     let str1 = `
                         <li class="page-item disabled">
                             <a class="page-link">Previous</a>
                         </li>
                     `;
-                    for(let i = data.bookSearchVO.beginPage; i<=data.bookSearchVO.endPage; i++){
+                    for (let i = data.bookSearchVO.beginPage; i <= data.bookSearchVO.endPage; i++) {
                         str1 = str1 + `
                         <li class="page-item"><a class="page-link"
                                     onclick='paging(${i})'>${i}</a></li>
@@ -339,7 +316,7 @@
                             <a class="page-link" href="#">Next</a>
                         </li>
                     `
-                    
+
                     paging_tag.insertAdjacentHTML("beforeend", str1);
 
 

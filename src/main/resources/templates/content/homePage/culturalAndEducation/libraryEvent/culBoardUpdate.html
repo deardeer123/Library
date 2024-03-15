@@ -32,7 +32,7 @@
                         </tr>
                         <tr>
                             <td>작성자</td>
-                            <td colspan="3">[[${session.loginInfo.userId}]]</td>
+                            <td colspan="3" sec:authorize="isAuthenticated()" sec:authentication="name"></td>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,7 +47,7 @@
                             </td>
                         </tr>
                     </tbody>
-                    <input type="hidden" name="boardNo" th:value="${board.boardNo}">
+                    <input type="hidden" name="boardNum" th:value="${board.boardNum}">
                     <input type="hidden" name="userCode" th:value="${session.userCode}">
                 </table>
             </form>

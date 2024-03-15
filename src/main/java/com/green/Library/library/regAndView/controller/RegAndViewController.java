@@ -1,5 +1,6 @@
 package com.green.Library.library.regAndView.controller;
 
+import com.green.Library.library.borrowReturn.vo.BookBNRVO;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.regAndView.service.BookSearchVO;
 import com.green.Library.library.regAndView.service.RegAndViewService;
@@ -9,7 +10,9 @@ import com.green.Library.libraryBook.vo.LibraryBookInfoVO;
 import com.green.Library.libraryBook.vo.LibraryBookMidCategoryVO;
 import com.green.Library.libraryBook.vo.LibraryBookVO;
 import com.green.Library.util.UploadUtil;
+import com.green.Library.web.member.vo.MemberVO;
 import jakarta.annotation.Resource;
+import org.apache.ibatis.annotations.One;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,13 +45,12 @@ public class RegAndViewController {
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
+        //System.out.println(bookSearchVO);
 
-        System.out.println(bookSearchVO);
-
-        System.out.println("------------------------"+ bookSearchVO.getNowPage());
+        //System.out.println("------------------------"+ bookSearchVO.getNowPage());
         //페이징
-        System.out.println(bookSearchVO.getNowPage());
-        bookSearchVO.setNowPage(bookSearchVO.getNowPage());
+        //System.out.println(bookSearchVO.getNowPage());
+        //bookSearchVO.setNowPage(bookSearchVO.getNowPage());
 
         //전체 게시물 갯수 설정
         int totalDataCnt = regAndViewService.selectBookCnt(bookSearchVO);
@@ -57,22 +59,22 @@ public class RegAndViewController {
         //페이지 정보 세팅
         bookSearchVO.setPageInfo();
         // 끝나는 페이지, 마지막 페이지 확인
-        System.out.println("endPage : " + bookSearchVO.getEndPage());
-        System.out.println("totalPage : " + bookSearchVO.getTotalPageCnt());
-        System.out.println("prev : " + bookSearchVO.getPrev());
-        System.out.println("next : " + bookSearchVO.getNext());
+//        System.out.println("endPage : " + bookSearchVO.getEndPage());
+//        System.out.println("totalPage : " + bookSearchVO.getTotalPageCnt());
+//        System.out.println("prev : " + bookSearchVO.getPrev());
+//        System.out.println("next : " + bookSearchVO.getNext());
 
 
 //
         //대충 책 정보 가져 오고나서 해당 파일의 상세 정보등을 변경시키게
-        System.out.println(regAndViewService.searchBookList(bookSearchVO));
+//        System.out.println(regAndViewService.searchBookList(bookSearchVO));
         model.addAttribute("bookList", regAndViewService.searchBookList(bookSearchVO));
 
         //변경 혹은 삭제 하고나서 해당 페이지로 이동 시 알람창 하나 띄우고 싶어서 적은 코드
-        System.out.println(update);
+//        System.out.println(update);
         model.addAttribute("update", update);
 
-        System.out.println(delete);
+//        System.out.println(delete);
         model.addAttribute("delete", delete);
 
 
@@ -185,9 +187,16 @@ public class RegAndViewController {
     @GetMapping("/deleteBook1")
     public String deleteBook1(@RequestParam(name="bookCode")String bookCode){
         System.out.println(bookCode);
+        //받은 북 코드를 보내서 book_breakage 테이블로 보낼거임
+        LibraryBookVO libraryBookVO = regAndViewService.selectOneBook(bookCode);
 
-//        받은 bookCode로 쿼리문 실행
+        regAndViewService.insertBookBreakageOne(libraryBookVO);
         regAndViewService.deleteBookOne(bookCode);
+
+
+
+        //받은 bookCode로 쿼리문 실행
+        //regAndViewService.deleteBookOne(bookCode);
 
         return "redirect:/bookAdmin/workingBook?delete=1";
     }
@@ -264,6 +273,7 @@ public class RegAndViewController {
     }
 
 
+    //이건
     @ResponseBody
     @PostMapping("/modal")
     public Map<String,Object> modal(@RequestParam(name="bookCode")String bookCode) {
@@ -272,6 +282,18 @@ public class RegAndViewController {
         bookInfo.put("book",regAndViewService.selectOneBook(bookCode));
         bookInfo.put("cateList",libraryBookService.selectCateList());
 
+        return bookInfo;
+    }
+
+    @ResponseBody
+    @PostMapping("/bookDetailInfo")
+    public Map<String,Object> bookInfo(@RequestParam(name="bookCode")String bookCode) {
+        System.out.println(bookCode);
+        Map<String, Object> bookInfo = new HashMap<>();
+        MemberVO memberVO = regAndViewService.bookDetailInfo(bookCode);
+        LibraryBookCategoryVO libraryBookCategoryVO = regAndViewService.selectCateNameOne(bookCode);
+        bookInfo.put("memberVO",memberVO);
+        bookInfo.put("libraryBookCategoryVO",libraryBookCategoryVO);
         return bookInfo;
     }
 

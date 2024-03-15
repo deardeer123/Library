@@ -193,18 +193,18 @@
                     let eventList = data
                     console.log(eventList)
 
-                    
-                        var calendarEl = document.getElementById('calendar');
-                        var calendar = new FullCalendar.Calendar(calendarEl, {
-                            height: 350,
-                            initialView: 'dayGridMonth',
-                            locale: 'ko',
-                            //이벤트
-                            events: eventList
 
-                        });
-                        calendar.render();
-                    
+                    var calendarEl = document.getElementById('calendar');
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        height: 350,
+                        initialView: 'dayGridMonth',
+                        locale: 'ko',
+                        //이벤트
+                        events: eventList
+
+                    });
+                    calendar.render();
+
 
 
                 })

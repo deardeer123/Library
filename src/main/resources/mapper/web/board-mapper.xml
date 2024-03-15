@@ -206,10 +206,10 @@
             ,BOARD_TYPE
             ,TEACHER
             ,TARGET
-            ,OPEN_DATE
-            ,CLOSE_DATE
-            ,TO_DATE
-            ,FROM_DATE
+            , DATE_FORMAT(OPEN_DATE, '%Y-%m-%d') AS OPEN_DATE
+            , DATE_FORMAT(CLOSE_DATE, '%Y-%m-%d') AS CLOSE_DATE
+            , DATE_FORMAT(TO_DATE, '%Y-%m-%d') AS TO_DATE
+            , DATE_FORMAT(FROM_DATE, '%Y-%m-%d') AS FROM_DATE
             ,PERSONNEL
             ,MAXIMUM_PERSON
             ,EVENT_STATUS
@@ -284,6 +284,35 @@
             ,#{file.boardNum})
         </foreach>
     </insert>
+
+    <!--  이벤트 상세보기   -->
+    <select id="selectEventBoardDetail" resultMap="board">
+        SELECT
+            PLUS_CODE
+            ,B.BOARD_NUM
+            ,BOARD_TITLE
+            ,BOARD_TYPE
+            ,TEACHER
+            ,TARGET
+            , DATE_FORMAT(OPEN_DATE, '%Y-%m-%d') AS OPEN_DATE
+            , DATE_FORMAT(CLOSE_DATE, '%Y-%m-%d') AS CLOSE_DATE
+            , DATE_FORMAT(TO_DATE, '%Y-%m-%d') AS TO_DATE
+            , DATE_FORMAT(FROM_DATE, '%Y-%m-%d') AS FROM_DATE
+            ,PERSONNEL
+            ,MAXIMUM_PERSON
+            ,EVENT_STATUS
+            ,ATTACHED_FILE_NAME
+            ,CONTENT
+            ,ORIGIN_FILE_NAME
+        FROM BOARD AS B
+        INNER JOIN BOARD_PLUS AS P
+        ON B.BOARD_NUM = P.BOARD_NUM
+        INNER JOIN ATTACHED_FILE AS F
+        ON B.BOARD_NUM = F.BOARD_NUM
+        WHERE B.BOARD_NUM = #{boardNum}
+    </select>
+
+    
 <!--  ////////////////////////이벤트 게시물///////////////////  -->
 
 </mapper>

@@ -2,7 +2,11 @@ package com.green.Library.library.buy.controller;
 
 import com.green.Library.library.buy.service.BuyService;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
+import com.green.Library.library.regAndView.service.BookSearchVO;
+import com.green.Library.library.regAndView.service.RegAndViewService;
 import com.green.Library.libraryBook.service.LibraryBookService;
+import com.green.Library.libraryBook.vo.LibraryBookBreakageVO;
+import com.green.Library.libraryBook.vo.LibraryBookCategoryVO;
 import com.green.Library.libraryBook.vo.LibraryBookInfoVO;
 import com.green.Library.libraryBook.vo.LibraryBookVO;
 import com.green.Library.util.ConstantVariable;
@@ -11,27 +15,30 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/bookAdmin")
 public class BuyController {
     //메뉴 불러올려고 적은거임
     @Resource(name = "menuService")
-    LibraryMenuService libraryMenuService;
+    private LibraryMenuService libraryMenuService;
 
     //카테고리 및 뭐 책에 관련된 정보 끌고 올려고 준비햇음
     @Resource(name = "libraryBookService")
-    LibraryBookService libraryBookService;
+    private LibraryBookService libraryBookService;
 
     @Resource(name = "buyService")
-    BuyService buyService;
+    private BuyService buyService;
+
+    @Resource(name ="regAndViewService")
+    private RegAndViewService regAndViewService;
 
 
     //----------구입------------
@@ -47,21 +54,54 @@ public class BuyController {
     }
     //삭제 자료
     @GetMapping("/deleteBook")
-    public String goDeleteBook(Model model){
+    public String goDeleteBook(Model model , BookSearchVO bookSearchVO){
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
 
+        //제외한 책 갯수 설정
+        bookSearchVO.setTotalDataCnt(buyService.selectCntLibraryBookBreakage(bookSearchVO));
+        //페이지 정보 세팅
+        bookSearchVO.setPageInfo();
+
+        //리스트 넘기기
+        List<LibraryBookBreakageVO> bookBreakageList = buyService.selectLibraryBookBreakageList(bookSearchVO);
+        model.addAttribute("bookBreakageList" , bookBreakageList);
+        System.out.println(bookBreakageList);
+
         System.out.println("삭제 자료 이동");
         return "content/library/buy/deleteBook";
     }
+
+    @ResponseBody
+    @PostMapping("/bookBreakageDetail")
+    public Map<String, Object> bookBreakageDetail(@RequestParam(name ="bookCode")String bookCode){
+        //제외한 책 정보
+        LibraryBookBreakageVO libraryBookBreakageVO = buyService.searchBookBreakageDetail(bookCode);
+        //카테고리
+        LibraryBookCategoryVO libraryBookCategoryVO = buyService.selectCateNameOne(bookCode);
+
+        Map<String, Object> bookInfo = new HashMap<>();
+        bookInfo.put("libraryBookBreakageVO",libraryBookBreakageVO);
+        bookInfo.put("libraryBookCategoryVO", libraryBookCategoryVO);
+        return bookInfo;
+    }
+
+    @ResponseBody
+    @PostMapping("/bookRedisplay")
+    public void bookRedisplay(@RequestParam(name="bookCode")String bookCode){
+        System.out.println(bookCode);
+    }
+
+
+
+
     @GetMapping("/buyBook")
     public String goBuyBook(Model model, @RequestParam(name="insert" , required = false, defaultValue = "0") int insert){
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
         //가기전에 카테고리 목록 리스트 가져오기
-        //System.out.println(libraryBookService.selectCateList());
         model.addAttribute("cateList",libraryBookService.selectCateList());
 
         System.out.println(insert);

@@ -37,11 +37,9 @@
                     </tr>
                 </tbody>
             </table>
-            <th:block th:if="${session.loginInfo != null}">
-                <th:block th:if="${session.loginInfo.isAdmin == 'Y'}">
-                    <input type="button" value="게시글 수정" th:onclick="|location.href='@{/culUpdate(boardNum=${board.boardNum})}'|">
-                </th:block>
-            </th:block>
+            <div sec:authorize="hasRole('ROLE_Y')">
+                <input type="button" value="게시글 수정" th:onclick="|location.href='@{/culUpdate(boardNum=${board.boardNum})}'|">
+            </div>
         </div>
     </div>
 </th:block>

@@ -48,5 +48,8 @@ public interface BoardService {
 
     //이벤트 게시판
     void insertParticipation(BoardVO boardVO);
+
+    //이벤트 상세보기
+    BoardVO selectEventBoardDetail(int boardNum);
 }
 
