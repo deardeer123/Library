@@ -5,6 +5,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -34,6 +35,14 @@ public class UserController {
         System.out.println("이용자 승인 이동");
         return "content/library/user/userApproval";
     }
+
+    // 이용자 승인(cardNum 부여)
+    @PostMapping("/letUserApproval")
+//    public String letUserApproval(){
+//
+//
+//    }
+
     //연체자 관리
     @GetMapping("/delinquent")
     public String goDelinquent(Model model){

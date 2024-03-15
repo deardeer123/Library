@@ -8,9 +8,6 @@ function selectMemberInfo(){
     
     // 그림 그릴 이용자 정보 태그 선택하기(userInfo)
     const userInfo = document.querySelector('#userInfo');
-    const cardNum = document.querySelector('#card-num');
-    const userName = document.querySelector('#user-name');
-    const tel = document.querySelector('#tel');
 
     // 모든 테이블의 tbody 태그 선택
     // 1. 대출 내역 테이블 tbody
@@ -19,9 +16,6 @@ function selectMemberInfo(){
     const return_list_tbody = document.querySelector('.return-list-table tbody');
     // 3. 예약 내역 테이블 tbody
     const reserve_list_tbody = document.querySelector('.reserve-list-table tbody');
-
-    // 내역에 책 이미지 삽입
-    const img = new Image();
 
     // 들어오는 데이터 관리
     const inputValue = inputData;
@@ -67,17 +61,17 @@ function selectMemberInfo(){
 
             str1= `
         <div class="row">
-            <div class="col" id="cardNum">
+            <div class="col">
                 ${data.cardNum}
             </div>
         </div>
         <div class="row">
-            <div class="col" id="userName">
+            <div class="col">
                 ${data.userName}
             </div>
         </div>
         <div class="row">
-            <div class="col" id="tel">
+            <div class="col">
                 ${data.userTel}
             </div>
         </div>
@@ -187,176 +181,7 @@ function selectMemberInfo(){
                 return_list_tbody.insertAdjacentHTML("afterbegin", str3);
             }
 
-
-            //////////////////////////////////////////
-        //     data.bookBorrowList.forEach((bookBorrowInfo) => {
-                
-        //         if(bookBorrowInfo.bookCode == null){
-        //             str2 +=   `
-        //                 <div class="col text-center">
-        //                     대출 내역이 없습니다.
-        //                 </div>
-        //             </div>`; 
-        //         } 
-        //         else {
-                    
-
-
-        //             str2+=`
-        //             <div class="col">
-        //                 표지
-        //             </div>
-        //             <div class="col">
-        //                 ${bookBorrowInfo.bookCode}
-        //             </div>
-        //             <div class="col">
-        //                 ${bookBorrowInfo.libraryBookVO.bookTitle}
-        //             </div>
-        //             <div class="col">
-        //                 청구기호
-        //             </div>
-        //             <div class="col">
-        //                 ${bookBorrowInfo.borrowDate}
-        //             </div>
-        //             <div class="col">
-        //                 ${bookBorrowInfo.exReturnDate}
-        //             </div>
-        //             <div class="col">
-        //                 대출처리자
-        //             </div>`;
-        //         }
-        //     });               
-
-        //     str2 += `</div>`;                       
-
-        // str2 += `
-        // <div class="row">
-        //     <div class="col" id="return">
-        //         반납 (0)        
-        //     </div>
-        // </div>
-        // `;
-        
-        // str2 += `<div class="row tbody returnInfo">`;
-        //     data.bookBorrowList.forEach((bookReturnInfo) => {
-
-        //         if(bookReturnInfo.returnDate == null){
-        //             str2 +=   `
-        //                 <div class="col text-center">
-        //                     반납 내역이 없습니다.
-        //                 </div>
-        //             </div>`; 
-        //         } else {
-
-        //         str2 += `<div class="col">
-        //                     표지
-        //                 </div>
-        //                 <div class="col">
-        //                     ${bookReturnInfo.bookCode}
-        //                 </div>
-        //                 <div class="col">
-        //                     ${bookReturnInfo.libraryBookVO.bookTitle}
-        //                 </div>
-        //                 <div class="col">
-        //                     청구기호
-        //                 </div>
-        //                 <div class="col">
-        //                     ${bookReturnInfo.borrowDate}
-        //                 </div>
-        //                 <div class="col">
-        //                     ${bookReturnInfo.returnDate}
-        //                 </div>
-        //                 <div class="col">
-        //                     반납처리자
-        //                 </div>`;
-        //     }});
-            
-        //     `</div>`;   
-
-        // str2 += `
-        // <div class="row">
-        //     <div class="col" id="reserveInfo">
-        //         예약 (예약가능 건수 : 0)  예약 내역은 db쪽으로 더 생각해 봐야 할 것 같아서 다음에 다시 올 거예요.      
-        //     </div>
-        // </div>
-        // `;
-        // str2 +=   `<div class="row tbody">
-        //         <div class="col text-center">
-                    
-        //         </div>
-        //     </div>`; 
-        // str2 += `<div class="row tbody">
-        //     <div class="col">
-        //         표지
-        //     </div>
-        //     <div class="col">
-        //         등록번호
-        //     </div>
-        //     <div class="col">
-        //         서명
-        //     </div>
-        //     <div class="col">
-        //         청구기호
-        //     </div>
-        //     <div class="col">
-        //         대출일
-        //     </div>
-        //     <div class="col">
-        //         반납일(연체일)
-        //     </div>
-        //     <div class="col">
-        //         반납처리자
-        //     </div>
-        // </div>`;   
-        // str2 += `
-        // <div class="row">
-        //     <div class="col" id="allInfo">
-        //         당일처리내역 여기도 조회, 대출, 반납 모두 떠야해서 이용자 먼저 하고 올게요.      
-        //     </div>
-        // </div>
-        // `;
-        
-        // brInfo.insertAdjacentHTML("afterbegin", str2);
-
         }})
-
-        /////////////////////////////////////////////////////////////
-        
-        // if(inputData.includes("GR")){
-
-
-
-        //     console.log(data);
-
-        //     let str3 = '';
-
-        //     data.bookBorrowList.forEach((bookBorrowInfo) => {
-        //         str3 +=`
-        //         <div class="col">
-        //             표지
-        //         </div>
-        //         <div class="col">
-        //             ${bookBorrowInfo.bookCode}
-        //         </div>
-        //         <div class="col">
-        //             ${bookBorrowInfo.libraryBookVO.bookTitle}
-        //         </div>
-        //         <div class="col">
-        //             청구기호
-        //         </div>
-        //         <div class="col">
-        //             ${bookBorrowInfo.borrowDate}
-        //         </div>
-        //         <div class="col">
-        //             ${bookBorrowInfo.exReturnDate}
-        //         </div>
-        //         <div class="col">
-        //             대출처리자
-        //         </div>`;
-
-        //         borrowInfo.insertAdjacentHTML("afterbegin", str3);
-        //     })
-        // };
         
     //fetch 통신 실패 시 실행 영역
     .catch(err=>{

@@ -4,6 +4,29 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="userMenuMapper">
 
+    <select id="userSearch" resultMap="memberMapper.users">
+        SELECT USER_CODE
+            , USER_ID
+            , USER_NAME
+            , GENDER
+            , USER_TEL
+            , IS_ADMIN
+            , CARD_NUM
+        FROM USERS
+<!--        <if test='userName1 != null and !userName1.equals("")'>-->
+<!--            WHERE USER_NAME BETWEEN #{userName1} AND '힣'-->
+<!--        </if>-->
+<!--        <if test='userName2 != null and !userName2.equals("")'>-->
+
+<!--        </if>-->
+<!--        <if test=''>-->
+
+<!--        </if>-->
+<!--        <if test=''>-->
+<!--            ORDER BY-->
+<!--        </if>-->
+    </select>
+
 
 </mapper>
 
