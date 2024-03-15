@@ -68,6 +68,7 @@
                         </td>
                         <td>
                             [[${board.BoardPlusVO.fromDate}]]
+                            ~
                             [[${board.BoardPlusVO.toDate}]]
                         </td>
                         <td>
@@ -78,12 +79,8 @@
                     </tr>
                 </tbody>
             </table>
-            <div>
-                <th:block th:if="${session.loginInfo != null}">
-                    <th:block th:if="${session.loginInfo.isAdmin == 'Y'}">
-                        <input type="button" value="게시글 작성" onclick="location.href='/goGuideInsertPage'">
-                    </th:block>
-                </th:block>
+            <div sec:authorize="hasRole('ROLE_Y')">
+                <input type="button" value="게시글 작성" onclick="location.href='/goGuideInsertPage'">
             </div>
         </div>
     </div>

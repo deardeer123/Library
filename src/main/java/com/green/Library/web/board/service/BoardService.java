@@ -1,6 +1,7 @@
 package com.green.Library.web.board.service;
 
 import com.green.Library.web.board.vo.BoardVO;
+import com.green.Library.web.board.vo.PlusVO;
 import com.green.Library.web.board.vo.SearchVO;
 
 
@@ -43,7 +44,12 @@ public interface BoardService {
     //선택 이미지 삭제
     void selectDeletes(BoardVO boardVO);
 
+    List<BoardVO> selectPlusList(SearchVO searchVO);
 
+    //이벤트 게시판
+    void insertParticipation(BoardVO boardVO);
 
+    //이벤트 상세보기
+    BoardVO selectEventBoardDetail(int boardNum);
 }
 

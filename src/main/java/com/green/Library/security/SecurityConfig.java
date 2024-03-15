@@ -46,6 +46,7 @@ public class SecurityConfig {
                                             MemberVO loginInfo = memberService.login(authentication.getName());
                                             System.out.println(loginInfo);
                                             session.setAttribute("userCode", loginInfo.getUserCode());
+                                            session.setAttribute("userName", loginInfo.getUserName());
 
 
                                             response.sendRedirect("/home");

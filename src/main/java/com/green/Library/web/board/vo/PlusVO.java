@@ -3,7 +3,7 @@ package com.green.Library.web.board.vo;
 import lombok.Data;
 
 @Data
-public class plusVO {
+public class PlusVO {
     private int plusCode;
     private String teacher;
     private String target;

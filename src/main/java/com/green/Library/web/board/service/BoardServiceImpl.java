@@ -1,6 +1,7 @@
 package com.green.Library.web.board.service;
 
 import com.green.Library.web.board.vo.BoardVO;
+import com.green.Library.web.board.vo.PlusVO;
 import com.green.Library.web.board.vo.SearchVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,18 +55,18 @@ public class BoardServiceImpl implements BoardService {
 //    public void insertUploadFile(BoardVO boardVO) {
 //        sqlSession.insert("boardMapper.insertUpload");
 //    }
-    public BoardVO selectBoardDetail(int boardNo) {
-        return sqlSession.selectOne("boardMapper.selectBoardDetail", boardNo);
+    public BoardVO selectBoardDetail(int boardNum) {
+        return sqlSession.selectOne("boardMapper.selectBoardDetail", boardNum);
     }
 
     @Override
-    public void boardCntUp(int boardNo) {
-        sqlSession.update("boardMapper.boardCntUp",boardNo);
+    public void boardCntUp(int boardNum) {
+        sqlSession.update("boardMapper.boardCntUp",boardNum);
     }
 
     @Override
-    public void deleteBoard(int boardNo) {
-        sqlSession.delete("boardMapper.deleteBoard",boardNo);
+    public void deleteBoard(int boardNum) {
+        sqlSession.delete("boardMapper.deleteBoard",boardNum);
     }
 
     @Override
@@ -78,6 +79,24 @@ public class BoardServiceImpl implements BoardService {
     public void selectDeletes(BoardVO boardVO) {
         sqlSession.delete("boardMapper.selectDeleteFiles", boardVO);
         sqlSession.delete("boardMapper.selectDeletes",boardVO);
+    }
+
+    @Override
+    public List<BoardVO> selectPlusList(SearchVO searchVO) {
+        return sqlSession.selectList("boardMapper.selectPlusList", searchVO);
+    }
+
+    @Override
+    @Transactional(rollbackFor = ExportException.class)
+    public void insertParticipation(BoardVO boardVO) {
+        sqlSession.insert("boardMapper.insertParticipation",boardVO);
+        sqlSession.insert("boardMapper.insertParticipationPlus",boardVO);
+        sqlSession.insert("boardMapper.insertEventFileList", boardVO);
+    }
+
+    @Override
+    public BoardVO selectEventBoardDetail(int boardNum) {
+        return sqlSession.selectOne("boardMapper.selectEventBoardDetail", boardNum);
     }
 
 

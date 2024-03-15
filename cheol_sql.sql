@@ -185,7 +185,7 @@ WHERE
 
 CREATE TABLE BOOK_CATEGORY(
 	BOOK_CATE_CODE INT AUTO_INCREMENT PRIMARY KEY,
-	BOOK_CATE_NAME VARCHAR(20) NOT NULL ,
+	BOOK_CATE_Nteam2AME VARCHAR(20) NOT NULL ,
 	BOOK_CATE_INDEX INT NOT NULL
 );
 
@@ -363,7 +363,7 @@ CREATE TABLE BOOK(
    BOOK_WRITER VARCHAR(100) NOT NULL,
    BOOK_PUB VARCHAR(30) NOT NULL,
    BOOK_YEAR VARCHAR(20) NOT NULL);
-	
+
 
 CREATE TABLE BOOK_INFO(
 	BOOK_INFO_NUM INT AUTO_INCREMENT PRIMARY KEY ,
@@ -388,6 +388,32 @@ SET BOOK_MID_CATE_CODE = 1;
 SELECT * FROM book_info;
 
 -- DELETE FROM book_info;
+
+CREATE TABLE BOOK_BREAKAGE(
+   BOOK_CODE VARCHAR(15) PRIMARY KEY,
+   BOOK_TITLE VARCHAR(100) NOT NULL,
+   BOOK_WRITER VARCHAR(100) NOT NULL,
+   BOOK_PUB VARCHAR(30) NOT NULL,
+   BOOK_YEAR VARCHAR(20) NOT NULL);
+
+-- DROP TABLE book_breakage;
+
+-- 작살난 책 상세 테이블
+CREATE TABLE BOOK_BREAKAGE_INFO(
+	BOOK_INFO_NUM INT AUTO_INCREMENT PRIMARY KEY ,
+	BOOK_INFO_ATTACHED_FILE_NAME VARCHAR(100) ,		
+	BOOK_INFO_ORIGIN_FILE_NAME VARCHAR(100) , 			
+	BOOK_BORROW_AVAILABLE VARCHAR(3) DEFAULT 'Y', 					
+	BOOK_BORROW_CNT INT DEFAULT 0, 								
+	BOOK_INTRO VARCHAR(2000) , -- 2024-02-29 변경함
+	BOOK_REGDATE DATETIME DEFAULT CURRENT_TIMESTAMP , -- 2024-02-29 변경함  								
+	BOOK_CATE_CODE INT REFERENCES BOOK_CATEGORY(BOOK_CATE_CODE) ,
+	BOOK_MID_CATE_CODE INT REFERENCES BOOK_MID_CATEGORY(BOOK_MID_CATE_CODE) ,
+	BOOK_CODE VARCHAR(15) REFERENCES BOOK_BREAKAGE(BOOK_CODE)); 
+
+-- DROP TABLE book_breakage;
+-- DROP TABLE BOOK_BREAKAGE_INFO;
+
 
 
 INSERT INTO book_info(
@@ -457,8 +483,12 @@ CREATE TABLE BOOK_BNR(
 );
 
 SELECT * FROM book_bnr;
+SELECT * FROM book;
 SELECT * FROM book_info;
 SELECT * FROM users;
+
+SELECT * FROM book_breakage;
+SELECT * FROM book_breakage_info;
 
 -- 책  상세 검색하기
 
@@ -566,7 +596,9 @@ CREATE TABLE calendar(
 	CALENDAR_START DATETIME NOT NULL
 	);
 	
+
 SELECT * FROM calendar;
+
 
 -- 캘린더 데이터
 INSERT INTO calendar(
@@ -577,7 +609,7 @@ INSERT INTO calendar(
 	('테스트2' , '2024-03-07') ,
 	('테스트3' , '2024-03-08') ;
 	
-SELECT * FROM calendar;
+
 
 -- 책 정보
 
@@ -600,3 +632,26 @@ SELECT ITEM_CODE
 	END AS STR_STATUS
 FROM
 	shop_item;
+	
+SELECT
+        book_breakage.BOOK_CODE,
+        book_breakage.BOOK_TITLE,
+        book_breakage.BOOK_WRITER,
+        book_breakage.BOOK_PUB,
+        book_breakage.BOOK_YEAR,
+        book_breakage_info.BOOK_INFO_ORIGIN_FILE_NAME,
+        book_breakage_info.BOOK_INFO_ATTACHED_FILE_NAME,
+        book_breakage_info.BOOK_INTRO,
+        book_breakage_info.BOOK_CATE_CODE,
+        book_breakage_info.BOOK_MID_CATE_CODE
+        FROM
+        book_breakage LEFT OUTER JOIN book_breakage_info
+        ON
+        book_breakage.BOOK_CODE = book_breakage_info.BOOK_CODE;
+        
+        
+        
+ SELECT
+            COUNT(BOOK_CODE)
+        FROM
+        book_breakage;

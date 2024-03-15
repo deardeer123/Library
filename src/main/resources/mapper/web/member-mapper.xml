@@ -49,6 +49,7 @@
         SELECT
             USER_ID
             ,USER_PW
+            ,USER_NAME
             ,USER_CODE
             ,IS_ADMIN
         FROM USERS
