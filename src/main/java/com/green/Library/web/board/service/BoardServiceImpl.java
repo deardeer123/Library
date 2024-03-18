@@ -99,6 +99,11 @@ public class BoardServiceImpl implements BoardService {
         return sqlSession.selectOne("boardMapper.selectEventBoardDetail", boardNum);
     }
 
+    @Override
+    public void updateEventBoardDetail(BoardVO boardVO) {
+        sqlSession.update("boardMapper.updateEventBoardDetail",boardVO);
+    }
+
 
 }
 

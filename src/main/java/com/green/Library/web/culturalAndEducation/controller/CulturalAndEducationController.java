@@ -301,6 +301,31 @@ public class CulturalAndEducationController {
     }
 
 
+    //이벤트 게시물 수정 페이지 이동
+    @GetMapping("/goEventUpdatePage")
+    public String goEventUpdatePage(Model model, BoardVO boardVO, HttpSession session){
+        boardVO.setUserCode((Integer) session.getAttribute("userCode"));
+        BoardVO board = boardService.selectEventBoardDetail(boardVO.getBoardNum());
+        model.addAttribute("board",board);
+        System.out.println(board);
+        return "content/homePage/culturalAndEducation/eventParticipation/goEventUpdatePage";
+    }
+
+    @PostMapping("/goEventUpdate")
+    public String goEventUpdate(BoardVO boardVO,PlusVO plusVO){
+        System.out.println(boardVO);
+        boardVO.setPlusVO(plusVO);
+        boardService.updateEventBoardDetail(boardVO);
+        return "redirect:/goDetailParticipation?boardNum="+boardVO.getBoardNum();
+    }
+
+    @PostMapping("/goEventDelete")
+    public String goEventDelete(BoardVO boardVO){
+        boardService.selectDeletes(boardVO);
+        return "redirect:/eventParticipation";
+    }
+
+
 
 
 
