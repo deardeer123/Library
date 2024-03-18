@@ -42,7 +42,7 @@
             <table class="align-middle table text-center">
                 <thead>
                     <tr>
-                        <td>구분</td>
+                        <td><input type="checkbox" id="allChk" checked onclick="allchk()">전체선택</td>
                         <td>프로그램명</td>
                         <td>강사명</td>
                         <td>대상</td>
@@ -54,7 +54,7 @@
                 </thead>
                 <tbody>
                     <tr th:each="board : ${boardList}">
-                        <td></td>
+                        <td><input type="checkbox" class="chk" checked></td>
                         <td><span th:onclick="|location.href='@{/goDetailParticipation(boardNum=${board.boardNum})}'|" style="cursor: pointer;">[[${board.boardTitle}]]</span></td>
                         <td>[[${board.PlusVO.teacher}]]</td>
                         <td>[[${board.PlusVO.target}]]</td>

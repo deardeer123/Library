@@ -383,3 +383,19 @@ SELECT
         OUTER LEFT JOIN USERS U
         ON B.USER_CODE = U.USER_CODE
         WHERE b.BOARD_NUM = 34;
+        
+        
+UPDATE BOARD INNER JOIN board_plus
+SET
+   BOARD_TITLE = '수정'
+   ,TEACHER = '김길동'
+   ,TARGET = '초등학교 1학년'
+   ,OPEN_DATE = '2014-04-12'
+   ,CLOSE_DATE = '2014-04-14'
+   ,TO_DATE = '2014-04-17'
+   ,FROM_DATE = '2014-04-20'
+   ,MAXIMUM_PERSON = 9
+   ,CONTENT = '수정'
+WHERE BOARD.BOARD_NUM = 34;
+
+SELECT * FROM board;

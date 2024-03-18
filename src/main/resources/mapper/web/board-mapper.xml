@@ -311,7 +311,21 @@
         ON B.BOARD_NUM = F.BOARD_NUM
         WHERE B.BOARD_NUM = #{boardNum}
     </select>
-
+    <!--  이벤트 게시물 수정  -->
+    <update id="updateEventBoardDetail">
+        UPDATE BOARD INNER JOIN BOARD_PLUS
+        SET
+            BOARD_TITLE = #{boardTitle}
+            ,TEACHER = #{plusVO.teacher}
+            ,TARGET = #{plusVO.target}
+            ,OPEN_DATE = #{plusVO.openDate}
+            ,CLOSE_DATE = #{plusVO.closeDate}
+            ,TO_DATE = #{plusVO.toDate}
+            ,FROM_DATE = #{plusVO.fromDate}
+            ,MAXIMUM_PERSON = #{plusVO.maximumPerson}
+            ,CONTENT = #{content}
+        WHERE BOARD.BOARD_NUM = #{boardNum}
+    </update>
     
 <!--  ////////////////////////이벤트 게시물///////////////////  -->
 

@@ -73,7 +73,9 @@
                 <input type="button" onclick="location.href='/goApplyPage'" value="신청하기">
             </div>
             <div  sec:authorize="hasRole('ROLE_Y')">
-                <input type="button" onclick="" value="수정하기">
+                <input type="button" th:onclick="|location.href='@{/goEventUpdatePage(boardNum=${board.boardNum})}'|" value="수정하기">
+                <input type="button" onclick="culDeleteBoard()" value="선택 삭제하기">
+
             </div>
         </div>
     </div>

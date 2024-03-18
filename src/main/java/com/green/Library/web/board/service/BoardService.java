@@ -51,5 +51,9 @@ public interface BoardService {
 
     //이벤트 상세보기
     BoardVO selectEventBoardDetail(int boardNum);
+
+    //이벤트 게시물 수정
+    void updateEventBoardDetail(BoardVO boardVO);
+
 }
 
