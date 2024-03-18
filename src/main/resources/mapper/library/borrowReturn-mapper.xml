@@ -15,13 +15,6 @@
         <association property="libraryBookVO"     resultMap="libraryBookMapper.libraryBook"/>
     </resultMap>
 
-<!--    <select id="">-->
-<!--   유저 관리 기능 만들 때 다음 번호를 조회 후 insert로 cardNum 주기 -->
-<!--    <select id="selectNextCardNum" resultType="int">-->
-<!--        SELECT IFNULL(MAX(CARD_NUM), 0) + 1 FROM USERS-->
-<!--    </select>-->
-<!--    </select>-->
-
 <!-- ///////////////////// 대출 ///////////////////////// -->
 
     <!-- 이용자의 대출 정보 조회-->
@@ -91,9 +84,9 @@
 
 <!-- ///////////////////////////////////////////////////////////   -->
 
+
+
 <!-- //////////////////////// 반납 //////////////////////////// -->
-
-
 
     <!-- 책이 대출되어 있는 지 확인 이게 있어야 인풋 태그에 들어오는 책 코드가 대출인지 반납인지 알 수 있음 -->
     <select id="selectBookAvailable" resultType="String">
@@ -119,7 +112,7 @@
         WHERE BOOK_CODE = #{bookCode}
     </update>
 
-
+<!-- ////////////////////////////////////////////////////// -->
 
 </mapper>
 
