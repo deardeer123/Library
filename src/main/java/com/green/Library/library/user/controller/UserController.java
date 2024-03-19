@@ -6,6 +6,7 @@ import com.green.Library.library.user.vo.SearchUserVO;
 import com.green.Library.library.user.vo.UserVO;
 import com.green.Library.web.member.vo.MemberVO;
 import jakarta.annotation.Resource;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,8 +48,10 @@ public class UserController {
     }
 
     // 이용자 승인 페이지 조회(cardNum 부여 하기 위해 우선 select)
-    @PostMapping("/letUserApproval")
-    public String letUserApproval(Model model, SearchUserVO searchUserVO){
+    @GetMapping("/letUserApproval")
+    public String letUserApproval(Model model, SearchUserVO searchUserVO, MemberVO memberVO){
+
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
         // 이용자 정보 전체 조회
         List<MemberVO> membersInfo = userService.selectUserInfoList(searchUserVO);
@@ -57,9 +60,9 @@ public class UserController {
         List<MemberVO> filterNoCardNum = new ArrayList<>();
 
         // cardNum이 0과 같은 이용자들을 필터 변수에 추가
-        for(MemberVO memberVO : membersInfo){
-            if(memberVO.getCardNum() == 0){
-                filterNoCardNum.add(memberVO);
+        for(MemberVO member : membersInfo){
+            if(member.getCardNum() == 0){
+                filterNoCardNum.add(member);
             }
         }
 
@@ -67,17 +70,17 @@ public class UserController {
 
         System.out.println(filterNoCardNum);
 
-        return "redirect:/bookAdmin/userApproval";
+        return "content/library/user/userApproval";
     }
 
     // 이용자 cardNum update
     @PostMapping("/updateCardNum")
-    public String updateCardNum(MemberVO memberVO){
+    public String updateCardNum(MemberVO memberVO, SearchUserVO searchUserVO){
 
         // cardNum 업데이트 쿼리
         userService.updateCardNum(memberVO);
 
-        return "redirect:/bookAdmin/userApproval";
+        return "redirect:/bookAdmin/letUserApproval?userName1=" + searchUserVO.getUserName1() + "&userName2=" + searchUserVO.getUserName2() + "&userTel=" + searchUserVO.getUserTel() + "&gender=" + searchUserVO.getGender() + "&orderStandard=" + searchUserVO.getOrderStandard();
     }
 
     //연체자 관리
