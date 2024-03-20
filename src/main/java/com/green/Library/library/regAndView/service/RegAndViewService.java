@@ -12,6 +12,9 @@ public interface RegAndViewService {
     //책 리스트
     List<LibraryBookVO> selectBookList();
 
+    //책 리스트( 책 상세정보 있는 친구)
+    List<LibraryBookVO> selectBookList2();
+
     //책하나 찾기
     LibraryBookVO selectOneBook(String bookCode);
 
@@ -35,6 +38,9 @@ public interface RegAndViewService {
 
     void insertBookBreakageOne(LibraryBookVO libraryBookVO);
     //LibraryBookBreakageVO insertBookBreakageInfoOne(LibraryBookVO libraryBookVO);
+
+    //바코드 프린트를 하기위한 책 코드를 통한 검색
+    List<LibraryBookVO> bookBarCodeList(List<String> bookCodeList);
 
 
 

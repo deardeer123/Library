@@ -24,6 +24,11 @@ public class RegAndViewServiceImpl implements RegAndViewService{
         return sqlSession.selectList("regAndViewMapper.selectBookList");
     }
 
+    @Override
+    public List<LibraryBookVO> selectBookList2() {
+        return sqlSession.selectList("regAndViewMapper.selectBookList2");
+    }
+
     //책하나 검색하기
     @Override
     public LibraryBookVO selectOneBook(String bookCode) {
@@ -79,6 +84,12 @@ public class RegAndViewServiceImpl implements RegAndViewService{
         sqlSession.insert("regAndViewMapper.insertBookBreakageOne",libraryBookVO);
         sqlSession.insert("regAndViewMapper.insertBookBreakageInfoOne",libraryBookVO);
     }
+
+    @Override
+    public List<LibraryBookVO> bookBarCodeList(List<String> bookCodeList) {
+        return sqlSession.selectList("regAndViewMapper.bookBarCodeList",bookCodeList);
+    }
+
 
     //    책 상세보기 초기화
     @Override

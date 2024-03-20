@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>바코드 출력</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="/css/common.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="row">
+        <div class="col">
+            <div class="row mt-2">
+                <th:block th:each="e:${bookList}">
+                    <div class="col-3 text-center mt-2 mb-2">
+
+                        <div class="card">
+                            <img th:src="@{http://bwipjs-api.metafloor.com/?bcid=code128&text=} + ${e.bookCode} + @{&includetext&paddingwidth=20&paddingtop=30}"
+                             alt="...">
+                            <div class="card-img-overlay align-items-end ">
+                                <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 205px;">
+                                    [[${e.bookTitle}]]</p>
+                            </div>
+                          </div>
+
+                        
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

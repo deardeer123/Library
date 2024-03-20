@@ -4,6 +4,29 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="regAndViewMapper">
 
+<!--    책 리스트 가져오기 (책 상세정보 있는 친구만)-->
+    <select id="selectBookList2" resultMap="libraryBookMapper.libraryBook">
+        SELECT
+        BOOK.BOOK_CODE,
+        BOOK.BOOK_TITLE,
+        BOOK.BOOK_WRITER,
+        BOOK.BOOK_PUB,
+        BOOK.BOOK_YEAR,
+        book_info.BOOK_INFO_NUM,
+        book_info.BOOK_BORROW_CNT,
+        book_info.BOOK_BORROW_AVAILABLE,
+        book_info.BOOK_INFO_ORIGIN_FILE_NAME,
+        book_info.BOOK_INFO_ATTACHED_FILE_NAME,
+        book_info.BOOK_REGDATE,
+        book_info.BOOK_INTRO,
+        book_info.BOOK_CATE_CODE,
+        book_info.BOOK_MID_CATE_CODE
+        FROM
+        book Inner JOIN book_info
+        ON
+        book.BOOK_CODE = book_info.BOOK_CODE
+    </select>
+
 <!--    책 정보 끌고오기-->
     <select id="selectBookList" resultMap="libraryBookMapper.libraryBook">
         SELECT
@@ -207,6 +230,19 @@
     </insert>
 
 
+    <select id="bookBarCodeList" resultMap="libraryBookMapper.libraryBook">
+        SELECT
+            BOOK_CODE ,
+            BOOK_TITLE
+        FROM
+            BOOK
+        WHERE
+            BOOK_CODE IN (
+        <foreach collection="list" item="bookCode" separator=",">
+            #{bookCode}
+        </foreach>
+        )
+    </select>
 
 
 

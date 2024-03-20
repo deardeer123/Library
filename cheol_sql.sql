@@ -21,14 +21,32 @@ CREATE TABLE SIDE_MENU(
 
 SELECT * FROM board;
 -- 헤더 파일 데이터 도서 관리쪽임
+-- 2024-03-18 메뉴명 변경
 INSERT INTO HEADER_MENU(
 	MENU_NAME , MENU_PAGE , MENU_INDEX , MENU_TYPE)
 	VALUES
 	('대출 반납', 'borrowReturn', 1 , 'library'),
 	('이용자', 'user', 2 , 'library') ,
-	('구입', 'buy', 3 , 'library') ,
-	('등록 열람', 'regAndView', 4 , 'library') ,
+	('자료 등록', 'bookReg', 3 , 'library') ,
+	('자료 변경/열람', 'bookChangeAndOpen', 4 , 'library') ,
 	('통계', 'statistics', 5 , 'library');
+	
+SELECT * FROM header_menu;
+
+UPDATE header_menu
+SET
+	menu_name = '자료 등록' ,
+	menu_page = 'bookReg'
+WHERE
+	MENU_NUM=3;
+	
+
+UPDATE header_menu
+SET
+	MENU_NAME = '자료 변경/열람' ,
+	MENU_PAGE = 'bookChangeAndOpen'
+WHERE
+	MENU_NUM=4;
 	
 -- 헤더 파일 데이터 도서관 웹쪽임
 INSERT INTO HEADER_MENU(
@@ -77,6 +95,7 @@ INSERT INTO SIDE_MENU(
 	('마크 반입', 'markImport', 3, 4  ),
 	-- 통계
 	('통계' , 'statistics', 1, 5 );
+SELECT * FROM side_menu;
 	
 -- 사이드 메뉴 (웹)
 INSERT INTO side_menu(
@@ -363,7 +382,16 @@ CREATE TABLE BOOK(
    BOOK_WRITER VARCHAR(100) NOT NULL,
    BOOK_PUB VARCHAR(30) NOT NULL,
    BOOK_YEAR VARCHAR(20) NOT NULL);
+   
+   SELECT * FROM book;
 
+SELECT 
+	book_code ,
+	book_title
+FROM
+ 	book
+WHERE
+	book_code IN ('GR0000000001' , 'GR0000000002', 'GR0000000003');
 
 CREATE TABLE BOOK_INFO(
 	BOOK_INFO_NUM INT AUTO_INCREMENT PRIMARY KEY ,
@@ -610,7 +638,6 @@ INSERT INTO calendar(
 	('테스트3' , '2024-03-08') ;
 	
 
-
 -- 책 정보
 
 -- 이건 외부에 있는 데이터 불러오는기능
@@ -655,3 +682,4 @@ SELECT
             COUNT(BOOK_CODE)
         FROM
         book_breakage;
+

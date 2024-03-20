@@ -55,15 +55,15 @@ public class ParticipationForumController {
 
         System.out.println("공지사항");
 
-        //전체데이터수
-        int totalBoardCnt= participationForumService.partiCountBoard(searchVO);
-        searchVO.setTotalDataCnt(totalBoardCnt);
-
-        //페이지정보세팅
-        searchVO.setPageInfo();
-
-        //글목록 조회
-        model.addAttribute("noticeList", participationForumService.forumSelectBoardList(searchVO));
+//        //전체데이터수
+//        int totalBoardCnt= participationForumService.partiCountBoard(searchVO);
+//        searchVO.setTotalDataCnt(totalBoardCnt);
+//
+//        //페이지정보세팅
+//        searchVO.setPageInfo();
+//
+//        //글목록 조회
+//        model.addAttribute("noticeList", participationForumService.forumSelectBoardList(searchVO));
 
 
 
@@ -87,38 +87,38 @@ public class ParticipationForumController {
     @PostMapping("/noticeWrite")
     public String noticeWrite(BoardVO boardVO, HttpSession session, Model model,
                               @RequestParam(name = "files") MultipartFile[] files){
-        //로그인 정보 전달
-        MemberVO loginInfo = (MemberVO) session.getAttribute("loginInfo");
-        boardVO.setUserCode(loginInfo.getUserCode());
-        model.addAttribute("loginInfo",loginInfo);
-
-        //게시글 다음 최대값 조회
-        int boardNo = participationForumService.selectNextBoardCode();
-        boardVO.setBoardNum(boardNo);
-
-        //첨부파일등록
-        List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(files);
-        for (UploadVO file : fileList){
-            file.setBoardNum(boardNo);
-        }
-        boardVO.setFileList(fileList);
-
-        //글등록
-        participationForumService.insertNotice(boardVO);
+//        //로그인 정보 전달
+//        MemberVO loginInfo = (MemberVO) session.getAttribute("loginInfo");
+//        boardVO.setUserCode(loginInfo.getUserCode());
+//        model.addAttribute("loginInfo",loginInfo);
+//
+//        //게시글 다음 최대값 조회
+//        int boardNo = participationForumService.selectNextBoardCode();
+//        boardVO.setBoardNum(boardNo);
+//
+//        //첨부파일등록
+//        List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(files);
+//        for (UploadVO file : fileList){
+//            file.setBoardNum(boardNo);
+//        }
+//        boardVO.setFileList(fileList);
+//
+//        //글등록
+//        participationForumService.insertNotice(boardVO);
 
         return "redirect:/notice";
     }
     //공지사항 글 상세조회
     @GetMapping("/noticeDetail")
     public String noticeDetail(@RequestParam(name = "boardNo") int boardNo, Model model){
-        //조회수 증가
-        participationForumService.updateCnt(boardNo);
-
-        //공지 상세조회
-        BoardVO noticeDetail = participationForumService.noticeDetail(boardNo);
-        model.addAttribute("noticeDetail", noticeDetail);
-
-        System.out.println("************************************" + noticeDetail);
+//        //조회수 증가
+//        participationForumService.updateCnt(boardNo);
+//
+//        //공지 상세조회
+//        BoardVO noticeDetail = participationForumService.noticeDetail(boardNo);
+//        model.addAttribute("noticeDetail", noticeDetail);
+//
+//        System.out.println("************************************" + noticeDetail);
 
         return "content/homePage/forum/noticeDetail";
     }
@@ -138,15 +138,15 @@ public class ParticipationForumController {
 
         System.out.println("묻고답하기");
 
-        //전체데이터수
-        int totalBoardCnt= participationForumService.partiCountBoard(searchVO);
-        searchVO.setTotalDataCnt(totalBoardCnt);
-
-        //페이지정보세팅
-        searchVO.setPageInfo();
-
-        //글목록 조회
-        model.addAttribute("qnaList", participationForumService.forumSelectBoardList(searchVO));
+//        //전체데이터수
+//        int totalBoardCnt= participationForumService.partiCountBoard(searchVO);
+//        searchVO.setTotalDataCnt(totalBoardCnt);
+//
+//        //페이지정보세팅
+//        searchVO.setPageInfo();
+//
+//        //글목록 조회
+//        model.addAttribute("qnaList", participationForumService.forumSelectBoardList(searchVO));
 
         return "content/homePage/forum/askAndAnswer";
     }
@@ -164,6 +164,7 @@ public class ParticipationForumController {
 
 
 
+
         System.out.println("자료기증");
         return "content/homePage/forum/bookDonation";
     }
@@ -178,6 +179,8 @@ public class ParticipationForumController {
         //선택한 사이드메뉴 인덱스 번호 보내주기
         int selectedSideMenuIndex = 4;
         model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
+
+
 
         System.out.println("사물함예약");
         return "content/homePage/forum/lockerReservation";

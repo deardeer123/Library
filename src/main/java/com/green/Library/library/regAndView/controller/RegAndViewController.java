@@ -297,6 +297,20 @@ public class RegAndViewController {
         return bookInfo;
     }
 
+    @ResponseBody
+    @PostMapping("/findBookWithCode")
+    public Map<String, Object> findBookWithCode(BookSearchVO bookSearchVO){
+        Map<String , Object> bookInfo = new HashMap<>();
+        System.out.println(bookSearchVO);
+        String bookCode = bookSearchVO.getSearchValue();
+        MemberVO memberVO = regAndViewService.bookDetailInfo(bookCode);
+        LibraryBookCategoryVO libraryBookCategoryVO = regAndViewService.selectCateNameOne(bookCode);
+        bookInfo.put("memberVO",memberVO);
+        bookInfo.put("libraryBookCategoryVO",libraryBookCategoryVO);
+
+        return bookInfo;
+    }
+
 
 
     @GetMapping("/markImport")
@@ -304,8 +318,22 @@ public class RegAndViewController {
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
+        List<LibraryBookVO> bookList = regAndViewService.selectBookList2();
+        model.addAttribute("bookList",bookList);
+
 
         System.out.println("마크 반입 이동");
         return "content/library/regAndView/markImport";
+    }
+
+
+
+    @PostMapping("/printBarCode")
+    public String printBarCode(@RequestParam(name="bookCodeList")List<String> bookCodeList,Model model){
+        System.out.println(bookCodeList);
+        List<LibraryBookVO> bookList = regAndViewService.bookBarCodeList(bookCodeList);
+        model.addAttribute("bookList", bookList);
+
+        return "content/library/regAndView/bar_code_print";
     }
 }
