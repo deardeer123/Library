@@ -4,7 +4,7 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="participationForumMapper">
 
-    <resultMap id="askAndAnswerBoard" type="com.green.Library.web.participationForum.vo.AskAndAnswerBoard">
+    <resultMap id="askAndAnswerBoardVO" type="com.green.Library.web.participationForum.vo.AskAndAnswerBoardVO">
         <id column="ASK_AND_ANSWER_BOARD_NUM" property="askAndAnswerBoardNum" />
         <result column="ASK_AND_ANSWER_BOARD_PASSWORD" property="askAndAnswerBoardPassword" />
         <result column="ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE" property="askAndAnswerBoardPublicOrPrivate" />
@@ -136,6 +136,17 @@
         WHERE BOARD_TYPE = #{boardType}
         ORDER BY BOARD_NO DESC
     </select>
+
+<!--    묻고 답하기 insert-->
+    <insert id="insertAskAndAnswerBoard">
+        INSERT INTO ASK_AND_ANSWER_BOARD (
+        ASK_AND_ANSWER_BOARD_PASSWORD ,
+        ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE ,
+        BOARD_NUM )
+        VALUES(
+
+
+    </insert>
 
 
 

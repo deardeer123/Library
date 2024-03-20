@@ -10,7 +10,8 @@
 <th:block layout:fragment="contentFragment">
   <!-- html code 작성-->
 
-  <form action="" >
+  <form action="/askAndAnswerWrite2" method="post" enctype="multipart/form-data">
+    <input type="hidden" value="30" name="boardType">
     <div class="row">
       <div class="col">
 
@@ -46,8 +47,9 @@
                 <tr>
                   <td>작성자</td>
                   <td>홍길동</td>
-                  <!-- 사용자 CODE -->
-                  <input type="hidden" value="">
+                  <!-- 사용자 CODE 이거 나중에 수정해야함 !!!-->
+                  <input type="hidden" value="2" name="userCode">
+                  <input type="hidden" value="홍길동" name="userName">
                 </tr>
 
                 <tr class="align-middle ">
@@ -78,7 +80,7 @@
                     첨부파일
                   </td>
                   <td>
-                    <input type="file" class="form-control" aria-describedby="fileHelpBlock">
+                    <input type="file" class="form-control" aria-describedby="fileHelpBlock" name="file">
                     <div id="fileHelpBlock" class="form-text">
                       <p>첨부파일은 최대 1개까지 가능하며, 각 파일의 용량은 최대 10MB까지 업로드 할 수 있습니다.</p>
                       <p>첨부파일 중 확장자가 .htm .html .txt 인 파일은 .zip .rar 등으로 압축해서 올리세요.</p>
@@ -115,7 +117,7 @@
           </div>
           <div class="col">
             <div class="float-end">
-              <input class="btn btn-primary" value="글작성">
+              <input type="submit" class="btn btn-primary" value="글작성">
             </div>
           </div>
         </div>
