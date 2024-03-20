@@ -188,6 +188,15 @@
         </foreach>
     </delete>
 
+    <delete id="selectBPDeletes">
+        DELETE
+        FROM BOARD_PLUS
+        WHERE BOARD_NUM IN
+        <foreach collection="boardNums" item="boardNum" separator="," open="(" close=")">
+            #{boardNum}
+        </foreach>
+    </delete>
+
     <delete id="selectDeleteFiles">
         DELETE
         FROM ATTACHED_FILE
@@ -195,7 +204,6 @@
         <foreach collection="boardNums" item="boardNum" separator="," open="(" close=")">
             #{boardNum}
         </foreach>
-
     </delete>
 
     <select id="selectPlusList" resultMap="board">
@@ -326,7 +334,23 @@
             ,CONTENT = #{content}
         WHERE BOARD.BOARD_NUM = #{boardNum}
     </update>
-    
+
+    <!--  이벤트 게시물 삭제  -->
+    <delete id="eventBoardDelete">
+        DELETE
+        FROM BOARD
+        WHERE BOARD_NUM = #{boardNum}
+    </delete>
+    <delete id="eventBPDelete">
+        DELETE
+        FROM BOARD_PLUS
+        WHERE BOARD_NUM = #{boardNum}
+    </delete>
+    <delete id="eventFileDelete">
+        DELETE
+        FROM ATTACHED_FILE
+        WHERE BOARD_NUM = #{boardNum}
+    </delete>
 <!--  ////////////////////////이벤트 게시물///////////////////  -->
 
 </mapper>

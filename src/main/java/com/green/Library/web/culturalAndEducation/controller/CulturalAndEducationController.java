@@ -311,6 +311,7 @@ public class CulturalAndEducationController {
         return "content/homePage/culturalAndEducation/eventParticipation/goEventUpdatePage";
     }
 
+    //게시글 수정
     @PostMapping("/goEventUpdate")
     public String goEventUpdate(BoardVO boardVO,PlusVO plusVO){
         System.out.println(boardVO);
@@ -319,11 +320,20 @@ public class CulturalAndEducationController {
         return "redirect:/goDetailParticipation?boardNum="+boardVO.getBoardNum();
     }
 
-    @PostMapping("/goEventDelete")
-    public String goEventDelete(BoardVO boardVO){
+    //게시글 삭제
+    @GetMapping("/goEventDelete")
+    public String goEventDelete(@RequestParam(name = "boardNum") int boardNum){
+        boardService.eventBoardDelete(boardNum);
+        return "redirect:/eventParticipation";
+    }
+
+    //게시글 선택 삭제
+    @GetMapping("/goEventDeletes")
+    public String goEventDeletes(BoardVO boardVO){
         boardService.selectDeletes(boardVO);
         return "redirect:/eventParticipation";
     }
+
 
 
 
@@ -376,7 +386,7 @@ public class CulturalAndEducationController {
         searchVO.setBoardType(boardVO.getBoardType());
 
 
-        List<BoardVO> boardList =  boardService.selectBoardList(searchVO);
+        List<BoardVO> boardList =  boardService.selectPlusList(searchVO);
         System.out.println("---------------------------------------------"+searchVO);
         System.out.println(boardList);
         model.addAttribute("guideBoardList",boardList);
@@ -385,12 +395,12 @@ public class CulturalAndEducationController {
 
 
         System.out.println("평생교육 강좌안내");
-        return "content/homePage/culturalAndEducation/courseGuide";
+        return "content/homePage/culturalAndEducation/courseGuide/courseGuide";
     }
 
     @GetMapping("/goGuideInsertPage")
     public String goGuideInsertPage(){
-        return "content/homePage/culturalAndEducation/guideInsertPage";
+        return "content/homePage/culturalAndEducation/courseGuide/guideInsertPage";
     }
 
 
@@ -414,24 +424,21 @@ public class CulturalAndEducationController {
         System.out.println(webMenuService.selectWebMenuList("member"));
         model.addAttribute("memberMenuList", webMenuService.selectWebMenuList("member"));
 
-        MemberVO loginInfo = (MemberVO) session.getAttribute("loginInfo");
-
-        //boardNo의 max값
-//        int maxBoardNo = cultureService.culIsNullBoardNo();
+//        boardNum의 max값
+        int maxBoardNo = boardService.isNullBoardNo();
 
 
-//        // 멀티 이미지 첨부 기능
-//        List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(subFiles);
-//        for (UploadVO file : fileList) {
-//            file.setBoardNum(maxBoardNo);
-//        }
-//        boardVO.setFileList(fileList);
-//
-//        boardVO.setBoardNo(maxBoardNo);
-//        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+boardVO);
-//
-//        cultureService.insertEventBoard(boardVO);
-//        memberVO.setUserCode(loginInfo.getUserCode());
+        // 멀티 이미지 첨부 기능
+        List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(subFiles);
+        for (UploadVO file : fileList) {
+            file.setBoardNum(maxBoardNo);
+        }
+        boardVO.setFileList(fileList);
+
+        boardVO.setBoardNum(maxBoardNo);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+boardVO);
+
+//        boardService.;
 
 
         return "redirect:/courseGuide";

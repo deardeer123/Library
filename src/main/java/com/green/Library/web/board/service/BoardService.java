@@ -3,6 +3,7 @@ package com.green.Library.web.board.service;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.PlusVO;
 import com.green.Library.web.board.vo.SearchVO;
+import org.codehaus.groovy.transform.sc.transformers.CompareIdentityExpression;
 
 
 import java.util.List;
@@ -25,9 +26,6 @@ public interface BoardService {
     //상세 게시판
     BoardVO selectBoardDetail();
 
-
-//    //업로드 파일
-//    void insertUploadFile (BoardVO boardVO);
 
     BoardVO selectBoardDetail(int boardNo);
 
@@ -54,6 +52,9 @@ public interface BoardService {
 
     //이벤트 게시물 수정
     void updateEventBoardDetail(BoardVO boardVO);
+
+    void eventBoardDelete(int boardNum);
+
 
 }
 

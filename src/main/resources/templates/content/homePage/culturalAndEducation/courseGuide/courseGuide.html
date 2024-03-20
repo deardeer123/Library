@@ -60,20 +60,20 @@
                     <tr th:each="board : ${guideBoardList}">
                         <td>번호</td>
                         <td>[[${board.boardTitle}]]</td>
-                        <td>[[${board.BoardPlusVO.teacher}]]</td>
-                        <td>[[${board.BoardPlusVO.target}]]</td>
-                        <td>[[${board.BoardPlusVO.openDate}]] 
+                        <td>[[${board.PlusVO.teacher}]]</td>
+                        <td>[[${board.PlusVO.target}]]</td>
+                        <td>[[${board.PlusVO.openDate}]] 
                             ~ 
-                            [[${board.BoardPlusVO.closeDate}]]
+                            [[${board.PlusVO.closeDate}]]
                         </td>
                         <td>
-                            [[${board.BoardPlusVO.fromDate}]]
+                            [[${board.PlusVO.toDate}]]
                             ~
-                            [[${board.BoardPlusVO.toDate}]]
+                            [[${board.PlusVO.fromDate}]]
                         </td>
                         <td>
-                            [[${board.BoardPlusVO.personnel}]] /
-                            [[${board.BoardPlusVO.maximumPerson}]]
+                            [[${board.PlusVO.personnel}]] /
+                            [[${board.PlusVO.maximumPerson}]]
                         </td>
                         <td>[[${board.BoardPlusVO.eventStatus}]]</td>
                     </tr>
