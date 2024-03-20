@@ -1,113 +1,138 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
 <th:block layout:fragment="content_css">
-    <!-- html 파일이 열릴때 같이 실행되는 css -->
-    <link rel="stylesheet" href="/">
+  <!-- html 파일이 열릴때 같이 실행되는 css -->
+  <link rel="stylesheet" href="/">
 </th:block>
 
 <th:block layout:fragment="contentFragment">
-    <!-- html 코드 작성 -->
-    <div class="row">
-        <div class="col">
-          <h3>
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="50" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
-              <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
-            </svg>
-           / 참여마당 / 묻고 답하기</h3>
-        </div>
-  
-      </div>
-  
-    <div class="row">
-      <form action="/notice" method="post">
+  <!-- html 코드 작성 -->
+  <div class="row">
+    <div class="col">
+      <!-- 검색 기능-->
+
+      <div class="row mt-3">
         <div class="col-3">
           <div class="input-group mb-3">
             <select class="form-select" name="searchType">
               <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'boardTitle'}">제목</option>
             </select>
           </div>
-          </div>
-          <div class="col-5">
-            <input type="text" class="form-control" name="searchValue" th:value="${searchVO.searchValue}" aria-label="Text input with dropdown button">
-          </div>
-          <div class="col-2">
-            <input type="submit" class="btn btn-outline-secondary" value="검색" id="inputGroupFileAddon04">
-          </div>
-      </form>
-    </div>
-    
-    전체게시글 수 총 N 개
-  
-    <div class="row">
-      <div class="col">
-        <table class="table table-bordered align-middle text-center" style="width: 100%;">
-          <colgroup>
-            <col width="10%">
-            <col width="*">
-            <col width="15%">
-            <col width="15%">
-            <col width="15%">
-          </colgroup>
-          <thead>
-            <tr>
-              <td>번호</td>
-              <td>제목</td>
-              <td>작성자</td>
-              <td>등록일</td>
-              <td>조회수</td>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- 조회된 데이터가 없을 시 -->
-            <th:block th:if="${#lists.isEmpty(qnaList)}">
-                    <tr>
-                        <td colspan="5">등록된 게시글이 없습니다.</td>
-                    </tr>
-            </th:block>
-            <th:block th:unless="${#lists.isEmpty(qnaList)}">
-            <tr th:each="qna,state : ${qnaList}">
-                <td>[[${#lists.size(qnaList) - state.index}]]</td>
-                <td th:onclick="">
-                  [[${qnaList.boardTitle}]]</td>
-                <td>[[${qnaList.memberVO.userName}]]</td>
-                <td>[[${qnaList.boardDate}]]</td>
-                <td>[[${qnaList.boardCnt}]]</td>
-            </tr>
-            </th:block>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    
+        </div>
 
-          <!-- 페이징처리 -->
-      
-      <div class="col-12 text-center">
-        <th:block th:if="${searchVO.prev}">
-            <a th:href="@{/notice(nowPage=${searchVO.beginPage - 1})}">이전</a>
-        </th:block>
-        <th:block th:each=" i : ${#numbers.sequence(searchVO.beginPage, searchVO.endPage)}">
-            <a th:href="@{/notice(nowPage=${i})}">[[${i}]]</a>
-        </th:block>
-        <th:block th:if="${searchVO.next}">
-            <a th:href="@{/notice(nowPage=${searchVO.endPage + 1})}">다음</a>
-        </th:block>
+        <div class="col-5">
+          <input type="text" class="form-control" name="searchValue" th:value="${searchVO.searchValue}"
+            aria-label="Text input with dropdown button">
+        </div>
+
+        <div class="col-2">
+          <input type="submit" class="btn btn-outline-secondary" value="검색" id="inputGroupFileAddon04">
+        </div>
+
       </div>
 
-    <input type="button" value="목록" onclick="location.href='/notice'">
-    
-  
-      <th:block th:if="${session.loginInfo}"> 
-        <input type="button" value="글쓰기" onclick="location.href='/noticeWrite'">
-      </th:block>
-   
+      <!-- 전체 게시물 갯수 -->
+      <div class="row">
+        <div class="col">
+          전체게시글 수 총 N 개
+        </div>
+      </div>
+
+      <!-- 게시물 목록 -->
+      <div class="row mt-3">
+        <div class="col">
+          <table class="table table-bordered align-middle text-center">
+            <colgroup>
+              <col width="10%">
+              <col width="*">
+              <col width="15%">
+              <col width="15%">
+              <col width="15%">
+            </colgroup>
+            <thead>
+              <tr>
+                <td>번호</td>
+                <td>제목</td>
+                <td>작성자</td>
+                <td>등록일</td>
+                <td>조회수</td>
+              </tr>
+            </thead>
+
+            <tbody>
+              <!-- 조회된 묻고 답하기 게시물들 -->
+              <tr>
+                <td>3</td>
+                <td>사물함이 고장났어요</td>
+                <td>오철민</td>
+                <td>2024-03-20</td>
+                <td>1</td>
+              </tr>
+
+              <tr>
+                <td>2</td>
+                <td>사물함이 고장났어요</td>
+                <td>오철민</td>
+                <td>2024-03-20</td>
+                <td>1</td>
+              </tr>
+
+              <tr>
+                <td>1</td>
+                <td>사물함이 고장났어요</td>
+                <td>오철민</td>
+                <td>2024-03-20</td>
+                <td>1</td>
+              </tr>
+            </tbody>
+
+
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- 페이징처리 -->
+
+  <div class="col-12 text-center">
+    <th:block th:if="${searchVO.prev}">
+      <a th:href="@{/notice(nowPage=${searchVO.beginPage - 1})}">이전</a>
+    </th:block>
+    <th:block th:each=" i : ${#numbers.sequence(searchVO.beginPage, searchVO.endPage)}">
+      <a th:href="@{/notice(nowPage=${i})}">[[${i}]]</a>
+    </th:block>
+    <th:block th:if="${searchVO.next}">
+      <a th:href="@{/notice(nowPage=${searchVO.endPage + 1})}">다음</a>
+    </th:block>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <!-- 이 버튼을 누르면 다시 1번으로 돌아감 -->
+      <div class="float-start">
+        <input type="button" value="목록" onclick="location.href='/notice'">
+      </div>
+    </div>
+    <div class="col ">
+      <!-- 로그인 해야지 사용가능한 글쓰기 버튼 -->
+      <div class="float-end">
+        <input type="button" value="글쓰기" onclick="location.href='/askAndAnswerWrite?boardType=30'">
+      </div>
+
+    </div>
+  </div>
+
+
 </th:block>
 
 <th:block layout:fragment="content_js">
-    <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <script src="/"></script>
+  <!-- html 파일이 열릴때 같이 실행되는 js -->
+  <script src="/"></script>
 </th:block>
+
 </html>

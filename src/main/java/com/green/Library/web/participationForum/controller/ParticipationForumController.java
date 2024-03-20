@@ -136,6 +136,7 @@ public class ParticipationForumController {
         int selectedSideMenuIndex = 2;
         model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
 
+        System.out.println(searchVO.getBoardType());
         System.out.println("묻고답하기");
 
 //        //전체데이터수
@@ -150,6 +151,26 @@ public class ParticipationForumController {
 
         return "content/homePage/forum/askAndAnswer";
     }
+
+    @GetMapping("/askAndAnswerWrite")
+    public String writeAskAndAnswer(Model model){
+//        묻고 답하기 글 작성 페이지 이동
+
+        //메뉴 정보
+        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
+        //네비게이션
+        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        //선택한 메뉴의 인덱스 번호 보내주기
+        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
+        //선택한 사이드메뉴 인덱스 번호 보내주기
+        int selectedSideMenuIndex = 2;
+        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
+
+
+        return "content/homePage/forum/askAndAnswerWrite";
+    }
+
+
     @GetMapping("/bookDonation")
     public String goBookDonation(Model model){
         ///메뉴 정보

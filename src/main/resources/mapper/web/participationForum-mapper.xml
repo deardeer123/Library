@@ -4,6 +4,14 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="participationForumMapper">
 
+    <resultMap id="askAndAnswerBoard" type="com.green.Library.web.participationForum.vo.AskAndAnswerBoard">
+        <id column="ASK_AND_ANSWER_BOARD_NUM" property="askAndAnswerBoardNum" />
+        <result column="ASK_AND_ANSWER_BOARD_PASSWORD" property="askAndAnswerBoardPassword" />
+        <result column="ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE" property="askAndAnswerBoardPublicOrPrivate" />
+        <result column="IS_ANSWER_BOARD" property="isAnswerBoard" />
+        <result column="BOARD_NUM" property="boardNum" />
+    </resultMap>
+
     <!-- 공지사항 등록-->
     <insert id="insertBoard">
         INSERT INTO BOARD (

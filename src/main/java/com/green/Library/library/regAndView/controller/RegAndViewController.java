@@ -45,27 +45,13 @@ public class RegAndViewController {
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
-        //System.out.println(bookSearchVO);
-
-        //System.out.println("------------------------"+ bookSearchVO.getNowPage());
-        //페이징
-        //System.out.println(bookSearchVO.getNowPage());
-        //bookSearchVO.setNowPage(bookSearchVO.getNowPage());
-
         //전체 게시물 갯수 설정
         int totalDataCnt = regAndViewService.selectBookCnt(bookSearchVO);
         bookSearchVO.setTotalDataCnt(totalDataCnt);
 
         //페이지 정보 세팅
         bookSearchVO.setPageInfo();
-        // 끝나는 페이지, 마지막 페이지 확인
-//        System.out.println("endPage : " + bookSearchVO.getEndPage());
-//        System.out.println("totalPage : " + bookSearchVO.getTotalPageCnt());
-//        System.out.println("prev : " + bookSearchVO.getPrev());
-//        System.out.println("next : " + bookSearchVO.getNext());
 
-
-//
         //대충 책 정보 가져 오고나서 해당 파일의 상세 정보등을 변경시키게
 //        System.out.println(regAndViewService.searchBookList(bookSearchVO));
         model.addAttribute("bookList", regAndViewService.searchBookList(bookSearchVO));

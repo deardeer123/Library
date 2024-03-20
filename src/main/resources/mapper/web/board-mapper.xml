@@ -12,6 +12,7 @@
         <result column="BOARD_CNT"      property="boardCnt"/>
         <result column="BOARD_TYPE"     property="boardType"/>
         <association property="plusVO" resultMap="plus"/>
+        <association property="askAndAnswerBoard" resultMap="participationForumMapper.askAndAnswerBoard" />
         <association property="memberVO" resultMap="memberMapper.users"/>
         <collection property="fileList" resultMap="file"/>
     </resultMap>
