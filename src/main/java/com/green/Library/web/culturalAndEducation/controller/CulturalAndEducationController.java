@@ -393,24 +393,23 @@ public class CulturalAndEducationController {
 
 
 
-
         System.out.println("평생교육 강좌안내");
         return "content/homePage/culturalAndEducation/courseGuide/courseGuide";
     }
 
+    //가이드 게시판 등록 페이지 이동
     @GetMapping("/goGuideInsertPage")
     public String goGuideInsertPage(){
         return "content/homePage/culturalAndEducation/courseGuide/guideInsertPage";
     }
 
-
-
+    //가이드 게시판 등록
     @PostMapping("/guideInsertBoard")
     public String guideInsertBoard(Model model,
-                                     BoardVO boardVO,
-                                     MemberVO memberVO,
-                                     HttpSession session,
-                                     @RequestParam(name = "files") MultipartFile[] subFiles) {
+                                   BoardVO boardVO,
+                                   HttpSession session,
+                                   PlusVO plusVO,
+                                   @RequestParam(name = "files") MultipartFile[] files) {
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -424,25 +423,48 @@ public class CulturalAndEducationController {
         System.out.println(webMenuService.selectWebMenuList("member"));
         model.addAttribute("memberMenuList", webMenuService.selectWebMenuList("member"));
 
-//        boardNum의 max값
-        int maxBoardNo = boardService.isNullBoardNo();
+        //boardNo의 max값
+        int maxBoardNum = boardService.isNullBoardNo();
 
-
+        System.out.println(plusVO);
+        System.out.println(boardVO);
         // 멀티 이미지 첨부 기능
-        List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(subFiles);
-        for (UploadVO file : fileList) {
-            file.setBoardNum(maxBoardNo);
+        List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(files);
+        for (UploadVO file : fileList){
+            file.setBoardNum(maxBoardNum);
         }
+
+        boardVO.setPlusVO(plusVO);
         boardVO.setFileList(fileList);
+        boardVO.setBoardNum(maxBoardNum);
 
-        boardVO.setBoardNum(maxBoardNo);
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+boardVO);
-
-//        boardService.;
-
-
+        boardVO.setUserCode((Integer) session.getAttribute("userCode"));
+        System.out.println(boardVO);
+        boardService.insertParticipation(boardVO);
         return "redirect:/courseGuide";
     }
+
+    //게시판 삭제
+//    @PostMapping("/GuideDelete")
+//    public String GuideDelete(@RequestParam(name = "boardNum")int boardNum){
+//        boardService.eventBoardDelete(boardNum);
+//        return "";
+//    }
+    //게시판 선택 삭제
+    @PostMapping("/GuideDelete")
+    public String GuideDeletes(BoardVO boardVO){
+        boardService.selectDeletes(boardVO);
+        return "redirect:/courseGuide";
+    }
+    //게시판 상세보기
+    //게시판 수정
+
+
+
+
+
+
+    ////////////////////////////////////////////////////
 
     @GetMapping("/applicationForClasses")
     public String goApplicationForClasses(Model model){
