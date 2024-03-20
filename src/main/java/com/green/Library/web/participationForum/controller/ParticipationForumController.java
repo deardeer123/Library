@@ -1,18 +1,17 @@
 package com.green.Library.web.participationForum.controller;
 
 import com.green.Library.util.BoardUploadUtil;
-import com.green.Library.util.UploadUtil;
 import com.green.Library.web.board.service.BoardServiceImpl;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.board.vo.UploadVO;
 import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.participationForum.service.ParticipationForumServiceIMPL;
+import com.green.Library.web.participationForum.vo.AskAndAnswerBoardVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import com.green.Library.web.webMenu.service.WebMenuService;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -168,6 +168,44 @@ public class ParticipationForumController {
 
 
         return "content/homePage/forum/askAndAnswerWrite";
+    }
+
+    @PostMapping("/askAndAnswerWrite2")
+    public String askAndAnswerWrite2(BoardVO boardVO, UploadVO uploadVO, AskAndAnswerBoardVO askAndAnswerBoardVO ,
+            MemberVO memberVO ,
+            @RequestParam(name="file")MultipartFile file,
+            @RequestParam(name="boardType") int boardType){
+
+
+        //게시판 번호 구하기
+        int boardNum = boardService.isNullBoardNo();
+        //게시판 타입 넣기
+        boardVO.setBoardType(boardType);
+
+        //게시판 번호 넣기
+        boardVO.setBoardNum(boardNum);
+        askAndAnswerBoardVO.setBoardNum(boardNum);
+        //첨부파일 넣기
+        uploadVO = BoardUploadUtil.uploadFile(file);
+        //첨부파일 게시판 번호 넣어주기
+        uploadVO.setBoardNum(boardNum);
+        System.out.println(uploadVO);
+        List<UploadVO> fileList = new ArrayList<>();
+        fileList.add(uploadVO);
+
+        //boadrdVO에 fileList 넣어주기
+        boardVO.setFileList(fileList);
+
+        //boardVO에 askAndAnswerBoardVO 넣기
+        boardVO.setAskAndAnswerBoardVO(askAndAnswerBoardVO);
+
+        //memberVO도 넣어줘야 하는데 일단 가짜 데이터 홍길동 넣음
+        boardVO.setMemberVO(memberVO);
+
+        //확인
+        System.out.println(boardVO);
+
+        return "redirect:/askAndAnswer";
     }
 
 
