@@ -49,7 +49,7 @@ public class UserController {
 
     // 이용자 승인 페이지 조회(cardNum 부여 하기 위해 우선 select)
     @GetMapping("/letUserApproval")
-    public String letUserApproval(Model model, SearchUserVO searchUserVO, MemberVO memberVO){
+    public String letUserApproval(Model model, SearchUserVO searchUserVO){
 
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
@@ -66,6 +66,7 @@ public class UserController {
             }
         }
 
+
         model.addAttribute("membersInfo", filterNoCardNum);
 
         System.out.println(filterNoCardNum);
@@ -75,12 +76,12 @@ public class UserController {
 
     // 이용자 cardNum update
     @PostMapping("/updateCardNum")
-    public String updateCardNum(MemberVO memberVO, SearchUserVO searchUserVO){
+    public String updateCardNum(MemberVO memberVO){
 
         // cardNum 업데이트 쿼리
         userService.updateCardNum(memberVO);
 
-        return "redirect:/bookAdmin/letUserApproval?userName1=" + searchUserVO.getUserName1() + "&userName2=" + searchUserVO.getUserName2() + "&userTel=" + searchUserVO.getUserTel() + "&gender=" + searchUserVO.getGender() + "&orderStandard=" + searchUserVO.getOrderStandard();
+        return "redirect:/bookAdmin/letUserApproval";
     }
 
     //연체자 관리

@@ -83,3 +83,5 @@ INSERT INTO users(
 	, '1234@gmail.com'
 	, 'Y'
 );
+
+-- 24.03.20 이용자 조회에 choose 써보기

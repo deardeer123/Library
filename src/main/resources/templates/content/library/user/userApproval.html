@@ -24,19 +24,19 @@
                                     이용자명                                   
                                 </div>
                                 <div class="col-3">
-                                    <input type="text" class="form-control" name="userName1"> 
+                                    <input type="text" class="form-control" name="userName1" th:value="${searchUserVO?.userName1}"> 
                                 </div>
                                 <div class="col-1">
                                     ~ 
                                 </div>
                                 <div class="col-3">
-                                    <input type="text" class="form-control" name="userName2">
+                                    <input type="text" class="form-control" name="userName2" th:value="${searchUserVO?.userName2}">
                                 </div>
                                 <div class="col-1">
                                     전화번호                                   
                                 </div>
                                 <div class="col-3">            
-                                    <input type="text" class="form-control" name="userTel">
+                                    <input type="text" class="form-control" name="userTel" th:value="${searchUserVO?.userTel}">
                                 </div>
                             </div>
 
@@ -47,8 +47,8 @@
                                 <div class="col">
                                     <select name="gender" class="form-select">
                                         <option value="">전체</option>
-                                        <option value="남자">남자</option>
-                                        <option value="여자">여자</option>
+                                        <option value="남자" th:selected="${searchUserVO?.gender == '남자'}">남자</option>
+                                        <option value="여자" th:selected="${searchUserVO?.gender == '여자'}">여자</option>
                                     </select>
                                 </div> 
                                 <div class="col">
@@ -57,9 +57,9 @@
                                 <div class="col">
                                     <select name="orderStandard" class="form-select">
                                         <option value="">전체</option>
-                                        <option value="userName">대출자명</option>
-                                        <option value="userTel">전화번호</option>
-                                        <option value="gender">성별</option>
+                                        <option value="USER_NAME" th:selected="${searchUserVO?.orderStandard == 'USER_NAME'}">대출자명</option>
+                                        <option value="USER_TEL" th:selected="${searchUserVO?.orderStandard == 'USER_TEL'}">전화번호</option>
+                                        <option value="GENDER" th:selected="${searchUserVO?.orderStandard == 'GENDER'}">성별</option>
                                     </select>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@
                                 <thead class="table-light thead vertical-align: middle">
                                     <tr>
                                         <td>
-                                            <input type="checkbox" class="form-check-input" style="vertical-align: middle;">
+                                            <input type="checkbox" class="form-check-input" id="all" style="vertical-align: middle;" onclick="checkAll()">
                                         </td>
                                         <td style="padding-bottom: 30px;">
                                             이름(아이디)
@@ -125,7 +125,7 @@
                                     <th:block th:unless="${#lists.isEmpty(membersInfo)}">
                                         <tr th:each="memberInfo : ${membersInfo}">
                                             <input type="hidden" name="userCode" th:value="${memberInfo.userCode}">
-                                            <td><input type="checkbox" class="form-check-input"></td>
+                                            <td><input type="checkbox" class="form-check-input one"></td>
                                             <td>[[${memberInfo.userName}]]([[${memberInfo.userId}]])</td>
                                             <td>[[${memberInfo.isAdmin}]]</td>
                                             <td>[[${memberInfo.gender}]]</td>
@@ -137,13 +137,55 @@
                             </table>
 
                             <div class="row">
-                                <div class="col d-grid gap-2 d-md-flex justify-content-md-end">
+                                <div class="col-6 gap-2 d-md-flex justify-content-md-end">
+                                    <!-- 페이징 코드 나중에 할게료-->
+                                    <th:block th:if="${!#lists.isEmpty(membersInfo)}">
+
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination">
+                                            <li class="page-item">
+                                                <a class="page-link" href="#" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                            </ul>
+                                        </nav>
+
+                                    </th:block>
+                                </div>
+                                <div class="col-6 d-grid gap-2 d-md-flex justify-content-md-end">
                                     <button type="submit" class="btn btn-primary">전체 승인</button>
+                                    
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
+
+
+
+
+            <!-- <th:block th:if="${!#lists.isEmpty(membersInfo)}">
+                <div>
+                    <th:block th:if="${searchUserVO.prev}">
+                        <a th:href="@{/bookAdmin/letUserApproval(nowPage=${searchUserVO.beginPage - 1}, userName1=${searchUserVO?.userName1}, userName2=${searchUserVO?.userName2}, userTel=${searchUserVO?.userTel}, gender=${searchUserVO?.gender}, orderStandard=${searchUserVO?.orderStandard})}">이전</a>
+                    </th:block>
+                        <th:block th:each="i : ${#numbers.sequence(searchUserVO.beginPage, searchUserVO.endPage), userName1=${searchUserVO?.userName1}, userName2=${searchUserVO?.userName2}, userTel=${searchUserVO?.userTel}, gender=${searchUserVO?.gender}, orderStandard=${searchUserVO?.orderStandard}}">
+                            <a th:href="@{/bookAdmin/letUserApproval(nowPage=${i})}">[[${i}]]</a>
+                        </th:block>
+                    <th:block th:if="${searchUserVO.next}">
+                        <a th:href="@{/bookAdmin/letUserApproval(nowPage=${searchUserVO.endPage + 1}, userName1=${searchUserVO?.userName1}, userName2=${searchUserVO?.userName2}, userTel=${searchUserVO?.userTel}, gender=${searchUserVO?.gender}, orderStandard=${searchUserVO?.orderStandard})}">다음</a>
+                    </th:block>                   
+                </div>
+            </th:block> -->
 
             </div>
         </div>
@@ -153,6 +195,6 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <!-- <script src="/"></script> -->
+    <script src="/js/content/library/user/userApproval.js"></script>
 </th:block>
 </html>
