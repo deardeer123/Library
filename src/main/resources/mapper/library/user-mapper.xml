@@ -4,6 +4,46 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="userMenuMapper">
 
+    <!-- 유저 승인, cardNum이 0인 회원 조회 -->
+    <select id="userSearch" resultMap="memberMapper.users">
+        SELECT USER_CODE
+            , USER_ID
+            , USER_NAME
+            , GENDER
+            , USER_TEL
+            , IS_ADMIN
+            , CARD_NUM
+        FROM USERS
+        <where>
+            <if test='userName1 != null and !userName1.equals("") and userName2 == null and userName2.equals("")'>
+                AND USER_NAME BETWEEN #{userName1} AND '힣'
+            </if>
+            <if test='userName2 != null and !userName2.equals("") and userName1 == null and userName1.equals("")'>
+                AND USER_NAME BETWEEN '가' AND #{userName2}
+            </if>
+            <if test='userName1 != null and !userName1.equals("") and userName2 != null and !userName2.equals("")'>
+                AND USER_NAME BETWEEN #{userName1} AND #{userName2}
+            </if>
+            <if test='userTel != null and !userTel.equals("")'>
+                AND USER_TEL LIKE CONCAT('%', #{userTel}, '%')
+            </if>
+            <if test='gender != null and !gender.equals("")'>
+                AND GENDER LIKE CONCAT('%', #{gender}, '%')
+            </if>
+            <if test='orderStandard != null and !orderStandard.equals("")'>
+                ORDER BY ${orderStandard} DESC
+            </if>
+        </where>
+
+    </select>
+
+    <!-- cardNum 업데이트 -->
+    <update id="updateCardNum">
+        UPDATE USERS
+        SET CARD_NUM = (SELECT IFNULL(MAX(CARD_NUM), 0) + 1 FROM USERS)
+        WHERE USER_CODE= #{userCode}
+    </update>
+
 
 </mapper>
 
