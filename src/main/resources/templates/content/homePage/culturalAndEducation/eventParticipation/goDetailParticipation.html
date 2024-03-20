@@ -74,8 +74,7 @@
             </div>
             <div  sec:authorize="hasRole('ROLE_Y')">
                 <input type="button" th:onclick="|location.href='@{/goEventUpdatePage(boardNum=${board.boardNum})}'|" value="수정하기">
-                <input type="button" onclick="culDeleteBoard()" value="선택 삭제하기">
-
+                <input type="button" th:onclick="deleteEventBoard([[${board.boardNum}]])" value="선택 삭제하기">
             </div>
         </div>
     </div>
@@ -83,6 +82,6 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴 때 같이 실행되는 js -->
-    <!-- <script src="/"></script> -->
+    <script src="/js/content/culture/culture.js"></script>
 </th:block>
 </html>

@@ -54,7 +54,7 @@
                 </thead>
                 <tbody>
                     <tr th:each="board : ${boardList}">
-                        <td><input type="checkbox" class="chk" checked></td>
+                        <td><input th:value="${board.boardNum}" type="checkbox" class="chk" checked></td>
                         <td><span th:onclick="|location.href='@{/goDetailParticipation(boardNum=${board.boardNum})}'|" style="cursor: pointer;">[[${board.boardTitle}]]</span></td>
                         <td>[[${board.PlusVO.teacher}]]</td>
                         <td>[[${board.PlusVO.target}]]</td>
@@ -67,6 +67,7 @@
             </table>
             <div sec:authorize="hasRole('ROLE_Y')">
                 <input type="button" value="게시글 작성" onclick="location.href='/goParticipation'">
+                <input type="button" value="게시글 선택 삭제" onclick="goEventDeletes()">
             </div>
         </div>
     </div>
@@ -75,7 +76,7 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <!-- <script src="/"></script> -->
+    <script src="/js/content/culture/culture.js"></script>
 </th:block>
 
 </html>
