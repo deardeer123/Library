@@ -6,14 +6,20 @@
 
     <!-- 회원 조회 -->
     <select id="userSearch" resultMap="memberMapper.users">
-        SELECT USER_CODE
+        SELECT U.USER_CODE
             , USER_ID
             , USER_NAME
             , GENDER
             , USER_TEL
             , IS_ADMIN
             , CARD_NUM
-        FROM USERS
+            , CARD_STATUS
+            , COUNT(BORROW_CODE)
+            , SUM(CASE WHEN BB.RETURN_DATE > BB.EX_RETURN_DATE THEN 1 ELSE 0 END)
+            , USER_INTRO
+        FROM USERS U
+        LEFT JOIN BOOK_BNR BB
+        ON U.USER_CODE = BB.USER_CODE
         <where>
             <if test='cardNum1 != null and !cardNum1.equals("") and (cardNum2 == null or cardNum2.equals(""))'>
                 AND CARD_NUM &gt;= #{cardNum1}
@@ -21,8 +27,8 @@
             <if test='cardNum2 != null and !cardNum2.equals("") and (cardNum1 == null or cardNum1.equals(""))'>
                 AND CARD_NUM &lt;= #{cardNum2}
             </if>
-            <if test='cardNum1 != null and !cardNum1.equals("") and cardNum2 != null and !cardNum2.equals("")'>
-                AND CARD_NUM BETWEEN #{userName1} AND #{cardNum2}
+            <if test='cardNum1 != 0 and !cardNum1.equals("") and cardNum2 != 0 and !cardNum2.equals("")'>
+                AND CARD_NUM BETWEEN #{cardNum1} AND #{cardNum2}
             </if>
             <if test='userName1 != null and !userName1.equals("") and userName2 == null and userName2.equals("")'>
                 AND USER_NAME BETWEEN #{userName1} AND '힣'
