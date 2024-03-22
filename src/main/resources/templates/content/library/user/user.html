@@ -5,7 +5,7 @@
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
-    <!-- <link rel="stylesheet" href="/"> -->
+    <link rel="stylesheet" href="/css/content/library/user/user.css">
 </th:block>
 
 <th:block layout:fragment="contentFragment">
@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col">
 
-                <form action="/bookAdmin/letUserApproval" method="post">
+                <form action="/bookAdmin/letUserSearch" method="get">
                     <div class="row mb-5">
                         <div class="col">
                             
@@ -23,13 +23,13 @@
                                     카드 번호
                                 </div>
                                 <div class="col-2">
-                                    <input type="text" class="form-control" name="cardNum1" th:value="${searchUserVO?.cardNum1}">
+                                    <input type="number" class="form-control" name="cardNum1" th:value="${searchUserVO?.cardNum1}">
                                 </div>
                                 <div class="col-1">
                                     ~ 
                                 </div>
                                 <div class="col-2">
-                                    <input type="text" class="form-control" name="cardNum2" th:value="${searchUserVO?.cardNum2}">
+                                    <input type="number" class="form-control" name="cardNum2" th:value="${searchUserVO?.cardNum2}">
                                 </div>
                                 <div class="col-1">
                                     이용자명
@@ -121,14 +121,37 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- <th:block th:if="">
-
-                                </th:block> -->
-                                <tr>
-                                    <td colspan="5">
-                                        목록이 없습니다.
-                                    </td>
-                                </tr>
+                                <th:block th:if="${#lists.isEmpty(membersInfo)}">
+                                    <tr>
+                                        <td colspan="5">
+                                            목록이 없습니다.
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                <th:block th:unless="${#lists.isEmpty(membersInfo)}">
+                                    <th:block th:each="memberInfo : ${membersInfo}">
+                                        <tr>
+                                            <td rowspan="2"></td>
+                                            <td rowspan="2">
+                                                [[${memberInfo.userName}]]([[${memberInfo.userId}]])[[${memberInfo.cardNum}]]
+                                            </td>
+                                            <td>
+                                                [[${memberInfo.isAdmin}]]
+                                            </td>
+                                            <td>
+                                                [[${memberInfo.cardStatus}]]
+                                            </td>
+                                            <td>
+                                                [[${memberInfo.userTel}]]
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>[[${borrowCnt}]]</td>
+                                            <td>[[${overdueCnt}]]</td>
+                                            <td>[[${memberInfo.userIntro}]]</td>
+                                        </tr>
+                                    </th:block>
+                                </th:block>
                             </tbody>
                         </table>
                         

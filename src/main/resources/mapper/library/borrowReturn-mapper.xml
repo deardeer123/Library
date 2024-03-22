@@ -58,11 +58,13 @@
         INSERT INTO BOOK_BNR (
             USER_CODE
             , BOOK_CODE
+            , BORROW_DATE
             , EX_RETURN_DATE
         ) VALUES (
             #{userCode}
             , #{bookCode}
-            , DATE_ADD(NOW(), INTERVAL +14 DAY)
+            , #{borrowDate}
+            DATE_ADD(NOW(), INTERVAL +14 DAY)
         )
     </insert>
 
@@ -108,9 +110,21 @@
         UPDATE BOOK_BNR
         SET
             RETURN_YN = 'Y'
-            , RETURN_DATE = NOW()
+            , RETURN_DATE
+                CASE
+                    WHEN #{returnDate} %lt; NOW() THEN #{returnDate}
+                    ELSE NOW()
+                END
         WHERE BOOK_CODE = #{bookCode}
     </update>
+
+<!-- ////////////////////////////////////////////////////// -->
+
+
+
+<!-- //////////////////////// 예약 //////////////////////////// -->
+
+
 
 <!-- ////////////////////////////////////////////////////// -->
 

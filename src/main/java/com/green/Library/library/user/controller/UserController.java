@@ -36,6 +36,21 @@ public class UserController {
         System.out.println(" 이동");
         return "content/library/user/user";
     }
+
+    // 이용자 관리 검색 기능
+    @GetMapping("/letUserSearch")
+    public String letUserSearch(Model model, SearchUserVO searchUserVO){
+        //이동하기전 메뉴리스트 가져가기
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
+
+        // 이용자 정보 전체 조회
+        List<MemberVO> membersInfo = userService.selectUserInfoList(searchUserVO);
+
+        model.addAttribute("membersInfo", membersInfo);
+
+        return "content/library/user/user";
+    }
+
     //이용자 승인
     @GetMapping("/userApproval")
     public String goUserApproval(Model model){
@@ -60,12 +75,11 @@ public class UserController {
         List<MemberVO> filterNoCardNum = new ArrayList<>();
 
         // cardNum이 0과 같은 이용자들을 필터 변수에 추가
-        for(MemberVO member : membersInfo){
-            if(member.getCardNum() == 0){
-                filterNoCardNum.add(member);
+        membersInfo.forEach(m -> {
+            if(m.getCardNum() == 0){
+                filterNoCardNum.add(m);
             }
-        }
-
+        });
 
         model.addAttribute("membersInfo", filterNoCardNum);
 

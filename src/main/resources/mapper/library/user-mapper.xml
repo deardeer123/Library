@@ -6,49 +6,59 @@
 
     <!-- 회원 조회 -->
     <select id="userSearch" resultMap="memberMapper.users">
-        SELECT U.USER_CODE
+        SELECT USER_NAME
+            , USER_CODE
             , USER_ID
-            , USER_NAME
-            , GENDER
-            , USER_TEL
-            , IS_ADMIN
             , CARD_NUM
+            , CASE
+                WHEN IS_ADMIN = 'Y' THEN 'ADMIN'
+                ELSE 'USER'
+              END AS IS_ADMIN
             , CARD_STATUS
-            , COUNT(BORROW_CODE)
-            , SUM(CASE WHEN BB.RETURN_DATE > BB.EX_RETURN_DATE THEN 1 ELSE 0 END)
+            , USER_TEL
             , USER_INTRO
-        FROM USERS U
-        LEFT JOIN BOOK_BNR BB
-        ON U.USER_CODE = BB.USER_CODE
-        <where>
-            <if test='cardNum1 != null and !cardNum1.equals("") and (cardNum2 == null or cardNum2.equals(""))'>
-                AND CARD_NUM &gt;= #{cardNum1}
-            </if>
-            <if test='cardNum2 != null and !cardNum2.equals("") and (cardNum1 == null or cardNum1.equals(""))'>
-                AND CARD_NUM &lt;= #{cardNum2}
-            </if>
-            <if test='cardNum1 != 0 and !cardNum1.equals("") and cardNum2 != 0 and !cardNum2.equals("")'>
-                AND CARD_NUM BETWEEN #{cardNum1} AND #{cardNum2}
-            </if>
-            <if test='userName1 != null and !userName1.equals("") and userName2 == null and userName2.equals("")'>
-                AND USER_NAME BETWEEN #{userName1} AND '힣'
-            </if>
-            <if test='userName2 != null and !userName2.equals("") and userName1 == null and userName1.equals("")'>
-                AND USER_NAME BETWEEN '가' AND #{userName2}
-            </if>
-            <if test='userName1 != null and !userName1.equals("") and userName2 != null and !userName2.equals("")'>
-                AND USER_NAME BETWEEN #{userName1} AND #{userName2}
-            </if>
-            <if test='userTel != null and !userTel.equals("")'>
-                AND USER_TEL LIKE CONCAT('%', #{userTel}, '%')
-            </if>
-            <if test='gender != null and !gender.equals("")'>
-                AND GENDER LIKE CONCAT('%', #{gender}, '%')
-            </if>
-            <if test='orderStandard != null and !orderStandard.equals("")'>
-                ORDER BY ${orderStandard} DESC
-            </if>
-        </where>
+            , GENDER
+            , (SELECT COUNT(BORROW_CODE)
+                FROM BOOK_BNR
+                WHERE USER_CODE = USERS.USER_CODE
+                AND RETURN_YN = 'N') AS BORROW_CNT
+            , (SELECT COUNT(*)
+                FROM BOOK_BNR
+                WHERE USER_CODE = USERS.USER_CODE
+                AND RETURN_YN = 'N'
+                AND RETURN_DATE &gt; EX_RETURN_DATE) AS OVERDUE_CNT
+        FROM USERS
+        WHERE 1 = 1
+        <if test='cardNum1 != null and !cardNum1.equals("") and (cardNum2 == null and cardNum2.equals(""))'>
+            AND CARD_NUM BETWEEN ${cardNum1} AND (SELECT MAX(CARD_NUM) FROM USERS)
+        </if>
+        <if test='cardNum2 != null and !cardNum2.equals("") and (cardNum1 == null and cardNum1.equals(""))'>
+            AND CARD_NUM BETWEEN (SELECT MIN(CARD_NUM) FROM USERS) AND ${cardNum2}
+        </if>
+        <if test='cardNum1 != null and !cardNum1.equals("") and cardNum2 != null and !cardNum2.equals("")'>
+            AND CARD_NUM BETWEEN ${cardNum1} AND ${cardNum2}
+        </if>
+        <if test='userName1 != null and !userName1.equals("") and userName2 == null and userName2.equals("")'>
+            AND USER_NAME BETWEEN #{userName1} AND '힣'
+        </if>
+        <if test='userName2 != null and !userName2.equals("") and userName1 == null and userName1.equals("")'>
+            AND USER_NAME BETWEEN '가' AND #{userName2}
+        </if>
+        <if test='userName1 != null and !userName1.equals("") and userName2 != null and !userName2.equals("")'>
+            AND USER_NAME BETWEEN #{userName1} AND #{userName2}
+        </if>
+        <if test='userTel != null and !userTel.equals("")'>
+            AND USER_TEL LIKE CONCAT('%', #{userTel}, '%')
+        </if>
+        <if test='gender != null and !gender.equals("")'>
+            AND GENDER LIKE CONCAT('%', #{gender}, '%')
+        </if>
+        <if test='orderStandard != null and !orderStandard.equals("")'>
+            ORDER BY ${orderStandard} DESC
+        </if>
+
+
+
 
     </select>
 

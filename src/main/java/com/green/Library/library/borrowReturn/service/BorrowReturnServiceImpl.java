@@ -18,7 +18,7 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
         return sqlSession.selectOne("bnrMapper.selectBorrowInfo", memberVO);
     }
 
-    // 대출 시 book_borrow의 exReturnDate 업데이트
+    // 대출 시 BOOK_BNR INSERT + BOOK_INFO UPDATE
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void insertBorrow(BookBNRVO bookBNRVO) {
@@ -26,12 +26,14 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
         sqlSession.update("bnrMapper.updateBookInfo", bookBNRVO.getBookCode());
     }
 
+    // 책 코드 유효성 검사
     @Override
     public boolean isCorrectBookCode(String bookCode) {
 
         return sqlSession.selectOne("bnrMapper.isCorrectBookCode", bookCode) == null ? false : true;
     }
 
+    // 대출 진행 시 카드번호에서 유저번호를 조회(인풋 태그가 하나라서)
     @Override
     public int selectUserCode(int cardNum) {
         return sqlSession.selectOne("bnrMapper.selectUserCode", cardNum);
@@ -43,6 +45,7 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
         return sqlSession.selectOne("bnrMapper.selectBookAvailable", bookCode).equals("Y") ? true : false;
     }
 
+    // 반납 시 BOOK_BNR UPDATE + BOOK_INFO UPDATE
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateReturnInfo(String bookCode) {
