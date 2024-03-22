@@ -10,7 +10,7 @@ public interface MemberService {
 
     MemberVO login(String memberId);
 
-
+    void apply(MemberVO memberVO);
 
 
 }

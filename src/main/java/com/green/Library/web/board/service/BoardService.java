@@ -55,6 +55,11 @@ public interface BoardService {
 
     void eventBoardDelete(int boardNum);
 
+    //진행상태 변경
+    void updateStatus();
+
+
+
 
 }
 

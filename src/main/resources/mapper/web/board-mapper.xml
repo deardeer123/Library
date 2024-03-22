@@ -140,7 +140,7 @@
             BOARD.BOARD_NUM
             ,BOARD.USER_CODE
             ,BOARD_TITLE
-            ,BOARD_DATE
+            ,DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') AS BOARD_DATE
             ,BOARD_CNT
             ,CONTENT
             ,USER_ID
@@ -323,6 +323,7 @@
     <!--  이벤트 게시물 수정  -->
     <update id="updateEventBoardDetail">
         UPDATE BOARD INNER JOIN BOARD_PLUS
+        ON BOARD.BOARD_NUM = BOARD_PLUS.BOARD_NUM
         SET
             BOARD_TITLE = #{boardTitle}
             ,TEACHER = #{plusVO.teacher}
@@ -352,6 +353,25 @@
         FROM ATTACHED_FILE
         WHERE BOARD_NUM = #{boardNum}
     </delete>
+
+    <update id="updateStatus">
+        UPDATE board_plus AS A
+        SET
+        EVENT_STATUS =
+        (SELECT
+            CASE
+                WHEN OPEN_DATE &gt; NOW() THEN '진행예정'
+                WHEN OPEN_DATE &lt;= NOW() AND CLOSE_DATE &gt;= NOW() THEN '진행중'
+                WHEN CLOSE_DATE &lt; NOW() THEN '진행마감'
+            END
+        FROM board_plus AS B
+        WHERE B.PLUS_CODE = A.PLUS_CODE)
+    </update>
+    <update id="">
+        UPDATE BOARD_PLUS
+        SET
+    </update>
+
 <!--  ////////////////////////이벤트 게시물///////////////////  -->
 
 </mapper>

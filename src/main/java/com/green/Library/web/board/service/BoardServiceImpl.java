@@ -101,6 +101,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional(rollbackFor = ExportException.class)
     public void updateEventBoardDetail(BoardVO boardVO) {
         sqlSession.update("boardMapper.updateEventBoardDetail",boardVO);
     }
@@ -111,6 +112,11 @@ public class BoardServiceImpl implements BoardService {
         sqlSession.delete("boardMapper.eventFileDelete", boardNum);
         sqlSession.delete("boardMapper.eventBPDelete", boardNum);
         sqlSession.delete("boardMapper.eventBoardDelete",boardNum);
+    }
+
+    @Override
+    public void updateStatus() {
+        sqlSession.update("boardMapper.updateStatus");
     }
 
 

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴 때 같이 실행되는 css -->
@@ -12,36 +11,51 @@
     <!-- html 코드 작성 -->
     <div class="row">
         <div class="col">
-            <table>
-                <thead>
-                    <tr>
-                        <td>[[${board.boardTitle}]]</td>
-                    </tr>
-                    <tr>
-                        <td>작성자</td>
-                        <td>[[${board.memberVO.userId}]]</td>
-                        <td>작성일</td>
-                        <td>[[${board.boardDate}]]</td>
-                        <td>조회수</td>
-                        <td>[[${board.boardCnt}]]</td>
-                    </tr>
-                </thead>
+            <table class="table table-bordered text-center align-middle">
                 <tbody>
+                    <tr>
+                        <td>
+                            <h3>[[${board.boardTitle}]]</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="font-weight: bolder;"> 작성자 </span>
+                            <span style="margin-right: 5px;"> [[${board.memberVO.userId}]] </span>
+                            <span style="font-weight: bold;"> 작성일 </span>
+                            <span style="margin-right: 5px;"> [[${board.boardDate}]] </span>
+                            <span style="font-weight: bold;"> 조회수 </span>
+                            <span> [[${board.boardCnt}]] </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-borderless text-center">
+                <thead>
                     <tr th:each="file : ${board.fileList}">
                         <td>
                             <img th:src="@{'/upload/' + ${file.attachedFileName}}">
                         </td>
                     </tr>
-                    <tr>
-                        <td>[[${board.content}]]</td>
-                    </tr>
-                </tbody>
+                </thead>
+                
             </table>
-            <div sec:authorize="hasRole('ROLE_Y')">
-                <input type="button" value="게시글 수정" th:onclick="|location.href='@{/culUpdate(boardNum=${board.boardNum})}'|">
-                <input type="button" value="게시글 삭제" th:onclick="">
+            <tr>
+                <td>[[${board.content}]]</td>
+            </tr>
+            <div sec:authorize="hasRole('ROLE_Y')" class="d-md-flex justify-content-end">
+                <input type="button" style="margin-right: 5px;" class="btn btn-primary btn-sm" value="게시글 수정"
+                    th:onclick="|location.href='@{/culUpdate(boardNum=${board.boardNum})}'|">
+                <input type="button" class="btn btn-primary btn-sm" value="게시글 삭제" th:onclick="">
             </div>
-            
+            <div>
+                <input class="btn btn-success btn-lg" type="button" value="목록" onclick="location.href='/libraryEvent'">
+            </div>
+            </tbody>
         </div>
     </div>
 </th:block>
@@ -50,4 +64,5 @@
     <!-- html 파일이 열릴 때 같이 실행되는 js -->
     <!-- <script src="/"></script> -->
 </th:block>
+
 </html>

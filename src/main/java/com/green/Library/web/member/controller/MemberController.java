@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.naming.Name;
 
@@ -136,6 +137,13 @@ public class MemberController {
     public String logout(HttpSession session){
         session.removeAttribute("loginInfo");
         return "redirect:/home";
+    }
+
+    @PostMapping("/apply")
+    @ResponseBody
+    public void apply(MemberVO memberVO){
+        memberService.apply(memberVO);
+
     }
 
 

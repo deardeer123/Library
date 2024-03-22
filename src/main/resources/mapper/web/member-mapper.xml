@@ -19,6 +19,7 @@
         <result property="publishDate" column="PUBLISH_DATE"/>
         <result property="userIntro" column="USER_INTRO"/>
         <result property="cardStatus" column="CARD_STATUS"/>
+        <result property="applyDate" column="APPLY_DATE"/>
         <collection property="bookBorrowList" resultMap="bnrMapper.bookBNR"/>
     </resultMap>
     <insert id="insertMember">
@@ -56,6 +57,15 @@
         WHERE USER_ID = #{userId}
     </select>
 
+    <insert id="apply">
+        INSERT INTO USERS(
+            APPLY_DATE
+            ,USER_TEL
+        ) VALUES(
+            #{applyDate}
+            ,#{userTel}
+        )
+    </insert>
 
 
 
