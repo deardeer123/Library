@@ -717,8 +717,8 @@ INSERT INTO users(
 	, IS_ADMIN
 ) VALUES (
 	2
-	, '홍길동'
-	, '1234'
+	, 'aaaa'
+	, '1111'
 	, '관리자'
 	, '010-1111-2345'
 	, 12345
@@ -729,6 +729,31 @@ INSERT INTO users(
 	, 'N'
 );
 
+INSERT INTO users(
+	USER_CODE
+	, USER_ID
+	, USER_PW
+	, USER_NAME
+	, USER_TEL
+	, POST_CODE
+	, USER_ADDR
+	, ADDR_DETAIL
+	, GENDER
+	, EMAIL
+	, IS_ADMIN
+) VALUES (
+	3
+	, 'bbbb'
+	, '2222'
+	, '관리자'
+	, '010-1111-3333'
+	, 12345
+	, '울산시 남구'
+	, '그린아카데미'
+	, '남자'
+	, '2345@gmail.com'
+	, 'Y'
+);
         
 CREATE TABLE ASK_AND_ANSWER_BOARD(
 	ASK_AND_ANSWER_BOARD_NUM INT AUTO_INCREMENT PRIMARY KEY
@@ -738,6 +763,30 @@ CREATE TABLE ASK_AND_ANSWER_BOARD(
 	, IF_ANSWER_BOARD_NUM INT NOT NULL DEFAULT 0
 	, BOARD_NUM INT NOT NULL REFERENCES board(BOARD_NUM)
 	);
+	
+SELECT * FROM board;
+SELECT * FROM attached_file;
+SELECT * FROM ASK_AND_ANSWER_BOARD;
+SELECT * FROM users;
 
+-- DELETE FROM board;
+-- DELETE FROM attached_file;
+-- DELETE FROM ASK_AND_ANSWER_BOARD;
+
+SELECT 
+	BOARD.BOARD_NUM ,
+	BOARD.BOARD_TITLE ,
+	DATE_FORMAT(BOARD.BOARD_DATE, '%Y-%m-%d') ,
+	USERS.USER_NAME ,
+	BOARD.BOARD_CNT
+FROM
+	BOARD INNER JOIN users
+	ON board.USER_CODE = users.USER_CODE
+WHERE
+	board_type = 30;
+	
+	
+	
+	
 
 

@@ -63,6 +63,23 @@
 
             <tbody>
               <!-- 조회된 묻고 답하기 게시물들 -->
+              <th:block th:each="e , state :${boardVOList}">
+                <!-- 여기다가 비밀글인경우 비밀번호 입력하고 들어갈 수 있게 매개변수 던져야할듯 -->
+                <tr th:onclick="detailAskBoard([[${e.boardNum}]])">
+                  <td>[[${#lists.size(boardVOList)-state.index}]]</td>
+                  <td>
+                    <!-- 만약에 비밀글 인경우 -->
+                    <th:block th:if="${e.askAndAnswerBoardVO.askAndAnswerBoardPublicOrPrivate == 'private'}">🔒</th:block>
+                    [[${e.boardTitle}]]
+                  </td>
+                  <td>[[${e.memberVO.userName}]]</td>
+                  <td>[[${e.boardDate}]]</td>
+                  <td>[[${e.boardCnt}]]</td>
+                </tr>
+                <!-- 이글에 만약에 답글이 달린 경우 이 글 바로밑에 떠야하는데 그걸 어떻게 해결할지가 문제임 -->
+                <!-- 답글 boardVO리스트도 같이 들고와서 만약에 이글에 답변이 달렸다면 바로 밑에 나오게 해야할듯 -->
+              </th:block>
+
               <tr>
                 <td>3</td>
                 <td>사물함이 고장났어요</td>
@@ -128,6 +145,13 @@
   </div>
 
 
+  <script>
+    function detailAskBoard(boardNum){
+      console.log(boardNum)
+    
+      location.href=`/goDetailAskBoard?boardNum=${boardNum}`;
+    }
+  </script>
 </th:block>
 
 <th:block layout:fragment="content_js">

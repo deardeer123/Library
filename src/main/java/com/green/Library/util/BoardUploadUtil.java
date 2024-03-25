@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class BoardUploadUtil {
@@ -63,4 +64,37 @@ public class BoardUploadUtil {
         }
         return fileList;
     }
+
+
+//    public static Optional<UploadVO> uploadFile1(MultipartFile upLoadFile){
+//        //파일 첨부 기능
+//        //(첨부한 파일이 존재할 때 실행함)
+//        Optional<UploadVO> uploadVO = null;
+//
+//        if(!upLoadFile.isEmpty()){
+//            uploadVO = Optional.empty();
+//
+//            //확장자
+//            String extension = getBoardExtension(upLoadFile.getOriginalFilename());
+//
+//            //무작위로 만든 이름에 확장자 붙이기
+//            String boardFileName = getBoardUUID() + extension;
+//
+//            // 파일 첨부
+//            try {
+//                File mainFile = new File(ConstantVariable.UPLOAD_PATH + boardFileName);
+//                uploadVO.
+//                uploadVO.setAttachedFileName(boardFileName);
+//                uploadVO.setOriginFileName(upLoadFile.getOriginalFilename());
+//
+//
+//                upLoadFile.transferTo(mainFile);
+//                uploadVO.setIsMain("Y");
+//            } catch (Exception e) {
+//                System.out.println("예외발생");
+//                e.printStackTrace();
+//            }
+//        }
+//        return uploadVO;
+//    }
 }
