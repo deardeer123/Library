@@ -22,14 +22,10 @@ repositories {
 }
 
 dependencies {
-<<<<<<< HEAD
-=======
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	testImplementation 'org.springframework.security:spring-security-test'
 	implementation 'org.springframework.boot:spring-boot-starter-security' // 시큐리티
-
 	implementation 'net.nurigo:sdk:4.3.0' //sms 사용할려고 넣었어요
->>>>>>> 0a9a0d1df40ff9d7599cd0044de18ed8b503b1a3
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16' //쿼리 로그 라이브러리 추가
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect' //fragment 사용을 위해 추가
 	compileOnly("org.springframework.boot:spring-boot-devtools") //html새로고침
