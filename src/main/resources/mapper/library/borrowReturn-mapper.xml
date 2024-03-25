@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<mapper namespace="bnrMapper">
+
+    <resultMap id="bookBNR" type="com.green.Library.library.borrowReturn.vo.BookBNRVO">
+        <id          column="BORROW_CODE"             property="borrowCode"/>
+        <result      column="BORROW_DATE"         property="borrowDate"/>
+        <result      column="RETURN_YN"           property="returnYN"/>
+        <result      column="EX_RETURN_DATE"      property="exReturnDate"/>
+        <result      column="RETURN_DATE"      property="returnDate"/>
+        <result      column="USER_CODE"           property="userCode"/>
+        <result      column="BOOK_CODE"           property="bookCode"/>
+        <association property="libraryBookVO"     resultMap="libraryBookMapper.libraryBook"/>
+    </resultMap>
+
+<!-- ///////////////////// 대출 ///////////////////////// -->
+
+    <!-- 이용자의 대출 정보 조회-->
+    <select id="selectBorrowInfo" resultMap="memberMapper.users">
+        SELECT CARD_NUM
+            , USER_INTRO
+            , U.USER_CODE
+            , USER_NAME
+            , USER_TEL
+            , BORROW_CODE
+            , BORROW_DATE
+            , RETURN_YN
+            , EX_RETURN_DATE
+            , RETURN_DATE
+            , BBR.BOOK_CODE
+            , BOOK_TITLE
+            , BOOK_CATE_CODE
+            , BOOK_MID_CATE_CODE
+            , BOOK_INFO_ATTACHED_FILE_NAME
+        FROM USERS U
+        LEFT JOIN BOOK_BNR AS BBR
+        ON U.USER_CODE = BBR.USER_CODE
+        LEFT JOIN BOOK AS B
+        ON BBR.BOOK_CODE = B.BOOK_CODE
+        LEFT JOIN BOOK_INFO AS BI
+        ON BBR.BOOK_CODE = BI.BOOK_CODE
+        WHERE U.CARD_NUM = #{cardNum}
+        ORDER BY BORROW_DATE DESC
+    </select>
+
+    <!-- 데이터베이스에 존재하는 책인지 확인 -->
+    <select id="isCorrectBookCode" resultType="String">
+        SELECT
+            BOOK_CODE
+        FROM BOOK
+        WHERE BOOK_CODE = #{bookCode}
+    </select>
+
+    <!-- 대출 진행 시 insert -->
+    <insert id="insertBorrow">
+        INSERT INTO BOOK_BNR (
+            USER_CODE
+            , BOOK_CODE
+            , EX_RETURN_DATE
+        ) VALUES (
+            #{userCode}
+            , #{bookCode}
+            , DATE_ADD(NOW(), INTERVAL +14 DAY)
+        )
+    </insert>
+
+    <!-- bookInfo update -->
+    <update id="updateBookInfo">
+        UPDATE BOOK_INFO
+        SET
+            BOOK_BORROW_AVAILABLE = 'N'
+            , BOOK_BORROW_CNT = BOOK_BORROW_CNT + 1
+        WHERE BOOK_CODE = #{bookCode}
+    </update>
+
+    <!-- 책 코드 찍기 전 유저 카드넘버 조회 -->
+    <select id="selectUserCode" resultType="int">
+        SELECT USER_CODE
+        FROM USERS
+        WHERE CARD_NUM = #{cardNum}
+    </select>
+
+<!-- ///////////////////////////////////////////////////////////   -->
+
+
+
+<!-- //////////////////////// 반납 //////////////////////////// -->
+
+    <!-- 책이 대출되어 있는 지 확인 이게 있어야 인풋 태그에 들어오는 책 코드가 대출인지 반납인지 알 수 있음 -->
+    <select id="selectBookAvailable" resultType="String">
+        SELECT BOOK_BORROW_AVAILABLE
+        FROM BOOK_INFO
+        WHERE BOOK_CODE = #{bookCode}
+    </select>
+
+    <!-- bookInfo update -->
+    <update id="updateReturnBookInfo">
+        UPDATE BOOK_INFO
+        SET
+            BOOK_BORROW_AVAILABLE = 'Y'
+        WHERE BOOK_CODE = #{bookCode}
+    </update>
+
+    <!-- 반납 진행 시 update -->
+    <update id="updateReturnInfo">
+        UPDATE BOOK_BNR
+        SET
+            RETURN_YN = 'Y'
+            , RETURN_DATE = NOW()
+        WHERE BOOK_CODE = #{bookCode}
+    </update>
+
+<!-- ////////////////////////////////////////////////////// -->
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

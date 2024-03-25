@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--&lt;!&ndash; 해당 파일에 모든 쿼리문을 작성 &ndash;&gt;-->
+<mapper namespace="culturalAndEducationMapper">
+
+    <!--  게시글 등록  -->
+    <insert id="culInsertBoard">
+        INSERT INTO BOARD(
+            BOARD_TITLE
+            , CONTENT
+            , BOARD_DATE
+            , BOARD_TYPE
+            , USER_CODE
+            , BOARD_CNT
+            , BOARD_NO
+        )
+        VALUES(
+            #{boardTitle}
+            ,#{content}
+            ,#{boardDate}
+            ,#{boardType}
+            ,#{userCode}
+            ,#{boardCnt}
+            ,#{boardNo}
+        )
+    </insert>
+
+
+    <!--  등록한 게시물 정보 리스트  -->
+    <select id="selectBoardList" resultMap="boardMapper.board">
+        SELECT
+            BOARD.BOARD_NO
+            , BOARD_TITLE
+            , CONTENT
+            , DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') AS BOARD_DATE
+            , BOARD.USER_CODE
+            , BOARD_CNT
+            , USER_NAME
+            , ATTACHED_CODE
+            , ORIGIN_FILE_NAME
+            , ATTACHED_FILE_NAME
+            , IS_MAIN
+            , BOARD_TYPE
+        FROM board INNER JOIN USERS
+        ON BOARD.USER_CODE = USERS.USER_CODE
+        INNER JOIN ATTACHED_FILE AS FILE
+        ON BOARD.BOARD_NO = FILE.BOARD_NO
+        WHERE BOARD_TYPE = ${boardType}
+        <if test='searchValue != null and !searchValue.equals("")'>
+            AND ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+        <if test='fromDate != null and !fromDate.equals("")'>
+            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') = #{fromDate}
+        </if>
+        <if test='toDate != null and !toDate.equals("")'>
+            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') = #{toDate}
+        </if>
+        ORDER BY BOARD_NO DESC
+        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
+    </select>
+
+
+
+
+    <!--  이미지 등록  -->
+    <insert id="culInsertFileList">
+        INSERT INTO ATTACHED_FILE(
+        ORIGIN_FILE_NAME
+        ,ATTACHED_FILE_NAME
+        ,IS_MAIN
+        ,BOARD_NO
+        )
+        VALUES
+        <foreach collection="fileList" item="file" separator=",">
+            (#{file.originFileName}
+            ,#{file.attachedFileName}
+            ,#{file.isMain}
+            ,#{file.boardNo})
+        </foreach>
+    </insert>
+
+    <!--  게시판 개수 + 1  -->
+    <select id="culIsNullBoardNo" resultType="int">
+        SELECT CASE WHEN
+        MAX(BOARD_NO) IS NULL
+        THEN 1
+        ELSE MAX(BOARD_NO) + 1
+        END
+        FROM BOARD
+    </select>
+
+    <!--  게시물 상세보기  -->
+    <select id="culSelectBoardDetail" resultMap="boardMapper.board">
+        SELECT
+            BOARD.BOARD_NO
+            ,BOARD.USER_CODE
+            ,BOARD_TITLE
+            ,DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') AS BOARD_DATE
+            ,BOARD_CNT
+            ,CONTENT
+            ,USER_ID
+            ,ATTACHED_FILE_NAME
+            ,IS_MAIN
+        FROM BOARD
+        INNER JOIN USERS
+        ON BOARD.USER_CODE = USERS.USER_CODE
+        INNER JOIN ATTACHED_FILE AS FILE
+        ON BOARD.BOARD_NO = FILE.BOARD_NO
+        WHERE BOARD.BOARD_NO = #{boardNo}
+    </select>
+
+    <!--  게시판 개수  -->
+    <select id="culCountBoard" resultType="int">
+        SELECT COUNT (BOARD_NO)
+        FROM BOARD
+    </select>
+
+    <!--  조회수 증가  -->
+    <update id="culBoardCntUp">
+        UPDATE BOARD
+        SET BOARD_CNT = BOARD_CNT + 1
+        WHERE BOARD_NO
+    </update>
+
+    <!--  게시판 삭제  -->
+    <delete id="culDeleteBoard">
+        DELETE FROM BOARD
+        WHERE BOARD_NO IN
+        <foreach collection="boardNos" item="boardNo" separator="," open="(" close=")">
+            #{boardNo}
+        </foreach>
+    </delete>
+
+    <!--  게시판 수정  -->
+    <update id="culUpdateBoard">
+        UPDATE BOARD
+        SET
+        BOARD_TITLE = #{boardTitle}
+        ,CONTENT = #{content}
+        WHERE BOARD_NO = #{boardNo}
+    </update>
+
+
+
+
+
+<!--  ///////////////////////////////이벤트 보드//////////////////////////////  -->
+<!--  평생교육 강좌안내 글 등록  -->
+
+    <insert id="insertEventBoard">
+        INSERT INTO BOARD_PLUS(
+            TEACHER
+            ,TARGET
+            ,OPEN_DATE
+            ,CLOSE_DATE
+            ,TO_DATE
+            ,FROM_DATE
+            ,MAXIMUM_PERSON
+            ,EVENT_STATUS
+            ,BOARD_NO
+        )VALUES(
+            #{boardPlusVO.teacher}
+            ,#{boardPlusVO.target}
+            ,#{boardPlusVO.openDate}
+            ,#{boardPlusVO.closeDate}
+            ,#{boardPlusVO.toDate}
+            ,#{boardPlusVO.fromDate}
+            ,#{boardPlusVO.maximumPerson}
+            ,#{boardPlusVO.eventStatus}
+            ,#{boardPlusVO.boardNo}
+        )
+    </insert>
+
+    <!--  평생교육 강좌안내 게시판 리스트  -->
+    <select id="selectEventBoard" resultMap="boardMapper.board">
+        SELECT
+            BOARD_TITLE
+            ,TEACHER
+            ,TARGET
+            ,OPEN_DATE
+            ,CLOSE_DATE
+            ,TO_DATE
+            ,FROM_DATE
+            ,PERSONNEL
+            ,MAXIMUM_PERSON
+            ,EVENT_STATUS
+            ,B.BOARD_NO
+        FROM BOARD B INNER JOIN BOARD_PLUS P
+        ON B.BOARD_NO = P.BOARD_NO
+        WHERE BOARD_TYPE = ${boardType}
+        <if test='searchValue != null and !searchValue.equals("")'>
+            AND ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+        <if test='fromDate != null and !fromDate.equals("")'>
+            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') = #{fromDate}
+        </if>
+        <if test='toDate != null and !toDate.equals("")'>
+            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') = #{toDate}
+        </if>
+        ORDER BY BOARD_NO DESC
+        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
+
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+
+<th:block layout:fragment="content_css">
+    <!-- html 파일이 열릴때 같이 실행되는 css -->
+    <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+    <!-- html 코드 작성 -->
+    <div class="row">
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <!-- 검색창 -->
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col">
+            <!-- 전체 게시물 갯수 -->
+            <h4>전체 게시물 갯수 : 100개</h4>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <!-- 게시물 목록 -->
+            <table>
+              <thead>
+                <colgroup>
+                  <col width="10%">
+                  <col width="40%">
+                  <col width="">
+                  <col width="">
+                  <col width="">
+                </colgroup>
+                <tr>
+                  <td>번호</td>
+                  <td>제목</td>
+                  <td>작성자</td>
+                  <td>등록일</td>
+                  <td>조회수</td>
+                </tr>
+              </thead>
+
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="content_js">
+    <!-- html 파일이 열릴때 같이 실행되는 js -->
+    <!-- <script src="/"></script> -->
+</th:block>
+</html>

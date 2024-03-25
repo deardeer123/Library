@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+
+<th:block layout:fragment="content_css">
+    <!-- html 파일이 열릴 때 같이 실행되는 css -->
+    <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+    <!-- html 코드 작성 -->
+    <div class="row ">
+        <div class="col-12">
+            <h3>게시글 등록</h3>
+        </div>
+        <div class="col">
+            <form action="/insertParticipation" method="post" enctype="multipart/form-data">
+                <table class="align-middle">
+                    <thead>
+                        <tr>
+                            <td>
+                                프로그램명
+                            </td>
+                            <td><input type="text" name="boardTitle"></td>
+                            <td>강사명</td>
+                            <td><input type="text" name="teacher"></td>
+                        </tr>
+                        <tr>
+                            <td>운영기간</td>
+                            <td>
+                                <input type="date" name="openDate">
+                                <input type="date" name="closeDate">
+                            </td>
+                            <td>신청기간</td>
+                            <td>
+                                <input type="date" name="toDate">
+                                <input type="date" name="fromDate">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>대상</td>
+                            <td><input type="text" name="target"></td>
+                            <td>정원</td>
+                            <td>
+                                <input type="number" name="personnel" value="0" min="0" max="0"> /
+                                <input type="number" name="maximumPerson" min="0" max="99">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>상태</td>
+                            <td>
+                                <input type="radio" value="진행예정" name="eventStatus" checked> 진행예정
+                                <input type="radio" value="진행중" name="eventStatus"> 진행중
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="4">
+                                <textarea name="content" cols="100" rows="20"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="file" name="files">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div><input type="submit" value="등록하기"></div>
+                            </td>
+                        </tr>
+                        <input type="hidden" name="boardType" value="25">
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="content_js">
+    <!-- html 파일이 열릴 때 같이 실행되는 js -->
+    <!-- <script src="/"></script> -->
+</th:block>
+</html>

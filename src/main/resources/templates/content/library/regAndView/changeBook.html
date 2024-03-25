@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/library/library_detail_layout}">
+
+<th:block layout:fragment="content_css">
+    <!-- html 파일이 열릴때 같이 실행되는 css -->
+    <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+    <!-- html 코드 작성 -->
+    <form id="" method="post" action="/bookAdmin/changeBook2" enctype="multipart/form-data">
+        <input type="hidden" name="bookInfoAttachedFileName" th:value="${book.libraryBookInfoVO.bookInfoAttachedFileName}">
+        <input type="hidden" name="bookInfoOriginFileName" th:value="${book.libraryBookInfoVO.bookInfoOriginFileName}">
+        <div class="row">
+            <div class="col">
+                <!-- 책변경 하기 -->
+                <div class="row">
+                    <div class="col">
+
+                        <div class="row">
+                            <!-- 중간부분 -->
+                            <div class="col-5">
+                                <!-- 이미지 들어갈 자리 -->
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="text-center">
+                                            <th:block th:if="${book.libraryBookInfoVO.bookInfoAttachedFileName == ''}">
+                                                <img src="/upload/book_character_smile.png" class="rounded" alt="..."
+                                                    width="100%" id="bookImg">
+
+                                            </th:block>
+
+                                            <th:block th:if="${book.libraryBookInfoVO.bookInfoAttachedFileName != ''}">
+
+                                                <img th:src="@{/upload/} + ${book.libraryBookInfoVO.bookInfoAttachedFileName}"
+                                                    class="rounded" alt="..." width="250px" id="bookImg">
+                                            </th:block>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col">
+                                        <!-- 이미지 변경 버튼 -->
+                                        <div class="input-group mb-3">
+
+                                            <input type="file" class="form-control" id="itemImg" name="bookImg"
+                                                onchange="previewImg(this)" aria-describedby="inputGroupFileAddon03"
+                                                aria-label="Upload">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-7">
+                                <!-- 책 이름  -->
+                                <div class="row mb-4">
+                                    <div class="col-3">책이름</div>
+                                    <div class="col-9"><input type="text" class="form-control" name="bookTitle"
+                                            th:value="${book.bookTitle}"></div>
+                                </div>
+
+                                <!-- 작가 -->
+                                <div class="row mb-4">
+                                    <div class="col-3">작가</div>
+                                    <div class="col-9"><input type="text" class="form-control" name="bookWriter"
+                                            th:value="${book.bookWriter}"></div>
+                                </div>
+
+                                <!-- 출판사 -->
+                                <div class="row mb-4">
+                                    <div class="col-3">출판사</div>
+                                    <div class="col-9"><input type="text" class="form-control" name="bookPub"
+                                            th:value="${book.bookPub}"></div>
+                                </div>
+                                <!-- 출판년도 -->
+                                <div class="row mb-4">
+                                    <div class="col-3">출판년도</div>
+                                    <div class="col-9"><input type="text" class="form-control" name="bookYear"
+                                            th:value="${book.bookYear}"></div>
+                                </div>
+
+                                <!-- 카테고리 -->
+                                <div class="row mb-4">
+                                    <div class="col-3">카테고리</div>
+                                    <div class="col-9">
+                                        <select class="form-select" aria-label="Default select example"
+                                            name="bookCateCode" onchange="changeCate()" id="book-cate">
+                                            <th:block th:each="e:${cateList}">
+                                                <!-- 들어가면 이미 고른 카테고리가 선택되어 있게 하고시 픈데 -->
+                                                <option th:value="${e.bookCateCode}"
+                                                    th:selected="${e.bookCateCode} == ${book.libraryBookInfoVO.bookCateCode}">
+                                                    [[${e.bookCateName}]]</option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-3"></div>
+                                    <!-- 중분류 -->
+                                    <div class="col-9">
+                                        <select class="form-select" aria-label="Default select example"
+                                            name="bookMidCateCode" id="book-mid-cate">
+                                            <th:block th:each="e:${cateList}">
+                                                <th:block
+                                                    th:if="${e.bookCateCode == book.libraryBookInfoVO.bookCateCode}">
+                                                    <th:blcok th:each="e1 : ${e.libraryBookMidCategoryVOList}">
+                                                        <option th:value="${e1.bookMidCateCode}"
+                                                            th:selected="${e1.bookMidCateCode} == ${book.libraryBookInfoVO.bookMidCateCode}">
+                                                            [[${e1.bookMidCateName}]]</option>
+                                                    </th:blcok>
+                                                </th:block>
+                                            </th:block>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <!-- 책 소개 -->
+                                <div class="input-group">
+                                    <span class="input-group-text">책 소개</span>
+                                    <textarea class="form-control" aria-label="With textarea" name="bookIntro"
+                                        rows="6">[[${book.libraryBookInfoVO.bookIntro}]]</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-8"></div>
+                            <div class="col d-grid">
+                                <button type="submit" class="btn btn-primary">변경 하기</button>
+                            </div>
+
+                            <div class="col d-grid">
+                                <button type="button" class="btn btn-primary" onclick="goDelete()">제외 하기</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="bookCode" th:value="${book.bookCode}" id="book_code">
+    </form>
+
+    <script>
+        function changeCate() {
+            let select_tags = document.querySelector("#book-cate");
+            let option_value = (select_tags.options[select_tags.selectedIndex].value);
+            console.log(option_value);
+
+            // ------------------- 첫번째 방식 ---------------//
+            fetch('/bookAdmin/selectCateList', { //요청경로
+                method: 'POST',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                //컨트롤러로 전달할 데이터
+                body: new URLSearchParams({
+                    // 데이터명 : 데이터값
+                    bookCateCode: option_value
+                })
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                        return;
+                    }
+
+                    //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+                    return response.json(); //나머지 경우에 사용
+                })
+                //fetch 통신 후 실행 영역
+                .then((data) => {//data -> controller에서 리턴되는 데이터!
+                    console.log(data)
+                    const book_mid_cate_tag = document.querySelector("#book-mid-cate");
+                    book_mid_cate_tag.innerHTML = '';
+                    let str = ``;
+
+                    for (let e of data.libraryBookMidCategoryVOList) {
+                        str = `
+                            <option value='${e.bookMidCateCode}'>${e.bookMidCateName}</option>
+                        `
+                        book_mid_cate_tag.insertAdjacentHTML("beforeend", str)
+
+                    }
+
+                })
+                //fetch 통신 실패 시 실행 영역
+                .catch(err => {
+                    alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+                    console.log(err);
+                });
+
+
+        }
+
+        function previewImg(selectTag) {
+            if (selectTag.files && selectTag.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.querySelector('#bookImg').src = e.target.result;
+                };
+                reader.readAsDataURL(selectTag.files[0]);
+            } else {
+                document.querySelector('#bookImg').src = "/upload/book_character_smile.png";
+            }
+        }
+
+        function goDelete() {
+            const book_code = document.querySelector("#book_code").value
+            console.log(book_code);
+
+            if (confirm('제외 하시겠어요?')) {
+                location.href = `/bookAdmin/deleteBook1?bookCode=${book_code}`
+            }
+            else {
+                return 0;
+            }
+        }
+
+    </script>
+</th:block>
+
+<th:block layout:fragment="content_js">
+    <!-- html 파일이 열릴때 같이 실행되는 js -->
+    <!-- <script src="/"></script> -->
+</th:block>
+
+</html>

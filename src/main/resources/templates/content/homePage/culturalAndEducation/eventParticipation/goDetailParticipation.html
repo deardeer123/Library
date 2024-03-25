@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+
+<th:block layout:fragment="content_css">
+    <!-- html 파일이 열릴 때 같이 실행되는 css -->
+    <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+    <!-- html 코드 작성 --> 
+    <div class="row">
+        <div class="col-6 mt-3">
+            
+            <table class="text-center table table-bordered">
+                <colgroup>
+                <col width="30%%">
+                <col width="70%">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>프로그램명</td>
+                        <td>[[${board.boardTitle}]]</td>
+                    </tr>
+                    <tr>
+                        <td>강사명</td>
+                        <td>[[${board.PlusVO.teacher}]]</td>
+                    </tr>
+                    <tr>
+                        <td>대상</td>
+                        <td>[[${board.PlusVO.target}]]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-6 mt-3">
+            <table class="text-center table table-bordered">
+                <colgroup>
+                    <col width="30%%">
+                    <col width="70%">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>운영기간</td>
+                        <td>[[${board.PlusVO.openDate}]] ~ [[${board.PlusVO.closeDate}]]</td>
+                    </tr>
+                    <tr>
+                        <td>신청기간</td>
+                        <td>[[${board.PlusVO.toDate}]] ~ [[${board.PlusVO.fromDate}]]</td>
+                    </tr>
+                    <tr>
+                        <td>정원</td>
+                        <td>[[${board.PlusVO.personnel}]] / [[${board.PlusVO.maximumPerson}]]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-12">
+            <table class="table-bordered table">
+                <tr style="height: 600px;">
+                    <td>
+                        [[${board.content}]]
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        [[${board.fileList[0].originFileName}]]
+                    </td>
+                </tr>
+            </table>
+            <div sec:authorize="hasRole('ROLE_N')">
+                <input type="button" onclick="location.href='/goApplyPage'" value="신청하기">
+            </div>
+            <div  sec:authorize="hasRole('ROLE_Y')">
+                <input type="button" th:onclick="|location.href='@{/goEventUpdatePage(boardNum=${board.boardNum})}'|" value="수정하기">
+                <input type="button" th:onclick="deleteEventBoard([[${board.boardNum}]])" value="선택 삭제하기">
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="content_js">
+    <!-- html 파일이 열릴 때 같이 실행되는 js -->
+    <script src="/js/content/culture/culture.js"></script>
+</th:block>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+
+<th:block layout:fragment="content_css">
+    <!-- html 파일이 열릴 때 같이 실행되는 css -->
+    <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+    <!-- html 코드 작성 -->
+    <div class="row ">
+        <div class="col-12">
+            <h3>게시글 수정</h3>
+        </div>
+        <div class="col">
+            <form action="/culUpdateBoard" method="post">
+                <table class="align-middle">
+                    <colgroup>
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <td>
+                                제목
+                            </td>
+                            <td colspan="3"><input type="text" name="boardTitle"></td>
+                        </tr>
+                        <tr>
+                            <td>작성자</td>
+                            <td colspan="3" sec:authorize="isAuthenticated()" sec:authentication="name"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="4">
+                                <textarea name="content" cols="100" rows="20"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div><input type="submit" value="게시물 수정"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <input type="hidden" name="boardNum" th:value="${board.boardNum}">
+                    <input type="hidden" name="userCode" th:value="${session.userCode}">
+                </table>
+            </form>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="content_js">
+    <!-- html 파일이 열릴 때 같이 실행되는 js -->
+    <!-- <script src="/"></script> -->
+</th:block>
+</html>

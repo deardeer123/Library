@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_layout}">
+
+<th:block layout:fragment="content_css">
+    <!-- html 파일이 열릴때 같이 실행되는 css -->
+    <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+    <style>
+
+    </style>
+    <!-- html 코드 작성 -->
+    <div class="row">
+        <div class="col">
+
+            <div class="row">
+                <div class="col" style="background-color: cadetblue;">
+                    <!-- 책검색기능 -->
+                    <div class="row mt-5 mb-5">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-2">
+                                    <!-- 카테고리 -->
+                                    <select class="form-select" aria-label="Default select example" name="searchType"
+                                        id="search-type">
+                                        <option value="BOOK_TITLE"
+                                            th:selected="${bookSearchVO.searchType == 'BOOK_TITLE' }">책이름</option>
+                                        <option value="BOOK_WRITER"
+                                            th:selected="${bookSearchVO.searchType == 'BOOK_WRITER'}">저자</option>
+                                        <option value="BOOK_PUB" th:selected="${bookSearchVO.searchType == 'BOOK_PUB'}">
+                                            출판사
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <!-- 검색 -->
+                                    <input type="text" class="form-control" name="searchValue" id="search-value"
+                                        th:value="${bookSearchVO.searchValue}">
+                                </div>
+                                <div class="col-1">
+                                    <!-- 검색 버튼 -->
+                                    <input type="submit" class="btn btn-primary" value="검색">
+                                </div>
+
+                                <div class="col-4">
+                                    <h4>책 읽는 당신을 위한 그린 도서관📖</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-6">
+                    <!-- 공지사항 -->
+                    <div class="row">
+                        <div class="col">
+                            <h3>공지사항</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <table class="table">
+                                <colgroup>
+                                    <col width="30%">
+                                    <col width="*">
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <td>2024-03-08</td>
+                                        <td>그린 도서관 공지사항123</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2024-03-08</td>
+                                        <td>그린 도서관 공지사항345</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2024-03-08</td>
+                                        <td>그린 도서관 공지사항789</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 행사정보 -->
+                    <div class="row mt-1">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>행사 정보</h3>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <table class="table">
+                                        <colgroup>
+                                            <col width="30%">
+                                            <col width="*">
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <td>2024-03-08</td>
+                                                <td>그린 도서관 행사123</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024-03-08</td>
+                                                <td>그린 도서관 행사345</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024-03-08</td>
+                                                <td>그린 도서관 행사789</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col">
+                            <h3>도서관 일정</h3>
+                        </div>
+                    </div>
+
+                    <!-- 달력 -->
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col ">
+                            <div id='calendar' style="width: 500px; font-size: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <!-- 책 추천, 새로 들어온 책,  -->
+                    <div class="row mt-2 mb-2">
+                        <div class="col">
+                            <h3>추천 도서 / 새로 들어온 책 / 대출이 많은 책</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 text-center">
+                            <div class="row">
+                                <div class="col">
+                                    <img src="/upload/3e31c603-944f-4457-9d17-d9e330a55042.jpg" width="50%" alt="">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    햄스터
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4  text-center">
+                            <div class="row">
+                                <div class="col">
+                                    <img src="/upload/3e31c603-944f-4457-9d17-d9e330a55042.jpg" width="50%" alt="">
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col">
+                                    햄스터
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div class="row">
+                                <div class="col">
+                                    <img src="/upload/3e31c603-944f-4457-9d17-d9e330a55042.jpg" width="50%" alt="">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    햄스터
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <!-- 행사 -->
+                    <div class="row mt-2 mb-2">
+                        <div class="col1"></div>
+                        <div class="col">
+                            <h3>행사정보</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="carouselExampleIndicators" class="carousel slide">
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                                    class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                                    aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                                    aria-label="Slide 3"></button>
+                            </div>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="/upload/f4d4330e-9b95-44fa-8243-db2a0141de89.jpg" width="100%"
+                                        height="50%" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="/upload/3a5b56c7-9516-4584-8292-ba1957b6e315.jpg" width="100%"
+                                        height="50%" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="/upload/f4d4330e-9b95-44fa-8243-db2a0141de89.jpg" width="100%"
+                                        height="50%" alt="...">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 영화상영 -->
+
+        </div>
+    </div>
+    <!-- 이거 달력 불러오는 스크립트 주소 입니다 달력 표시하고 싶으면 꼭 넣으세요 -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script>
+        //달력 읽어오기
+        calendarData();
+
+        function calendarData() {
+            // ------------------- 첫번째 방식 ---------------//
+            //달력 정보 불러오는 컨트롤러 주소는 아래에 있숨
+            fetch('/bookAdmin/calendarData', { //요청경로
+                method: 'POST',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                //컨트롤러로 전달할 데이터
+                body: new URLSearchParams({
+                    // 데이터명 : 데이터값
+                })
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                        return;
+                    }
+
+                    //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+                    return response.json(); //나머지 경우에 사용
+                })
+                //fetch 통신 후 실행 영역
+                .then((data) => {//data -> controller에서 리턴되는 데이터!
+                    let eventList = []
+                    eventList = data
+                    console.log(eventList)
+
+
+                    var calendarEl = document.getElementById('calendar');
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        //높이 조절
+                        height: 330,
+                        // 컨텐츠 높이 조절
+                        contentHeight: 300,
+
+                        //비율 조절
+                        //aspectRatio: 1.8,
+
+                        themeSystem: 'bootstrap5',
+                        //헤더
+                        headerToolbar: {
+                            start: 'title',
+                            center: '',
+                            end: ''
+                        },
+
+
+                        initialView: 'dayGridMonth',
+                        locale: 'ko',
+                        //이벤트
+                        events: eventList
+
+                    });
+                    calendar.render();
+
+
+
+                })
+                //fetch 통신 실패 시 실행 영역
+                .catch(err => {
+                    alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+                    console.log(err);
+                });
+
+        }
+    </script>
+
+</th:block>
+
+<th:block layout:fragment="content_js">
+    <!-- html 파일이 열릴때 같이 실행되는 js -->
+    <!-- <script src="/"></script> -->
+</th:block>
+
+</html>

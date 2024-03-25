@@ -2,12 +2,66 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 
-    <th:block th:fragment="sideFragment">
-        <ul class="list-group">
-            <!-- 유저 사이드 -->
-            
+<th:block th:fragment="sideFragment">
+    <th:block th:if="selectedSideMenuIndex == null">
+        <!-- 사이드 메뉴 인덱스를 넘겨받지 않았을 경우 -->
+        <div class="row">
+            <div class="col">
+                메뉴
+            </div>
+        </div>
+
+        <!-- <ul class="list-group list-group-flush">
+            <li class="list-group-item">사이드 메뉴 1</li>
+            <li class="list-group-item">사이드 메뉴 2</li>
+            <li class="list-group-item">사이드 메뉴 3</li>
+            <li class="list-group-item">사이드 메뉴 4</li>
+            <li class="list-group-item">사이드 메뉴 5</li>
+<<<<<<< HEAD
+        </ul> -->
+        <!-- <script src="/js/fragment/user/user_side.js"></script> -->
+=======
         </ul>
-        <script src="/js/fragment/user/user_side.js"></script>
+>>>>>>> f47ed02a61cea0f3c9f14c89c251af6098bf6043
     </th:block>
+
+    <th:block>
+        <!-- 사이드 메뉴 인덱스를 넘겨받았을 경우 -->
+        <th:block th:if="${selectedMenuIndex != null}">
+            <th:block th:each="e:${menuList}" th:if="${e.menuIndex == selectedMenuIndex}">
+                <div class="row">
+                    <div class="col bg-success-subtle">
+                        <h2>[[${e.menuName}]]</h2>
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush">
+
+                    <th:block th:each="e1:${e.webSideMenuVOList}">
+
+                        <li class="list-group-item" 
+                        th:classappend="${e1.sideMenuIndex == selectedSideMenuIndex ? 'active' : ''}"
+                        th:onclick="goPage([[${e1.sideMenuPage}]] , [[${e1.sideMenuNum}]])"
+                        >
+                            [[${e1.sideMenuName}]]
+                        </li>
+                    
+                    </th:block>
+                </ul>
+            </th:block>
+
+        </th:block>
+
+    </th:block>
+
+    <script>
+        function goPage(page, sideMenuNum) {
+            alert(`${page}로 이동합니다.`)
+            location.href = `/${page}?boardType=${sideMenuNum}`
+        }
+    </script>
+
+
+    <!-- <script src="/js/fragment/user/user_side.js"></script> -->
+</th:block>
 
 </html>

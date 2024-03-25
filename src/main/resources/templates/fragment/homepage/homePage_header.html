@@ -1,11 +1,152 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<th:block th:fragment="headerFragment"> 
+
 <!-- headerFragment -->
-    헤더
-    
+<th:block th:fragment="headerFragment">
+    <!-- headerFragment -->
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <!-- 네비게이션 -->
+                    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                        <div class="container-fluid">
+                            <a class="navbar-brand" onclick="location.href='/home'">
+                                <img src="/upload/greenLibraryMark.png" alt="greenLibraryMark">
+                            </a>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarText">
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <!-- <li class="nav-item">
+                                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Features</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Pricing</a>
+                                    </li> -->
+                                </ul>
+                                <span class="navbar-text">
+                                        <th:block th:each="e:${memberMenuList}">
+                                            <th:block th:each="e1:${e.webSideMenuVOList}">
+                                                <a sec:authorize="isAnonymous()" th:onclick="goPage([[${e1.sideMenuPage}]])">[[${e1.sideMenuName}]]
+                                                </a>
+                                            </th:block>
+                                        </th:block>
+                                        <th:block sec:authorize="isAuthenticated()">
+                                            <span>[[${#authentication.name}]]님</span>
+                                            <span onclick="logout()">로그아웃</span>
+                                        </th:block>
+                                </span>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <!-- 메뉴 -->
+                    <!-- 클래스에 있는 gx는 부트스트랩 거터 부분에서 가져옴 -->
+                    <div class="row mt-3 mb-3 text-center gx-2">
+                        <th:block th:each="e:${menuList}">
+                            <div class="col bg-primary">
+                                <!-- fs-2 뜻은 폰트 크기 -->
+                                <!-- 드롭다운 -->
+
+                                <div class="dropdown">
+
+                                    <span class="text-white fs-2 dropdown-btn" type="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        [[${e.menuName}]]
+                                    </span>
 
 
-    <script src="/js/fragment/user/user_header.js"></script>
+                                    <ul class="dropdown-menu">
+                                        <th:block th:each="e1:${e.webSideMenuVOList}">
+                                            <li>
+                                                <a class="dropdown-item"
+                                                    th:onclick="goPage([[${e1.sideMenuPage}]], [[${e1.sideMenuNum}]])">[[${e1.sideMenuName}]]</a>
+                                            </li>
+                                        </th:block>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-2"></div>
+
+                <div class="col-10 bg-success-subtle">
+                    <!-- 선택한 메뉴의 이름 -->
+                    <th:block th:if="${selectedMenuIndex != null}">
+
+                        <th:block th:each="e:${menuList}" th:if="${e.menuIndex == selectedMenuIndex}">
+                            <th:block th:each="e1:${e.webSideMenuVOList}"
+                                th:if="${e1.sideMenuIndex == selectedSideMenuIndex}">
+
+                                <div class="row">
+                                    <div class="col">
+                                        <!-- 선택한 사이드 메뉴의 이름 -->
+                                        <h1>[[${e1.sideMenuName}]]</h1>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <!-- 메뉴 > 사이드 메뉴  -->
+                                        <h3>📖 [[${e.menuName}]] > [[${e1.sideMenuName}]] </h3>
+                                    </div>
+                                </div>
+
+                            </th:block>
+                        </th:block>
+
+                    </th:block>
+
+                    <th:block th:if="${selectedMenuIndex == null}">
+
+                        <!-- <div class="row">
+                            <div class="col">
+                                <h2>선택한 사이드 메뉴의 이름</h3>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <h3>📖 메뉴 > 사이드 메뉴</h3>
+                            </div>
+                        </div> -->
+
+
+                    </th:block>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+        function goPage(page, sideMenuNum) {
+            alert(`${page}로 이동합니다.`)
+            location.href = `/${page}`
+        }
+    </script>
+
+
+
+    <script src="/js/fragment/homePage.js"></script>
 </th:block>
+
 </html>

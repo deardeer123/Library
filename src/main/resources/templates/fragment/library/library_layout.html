@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>shop</title>
+    <title>도서 관리</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link href="/css/common.css" rel="stylesheet">
@@ -17,17 +17,12 @@
         <div class="row">
             <div class="col">
                 <!--fragement폴더 안에 있는 user_header를 가지고 올것. 그걸 headerFragment라고 부름-->
-                <th:block th:replace="~{fragment/admin_header::headerFragment}"></th:block>
+                <th:block th:replace="~{fragment/library/library_header::headerFragment}"></th:block>
             </div>
         </div>
 
         <div class="row">
-            
-            <div class="col-2">
-                <th:block th:replace="~{fragment/admin_side::sideFragment}"></th:block>       
-            </div>
-
-            <div class="col-10">
+            <div class="col">
                 <th:block layout:fragment="contentFragment"></th:block>
             </div>
         </div>

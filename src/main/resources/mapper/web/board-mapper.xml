@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<mapper namespace="boardMapper">
+    <resultMap id="board" type="com.green.Library.web.board.vo.BoardVO">
+        <id column="BOARD_NUM"          property="boardNum"/>
+        <result column="BOARD_TITLE"    property="boardTitle"/>
+        <result column="CONTENT"        property="content"/>
+        <result column="BOARD_DATE"     property="boardDate"/>
+        <result column="USER_CODE"      property="userCode"/>
+        <result column="BOARD_CNT"      property="boardCnt"/>
+        <result column="BOARD_TYPE"     property="boardType"/>
+        <association property="plusVO" resultMap="plus"/>
+        <association property="askAndAnswerBoardVO" resultMap="participationForumMapper.askAndAnswerBoardVO" />
+        <association property="memberVO" resultMap="memberMapper.users"/>
+        <collection property="fileList" resultMap="file"/>
+    </resultMap>
+
+    <resultMap id="plus" type="com.green.Library.web.board.vo.PlusVO">
+        <id column="PLUS_CODE"          property="plusCode"/>
+        <result column="TEACHER"        property="teacher"/>
+        <result column="TARGET"         property="target"/>
+        <result column="OPEN_DATE"      property="openDate"/>
+        <result column="CLOSE_DATE"     property="closeDate"/>
+        <result column="TO_DATE"        property="toDate"/>
+        <result column="FROM_DATE"      property="fromDate"/>
+        <result column="PERSONNEL"      property="personnel"/>
+        <result column="MAXIMUM_PERSON" property="maximumPerson"/>
+        <result column="EVENT_STATUS"   property="eventStatus"/>
+        <result column="BOARD_NUM"      property="boardNum"/>
+    </resultMap>
+
+
+    <resultMap id="file" type="com.green.Library.web.board.vo.UploadVO">
+        <id column="ATTACHED_CODE" property="attachedCode"/>
+        <result column="ORIGIN_FILE_NAME" property="originFileName"/>
+        <result column="ATTACHED_FILE_NAME" property="attachedFileName"/>
+        <result column="IS_MAIN" property="isMain"/>
+        <result column="BOARD_NUM" property="boardNum"/>
+    </resultMap>
+
+
+<!--  //////////////////// 기본 게시글 /////////////////  -->
+    <!--  게시글 작성   -->
+    <!--  등록한 게시물 정보 리스트  -->
+    <select id="selectBoardList" resultMap="boardMapper.board">
+        SELECT
+            BOARD.BOARD_NUM
+            , BOARD_TITLE
+            , CONTENT
+            , DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') AS BOARD_DATE
+            , BOARD.USER_CODE
+            , BOARD_CNT
+            , USER_NAME
+            , ATTACHED_CODE
+            , ORIGIN_FILE_NAME
+            , ATTACHED_FILE_NAME
+            , IS_MAIN
+            , BOARD_TYPE
+        FROM board INNER JOIN USERS
+        ON BOARD.USER_CODE = USERS.USER_CODE
+        INNER JOIN ATTACHED_FILE AS FILE
+        ON BOARD.BOARD_NUM = FILE.BOARD_NUM
+        WHERE BOARD_TYPE = #{boardType}
+        <if test='searchValue != null and !searchValue.equals("")'>
+            AND ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+        <if test='fromDate != null and !fromDate.equals("")'>
+            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') = #{fromDate}
+        </if>
+        <if test='toDate != null and !toDate.equals("")'>
+            AND DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') = #{toDate}
+        </if>
+        ORDER BY BOARD_NUM DESC
+        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
+    </select>
+
+
+    <insert id="insertCulBoard">
+        INSERT INTO BOARD(
+            BOARD_TITLE
+            , CONTENT
+            , BOARD_DATE
+            , BOARD_TYPE
+            , USER_CODE
+            , BOARD_CNT
+            , BOARD_NUM
+        )
+        VALUES(
+            #{boardTitle}
+            ,#{content}
+            ,#{boardDate}
+            ,#{boardType}
+            ,#{userCode}
+            ,#{boardCnt}
+            ,#{boardNum}
+        )
+    </insert>
+
+
+    <!--  이미지 등록  -->
+    <insert id="insertFileList">
+        INSERT INTO ATTACHED_FILE(
+            ORIGIN_FILE_NAME
+            ,ATTACHED_FILE_NAME
+            ,IS_MAIN
+            ,BOARD_NUM
+        )
+        VALUES
+        <foreach collection="fileList" item="file" separator=",">
+            (#{file.originFileName}
+            ,#{file.attachedFileName}
+            ,#{file.isMain}
+            ,#{file.boardNum})
+        </foreach>
+    </insert>
+
+    <!--  게시판 개수 + 1  -->
+    <select id="isNullBoardNo" resultType="int">
+        SELECT CASE WHEN
+        MAX(BOARD_NUM) IS NULL
+        THEN 1
+        ELSE MAX(BOARD_NUM) + 1
+        END
+        FROM BOARD
+    </select>
+
+
+    <!--  게시판 개수  -->
+    <select id="countBoard" resultType="int">
+        SELECT COUNT (BOARD_NUM)
+        FROM BOARD
+    </select>
+
+
+    <!--  게시물 상세보기  -->
+    <select id="selectBoardDetail" resultMap="board">
+        SELECT
+            BOARD.BOARD_NUM
+            ,BOARD.USER_CODE
+            ,BOARD_TITLE
+            ,BOARD_DATE
+            ,BOARD_CNT
+            ,CONTENT
+            ,USER_ID
+            ,ATTACHED_FILE_NAME
+            ,IS_MAIN
+        FROM BOARD
+        INNER JOIN USERS
+        ON BOARD.USER_CODE = USERS.USER_CODE
+        INNER JOIN ATTACHED_FILE AS FILE
+        ON BOARD.BOARD_NUM = FILE.BOARD_NUM
+        WHERE BOARD.BOARD_NUM = #{boardNum}
+    </select>
+
+
+
+
+    <!--  조회수 증가  -->
+
+    <update id="boardCntUp">
+        UPDATE BOARD
+        SET BOARD_CNT = BOARD_CNT + 1
+        WHERE BOARD_NUM
+    </update>
+
+    <!--  게시판 삭제  -->
+    <delete id="deleteBoard">
+        DELETE FROM BOARD
+        WHERE BOARD_NUM = #{boardNum}
+    </delete>
+
+    <!--  게시판 수정  -->
+    <update id="updateBoard">
+        UPDATE BOARD
+        SET
+        BOARD_TITLE = #{boardTitle}
+        ,CONTENT = #{content}
+        WHERE BOARD_NUM = #{boardNum}
+    </update>
+
+    <delete id="selectDeletes">
+        DELETE
+        FROM BOARD
+        WHERE BOARD_NUM IN
+        <foreach collection="boardNums" item="boardNum" separator="," open="(" close=")">
+            #{boardNum}
+        </foreach>
+    </delete>
+
+    <delete id="selectBPDeletes">
+        DELETE
+        FROM BOARD_PLUS
+        WHERE BOARD_NUM IN
+        <foreach collection="boardNums" item="boardNum" separator="," open="(" close=")">
+            #{boardNum}
+        </foreach>
+    </delete>
+
+    <delete id="selectDeleteFiles">
+        DELETE
+        FROM ATTACHED_FILE
+        WHERE BOARD_NUM IN
+        <foreach collection="boardNums" item="boardNum" separator="," open="(" close=")">
+            #{boardNum}
+        </foreach>
+    </delete>
+
+    <select id="selectPlusList" resultMap="board">
+        SELECT
+            PLUS_CODE
+            ,B.BOARD_NUM
+            ,BOARD_TITLE
+            ,BOARD_TYPE
+            ,TEACHER
+            ,TARGET
+            , DATE_FORMAT(OPEN_DATE, '%Y-%m-%d') AS OPEN_DATE
+            , DATE_FORMAT(CLOSE_DATE, '%Y-%m-%d') AS CLOSE_DATE
+            , DATE_FORMAT(TO_DATE, '%Y-%m-%d') AS TO_DATE
+            , DATE_FORMAT(FROM_DATE, '%Y-%m-%d') AS FROM_DATE
+            ,PERSONNEL
+            ,MAXIMUM_PERSON
+            ,EVENT_STATUS
+        FROM BOARD AS B
+        INNER JOIN BOARD_PLUS AS P
+        ON B.BOARD_NUM = P.BOARD_NUM
+        WHERE BOARD_TYPE = #{boardType}
+        <if test='searchValue != null and !searchValue.equals("")'>
+            AND ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+        <if test='fromDate != null and !fromDate.equals("")'>
+            AND DATE_FORMAT(FROM_DATE, '%Y-%m-%d') = #{fromDate}
+        </if>
+        <if test='toDate != null and !toDate.equals("")'>
+            AND DATE_FORMAT(TO_DATE, '%Y-%m-%d') = #{toDate}
+        </if>
+        ORDER BY BOARD_NUM DESC
+        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
+    </select>
+
+
+    <insert id="insertParticipation">
+        INSERT INTO BOARD(
+            BOARD_TITLE
+            ,BOARD_TYPE
+            ,CONTENT
+            ,BOARD_NUM
+        )VALUES(
+            #{boardTitle}
+            ,#{boardType}
+            ,#{content}
+            ,#{boardNum}
+        )
+    </insert>
+    <insert id="insertParticipationPlus">
+        INSERT INTO BOARD_PLUS(
+            TEACHER
+            ,OPEN_DATE
+            ,CLOSE_DATE
+            ,TO_DATE
+            ,FROM_DATE
+            ,TARGET
+            ,PERSONNEL
+            ,MAXIMUM_PERSON
+            ,EVENT_STATUS
+            ,BOARD_NUM
+        )VALUES(
+            #{plusVO.teacher}
+            ,#{plusVO.openDate}
+            ,#{plusVO.closeDate}
+            ,#{plusVO.toDate}
+            ,#{plusVO.fromDate}
+            ,#{plusVO.target}
+            ,#{plusVO.personnel}
+            ,#{plusVO.maximumPerson}
+            ,#{plusVO.eventStatus}
+            ,#{boardNum}
+        )
+    </insert>
+
+    <!--  첨부파일 등록  -->
+    <insert id="insertEventFileList">
+        INSERT INTO ATTACHED_FILE(
+            ORIGIN_FILE_NAME
+            ,ATTACHED_FILE_NAME
+            ,BOARD_NUM
+        )
+        VALUES
+        <foreach collection="fileList" item="file" separator=",">
+            (#{file.originFileName}
+            ,#{file.attachedFileName}
+            ,#{file.boardNum})
+        </foreach>
+    </insert>
+
+    <!--  이벤트 상세보기   -->
+    <select id="selectEventBoardDetail" resultMap="board">
+        SELECT
+            PLUS_CODE
+            ,B.BOARD_NUM
+            ,BOARD_TITLE
+            ,BOARD_TYPE
+            ,TEACHER
+            ,TARGET
+            , DATE_FORMAT(OPEN_DATE, '%Y-%m-%d') AS OPEN_DATE
+            , DATE_FORMAT(CLOSE_DATE, '%Y-%m-%d') AS CLOSE_DATE
+            , DATE_FORMAT(TO_DATE, '%Y-%m-%d') AS TO_DATE
+            , DATE_FORMAT(FROM_DATE, '%Y-%m-%d') AS FROM_DATE
+            ,PERSONNEL
+            ,MAXIMUM_PERSON
+            ,EVENT_STATUS
+            ,ATTACHED_FILE_NAME
+            ,CONTENT
+            ,ORIGIN_FILE_NAME
+        FROM BOARD AS B
+        INNER JOIN BOARD_PLUS AS P
+        ON B.BOARD_NUM = P.BOARD_NUM
+        INNER JOIN ATTACHED_FILE AS F
+        ON B.BOARD_NUM = F.BOARD_NUM
+        WHERE B.BOARD_NUM = #{boardNum}
+    </select>
+    <!--  이벤트 게시물 수정  -->
+    <update id="updateEventBoardDetail">
+        UPDATE BOARD INNER JOIN BOARD_PLUS
+        SET
+            BOARD_TITLE = #{boardTitle}
+            ,TEACHER = #{plusVO.teacher}
+            ,TARGET = #{plusVO.target}
+            ,OPEN_DATE = #{plusVO.openDate}
+            ,CLOSE_DATE = #{plusVO.closeDate}
+            ,TO_DATE = #{plusVO.toDate}
+            ,FROM_DATE = #{plusVO.fromDate}
+            ,MAXIMUM_PERSON = #{plusVO.maximumPerson}
+            ,CONTENT = #{content}
+        WHERE BOARD.BOARD_NUM = #{boardNum}
+    </update>
+
+    <!--  이벤트 게시물 삭제  -->
+    <delete id="eventBoardDelete">
+        DELETE
+        FROM BOARD
+        WHERE BOARD_NUM = #{boardNum}
+    </delete>
+    <delete id="eventBPDelete">
+        DELETE
+        FROM BOARD_PLUS
+        WHERE BOARD_NUM = #{boardNum}
+    </delete>
+    <delete id="eventFileDelete">
+        DELETE
+        FROM ATTACHED_FILE
+        WHERE BOARD_NUM = #{boardNum}
+    </delete>
+<!--  ////////////////////////이벤트 게시물///////////////////  -->
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

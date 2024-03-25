@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<mapper namespace="libraryBookMapper">
+
+    <resultMap id="libraryBook" type="com.green.Library.libraryBook.vo.LibraryBookVO">
+        <id column="BOOK_CODE" property="bookCode" />
+        <result column="BOOK_TITLE" property="bookTitle" />
+        <result column="BOOK_WRITER" property="bookWriter" />
+        <result column="BOOK_PUB" property="bookPub" />
+        <result column="BOOK_YEAR" property="bookYear" />
+        <association property="libraryBookInfoVO" resultMap="LibraryBookInfo" />
+    </resultMap>
+
+    <resultMap id="LibraryCate" type="com.green.Library.libraryBook.vo.LibraryBookCategoryVO" >
+        <id column="BOOK_CATE_CODE" property="bookCateCode" />
+        <result column="BOOK_CATE_NAME" property="bookCateName"/>
+        <result column="BOOK_CATE_INDEX" property="bookCateIndex"/>
+        <collection property="libraryBookMidCategoryVOList" resultMap="LibraryMidCate"/>
+    </resultMap>
+
+    <resultMap id="LibraryMidCate" type="com.green.Library.libraryBook.vo.LibraryBookMidCategoryVO">
+        <id column="BOOK_MID_CATE_CODE" property="bookMidCateCode" />
+        <result column="BOOK_MID_CATE_NAME" property="bookMidCateName"/>
+        <result column="BOOK_MID_CATE_INDEX" property="bookMidCateIndex"/>
+        <result column="BOOK_CATE_CODE" property="bookCateCode"/>
+    </resultMap>
+
+    <resultMap id="LibraryBookInfo" type="com.green.Library.libraryBook.vo.LibraryBookInfoVO">
+        <id column="BOOK_INFO_NUM" property="bookInfoNum"/>
+        <result column="BOOK_INFO_ATTACHED_FILE_NAME" property="bookInfoAttachedFileName" />
+        <result column="BOOK_INFO_ORIGIN_FILE_NAME" property="bookInfoOriginFileName" />
+        <result column="BOOK_BORROW_AVAILABLE" property="bookBorrowAvailable" />
+        <result column="BOOK_BORROW_CNT" property="bookBorrowCnt" />
+        <result column="BOOK_INTRO" property="bookIntro" />
+        <result column="BOOK_REGDATE" property="bookRegTime"/>
+        <result column="BOOK_CATE_CODE" property="bookCateCode" />
+        <result column="BOOK_MID_CATE_CODE" property="bookMidCateCode"/>
+        <result column="BOOK_CODE" property="bookCode" />
+    </resultMap>
+
+    <resultMap id="LibraryBookBreakage" type="com.green.Library.libraryBook.vo.LibraryBookBreakageVO">
+        <id column="BOOK_CODE" property="bookCode" />
+        <result column="BOOK_TITLE" property="bookTitle" />
+        <result column="BOOK_WRITER" property="bookWriter" />
+        <result column="BOOK_PUB" property="bookPub" />
+        <result column="BOOK_YEAR" property="bookYear" />
+        <association property="libraryBookBreakageInfoVO" resultMap="LibraryBookBreakageInfo" />
+    </resultMap>
+
+    <resultMap id="LibraryBookBreakageInfo" type="com.green.Library.libraryBook.vo.LibraryBookBreakageInfoVO">
+        <id column="BOOK_INFO_NUM" property="bookInfoNum"/>
+        <result column="BOOK_INFO_ATTACHED_FILE_NAME" property="bookInfoAttachedFileName" />
+        <result column="BOOK_INFO_ORIGIN_FILE_NAME" property="bookInfoOriginFileName" />
+        <result column="BOOK_BORROW_AVAILABLE" property="bookBorrowAvailable" />
+        <result column="BOOK_BORROW_CNT" property="bookBorrowCnt" />
+        <result column="BOOK_INTRO" property="bookIntro" />
+        <result column="BOOK_REGDATE" property="bookRegTime"/>
+        <result column="BOOK_CATE_CODE" property="bookCateCode" />
+        <result column="BOOK_MID_CATE_CODE" property="bookMidCateCode"/>
+        <result column="BOOK_CODE" property="bookCode" />
+    </resultMap>
+
+
+
+
+<!--    제일 큰 값 구하기-->
+    <select id="searchMaxCode" resultType="String">
+        SELECT CONCAT('GR',LPAD( (SELECT MAX(CAST(SUBSTRING((BOOK_CODE),3) AS INT)+1) FROM book) , 10 ,'0'))
+    </select>
+<!--    카테고리 목록 구하기-->
+    <select id="selectCateList" resultMap="LibraryCate">
+        select
+        BOOK_CATEGORY.BOOK_CATE_CODE ,
+        BOOK_CATE_NAME ,
+        BOOK_CATE_INDEX ,
+        BOOK_MID_CATE_CODE ,
+        BOOK_MID_CATE_NAME ,
+        BOOK_MID_CATE_INDEX
+        from
+        BOOK_CATEGORY INNER JOIN BOOK_MID_CATEGORY
+        ON BOOK_CATEGORY.BOOK_CATE_CODE = BOOK_MID_CATEGORY.BOOK_CATE_CODE
+    </select>
+
+<!--    카테고리 하나 찾기 중분류-->
+    <select id="selectCateOne" resultMap="LibraryCate">
+        select
+        BOOK_CATEGORY.BOOK_CATE_CODE ,
+        BOOK_CATE_NAME ,
+        BOOK_CATE_INDEX ,
+        BOOK_MID_CATE_CODE ,
+        BOOK_MID_CATE_NAME ,
+        BOOK_MID_CATE_INDEX
+        from
+        BOOK_CATEGORY INNER JOIN BOOK_MID_CATEGORY
+        ON BOOK_CATEGORY.BOOK_CATE_CODE = BOOK_MID_CATEGORY.BOOK_CATE_CODE
+        where
+        BOOK_CATEGORY.BOOK_CATE_CODE = #{bookCateCode}
+    </select>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

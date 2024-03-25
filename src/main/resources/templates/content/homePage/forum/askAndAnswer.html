@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragment/homePage/homePage_detail_layout}">
+
+<th:block layout:fragment="content_css">
+  <!-- html 파일이 열릴때 같이 실행되는 css -->
+  <link rel="stylesheet" href="/">
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+  <!-- html 코드 작성 -->
+  <div class="row">
+    <div class="col">
+      <!-- 검색 기능-->
+
+      <div class="row mt-3">
+        <div class="col-3">
+          <div class="input-group mb-3">
+            <select class="form-select" name="searchType">
+              <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'boardTitle'}">제목</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-5">
+          <input type="text" class="form-control" name="searchValue" th:value="${searchVO.searchValue}"
+            aria-label="Text input with dropdown button">
+        </div>
+
+        <div class="col-2">
+          <input type="submit" class="btn btn-outline-secondary" value="검색" id="inputGroupFileAddon04">
+        </div>
+
+      </div>
+
+      <!-- 전체 게시물 갯수 -->
+      <div class="row">
+        <div class="col">
+          전체게시글 수 총 N 개
+        </div>
+      </div>
+
+      <!-- 게시물 목록 -->
+      <div class="row mt-3">
+        <div class="col">
+          <table class="table table-bordered align-middle text-center">
+            <colgroup>
+              <col width="10%">
+              <col width="*">
+              <col width="15%">
+              <col width="15%">
+              <col width="15%">
+            </colgroup>
+            <thead>
+              <tr>
+                <td>번호</td>
+                <td>제목</td>
+                <td>작성자</td>
+                <td>등록일</td>
+                <td>조회수</td>
+              </tr>
+            </thead>
+
+            <tbody>
+              <!-- 조회된 묻고 답하기 게시물들 -->
+              <tr>
+                <td>3</td>
+                <td>사물함이 고장났어요</td>
+                <td>오철민</td>
+                <td>2024-03-20</td>
+                <td>1</td>
+              </tr>
+
+              <tr>
+                <td>2</td>
+                <td>사물함이 고장났어요</td>
+                <td>오철민</td>
+                <td>2024-03-20</td>
+                <td>1</td>
+              </tr>
+
+              <tr>
+                <td>1</td>
+                <td>사물함이 고장났어요</td>
+                <td>오철민</td>
+                <td>2024-03-20</td>
+                <td>1</td>
+              </tr>
+            </tbody>
+
+
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- 페이징처리 -->
+
+  <div class="col-12 text-center">
+    <th:block th:if="${searchVO.prev}">
+      <a th:href="@{/notice(nowPage=${searchVO.beginPage - 1})}">이전</a>
+    </th:block>
+    <th:block th:each=" i : ${#numbers.sequence(searchVO.beginPage, searchVO.endPage)}">
+      <a th:href="@{/notice(nowPage=${i})}">[[${i}]]</a>
+    </th:block>
+    <th:block th:if="${searchVO.next}">
+      <a th:href="@{/notice(nowPage=${searchVO.endPage + 1})}">다음</a>
+    </th:block>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <!-- 이 버튼을 누르면 다시 1번으로 돌아감 -->
+      <div class="float-start">
+        <input type="button" value="목록" onclick="location.href='/notice'">
+      </div>
+    </div>
+    <div class="col ">
+      <!-- 로그인 해야지 사용가능한 글쓰기 버튼 -->
+      <div class="float-end">
+        <input type="button" value="글쓰기" onclick="location.href='/askAndAnswerWrite?boardType=30'">
+      </div>
+
+    </div>
+  </div>
+
+
+</th:block>
+
+<th:block layout:fragment="content_js">
+  <!-- html 파일이 열릴때 같이 실행되는 js -->
+  <script src="/"></script>
+</th:block>
+
+</html>
