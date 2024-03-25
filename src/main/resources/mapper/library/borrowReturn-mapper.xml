@@ -64,7 +64,7 @@
             #{userCode}
             , #{bookCode}
             , #{borrowDate}
-            DATE_ADD(NOW(), INTERVAL +14 DAY)
+            , DATE_ADD(#{borrowDate}, INTERVAL +14 DAY)
         )
     </insert>
 

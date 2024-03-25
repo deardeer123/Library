@@ -1,4 +1,6 @@
-// 현재 진행 상황 : 같은 태그로 계속 바뀌는 값이 들어가서 cardNum과 userCord가 바뀜. 따라서 bookCode가 들어오면 두 정보가 0으로 뜸.(userCode를 고정 할 방법이 필요.)
+// 대출 일자와 반납 일자 html에 default 값 오늘로
+document.querySelector('#borrow-date').value = new Date().toISOString().substring(0, 10);
+document.querySelector('#return-date').value = new Date().toISOString().substring(0, 10);
 
 
 function selectMemberInfo(){
@@ -20,7 +22,8 @@ function selectMemberInfo(){
     // 들어오는 데이터 관리
     const inputValue = inputData;
     const selectedCardNum = document.querySelector('input[name="selectedCardNum"]').value
-
+    const borrowDate = document.querySelector('#borrow-date').value;
+    const returnDate = document.querySelector('#return-date').value;
 
     fetch('/bookAdmin/selectBorrowInfo', { //요청경로
         method: 'POST',
@@ -31,7 +34,9 @@ function selectMemberInfo(){
         //컨트롤러로 전달할 데이터
         body: JSON.stringify({
             'inputValue' : inputValue,
-            'selectedCardNum' : selectedCardNum
+            'selectedCardNum' : selectedCardNum,
+            'borrowDate' : borrowDate,
+            'returnDate' : returnDate
         })
     })
     .then((response) => {
@@ -134,10 +139,10 @@ function selectMemberInfo(){
                                 ${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookCateCode}${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookMidCateCode}
                             </td>
                             <td>
-                                ${bookBorrowInfo.borrowDate}
+                                ${bookBorrowInfo.borrowDate.substring(0, 10)}
                             </td>
                             <td>
-                                ${bookBorrowInfo.exReturnDate}
+                                ${bookBorrowInfo.exReturnDate.substring(0, 10)}
                             </td>
                             <td>
                                 
@@ -164,10 +169,10 @@ function selectMemberInfo(){
                                 ${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookCateCode}${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookMidCateCode}
                             </td>
                             <td>
-                                ${bookBorrowInfo.borrowDate}
+                                ${bookBorrowInfo.borrowDate.substring(0, 10)}
                             </td>
                             <td>
-                                ${bookBorrowInfo.returnDate}
+                                ${bookBorrowInfo.returnDate.substring(0, 10)}
                             </td>
                             <td>
                                 

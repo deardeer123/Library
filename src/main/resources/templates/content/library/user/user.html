@@ -131,7 +131,7 @@
                                 <th:block th:unless="${#lists.isEmpty(membersInfo)}">
                                     <th:block th:each="memberInfo : ${membersInfo}">
                                         <tr>
-                                            <td rowspan="2"></td>
+                                            <td rowspan="2"><input type="checkbox" class="form-check-input"></td>
                                             <td rowspan="2">
                                                 [[${memberInfo.userName}]]([[${memberInfo.userId}]])[[${memberInfo.cardNum}]]
                                             </td>
@@ -146,8 +146,8 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>[[${borrowCnt}]]</td>
-                                            <td>[[${overdueCnt}]]</td>
+                                            <td>[[${memberInfo.borrowCnt}]]</td>
+                                            <td>[[${memberInfo.overdueCnt}]]</td>
                                             <td>[[${memberInfo.userIntro}]]</td>
                                         </tr>
                                     </th:block>
@@ -155,6 +155,33 @@
                             </tbody>
                         </table>
                         
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 gap-2 d-md-flex justify-content-md-end">
+                        <!-- 페이징 코드 나중에 할게료-->
+                        <th:block th:if="${!#lists.isEmpty(membersInfo)}">
+
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                                </ul>
+                            </nav>
+
+                        </th:block>
                     </div>
                 </div>
 

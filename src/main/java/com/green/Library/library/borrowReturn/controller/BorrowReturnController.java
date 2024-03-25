@@ -47,6 +47,8 @@ public class BorrowReturnController {
         // 카드번호가 데이터로 들어 올 때 대출 할 이용자 정보 조회
         if(isNumberic(cardNumOrBookCode) && Integer.parseInt(cardNumOrBookCode) > 0 && !String.valueOf(cardNumOrBookCode).contains("GR")){
 
+            System.out.println("MAP 데이터@@@@@@@@@@@" + inputData);
+
             System.out.println("@@@@" + cardNum);
 
             cardNum = Integer.parseInt(cardNumOrBookCode);
@@ -65,6 +67,7 @@ public class BorrowReturnController {
         }
         //책 번호를 입력했을 경우 카드넘을 통해 이용자 코드를 가져와서 대출
         else if (String.valueOf(cardNumOrBookCode).contains("GR") && selectedCardNum != 0) {
+
             bookCode = String.valueOf(cardNumOrBookCode);
             cardNum = selectedCardNum;
 
@@ -79,6 +82,7 @@ public class BorrowReturnController {
                 //대출 내역을 insert
                 bookBNRVO.setBookCode(bookCode);
                 bookBNRVO.setUserCode(userCode);
+                bookBNRVO.setBorrowDate(inputData.get("borrowDate"));
                 borrowReturnService.insertBorrow(bookBNRVO);
 
                 //다시 대출자의 모든 대출 내역을 조회
@@ -93,6 +97,7 @@ public class BorrowReturnController {
             else if (borrowReturnService.isCorrectBookCode(bookCode) && !borrowReturnService.selectBookAvailable(bookCode)) {
 
                 // 반납 내역을 update
+                bookBNRVO.setReturnDate(inputData.get("returnDate"));
                 borrowReturnService.updateReturnInfo(bookCode);
 
                 //다시 대출자의 모든 대출 내역을 조회

@@ -5,12 +5,7 @@ DROP TABLE book;
 DROP TABLE book_info;
 DROP TABLE book_borrow;
 DROP TABLE book_mid_category;
-DROP TABLE member_card;
 DROP TABLE users;
-DROP TABLE book_RETURN;
-
-SELECT * FROM book_borrow;
-SELECT * FROM book_return;
 
 -- 대출 테이블
 CREATE TABLE BOOK_BORROW(
