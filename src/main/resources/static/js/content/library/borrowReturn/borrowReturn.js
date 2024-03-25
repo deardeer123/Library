@@ -1,6 +1,6 @@
 // 대출 일자와 반납 일자 html에 default 값 오늘로
-document.querySelector('#borrow-date').value = new Date().toISOString().substring(0, 10);
-document.querySelector('#return-date').value = new Date().toISOString().substring(0, 10);
+// document.querySelector('#borrow-date').value = new Date().toISOString().substring(0, 10);
+// document.querySelector('#return-date').value = new Date().toISOString().substring(0, 10);
 
 
 function selectMemberInfo(){

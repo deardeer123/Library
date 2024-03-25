@@ -98,7 +98,8 @@ public class BorrowReturnController {
 
                 // 반납 내역을 update
                 bookBNRVO.setReturnDate(inputData.get("returnDate"));
-                borrowReturnService.updateReturnInfo(bookCode);
+                bookBNRVO.setBookCode(bookCode);
+                borrowReturnService.updateReturnInfo(bookBNRVO, bookCode);
 
                 //다시 대출자의 모든 대출 내역을 조회
                 MemberVO vo = new MemberVO();

@@ -48,8 +48,8 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
     // 반납 시 BOOK_BNR UPDATE + BOOK_INFO UPDATE
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateReturnInfo(String bookCode) {
-        sqlSession.update("bnrMapper.updateReturnInfo", bookCode);
+    public void updateReturnInfo(BookBNRVO bookBNRVO, String bookCode) {
+        sqlSession.update("bnrMapper.updateReturnInfo", bookBNRVO);
         sqlSession.update("bnrMapper.updateReturnBookInfo", bookCode);
     }
 
