@@ -9,6 +9,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class SearchUserVO extends PageVO {
+    private int userCode;
     private String cardNum1;
     private String cardNum2;
     private String userName1;

@@ -96,10 +96,12 @@ public class BorrowReturnController {
             // 책 번호를 입력하고, 해당 책이 대출 중인 상태일 때 반납 진행
             else if (borrowReturnService.isCorrectBookCode(bookCode) && !borrowReturnService.selectBookAvailable(bookCode)) {
 
+                System.out.println("반납" + inputData);
+
                 // 반납 내역을 update
                 bookBNRVO.setReturnDate(inputData.get("returnDate"));
                 bookBNRVO.setBookCode(bookCode);
-                borrowReturnService.updateReturnInfo(bookBNRVO, bookCode);
+                borrowReturnService.updateReturnInfo(bookBNRVO);
 
                 //다시 대출자의 모든 대출 내역을 조회
                 MemberVO vo = new MemberVO();

@@ -24,6 +24,6 @@ public interface BorrowReturnService {
     boolean selectBookAvailable(String bookCode);
 
     // 이용자 반납 insert 및 대출 가능 여부 update
-    void updateReturnInfo(BookBNRVO bookBNRVO, String bookCode);
+    void updateReturnInfo(BookBNRVO bookBNRVO);
 
 }

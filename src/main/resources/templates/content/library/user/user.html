@@ -132,8 +132,8 @@
                                     <th:block th:each="memberInfo : ${membersInfo}">
                                         <tr>
                                             <td rowspan="2"><input type="checkbox" class="form-check-input"></td>
-                                            <td rowspan="2">
-                                                [[${memberInfo.userName}]]([[${memberInfo.userId}]])[[${memberInfo.cardNum}]]
+                                            <td rowspan="2" th:onclick="showModal([[${memberInfo.userCode}]])">
+                                                [[${memberInfo.userName}]]([[${memberInfo.userId}]]) [[${memberInfo.cardNum}]]
                                             </td>
                                             <td>
                                                 [[${memberInfo.isAdmin}]]
@@ -157,6 +157,102 @@
                         
                     </div>
                 </div>
+
+                <div class="col d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button class="btn btn-primary">SMS 전송</button>
+                    <button class="btn btn-primary">이용자 병합</button>
+                </div>
+
+
+
+                <!-- 모달 -->
+                <div class="modal fade" id="user-detail-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">이용자 상세 정보</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-bordered">
+                                    <colgroup>
+                                        <col width="">
+                                        <col width="">
+                                        <col width="">
+                                        <col width="">
+                                    </colgroup>
+                                    <tr>
+                                        <td class="table-light">번호</td>
+                                        <td></td>
+                                        <td class="table-light">직급</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-light">이름</td>
+                                        <td></td>
+                                        <td class="table-light">카드상태</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-light">아이디</td>
+                                        <td></td>
+                                        <td class="table-light">비밀번호</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-light">성별</td>
+                                        <td></td>
+                                        <td class="table-light">회원증 발급 횟수</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-light">전화번호</td>
+                                        <td></td>
+                                        <td class="table-light">SMS 수신여부</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-light">주소</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-light">비고</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-active">이용조회</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-light">대출</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-light">예약</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-light">연체</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-light">최근 대출일</td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="row">
+                                    <div class="col">
+                                        <button class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                        <button class="btn btn-primary">저장</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
 
                 <div class="row">
                     <div class="col-6 gap-2 d-md-flex justify-content-md-end">
@@ -193,6 +289,6 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <!-- <script src="/"></script> -->
+    <script src="/js/content/library/user/user.js"></script>
 </th:block>
 </html>

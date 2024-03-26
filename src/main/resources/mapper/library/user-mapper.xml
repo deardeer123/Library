@@ -28,7 +28,14 @@
                 AND RETURN_YN = 'N'
                 AND RETURN_DATE &gt; EX_RETURN_DATE) AS OVERDUE_CNT
         FROM USERS
-        WHERE 1 = 1
+        <where>
+            <if test='userCode == 0'>
+                1 = 1
+            </if>
+            <if test='userCode != 0'>
+                USER_CODE = #{userCode}
+            </if>
+        </where>
         <if test='cardNum1 != null and !cardNum1.equals("") and (cardNum2 == null and cardNum2.equals(""))'>
             AND CARD_NUM BETWEEN ${cardNum1} AND (SELECT MAX(CARD_NUM) FROM USERS)
         </if>

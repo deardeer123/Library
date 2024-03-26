@@ -12,6 +12,8 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
     @Autowired
     private SqlSessionTemplate sqlSession;
 
+    ////////////////////// 대출 ////////////////////////
+
     // 대출 정보 이력 조회
     @Override
     public MemberVO selectBorrowInfo(MemberVO memberVO) {
@@ -39,6 +41,9 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
         return sqlSession.selectOne("bnrMapper.selectUserCode", cardNum);
     }
 
+
+    ////////////////////// 반납 ////////////////////////////
+
     // 반납 수행 시 책의 이용 가능 여부 조회
     @Override
     public boolean selectBookAvailable(String bookCode) {
@@ -48,9 +53,9 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
     // 반납 시 BOOK_BNR UPDATE + BOOK_INFO UPDATE
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateReturnInfo(BookBNRVO bookBNRVO, String bookCode) {
+    public void updateReturnInfo(BookBNRVO bookBNRVO) {
         sqlSession.update("bnrMapper.updateReturnInfo", bookBNRVO);
-        sqlSession.update("bnrMapper.updateReturnBookInfo", bookCode);
+        sqlSession.update("bnrMapper.updateReturnBookInfo", bookBNRVO.getBookCode());
     }
 
 

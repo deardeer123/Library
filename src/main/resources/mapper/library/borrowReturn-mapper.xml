@@ -112,7 +112,7 @@
             RETURN_YN = 'Y'
             , RETURN_DATE =
                 CASE
-                    WHEN #{returnDate} %lt; NOW() THEN #{returnDate}
+                    WHEN #{returnDate} &lt; NOW() THEN #{returnDate}
                     ELSE NOW()
                 END
         WHERE BOOK_CODE = #{bookCode}
