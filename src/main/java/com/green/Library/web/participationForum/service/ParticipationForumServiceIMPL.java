@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("ParticipationForumService")
 public class ParticipationForumServiceIMPL implements ParticipationForumService{
@@ -42,11 +43,6 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
     }
 
     @Override
-    public int partiCountBoard(SearchVO searchVO) {
-        return sqlSession.selectOne("participationForumMapper.partiCountBoard",searchVO);
-    }
-
-    @Override
     public List<BoardVO> selectQna() {
         return sqlSession.selectList("participationForumMapper.selectQna");
     }
@@ -60,7 +56,33 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
     public List<BoardVO> forumSelectBoardList(SearchVO searchVO) {
         return sqlSession.selectList("participationForumMapper.forumSelectBoardList",searchVO);
     }
+    //묻고 답하기 게시물 넣기
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void insertAskAndAnswerBoard(BoardVO boardVO) {
+        sqlSession.insert("participationForumMapper.insertBoard",boardVO); //게시물 먼저 넣고
+        sqlSession.insert("boardMapper.insertFileList",boardVO); //첨부파일 넣고
+        sqlSession.insert("participationForumMapper.insertAskAndAnswerBoard",boardVO); //묻고 답하기 넣고
+    }
 
+    //글 조회하기
+    @Override
+    public List<BoardVO> selectAskAndAnswerBoardList(SearchVO searchVO) {
+        return sqlSession.selectList("participationForumMapper.selectAskAndAnswerBoardList",searchVO);
+    }
+
+    //글 갯수 찾기
+    @Override
+    public int partiCountBoard(SearchVO searchVO) {
+        return sqlSession.selectOne("participationForumMapper.partiCountBoard",searchVO);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public BoardVO detailAskBoard(int boardNum) {
+        sqlSession.update("participationForumMapper.boardCntUp",boardNum);
+        return sqlSession.selectOne("participationForumMapper.detailAskBoard",boardNum);
+    }
 
 
 }
