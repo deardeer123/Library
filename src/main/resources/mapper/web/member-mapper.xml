@@ -19,9 +19,16 @@
         <result property="publishDate" column="PUBLISH_DATE"/>
         <result property="userIntro" column="USER_INTRO"/>
         <result property="cardStatus" column="CARD_STATUS"/>
-        <result property="applyDate" column="APPLY_DATE"/>
+        <association property="applyVO" resultMap="apply"/>
         <collection property="bookBorrowList" resultMap="bnrMapper.bookBNR"/>
     </resultMap>
+    <resultMap id="apply" type="com.green.Library.web.member.vo.ApplyVO">
+        <result property="applyNum" column="APPLY_NUM"/>
+        <result property="applyDate" column="APPLY_DATE"/>
+        <result property="userCode" column="USER_CODE"/>
+        <result property="boardNum" column="BOARD_NUM"/>
+    </resultMap>
+
     <insert id="insertMember">
         INSERT INTO USERS(
             USER_ID
@@ -58,14 +65,24 @@
     </select>
 
     <insert id="apply">
-        INSERT INTO USERS(
+        INSERT INTO APPLY(
             APPLY_DATE
-            ,USER_TEL
-        ) VALUES(
+            ,USER_CODE
+        )VALUES(
             #{applyDate}
-            ,#{userTel}
+            ,#{userCode}
         )
     </insert>
+    <select id="applyList" resultMap="users">
+        SELECT
+            DATE_FORMAT(A.APPLY_DATE, '%Y-%m-%d') AS APPLY_DATE
+            ,A.USER_CODE
+            ,BOARD_NUM
+            ,USER_NAME
+        FROM USERS AS U
+        INNER JOIN APPLY AS A
+        ON A.USER_CODE = U.USER_CODE
+    </select>
 
 
 

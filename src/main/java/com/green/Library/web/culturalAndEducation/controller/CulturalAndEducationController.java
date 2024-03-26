@@ -9,7 +9,9 @@ import com.green.Library.web.board.vo.PlusVO;
 import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.board.vo.UploadVO;
 import com.green.Library.web.culturalAndEducation.service.CulturalAndEducationServiceImpl;
+import com.green.Library.web.member.service.MemberService;
 import com.green.Library.web.member.service.MemberServiceImpl;
+import com.green.Library.web.member.vo.ApplyVO;
 import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
@@ -17,10 +19,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -32,6 +31,8 @@ public class CulturalAndEducationController {
     private WebMenuService webMenuService;
     @Resource(name = "boardService")
     private BoardServiceImpl boardService;
+    @Resource(name = "memberService")
+    private MemberServiceImpl memberService;
 
     @Autowired
     private ScheduleService scheduleService;
@@ -482,8 +483,11 @@ public class CulturalAndEducationController {
         searchVO.setPageInfo();
         searchVO.setBoardType(28);
 
+        List<ApplyVO> applyList = memberService.applyList();
+        model.addAttribute("applyList", applyList);
         List<BoardVO> boardList =  boardService.selectPlusList(searchVO);
         model.addAttribute("boardList",boardList);
+        System.out.println(applyList);
         System.out.println(boardList);
 
         System.out.println("강좌 수강신청");
@@ -522,6 +526,16 @@ public class CulturalAndEducationController {
         boardService.insertParticipation(boardVO);
         return "redirect:/applicationForClasses";
     }
+
+    @GetMapping("/goApplyListPage")
+    public String goApplyListPage(Model model, BoardVO boardVO, HttpSession session){
+        boardVO.setUserCode((Integer) session.getAttribute("userCode"));
+        System.out.println(boardVO);
+        model.addAttribute("boardList", boardService.applyBoardList());
+        return "content/homePage/culturalAndEducation/applicationForClasses/goApplyList";
+    }
+
+
 
 
 

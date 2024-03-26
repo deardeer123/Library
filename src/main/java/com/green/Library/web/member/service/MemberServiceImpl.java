@@ -1,10 +1,13 @@
 package com.green.Library.web.member.service;
 
+import com.green.Library.web.member.vo.ApplyVO;
 import com.green.Library.web.member.vo.MemberVO;
 import org.codehaus.groovy.transform.trait.Traits;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service("memberService")
 public class MemberServiceImpl implements MemberService{
@@ -22,8 +25,13 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void apply(MemberVO memberVO) {
-        sqlSession.insert("memberMapper.apply",memberVO);
+    public void apply(ApplyVO applyVO) {
+        sqlSession.insert("memberMapper.apply",applyVO);
+    }
+
+    @Override
+    public List<ApplyVO> applyList() {
+        return sqlSession.selectList("memberMapper.applyList");
     }
 
 

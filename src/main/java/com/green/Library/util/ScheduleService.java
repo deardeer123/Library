@@ -16,7 +16,7 @@ public class ScheduleService {
     @Autowired
     private BoardServiceImpl boardService;
 
-    @Scheduled(cron = "0 0 0/1 * * *")
+    @Scheduled(cron = "0 */5 * * * *")
     public void run(){
         boardService.updateStatus();
 

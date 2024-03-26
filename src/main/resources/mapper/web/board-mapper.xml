@@ -239,6 +239,30 @@
         LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
     </select>
 
+    <select id="applyBoardList" resultMap="board">
+        SELECT
+            PLUS_CODE
+            ,B.BOARD_NUM
+            ,BOARD_TITLE
+            , BOARD_TYPE
+            ,TEACHER
+            ,TARGET
+            , DATE_FORMAT(OPEN_DATE, '%Y-%m-%d') AS OPEN_DATE
+            , DATE_FORMAT(CLOSE_DATE, '%Y-%m-%d') AS CLOSE_DATE
+            , DATE_FORMAT(TO_DATE, '%Y-%m-%d') AS TO_DATE
+            , DATE_FORMAT(FROM_DATE, '%Y-%m-%d') AS FROM_DATE
+            ,PERSONNEL
+            ,MAXIMUM_PERSON
+            ,EVENT_STATUS
+            ,APPLY_DATE
+            ,A.USER_CODE
+        FROM BOARD AS B
+        INNER JOIN BOARD_PLUS AS P
+        ON B.BOARD_NUM = P.BOARD_NUM
+        INNER JOIN apply AS A
+        ON B.BOARD_NUM = A.BOARD_NUM
+        WHERE EVENT_STATUS = '진행예정'
+    </select>
 
     <insert id="insertParticipation">
         INSERT INTO BOARD(
@@ -371,6 +395,10 @@
         UPDATE BOARD_PLUS
         SET
     </update>
+
+
+
+
 
 <!--  ////////////////////////이벤트 게시물///////////////////  -->
 

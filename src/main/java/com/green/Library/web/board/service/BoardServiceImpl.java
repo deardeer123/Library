@@ -3,6 +3,7 @@ package com.green.Library.web.board.service;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.PlusVO;
 import com.green.Library.web.board.vo.SearchVO;
+import com.green.Library.web.member.vo.MemberVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -117,6 +118,11 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void updateStatus() {
         sqlSession.update("boardMapper.updateStatus");
+    }
+
+    @Override
+    public List<BoardVO> applyBoardList() {
+        return sqlSession.selectList("boardMapper.applyBoardList");
     }
 
 

@@ -26,6 +26,6 @@ public class MemberVO {
     private String publishDate;
     private String userIntro;
     private String cardStatus;
-    private String applyDate;
+    private ApplyVO applyVO;
     private List<BookBNRVO> bookBorrowList;
 }

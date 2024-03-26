@@ -37,6 +37,10 @@
                 </tr>
             </form>
         </div>
+        <div class="mt-3" sec:authorize="hasRole('ROLE_Y')">
+                <span style="color: red;">*</span>
+                <span style="cursor: pointer;" onclick="location.href='/goApplyListPage'">[[${#lists.size(applyList)}]]</span>개의 신청이 있습니다.
+        </div>
         <div class="col mt-3">
             <table class="align-middle table text-center">
                 <thead>
