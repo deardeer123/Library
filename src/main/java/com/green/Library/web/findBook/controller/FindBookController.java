@@ -46,6 +46,7 @@ public class FindBookController {
         //페이지 정보 세팅
         bookSearchVO.setPageInfo();
 
+        //계속 이상하게 나오길래 넣은 코드입니다.
         if(totalDataCnt == 0){
             bookSearchVO.setEndPage(1);
         }
