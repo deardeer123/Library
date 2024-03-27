@@ -67,11 +67,33 @@ function goEventDeletes(){
     }
 
     location=`/goEventDeletes?boardNums=${boardNum}`;
-
 }
 
-function dateView(){
+function goAppDeletes(){
+    const chks = document.querySelectorAll('.chk:checked')
+
+    if(chks.length == 0){
+        alert('삭제 할 게시물을 선택하세요')
+        return ;
+    }
+
+    const boardNum = []
+    for(const chk of chks){
+        boardNum.push(chk.value);
+    }
+
+    location=`/goAppDelete?boardNums=${boardNum}`;
+}
+
+
+
+
+
+
+function dateView(boardNum){
     const modal = new bootstrap.Modal('#myModal')
+    const boardNumTag = document.querySelector('#boardNumTag');
+    boardNumTag.value = boardNum
     modal.show();
     
 }
@@ -81,3 +103,9 @@ function oninputPhone(target){
         .replace(/[^0-9]/g, '')
         .replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
 };
+
+
+
+function approve(){
+
+}

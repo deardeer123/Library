@@ -85,7 +85,7 @@
             </table>
             <div sec:authorize="hasRole('ROLE_N')" class="d-grid gap-2 col-4 mx-auto">
                 <th:block th:if="${board.PlusVO.personnel lt board.PlusVO.maximumPerson} and ${board.PlusVO.eventStatus == '진행예정'} ">
-                    <input class="btn btn-outline-success" type="button" onclick="dateView()" value="신청하기">
+                    <input class="btn btn-outline-success" type="button" th:onclick="dateView([[${board.boardNum}]])" value="신청하기">
                 </th:block>
             </div>
             <div sec:authorize="hasRole('ROLE_Y')">
@@ -121,7 +121,7 @@
                             
                             <input type="date" class="form-control" name="applyDate" id="applyDate">
                         </div>
-                        <input type="hidden" name="boardNum" th:value="${board.boardNum}">
+                        <input type="hidden" id="boardNumTag" name="boardNum" >
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>

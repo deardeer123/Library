@@ -68,9 +68,11 @@
         INSERT INTO APPLY(
             APPLY_DATE
             ,USER_CODE
+            ,BOARD_NUM
         )VALUES(
             #{applyDate}
             ,#{userCode}
+            ,#{boardNum}
         )
     </insert>
     <select id="applyList" resultMap="users">
