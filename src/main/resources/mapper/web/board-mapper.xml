@@ -255,13 +255,17 @@
         ,PERSONNEL
         ,MAXIMUM_PERSON
         ,EVENT_STATUS
-        ,DATE_FORMAT(APPLY_DATE, '%Y-%m-%d') AS APPLY_DATE
+        ,DATE_FORMAT(A.APPLY_DATE, '%Y-%m-%d') AS APPLY_DATE
         ,A.USER_CODE
+        ,APPLY_STATUS
+        ,U.USER_NAME
         FROM BOARD AS B
         INNER JOIN BOARD_PLUS AS P
         ON B.BOARD_NUM = P.BOARD_NUM
         INNER JOIN apply AS A
         ON B.BOARD_NUM = A.BOARD_NUM
+        INNER JOIN USERS AS U
+        ON A.USER_CODE = U.USER_CODE
     </select>
 
     <insert id="insertParticipation">
@@ -391,10 +395,15 @@
         FROM board_plus AS B
         WHERE B.PLUS_CODE = A.PLUS_CODE)
     </update>
-    <update id="">
-        UPDATE BOARD_PLUS
-        SET
+
+    <update id="upPersonnel">
+    UPDATE BOARD_PLUS
+    SET PERSONNEL = PERSONNEL + 1
+    WHERE BOARD_NUM = #{boardNum}
     </update>
+
+
+
 
 
 

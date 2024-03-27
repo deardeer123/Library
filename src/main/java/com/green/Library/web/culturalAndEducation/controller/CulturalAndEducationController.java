@@ -543,6 +543,13 @@ public class CulturalAndEducationController {
         return "redirect:/applicationForClasses";
     }
 
+    @ResponseBody
+    @PostMapping("/upPersonnel")
+    public void upPersonnel(@RequestParam(name = "boardNum") int boardNum){
+        System.out.println(boardNum);
+        boardService.upPersonnel(boardNum);
+    }
+
 
 
 
