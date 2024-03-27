@@ -93,7 +93,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <td rowspan="2">
-                                        <input type="checkbox" class="form-check-input" style="vertical-align: middle;">
+                                        <input type="checkbox" id="all" class="form-check-input" style="vertical-align: middle;">
                                     </td>
                                     <td rowspan="2" style="padding-bottom: 30px;">
                                         이름(아이디) 대출자번호
@@ -131,7 +131,7 @@
                                 <th:block th:unless="${#lists.isEmpty(membersInfo)}">
                                     <th:block th:each="memberInfo : ${membersInfo}">
                                         <tr>
-                                            <td rowspan="2"><input type="checkbox" class="form-check-input"></td>
+                                            <td rowspan="2"><input type="checkbox" class="form-check-input one"></td>
                                             <td rowspan="2" th:onclick="showModal([[${memberInfo.userCode}]])">
                                                 [[${memberInfo.userName}]]([[${memberInfo.userId}]]) [[${memberInfo.cardNum}]]
                                             </td>
@@ -174,71 +174,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <table class="table table-bordered">
-                                    <colgroup>
-                                        <col width="">
-                                        <col width="">
-                                        <col width="">
-                                        <col width="">
-                                    </colgroup>
-                                    <tr>
-                                        <td class="table-light">번호</td>
-                                        <td></td>
-                                        <td class="table-light">직급</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-light">이름</td>
-                                        <td></td>
-                                        <td class="table-light">카드상태</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-light">아이디</td>
-                                        <td></td>
-                                        <td class="table-light">비밀번호</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-light">성별</td>
-                                        <td></td>
-                                        <td class="table-light">회원증 발급 횟수</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-light">전화번호</td>
-                                        <td></td>
-                                        <td class="table-light">SMS 수신여부</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-light">주소</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-light">비고</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-active">이용조회</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-light">대출</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-light">예약</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-light">연체</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-light">최근 대출일</td>
-                                        <td></td>
-                                    </tr>
-                                </table>
+                                
                             </div>
                             <div class="modal-footer">
                                 <div class="row">

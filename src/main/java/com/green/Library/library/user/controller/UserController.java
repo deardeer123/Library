@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/bookAdmin")
@@ -60,11 +61,18 @@ public class UserController {
     // 이용자 관리에서 모달에 띄울 상세정보
     @ResponseBody
     @PostMapping("/showUserDetail")
-    public MemberVO showUserDetail(@RequestBody Map<String, String> userDetail){
+    public MemberVO showUserDetail(@RequestBody Map<String, String> userDetail, Model model){
 
         System.out.println("@@@@@@@@@@@@@" + userDetail);
 
-        return userService.showUserDetail(Integer.parseInt(userDetail.get("userCode")));
+        // 오브젝트로 타입 문자열 변환 후 정수 변환
+        int code = Integer.parseInt(userDetail.get("userCode"));
+
+        Optional<Integer> userCode = Optional.ofNullable(code);
+
+        System.out.println(userService.showUserDetail(userCode.get()));
+
+        return userCode.map( u -> userService.showUserDetail(u)).orElse(null);
     }
 
     //이용자 승인

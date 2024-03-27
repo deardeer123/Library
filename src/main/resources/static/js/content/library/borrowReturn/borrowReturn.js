@@ -4,9 +4,6 @@
 
 
 function selectMemberInfo(){
-
-    // 인풋 데이터 선택하기
-    let inputData = document.querySelector('#inputData').value;
     
     // 그림 그릴 이용자 정보 태그 선택하기(userInfo)
     const userInfo = document.querySelector('#userInfo');
@@ -20,7 +17,7 @@ function selectMemberInfo(){
     const reserve_list_tbody = document.querySelector('.reserve-list-table tbody');
 
     // 들어오는 데이터 관리
-    const inputValue = inputData;
+    const inputValue = document.querySelector('#inputData').value;
     const selectedCardNum = document.querySelector('input[name="selectedCardNum"]').value
     const borrowDate = document.querySelector('#borrow-date').value;
     const returnDate = document.querySelector('#return-date').value;
@@ -36,7 +33,8 @@ function selectMemberInfo(){
             'inputValue' : inputValue,
             'selectedCardNum' : selectedCardNum,
             'borrowDate' : borrowDate,
-            'returnDate' : returnDate
+            'returnDate' : returnDate,
+            'userDetail' : String(false)
         })
     })
     .then((response) => {
