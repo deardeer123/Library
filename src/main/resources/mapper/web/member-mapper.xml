@@ -86,6 +86,17 @@
         ON A.USER_CODE = U.USER_CODE
     </select>
 
+    <select id="selectMemberInfoToUserCode" resultMap="users">
+        SELECT
+        USER_CODE ,
+        USER_ID ,
+        USER_NAME,
+        USER_TEL
+        FROM
+        users
+        where
+        user_code = #{userCode};
+    </select>
 
 
 </mapper>

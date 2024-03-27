@@ -5,11 +5,13 @@ import com.green.Library.web.board.service.BoardServiceImpl;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.board.vo.UploadVO;
+import com.green.Library.web.member.service.MemberService;
 import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.participationForum.service.ParticipationForumServiceIMPL;
 import com.green.Library.web.participationForum.vo.AskAndAnswerBoardVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.Session;
 import org.springframework.stereotype.Controller;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import org.springframework.ui.Model;
@@ -33,6 +35,9 @@ public class ParticipationForumController {
     private ParticipationForumServiceIMPL participationForumService;
     @Resource(name = "boardService")
     private BoardServiceImpl boardService;
+
+    @Resource(name= "memberService")
+    private MemberService memberService;
 
 
     private final int selectedMenuIndex = 4;
@@ -161,7 +166,7 @@ public class ParticipationForumController {
     }
 
     @GetMapping("/askAndAnswerWrite")
-    public String writeAskAndAnswer(Model model, SearchVO searchVO){
+    public String writeAskAndAnswer(Model model,HttpSession session, SearchVO searchVO){
 //        묻고 답하기 글 작성 페이지 이동
 
         //메뉴 정보
@@ -174,6 +179,8 @@ public class ParticipationForumController {
         int selectedSideMenuIndex = 2;
         model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
 
+        MemberVO memberVO = memberService.selectMemberInfoToUserCode((Integer) session.getAttribute("userCode"));
+        System.out.println(memberVO);
 
 
 
@@ -183,6 +190,7 @@ public class ParticipationForumController {
     @PostMapping("/askAndAnswerWrite2")
     public String askAndAnswerWrite2(BoardVO boardVO, UploadVO uploadVO, AskAndAnswerBoardVO askAndAnswerBoardVO ,
             MemberVO memberVO ,
+            HttpSession session,
             @RequestParam(name="file")MultipartFile file,
             @RequestParam(name="boardType") int boardType){
 
@@ -228,6 +236,9 @@ public class ParticipationForumController {
         boardVO.setAskAndAnswerBoardVO(askAndAnswerBoardVO);
 
         //memberVO도 넣어줘야 하는데 일단 가짜 데이터 홍길동 넣음
+
+        memberVO.setUserCode((Integer) session.getAttribute("userCode"));
+        memberVO.setUserId((String) session.getAttribute("userId"));
         boardVO.setMemberVO(memberVO);
 
         participationForumService.insertAskAndAnswerBoard(boardVO);

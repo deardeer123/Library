@@ -50,7 +50,7 @@
                         </div>
                     </div>
 
-                    <div class="row gx-4">
+                    <div class="row">
                         <div class="col-8"></div>
                         <div class="col-1 d-grid">
                             <!-- 수정하기 글쓴이 혹은 관리자만 볼 수 있어야함-->
@@ -58,7 +58,8 @@
                         </div>
                         <div class="col-1 d-grid">
                             <!-- 답변하기 관리자만 볼 수 있어야 함 -->
-                            <input type="button" class="btn btn-primary" th:onclick="goAnswer([[${boardVO.boardNum}]])"value="답변하기">
+                            <input sec:authorize="hasRole('ROLE_Y')"
+                            type="button" class="btn btn-primary" th:onclick="goAnswer([[${boardVO.boardNum}]])"value="답변하기">
                         </div>
                         <div class="col-1 d-grid">
                             <!-- 삭제하기 글쓴이 혹은 관리자만 볼 수 있어야 함-->

@@ -1,15 +1,14 @@
 package com.green.Library.web.member.vo;
 
 import com.green.Library.library.borrowReturn.vo.BookBNRVO;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
-@ToString
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class MemberVO {
     private int userCode;
     private String userId;

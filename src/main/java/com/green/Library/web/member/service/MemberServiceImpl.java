@@ -34,5 +34,11 @@ public class MemberServiceImpl implements MemberService{
         return sqlSession.selectList("memberMapper.applyList");
     }
 
+    //userCode로 코드, 아이디, 이름, 전화번호 얻는 메소드
+    @Override
+    public MemberVO selectMemberInfoToUserCode(int userCode) {
+        return sqlSession.selectOne("memberMapper.selectMemberInfoToUserCode",userCode);
+    }
+
 
 }
