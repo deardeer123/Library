@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
+
+<th:block layout:fragment="content_css">
+    <!-- html 파일이 열릴때 같이 실행되는 css -->
+    <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+    <!-- html 코드 작성 -->
+    <div class="row">
+        <div class="col">
+
+            <div class="row mt-2">
+                <div class="col">
+                    <!-- 제목 -->
+                    <div class="h4 border border-start-0 border-end-0">
+                        [[${boardVO.boardTitle}]]
+                    </div>
+                    <div>
+                        <!-- 작성자, 작성일, 끝에는 조회수 -->
+                        <div class="row border border-start-0 border-end-0 border-top-0">
+                            <div class="col-2">작성자 : [[${boardVO.memberVO.userId}]]</div>
+                            <div class="col-3">작성일 : [[${boardVO.boardDate}]]</div>
+                            <div class="col-5"></div>
+                            <div class="col-2">조회수 : [[${boardVO.boardCnt}]]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5 mb-5">
+                <div class="col">
+                    <!-- 글 내용 -->
+                    [[${boardVO.content}]]
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col">
+                    <!-- 첨부된 파일, 끝에는 수정하기 버튼, 삭제하기 버튼, 답변하기 버튼(관리자), 목록으로 -->
+                    <div class="row mt-5 mb-1">
+                        <div class="col">
+                            <!-- 첨부파일 명 -->
+                            <th:block th:if="boardVO.fileList[0].OriginFileName != null">
+                                [[${boardVO.fileList[0].OriginFileName}]]
+                            </th:block>
+
+                        </div>
+                    </div>
+
+                    <div class="row gx-4">
+                        <div class="col-8"></div>
+                        <div class="col-1 d-grid">
+                            <!-- 수정하기 글쓴이 혹은 관리자만 볼 수 있어야함-->
+                            <input type="button" class="btn btn-primary" value="수정하기">
+                        </div>
+                        <div class="col-1 d-grid">
+                            <!-- 답변하기 관리자만 볼 수 있어야 함 -->
+                            <input type="button" class="btn btn-primary" th:onclick="goAnswer([[${boardVO.boardNum}]])"value="답변하기">
+                        </div>
+                        <div class="col-1 d-grid">
+                            <!-- 삭제하기 글쓴이 혹은 관리자만 볼 수 있어야 함-->
+                            <input type="button" class="btn btn-danger" th:onclick="goDeleteBoard([[${boardVO.boardNum}]])" value="삭제하기">
+                        </div>
+                        <div class="col-1 d-grid">
+                            <!-- 목록으로 -->
+                            <input type="button" class="btn btn-primary" value="목록으로">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <script>
+        // 답변하러 가기
+        function goAnswer(boardNum){
+            location.href=`/goAnswer?boardNum=${boardNum}`;
+        }
+    </script>
+</th:block>
+
+<th:block layout:fragment="content_js">
+    <!-- html 파일이 열릴때 같이 실행되는 js -->
+    <!-- <script src="/"></script> -->
+</th:block>
+
+</html>

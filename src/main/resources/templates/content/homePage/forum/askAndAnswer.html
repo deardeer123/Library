@@ -63,29 +63,21 @@
 
             <tbody>
               <!-- 조회된 묻고 답하기 게시물들 -->
-              <tr>
-                <td>3</td>
-                <td>사물함이 고장났어요</td>
-                <td>오철민</td>
-                <td>2024-03-20</td>
-                <td>1</td>
-              </tr>
 
-              <tr>
-                <td>2</td>
-                <td>사물함이 고장났어요</td>
-                <td>오철민</td>
-                <td>2024-03-20</td>
-                <td>1</td>
-              </tr>
-
-              <tr>
-                <td>1</td>
-                <td>사물함이 고장났어요</td>
-                <td>오철민</td>
-                <td>2024-03-20</td>
-                <td>1</td>
-              </tr>
+              <th:block th:each="e3, state :${boardVOList}">
+                <tr th:onclick="detailAskBoard([[${e3.boardNum}]])">
+                  <td>[[${#lists.size(boardVOList) - state.index}]]</td>
+                  <td>
+                    <!-- 만약에 비밀글 인경우 -->
+                    <th:block th:if="${e3.askAndAnswerBoardVO.askAndAnswerBoardPublicOrPrivate == 'private'}">🔒
+                    </th:block>
+                    [[${e3.boardTitle}]]
+                  </td>
+                  <td>[[${e3.memberVO.userName}]]</td>
+                  <td>[[${e3.boardDate}]]</td>
+                  <td>[[${e3.boardCnt}]]</td>
+                </tr>
+              </th:block>
             </tbody>
 
 
@@ -128,6 +120,13 @@
   </div>
 
 
+  <script>
+    function detailAskBoard(boardNum) {
+      console.log(boardNum)
+
+      location.href = `/goDetailAskBoard?boardNum=${boardNum}`;
+    }
+  </script>
 </th:block>
 
 <th:block layout:fragment="content_js">

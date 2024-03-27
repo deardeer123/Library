@@ -71,4 +71,8 @@ public class PageVO {
     public boolean getNext(){
         return next;
     }
+
+    public void setEndPage(int a){
+        this.endPage = a;
+    }
 }
