@@ -769,9 +769,11 @@ SELECT * FROM attached_file;
 SELECT * FROM ASK_AND_ANSWER_BOARD;
 SELECT * FROM users;
 
--- DELETE FROM board;
--- DELETE FROM attached_file;
--- DELETE FROM ASK_AND_ANSWER_BOARD;
+DELETE FROM board;
+DELETE FROM attached_file;
+DELETE FROM ASK_AND_ANSWER_BOARD;
+
+
 
 SELECT 
 	BOARD.BOARD_NUM ,
@@ -785,6 +787,79 @@ FROM
 WHERE
 	board_type = 30;
 	
+	
+	
+SELECT
+        BOARD.BOARD_NUM ,
+        BOARD.BOARD_TITLE ,
+        DATE_FORMAT(BOARD.BOARD_DATE, '%Y-%m-%d') AS BOARD_DATE ,
+        USERS.USER_NAME ,
+        BOARD.BOARD_CNT ,
+        ASK_AND_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_NUM ,
+        ASK_AND_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE ,
+        ASK_AND_ANSWER_BOARD.IS_ANSWER_BOARD ,
+        ASK_AND_ANSWER_BOARD.IF_ANSWER_BOARD_NUM
+        FROM
+        BOARD INNER JOIN users
+        ON board.USER_CODE = users.USER_CODE
+        INNER JOIN ASK_AND_ANSWER_BOARD
+        ON board.BOARD_NUM = ASK_AND_ANSWER_BOARD.BOARD_NUM
+        WHERE
+        board_type = 30 AND ask_and_answer_board.IS_ANSWER_BOARD = 'N'
+      
+        ORDER BY ask_and_answer_board.ASK_AND_ANSWER_BOARD_NUM desc;
+    
+	
+	SELECT
+        BOARD.BOARD_NUM ,
+        BOARD.BOARD_TITLE ,
+        DATE_FORMAT(BOARD.BOARD_DATE, '%Y-%m-%d') AS BOARD_DATE ,
+        USERS.USER_NAME ,
+        BOARD.BOARD_CNT ,
+        ASK_AND_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_NUM ,
+        ASK_AND_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE ,
+        ASK_AND_ANSWER_BOARD.IS_ANSWER_BOARD ,
+        ASK_AND_ANSWER_BOARD.IF_ANSWER_BOARD_NUM
+        FROM
+        BOARD INNER JOIN users
+        ON board.USER_CODE = users.USER_CODE
+        INNER JOIN ASK_AND_ANSWER_BOARD
+        ON board.BOARD_NUM = ASK_AND_ANSWER_BOARD.BOARD_NUM
+        WHERE
+        board_type = 30
+      
+        ORDER BY ask_and_answer_board.ASK_AND_ANSWER_BOARD_NUM desc;
+	
+	SELECT * from board;
+	SELECT * FROM ask_and_answer_board;
+	
+	SELECT * FROM ask_and_answer_board;
+	
+	ALTER TABLE ask_and_answer_board ADD column ORIGIN_ORDER_NUM INT;
+	ALTER TABLE ask_and_answer_board ADD COLUMN ANSWER_ORDER_NUM INT;
+	
+	SELECT * FROM ask_and_answer_board;
+	
+	-- ㄴ
+	SELECT 
+		CASE
+			when MAX(origin_order_num) IS null then 1
+			ELSE MAX(origin_order_num)
+		END
+	FROM
+		ask_and_answer_board;
+		
+		
+	select
+		case
+			when MAX(ANSWER_ORDER_NUM) IS NULL then 1
+			ELSE MAX(ANSWER_ORDER_NUM)
+		end
+	from
+		ask_and_answer_board;
+		
+	SELECT MAX(origin_order_num)
+	FROM ask_and_answer_board;
 	
 	
 	

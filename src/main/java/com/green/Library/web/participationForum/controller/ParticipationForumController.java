@@ -152,21 +152,10 @@ public class ParticipationForumController {
         if(boardCnt == 0){
             searchVO.setEndPage(1);
         }
-        //묻고 답하기 글 들고오기
-        List<BoardVO> boardVOList = participationForumService.selectAskAndAnswerBoardList(searchVO);
-        System.out.println(boardVOList);
-        System.out.println("시발");
-        model.addAttribute("boardVOList", boardVOList);
 
-//        //전체데이터수
-//        int totalBoardCnt= participationForumService.partiCountBoard(searchVO);
-//        searchVO.setTotalDataCnt(totalBoardCnt);
-//
-//        //페이지정보세팅
-//        searchVO.setPageInfo();
-//
-//        //글목록 조회
-//        model.addAttribute("qnaList", participationForumService.forumSelectBoardList(searchVO));
+//        //묻는 글 들고오기
+        List<BoardVO> boardVOList = participationForumService.selectAskAndAnswerBoardList(searchVO);
+        model.addAttribute("boardVOList", boardVOList);
 
         return "content/homePage/forum/askAndAnswer";
     }
@@ -227,14 +216,19 @@ public class ParticipationForumController {
         //boadrdVO에 fileList 넣어주기
         boardVO.setFileList(fileList);
 
+        //askAndAnswerBoardVO에 정렬를 위한 정보 넣기
+        int originOrderNum = participationForumService.selectMaxOriginOrderNum();
+        askAndAnswerBoardVO.setOriginOrderNum(originOrderNum);
+
+        //질문글 이므로 ANSWER_ORDER_NUM은 0 넣기
+        int answerOrderNum = 0;
+        askAndAnswerBoardVO.setAnswerOrderNum(answerOrderNum);
+
         //boardVO에 askAndAnswerBoardVO 넣기
         boardVO.setAskAndAnswerBoardVO(askAndAnswerBoardVO);
 
         //memberVO도 넣어줘야 하는데 일단 가짜 데이터 홍길동 넣음
         boardVO.setMemberVO(memberVO);
-
-        //확인
-        System.out.println(boardVO);
 
         participationForumService.insertAskAndAnswerBoard(boardVO);
 
@@ -255,10 +249,93 @@ public class ParticipationForumController {
         int selectedSideMenuIndex = 2;
         model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
 
+        //게시물 정보 던져주기
         BoardVO boardVO = participationForumService.detailAskBoard(boardNum);
+        //System.out.println(boardVO);
         model.addAttribute("boardVO",boardVO);
+
         return "content/homePage/forum/detailAskBoard";
     }
+
+    //답변해주기
+    @GetMapping("goAnswer")
+    public String goAnswer(Model model, @RequestParam(name="boardNum") int boardNum){
+        ///메뉴 정보
+        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
+        //네비게이션
+        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        //선택한 메뉴의 인덱스 번호 보내주기
+        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
+        //선택한 사이드메뉴 인덱스 번호 보내주기
+        int selectedSideMenuIndex = 2;
+        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
+
+        //게시물 정보 던져주기
+        Optional<BoardVO> boardVO1 = Optional.of(participationForumService.detailAskBoard2(boardNum));
+        //System.out.println(boardVO);
+        model.addAttribute("boardVO",boardVO1.get());
+
+        return "content/homePage/forum/answerBoardWrite";
+    }
+
+    //답변
+    @PostMapping("goAskAndAnswerWrite")
+    public String goAskAndAnswerWrite(Model model,
+                                      BoardVO boardVO,
+                                      MemberVO memberVO,
+                                      AskAndAnswerBoardVO askAndAnswerBoardVO){
+        //답변하고자 하는 게시판 번호
+        int askBoardNum = boardVO.getBoardNum();
+        //게시판 번호 구하기
+        int boardNum = boardService.isNullBoardNo();
+        //게시판 타입 넣기
+        boardVO.setBoardType(30);
+        boardVO.setBoardNum(boardNum);
+        boardVO.setBoardTitle("RE : " + boardVO.getBoardTitle());
+
+        //uploadVO 객체 생성 및 초기화
+        UploadVO uploadVO = new UploadVO().builder()
+                .AttachedFileName("")
+                .OriginFileName("")
+                .isMain("N")
+                .boardNum(boardNum)
+                .build();
+        List<UploadVO> uploadVOList = new ArrayList<>();
+        uploadVOList.add(uploadVO);
+
+        //묻고답하기 vo 설정
+        askAndAnswerBoardVO.setBoardNum(boardNum); //게시판 번호
+        askAndAnswerBoardVO.setIsAnswerBoard("Y"); //답변 게시판
+
+        //답변한 게시판 번호
+        askAndAnswerBoardVO.setIfAnswerBoardNum(askAndAnswerBoardVO.getAskAndAnswerBoardNum());
+        askAndAnswerBoardVO.setAnswerOrderNum(askBoardNum);
+
+        //답변한 순서
+        int answerNum = participationForumService.chkAnswerOrderNum(askBoardNum);
+        //질문글의 맨처음 답변한경우에는 1
+        //답변이 달린글에 또 답변이 달린 경우에는 1씩 증가 시켜야함
+        if(answerNum == 0){
+            answerNum = 1;
+
+        }else{
+            answerNum += 1;
+        }
+        askAndAnswerBoardVO.setOriginOrderNum(askBoardNum);
+        askAndAnswerBoardVO.setAnswerOrderNum(answerNum);
+
+        //boardVO에 객체 넣기
+        boardVO.setMemberVO(memberVO);
+        boardVO.setFileList(uploadVOList);
+        boardVO.setAskAndAnswerBoardVO(askAndAnswerBoardVO);
+
+        //답변 등록
+        participationForumService.insertAskAndAnswerBoard(boardVO);
+
+
+        return "redirect:/askAndAnswer";
+    }
+
 
 
     @GetMapping("/bookDonation")
