@@ -28,10 +28,10 @@
                         <td>제목</td>
                         <td>행사 시작 날짜</td>
                         <td>행사 마감 날짜</td>
+                        <td>신청기간</td>
+                        <td>정원</td>
                         <td>신청 날짜</td>
-                        <td>신청 날짜</td>
-                        <td>신청 날짜</td>
-                        <td>신청 날짜</td>
+                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,27 +39,25 @@
                         <td><input type="checkbox" id="chk" checked onclick="allchk()"></td>
                         <td>[[${board.boardTitle}]]</td>
                         <td>[[${board.PlusVO.openDate}]]</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>[[${board.PlusVO.closeDate}]]</td>
+                        <th:block th:if="${board.PlusVO.toDate}">
+                            <td style="font-weight: bold;">[[${board.PlusVO.toDate}]] ~ [[${board.PlusVO.fromDate}]]</td>
+                        </th:block>
+                        <td>[[${board.PlusVO.personnel}]] / [[${board.PlusVO.maximumPerson}]]</td>
+                        <td style="font-weight: bold;  color: cornflowerblue;">[[${board.ApplyVO.applyDate}]]</td>
                         <td>
-                            <input type="button" value="승인">
+                            <input type="button" class="btn" value="승인" onclick="approve()">
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <div sec:authorize="hasRole('ROLE_Y')">
-                <input type="button" value="게시글 작성" onclick="location.href='/goParticipation'">
-                <input type="button" value="게시글 선택 삭제" onclick="goEventDeletes()">
-            </div>
         </div>
     </div>
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴 때 같이 실행되는 js -->
-    <!-- <script src="/"></script> -->
+    <script src="/js/content/culture/culture.js"></script>
 </th:block>
 
 </html>

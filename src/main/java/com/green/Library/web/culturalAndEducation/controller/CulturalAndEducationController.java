@@ -528,9 +528,9 @@ public class CulturalAndEducationController {
     }
 
     @GetMapping("/goApplyListPage")
-    public String goApplyListPage(Model model, BoardVO boardVO, HttpSession session){
+    public String goApplyListPage(Model model, BoardVO boardVO, HttpSession session, MemberVO memberVO, ApplyVO applyVO){
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
-        System.out.println(boardVO);
+        System.out.println("@@@@@@@@@@@@@@@@@" + boardService.applyBoardList());
         model.addAttribute("boardList", boardService.applyBoardList());
         return "content/homePage/culturalAndEducation/applicationForClasses/goApplyList";
     }
