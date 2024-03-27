@@ -1,22 +1,20 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴 때 같이 실행되는 css -->
-    <!-- <link rel="stylesheet" href="/"> -->
+    <link rel="stylesheet" href="/css/content/homePage/culture.css">
 </th:block>
 
 <th:block layout:fragment="contentFragment">
-    <!-- html 코드 작성 --> 
+    <!-- html 코드 작성 -->
     <div class="row">
-        <div class="col-6 mt-3">
-            
-            <table class="text-center table table-bordered">
+        <div class="col-6 mt-3" style="padding: 0;">
+            <table class="text-center table table-bordered table-success">
                 <colgroup>
-                <col width="30%%">
-                <col width="70%">
+                    <col width="30%%">
+                    <col width="70%">
                 </colgroup>
                 <tbody>
                     <tr>
@@ -31,11 +29,15 @@
                         <td>대상</td>
                         <td>[[${board.PlusVO.target}]]</td>
                     </tr>
+                    <tr>
+                        <td>상태</td>
+                        <td>[[${board.PlusVO.eventStatus}]]</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
-        <div class="col-6 mt-3">
-            <table class="text-center table table-bordered">
+        <div class="col-6 mt-3" style="padding: 0;">
+            <table class="text-center table table-bordered table-success">
                 <colgroup>
                     <col width="30%%">
                     <col width="70%">
@@ -53,9 +55,21 @@
                         <td>정원</td>
                         <td>[[${board.PlusVO.personnel}]] / [[${board.PlusVO.maximumPerson}]]</td>
                     </tr>
+                    <tr sec:authorize="hasAnyRole('ROLE_N' , 'ROLE_Y') ">
+                        <td colspan="2">
+                            <th:block th:if="${board.PlusVO.personnel lt board.PlusVO.maximumPerson} and ${board.PlusVO.eventStatus == '진행예정'}">
+                                현재 [[${board.PlusVO.maximumPerson - board.PlusVO.personnel}]]명의 인원이 신청 가능합니다
+                            </th:block>
+                            <th:block
+                                th:unless="${board.PlusVO.personnel lt board.PlusVO.maximumPerson} and ${board.PlusVO.eventStatus == '진행예정'}">
+                                현재는 신청이 불가합니다.
+                            </th:block>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
+
         <div class="col-12">
             <table class="table-bordered table">
                 <tr style="height: 600px;">
@@ -69,19 +83,61 @@
                     </td>
                 </tr>
             </table>
-            <div sec:authorize="hasRole('ROLE_N')">
-                <input type="button" onclick="location.href='/goApplyPage'" value="신청하기">
+            <div sec:authorize="hasRole('ROLE_N')" class="d-grid gap-2 col-4 mx-auto">
+                <th:block th:if="${board.PlusVO.personnel lt board.PlusVO.maximumPerson} and ${board.PlusVO.eventStatus == '진행예정'} ">
+                    <input class="btn btn-outline-success" type="button" onclick="dateView()" value="신청하기">
+                </th:block>
             </div>
-            <div  sec:authorize="hasRole('ROLE_Y')">
-                <input type="button" th:onclick="|location.href='@{/goEventUpdatePage(boardNum=${board.boardNum})}'|" value="수정하기">
+            <div sec:authorize="hasRole('ROLE_Y')">
+                <input type="button" th:onclick="|location.href='@{/goEventUpdatePage(boardNum=${board.boardNum})}'|"
+                    value="수정하기">
                 <input type="button" th:onclick="deleteEventBoard([[${board.boardNum}]])" value="선택 삭제하기">
+            </div>
+            <div>
+                <input class="btn btn-success btn-lg" type="button" value="목록"
+                    onclick="location.href='/eventParticipation'">
             </div>
         </div>
     </div>
+
+
+
+
+
+
+    <div class="modal" id="myModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/applyApp" method="post">
+                    <div class="modal-body d-grid">
+                        <div>
+                            <span style="color: red;">*</span><span>신청하실 날짜를 선택하세요</span>
+                        </div>
+                        <div>
+                            
+                            <input type="date" class="form-control" name="applyDate" id="applyDate">
+                        </div>
+                        <input type="hidden" name="boardNum" th:value="${board.boardNum}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="submit" class="btn btn-primary">신청</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴 때 같이 실행되는 js -->
     <script src="/js/content/culture/culture.js"></script>
 </th:block>
+
 </html>

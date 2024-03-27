@@ -1,6 +1,7 @@
 package com.green.Library.web.member.controller;
 
 import com.green.Library.web.member.service.MemberServiceImpl;
+import com.green.Library.web.member.vo.ApplyVO;
 import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
@@ -8,9 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.naming.Name;
 
@@ -67,7 +66,7 @@ public class MemberController {
     }
 
     @GetMapping("/login")
-    public String goLogin(Model model, MemberVO memberVO, HttpSession session){
+    public String goLogin(Model model){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
         System.out.println(webMenuService.selectWebMenuList("web"));
@@ -137,6 +136,15 @@ public class MemberController {
         session.removeAttribute("loginInfo");
         return "redirect:/home";
     }
+
+    @RequestMapping("/applyApp")
+    public String apply(HttpSession session, ApplyVO applyVO , @RequestParam(name = "boardNum") int boardNum){
+        applyVO.setUserCode((Integer) session.getAttribute("userCode"));
+        System.out.println(session.getAttribute("userCode"));
+        memberService.apply(applyVO);
+        return "redirect:/goDetailParticipation?boardNum="+ boardNum;
+    }
+
 
 
 }

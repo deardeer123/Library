@@ -69,3 +69,15 @@ function goEventDeletes(){
     location=`/goEventDeletes?boardNums=${boardNum}`;
 
 }
+
+function dateView(){
+    const modal = new bootstrap.Modal('#myModal')
+    modal.show();
+    
+}
+
+function oninputPhone(target){
+    target.value = target.value
+        .replace(/[^0-9]/g, '')
+        .replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
+};

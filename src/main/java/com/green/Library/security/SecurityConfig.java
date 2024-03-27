@@ -47,6 +47,7 @@ public class SecurityConfig {
                                             System.out.println(loginInfo);
                                             session.setAttribute("userCode", loginInfo.getUserCode());
                                             session.setAttribute("userName", loginInfo.getUserName());
+                                            session.setAttribute("userId", loginInfo.getUserId());
 
 
                                             response.sendRedirect("/home");
