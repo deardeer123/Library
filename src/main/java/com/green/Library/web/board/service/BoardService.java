@@ -3,6 +3,7 @@ package com.green.Library.web.board.service;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.PlusVO;
 import com.green.Library.web.board.vo.SearchVO;
+import com.green.Library.web.member.vo.MemberVO;
 import org.codehaus.groovy.transform.sc.transformers.CompareIdentityExpression;
 
 
@@ -54,6 +55,12 @@ public interface BoardService {
     void updateEventBoardDetail(BoardVO boardVO);
 
     void eventBoardDelete(int boardNum);
+
+    //진행상태 변경
+    void updateStatus();
+
+    List<BoardVO> applyBoardList();
+
 
 
 }

@@ -14,5 +14,7 @@ public class AskAndAnswerBoardVO {
     private String askAndAnswerBoardPublicOrPrivate;
     private String isAnswerBoard;
     private int ifAnswerBoardNum;
+    private int originOrderNum;
+    private int answerOrderNum;
     private int boardNum;
 }

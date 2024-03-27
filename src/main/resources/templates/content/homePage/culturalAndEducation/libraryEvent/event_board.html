@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴 때 같이 실행되는 css -->
@@ -14,54 +13,60 @@
         <div class="col-12">
             <h3>게시글 등록</h3>
         </div>
+    </div>
+
+    <div class="row">
         <div class="col">
             <form action="/cultureInsertBoard" method="post" enctype="multipart/form-data">
-                <table class="align-middle">
+                <table class="table table-bordered text-center align-middle border-Secondary">
                     <colgroup>
-                    <col width="25%">
-                    <col width="25%">
-                    <col width="25%">
-                    <col width="25%">
+                        <col width="25%">
+                        <col width="25%">
+                        <col width="25%">
+                        <col width="25%">
                     </colgroup>
-                    <thead>
+                    <tbody>
                         <tr>
-                            <td>
-                                제목
+                            <td>제목</td>
+                            <td colspan="3">
+                                <input type="text" class="form-control" name="boardTitle">
                             </td>
-                            <td colspan="3"><input type="text" name="boardTitle"></td>
                         </tr>
                         <tr>
                             <td>작성일</td>
-                            <td><input type="date" name="boardDate"></td>
+                            <td><input type="date" class="form-control" name="boardDate"></td>
                             <td>작성자</td>
-                            <td sec:authorize="isAuthenticated()" sec:authentication="name"></td>
+                            <td>[[${#authentication.name}]]</td>
                         </tr>
-                    </thead>
-                    <tbody>
                         <tr>
                             <td colspan="4">
-                                <textarea name="content" cols="100" rows="20"></textarea>
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Leave a comment here"
+                                        style="height: 600px"></textarea>
+                                </div>
                             </td>
                         </tr>
                         <tr>
-                            <td><input type="file" name="mainFile">대표 이미지</td>
-                            <td><input type="file" name="subFile" multiple>서브 이미지</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div><input type="submit" value="등록하기"></div>
+                            <td colspan="4">
+                                <input type="file" style="margin-bottom: 5px; width: 300px;" class="form-control" name="mainFile">
+                                <input type="file" style="width: 300px;" class="form-control" name="subFile" multiple>
                             </td>
                         </tr>
-                        <input type="hidden" name="boardType" value="24">
                     </tbody>
+                    <input type="hidden" name="boardType" value="24">
+                    <div class="mb-2 d-md-flex justify-content-end">
+                        <input type="submit" class="btn btn-primary btn-sm" value="등록하기">
+                    </div>
                 </table>
             </form>
         </div>
     </div>
+
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴 때 같이 실행되는 js -->
     <!-- <script src="/"></script> -->
 </th:block>
+
 </html>

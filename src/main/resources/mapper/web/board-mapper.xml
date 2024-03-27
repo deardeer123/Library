@@ -12,6 +12,7 @@
         <result column="BOARD_CNT"      property="boardCnt"/>
         <result column="BOARD_TYPE"     property="boardType"/>
         <association property="plusVO" resultMap="plus"/>
+        <association property="applyVO" resultMap="memberMapper.apply"/>
         <association property="askAndAnswerBoardVO" resultMap="participationForumMapper.askAndAnswerBoardVO" />
         <association property="memberVO" resultMap="memberMapper.users"/>
         <collection property="fileList" resultMap="file"/>
@@ -140,7 +141,7 @@
             BOARD.BOARD_NUM
             ,BOARD.USER_CODE
             ,BOARD_TITLE
-            ,BOARD_DATE
+            ,DATE_FORMAT(BOARD_DATE, '%Y-%m-%d') AS BOARD_DATE
             ,BOARD_CNT
             ,CONTENT
             ,USER_ID
@@ -235,10 +236,33 @@
         <if test='toDate != null and !toDate.equals("")'>
             AND DATE_FORMAT(TO_DATE, '%Y-%m-%d') = #{toDate}
         </if>
-        ORDER BY BOARD_NUM DESC
+        ORDER BY EVENT_STATUS DESC , BOARD_NUM DESC
         LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
     </select>
 
+    <select id="applyBoardList" resultMap="board">
+        SELECT
+        PLUS_CODE
+        ,B.BOARD_NUM
+        ,BOARD_TITLE
+        , BOARD_TYPE
+        ,TEACHER
+        ,TARGET
+        , DATE_FORMAT(OPEN_DATE, '%Y-%m-%d') AS OPEN_DATE
+        , DATE_FORMAT(CLOSE_DATE, '%Y-%m-%d') AS CLOSE_DATE
+        , DATE_FORMAT(TO_DATE, '%Y-%m-%d') AS TO_DATE
+        , DATE_FORMAT(FROM_DATE, '%Y-%m-%d') AS FROM_DATE
+        ,PERSONNEL
+        ,MAXIMUM_PERSON
+        ,EVENT_STATUS
+        ,DATE_FORMAT(APPLY_DATE, '%Y-%m-%d') AS APPLY_DATE
+        ,A.USER_CODE
+        FROM BOARD AS B
+        INNER JOIN BOARD_PLUS AS P
+        ON B.BOARD_NUM = P.BOARD_NUM
+        INNER JOIN apply AS A
+        ON B.BOARD_NUM = A.BOARD_NUM
+    </select>
 
     <insert id="insertParticipation">
         INSERT INTO BOARD(
@@ -323,6 +347,7 @@
     <!--  이벤트 게시물 수정  -->
     <update id="updateEventBoardDetail">
         UPDATE BOARD INNER JOIN BOARD_PLUS
+        ON BOARD.BOARD_NUM = BOARD_PLUS.BOARD_NUM
         SET
             BOARD_TITLE = #{boardTitle}
             ,TEACHER = #{plusVO.teacher}
@@ -352,6 +377,29 @@
         FROM ATTACHED_FILE
         WHERE BOARD_NUM = #{boardNum}
     </delete>
+
+    <update id="updateStatus">
+        UPDATE board_plus AS A
+        SET
+        EVENT_STATUS =
+        (SELECT
+            CASE
+                WHEN OPEN_DATE &gt; NOW() THEN '진행예정'
+                WHEN OPEN_DATE &lt;= NOW() AND CLOSE_DATE &gt;= NOW() THEN '진행중'
+                WHEN CLOSE_DATE &lt; NOW() THEN '진행마감'
+            END
+        FROM board_plus AS B
+        WHERE B.PLUS_CODE = A.PLUS_CODE)
+    </update>
+    <update id="">
+        UPDATE BOARD_PLUS
+        SET
+    </update>
+
+
+
+
+
 <!--  ////////////////////////이벤트 게시물///////////////////  -->
 
 </mapper>

@@ -10,6 +10,8 @@
         <result column="ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE" property="askAndAnswerBoardPublicOrPrivate" />
         <result column="IS_ANSWER_BOARD" property="isAnswerBoard" />
         <result column="IF_ANSWER_BOARD_NUM" property="ifAnswerBoardNum"/>
+        <result column="origin_order_num" property="originOrderNum" />
+        <result column="ANSWER_ORDER_NUM" property="answerOrderNum" />
         <result column="BOARD_NUM" property="boardNum" />
     </resultMap>
 
@@ -108,15 +110,72 @@
 
     <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 묻고답하기 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
 
+<!--    OrderBy를 이용하기 위해 넣은 컬럼 -->
+<!--    질문글이면 1씩 증가 시켜야하고 답변글이면 질문글에 대한 번호를 가져야함-->
+    <select id="selectMaxOriginOrderNum" resultType="int">
+        SELECT
+            CASE
+                when MAX(origin_order_num) IS null then 1
+                ELSE MAX(origin_order_num)+1
+            END
+        FROM
+        ask_and_answer_board;
+    </select>
+
+    <!--    OrderBy를 이용하기 위해 넣은 컬럼 -->
+<!--   해당 질문글의 order_num 으로 검색해서 answer_order_num이 0인 경우는 맨처음 답글을 단것 -->
+<!--    0이 아닌 경우에는 해당 질문글에 여러개의 답변이 달린것 -->
+    <select id="chkAnswerOrderNum" resultType="int">
+        select max(ANSWER_ORDER_NUM)
+        from ask_and_answer_board
+        where origin_order_num = ${originOrderNum}
+    </select>
+
+<!--    답변을 하려는데 답변을 하고자하는 글의 origin_order_num를 구하는 쿼리문-->
+    <select id="searchOriginOrderNumForAnswer" resultType="int">
+        SELECT origin_order_num
+        FROM ask_and_answer_board
+        WHERE board_num = ${boardNum};
+    </select>
+
+<!--    -->
+
+
     <insert id="insertAskAndAnswerBoard">
         insert into ASK_AND_ANSWER_BOARD (
         ASK_AND_ANSWER_BOARD_PASSWORD ,
         ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE ,
-        BOARD_NUM)
+        origin_order_num ,
+        ANSWER_ORDER_NUM ,
+        BOARD_NUM
+        )
         VALUES(
         #{askAndAnswerBoardVO.askAndAnswerBoardPassword} ,
         #{askAndAnswerBoardVO.askAndAnswerBoardPublicOrPrivate},
+        #{askAndAnswerBoardVO.originOrderNum} ,
+        #{askAndAnswerBoardVO.answerOrderNum} ,
         #{boardNum}
+        )
+    </insert>
+
+    <insert id="insertAskAndAnswerBoard2">
+        insert into ASK_AND_ANSWER_BOARD (
+        ASK_AND_ANSWER_BOARD_PASSWORD ,
+        ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE ,
+        BOARD_NUM,
+        origin_order_num ,
+        ANSWER_ORDER_NUM ,
+        is_answer_board ,
+        if_answer_board_num
+        )
+        VALUES(
+        #{askAndAnswerBoardVO.askAndAnswerBoardPassword} ,
+        #{askAndAnswerBoardVO.askAndAnswerBoardPublicOrPrivate},
+        #{boardNum} ,
+        #{askAndAnswerBoardVO.originOrderNum} ,
+        #{askAndAnswerBoardVO.answerOrderNum} ,
+        #{askAndAnswerBoardVO.isAnswerBoard} ,
+        #{askAndAnswerBoardVO.ifAnswerBoardNum}
         )
     </insert>
 
@@ -173,7 +232,9 @@
             ASK_AND_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_NUM ,
             ASK_AND_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE ,
             ASK_AND_ANSWER_BOARD.IS_ANSWER_BOARD ,
-            ASK_AND_ANSWER_BOARD.IF_ANSWER_BOARD_NUM
+            ASK_AND_ANSWER_BOARD.IF_ANSWER_BOARD_NUM ,
+            ask_and_answer_board.ORIGIN_ORDER_NUM ,
+            ask_and_answer_board.ANSWER_ORDER_NUM
         FROM
             BOARD INNER JOIN users
             ON board.USER_CODE = users.USER_CODE
@@ -184,7 +245,7 @@
         <if test='searchValue != null and !searchValue.equals("")'>
             and ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
         </if>
-        ORDER BY BOARD_NUM DESC
+        ORDER BY ask_and_answer_board.ORIGIN_ORDER_NUM DESC , ask_and_answer_board.ANSWER_ORDER_NUM ASC
         LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
     </select>
 
@@ -210,17 +271,25 @@
             board.BOARD_DATE ,
             board.USER_CODE ,
             board.BOARD_CNT ,
+            users.USER_CODE ,
+            users.USER_ID ,
+            users.IS_ADMIN ,
             attached_file.ORIGIN_FILE_NAME ,
             attached_file.ATTACHED_FILE_NAME ,
+            ASK_and_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_NUM ,
             ASK_AND_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_PASSWORD ,
             ASK_AND_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE ,
             ASK_AND_ANSWER_BOARD.IS_ANSWER_BOARD ,
-            ASK_AND_ANSWER_BOARD.IF_ANSWER_BOARD_NUM
+            ASK_AND_ANSWER_BOARD.IF_ANSWER_BOARD_NUM ,
+            ASK_AND_ANSWER_BOARD.ORIGIN_ORDER_NUM ,
+            ASK_AND_ANSWER_BOARD.ANSWER_ORDER_NUM
         FROM
             BOARD INNER JOIN attached_file
             ON BOARD.BOARD_NUM = attached_file.BOARD_NUM
             INNER JOIN ASK_AND_ANSWER_BOARD
             ON BOARD.BOARD_NUM = ASK_AND_ANSWER_BOARD.BOARD_NUM
+            INNER JOIN users
+            ON BOARD.USER_CODE = users.user_code
         WHERE
             BOARD.BOARD_NUM = ${boardNum}
 
@@ -233,6 +302,33 @@
         SET BOARD_CNT = BOARD_CNT + 1
         WHERE BOARD_NUM = ${boardNum}
     </update>
+
+<!--    이건 답변 글 검색-->
+    <select id="selectAnswerBoardList" resultMap="boardMapper.board">
+        SELECT
+        BOARD.BOARD_NUM ,
+        BOARD.BOARD_TITLE ,
+        DATE_FORMAT(BOARD.BOARD_DATE, '%Y-%m-%d') AS BOARD_DATE ,
+        USERS.USER_NAME ,
+        BOARD.BOARD_CNT ,
+        ASK_AND_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_NUM ,
+        ASK_AND_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE ,
+        ASK_AND_ANSWER_BOARD.IS_ANSWER_BOARD ,
+        ASK_AND_ANSWER_BOARD.IF_ANSWER_BOARD_NUM
+        FROM
+        BOARD INNER JOIN users
+        ON board.USER_CODE = users.USER_CODE
+        INNER JOIN ASK_AND_ANSWER_BOARD
+        ON board.BOARD_NUM = ASK_AND_ANSWER_BOARD.BOARD_NUM
+        WHERE
+        board_type = 30 AND
+        is_answer_board = 'Y'
+        <if test='searchValue != null and !searchValue.equals("")'>
+            and ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+        ORDER BY BOARD_NUM DESC
+        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
+    </select>
 
 </mapper>
 
