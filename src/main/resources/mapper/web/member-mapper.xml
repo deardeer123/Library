@@ -4,7 +4,7 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="memberMapper">
     <resultMap id="users" type="com.green.Library.web.member.vo.MemberVO">
-        <result property="userCode" column="USER_CODE"/>
+        <id property="userCode" column="USER_CODE"/>
         <result property="userId" column="USER_ID"/>
         <result property="userPw" column="USER_PW"/>
         <result property="userName" column="USER_NAME"/>
@@ -23,10 +23,11 @@
         <collection property="bookBorrowList" resultMap="bnrMapper.bookBNR"/>
     </resultMap>
     <resultMap id="apply" type="com.green.Library.web.member.vo.ApplyVO">
-        <result property="applyNum" column="APPLY_NUM"/>
+        <id property="applyNum" column="APPLY_NUM"/>
         <result property="applyDate" column="APPLY_DATE"/>
         <result property="userCode" column="USER_CODE"/>
         <result property="boardNum" column="BOARD_NUM"/>
+        <result property="applyStatus" column="APPLY_STATUS"/>
     </resultMap>
 
     <insert id="insertMember">
@@ -68,9 +69,11 @@
         INSERT INTO APPLY(
             APPLY_DATE
             ,USER_CODE
+            ,BOARD_NUM
         )VALUES(
             #{applyDate}
             ,#{userCode}
+            ,#{boardNum}
         )
     </insert>
     <select id="applyList" resultMap="users">
@@ -79,6 +82,7 @@
             ,A.USER_CODE
             ,BOARD_NUM
             ,USER_NAME
+            ,APPLY_STATUS
         FROM USERS AS U
         INNER JOIN APPLY AS A
         ON A.USER_CODE = U.USER_CODE
@@ -89,12 +93,15 @@
         USER_CODE ,
         USER_ID ,
         USER_NAME,
-        USER_TEL
+        USER_TEL ,
+        IS_ADMIN
         FROM
         users
         where
         user_code = #{userCode};
     </select>
+
+
 
 
 </mapper>

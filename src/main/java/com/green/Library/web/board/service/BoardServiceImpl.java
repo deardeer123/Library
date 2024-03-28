@@ -125,6 +125,13 @@ public class BoardServiceImpl implements BoardService {
         return sqlSession.selectList("boardMapper.applyBoardList");
     }
 
+    @Override
+    public void upPersonnel(int boardNum) {
+        sqlSession.update("boardMapper.upPersonnel", boardNum);
+    }
+
+
+
 
 }
 
