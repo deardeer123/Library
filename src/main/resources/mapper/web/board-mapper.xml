@@ -266,6 +266,7 @@
         ON B.BOARD_NUM = A.BOARD_NUM
         INNER JOIN USERS AS U
         ON A.USER_CODE = U.USER_CODE
+        WHERE APPLY_STATUS = '신청대기'
     </select>
 
     <insert id="insertParticipation">
@@ -404,6 +405,16 @@
         , A.APPLY_STATUS = '승인완료'
     WHERE A.BOARD_NUM = #{boardNum}
     </update>
+
+    <select id="applyCheck" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM apply
+        WHERE BOARD_NUM = #{boardNum}
+        AND USER_CODE = #{userCode};
+    </select>
+
+
 
 
 
