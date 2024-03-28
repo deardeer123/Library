@@ -483,10 +483,11 @@ public class CulturalAndEducationController {
         searchVO.setPageInfo();
         searchVO.setBoardType(28);
 
+        model.addAttribute("apply",boardService.applyBoardList());
         List<ApplyVO> applyList = memberService.applyList();
-        model.addAttribute("applyList", applyList);
         List<BoardVO> boardList =  boardService.selectPlusList(searchVO);
         model.addAttribute("boardList",boardList);
+        System.out.println(boardService.applyBoardList());
         System.out.println(applyList);
         System.out.println(boardList);
 
@@ -535,7 +536,19 @@ public class CulturalAndEducationController {
         return "content/homePage/culturalAndEducation/applicationForClasses/goApplyList";
     }
 
+    //다중 삭제
+    @GetMapping("/goAppDelete")
+    public String goAppDelete(BoardVO boardVO){
+        boardService.selectDeletes(boardVO);
+        return "redirect:/applicationForClasses";
+    }
 
+    @ResponseBody
+    @PostMapping("/upPersonnel")
+    public void upPersonnel(@RequestParam(name = "boardNum") int boardNum){
+        System.out.println(boardNum);
+        boardService.upPersonnel(boardNum);
+    }
 
 
 

@@ -4,7 +4,7 @@
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴 때 같이 실행되는 css -->
-    <link rel="stylesheet" href="/">
+    <!-- <link rel="stylesheet" href="/"> -->
 </th:block>
 
 <th:block layout:fragment="contentFragment">
@@ -25,29 +25,35 @@
                 <thead>
                     <tr>
                         <td><input type="checkbox" id="allChk" checked onclick="allchk()">전체선택</td>
+                        <td>이름</td>
                         <td>제목</td>
                         <td>행사 시작 날짜</td>
                         <td>행사 마감 날짜</td>
                         <td>신청기간</td>
                         <td>정원</td>
                         <td>신청 날짜</td>
+                        <td>상태</td>
                         <td></td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="board : ${boardList}">
-                        <td><input type="checkbox" id="chk" checked onclick="allchk()"></td>
-                        <td>[[${board.boardTitle}]]</td>
-                        <td>[[${board.PlusVO.openDate}]]</td>
-                        <td>[[${board.PlusVO.closeDate}]]</td>
-                        <th:block th:if="${board.PlusVO.toDate}">
-                            <td style="font-weight: bold;">[[${board.PlusVO.toDate}]] ~ [[${board.PlusVO.fromDate}]]</td>
+                    <tr th:each="board : ${boardList}" class="tr-list">
+                        <th:block th:if="${board.ApplyVO.applyStatus == '신청대기'}">
+                            <td><input type="checkbox" id="chk" checked onclick="allchk()"></td>
+                            <td>[[${board.MemberVO.userName}]]</td>
+                            <td>[[${board.boardTitle}]]</td>
+                            <td>[[${board.PlusVO.openDate}]]</td>
+                            <td>[[${board.PlusVO.closeDate}]]</td>
+                            <th:block th:if="${board.PlusVO.toDate}">
+                                <td style="font-weight: bold;">[[${board.PlusVO.toDate}]] ~ [[${board.PlusVO.fromDate}]]</td>
+                            </th:block>
+                            <td>[[${board.PlusVO.personnel}]] / [[${board.PlusVO.maximumPerson}]]</td>
+                            <td style="font-weight: bold;  color: cornflowerblue;">[[${board.ApplyVO.applyDate}]]</td>
+                            <td>[[${board.ApplyVO.applyStatus}]]</td>
+                            <td>
+                                <input type="button" class="btn" value="승인" th:onclick="approve([[${board.boardNum}]])">
+                            </td>
                         </th:block>
-                        <td>[[${board.PlusVO.personnel}]] / [[${board.PlusVO.maximumPerson}]]</td>
-                        <td style="font-weight: bold;  color: cornflowerblue;">[[${board.ApplyVO.applyDate}]]</td>
-                        <td>
-                            <input type="button" class="btn" value="승인" onclick="approve()">
-                        </td>
                     </tr>
                 </tbody>
             </table>

@@ -61,6 +61,7 @@ public interface BoardService {
 
     List<BoardVO> applyBoardList();
 
+    void upPersonnel(int boardNum);
 
 
 }
