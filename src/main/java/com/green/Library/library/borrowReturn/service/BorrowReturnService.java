@@ -1,7 +1,11 @@
 package com.green.Library.library.borrowReturn.service;
 
 import com.green.Library.library.borrowReturn.vo.BookBNRVO;
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
+import com.green.Library.library.borrowReturn.vo.SearchBookReservationVO;
 import com.green.Library.web.member.vo.MemberVO;
+
+import java.util.List;
 
 public interface BorrowReturnService {
 
@@ -25,5 +29,9 @@ public interface BorrowReturnService {
 
     // 이용자 반납 insert 및 대출 가능 여부 update
     void updateReturnInfo(BookBNRVO bookBNRVO);
+
+    ///////////////////예약 기능////////////////////////
+    // 예약 조회
+    List<BookReservationVO> selectReserve(SearchBookReservationVO searchBookReservationVO);
 
 }

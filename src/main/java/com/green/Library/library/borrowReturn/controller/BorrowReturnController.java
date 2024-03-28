@@ -2,6 +2,7 @@ package com.green.Library.library.borrowReturn.controller;
 
 import com.green.Library.library.borrowReturn.service.BorrowReturnService;
 import com.green.Library.library.borrowReturn.vo.BookBNRVO;
+import com.green.Library.library.borrowReturn.vo.SearchBookReservationVO;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.web.member.vo.MemberVO;
 import jakarta.annotation.Resource;
@@ -153,6 +154,17 @@ public class BorrowReturnController {
 
 
         System.out.println("예약 정보 관리 이동");
+        return "content/library/borrowReturn/reservationInfo";
+    }
+
+    //예약 정보 조건 조회
+    @RequestMapping("/selectReservationInfo")
+    public String selectRInfo(Model model, SearchBookReservationVO searchBookReservationVO){
+
+        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
+
+        model.addAttribute("reserveInfo", borrowReturnService.selectReserve(searchBookReservationVO));
+
         return "content/library/borrowReturn/reservationInfo";
     }
 

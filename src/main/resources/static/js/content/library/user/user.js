@@ -117,7 +117,7 @@ function showModal(userCode){
             </tr>
             <tr>
                 <td class="table-light">대출</td>
-                <td colspan="3"></td>
+                <td colspan="3">${data.borrowCnt}건</td>
             </tr>
             <tr>
                 <td class="table-light">예약</td>
@@ -125,11 +125,11 @@ function showModal(userCode){
             </tr>
             <tr>
                 <td class="table-light">연체</td>
-                <td colspan="3"></td>
+                <td colspan="3">${data.overdueCnt}건</td>
             </tr>
             <tr>
                 <td class="table-light">최근 대출일</td>
-                <td colspan="3"></td>
+                <td colspan="3">${data.recentDate}</td>
             </tr>
         </table>
         `

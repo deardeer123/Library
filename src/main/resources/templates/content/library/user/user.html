@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col">
 
-                <form action="/bookAdmin/letUserSearch" method="get">
+                <form action="/bookAdmin/letUserSearch" method="post">
                     <div class="row mb-5">
                         <div class="col">
                             
@@ -146,8 +146,8 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>[[${borrowCnt}]]</td>
-                                            <td>[[${overdueCnt}]]</td>
+                                            <td>[[${memberInfo.borrowCnt}]]</td>
+                                            <td>[[${memberInfo.overdueCnt}]]</td>
                                             <td>[[${memberInfo.userIntro}]]</td>
                                         </tr>
                                     </th:block>

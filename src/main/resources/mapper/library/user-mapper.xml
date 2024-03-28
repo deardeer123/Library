@@ -28,12 +28,10 @@
                 WHERE USER_CODE = USERS.USER_CODE) AS RECENT_DATE
             , (SELECT COUNT(BORROW_CODE)
                 FROM BOOK_BNR
-                WHERE USER_CODE = USERS.USER_CODE
-                AND RETURN_YN = 'N') AS BORROW_CNT
+                WHERE USER_CODE = USERS.USER_CODE) AS BORROW_CNT
             , (SELECT COUNT(*)
                 FROM BOOK_BNR
                 WHERE USER_CODE = USERS.USER_CODE
-                AND RETURN_YN = 'N'
                 AND RETURN_DATE &gt; EX_RETURN_DATE) AS OVERDUE_CNT
         FROM USERS
         <where>
@@ -81,6 +79,7 @@
         SET
             CARD_NUM = (SELECT IFNULL(MAX(CARD_NUM), 0) + 1 FROM USERS)
             , PUBLISH_DATE = NOW()
+            , CARD_STATUS = '사용중'
         WHERE USER_CODE= #{userCode}
     </update>
 

@@ -1,11 +1,15 @@
 package com.green.Library.library.borrowReturn.service;
 
 import com.green.Library.library.borrowReturn.vo.BookBNRVO;
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
+import com.green.Library.library.borrowReturn.vo.SearchBookReservationVO;
 import com.green.Library.web.member.vo.MemberVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service("borrowReturnService")
 public class BorrowReturnServiceImpl implements BorrowReturnService{
@@ -56,6 +60,11 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
     public void updateReturnInfo(BookBNRVO bookBNRVO) {
         sqlSession.update("bnrMapper.updateReturnInfo", bookBNRVO);
         sqlSession.update("bnrMapper.updateReturnBookInfo", bookBNRVO.getBookCode());
+    }
+
+    @Override
+    public List<BookReservationVO> selectReserve(SearchBookReservationVO searchBookReservationVO) {
+        return sqlSession.selectList("bnrMapper.selectReserve", searchBookReservationVO);
     }
 
 

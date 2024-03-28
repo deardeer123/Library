@@ -36,7 +36,7 @@ public class UserController {
     }
 
     // 이용자 관리 검색 기능
-    @GetMapping("/letUserSearch")
+    @RequestMapping("/letUserSearch")
     public String letUserSearch(Model model, SearchUserVO searchUserVO){
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
@@ -87,7 +87,7 @@ public class UserController {
     }
 
     // 이용자 승인 페이지 조회(cardNum 부여 하기 위해 우선 select)
-    @GetMapping("/letUserApproval")
+    @RequestMapping("/letUserApproval")
     public String letUserApproval(Model model, SearchUserVO searchUserVO){
 
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());

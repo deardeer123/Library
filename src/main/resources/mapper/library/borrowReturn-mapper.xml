@@ -5,24 +5,26 @@
 <mapper namespace="bnrMapper">
 
     <resultMap id="bookBNR" type="com.green.Library.library.borrowReturn.vo.BookBNRVO">
-        <id          column="BORROW_CODE"             property="borrowCode"/>
+        <id          column="BORROW_CODE"         property="borrowCode"/>
         <result      column="BORROW_DATE"         property="borrowDate"/>
         <result      column="RETURN_YN"           property="returnYN"/>
         <result      column="EX_RETURN_DATE"      property="exReturnDate"/>
-        <result      column="RETURN_DATE"      property="returnDate"/>
+        <result      column="RETURN_DATE"         property="returnDate"/>
         <result      column="USER_CODE"           property="userCode"/>
         <result      column="BOOK_CODE"           property="bookCode"/>
         <association property="libraryBookVO"     resultMap="libraryBookMapper.libraryBook"/>
     </resultMap>
 
-    <resultMap id="bookReserv" type="com.green.Library.library.borrowReturn.vo.BookReservationVO">
-        <id     column="RESERV_CODE"   property="reservCode"/>
-        <result column="USER_CODE"     property="userCode"/>
-        <result column="BOOK_CODE"     property="bookCode"/>
-        <result column="RESERV_DATE"   property="reservDate"/>
-        <result column="RESERV_CANCEL" property="reservCancel"/>
-        <result column="RESERV_STATUS" property="reservStatus"/>
-        <result column="RESERV_CNT"    property="reservCnt"/>
+    <resultMap id="bookReserve" type="com.green.Library.library.borrowReturn.vo.BookReservationVO">
+        <id          column="RESERVE_CODE"        property="reserveCode"/>
+        <result      column="USER_CODE"           property="userCode"/>
+        <result      column="BOOK_CODE"           property="bookCode"/>
+        <result      column="RESERVE_DATE"        property="reserveDate"/>
+        <result      column="RESERVE_CANCEL"      property="reserveCancel"/>
+        <result      column="RESERVE_STATUS"      property="reserveStatus"/>
+        <result      column="RESERVE_CNT"         property="reserveCnt"/>
+        <association property="memberVO"          resultMap="memberMapper.users"/>
+        <association property="libraryBookVO"     resultMap="libraryBookMapper.libraryBook"/>
     </resultMap>
 
 <!-- ///////////////////// 대출 ///////////////////////// -->
@@ -44,9 +46,13 @@
             , BOOK_CATE_CODE
             , BOOK_MID_CATE_CODE
             , BOOK_INFO_ATTACHED_FILE_NAME
+            , RESERVE_CODE
+            , RESERVE_DATE
         FROM USERS U
         LEFT JOIN BOOK_BNR AS BBR
         ON U.USER_CODE = BBR.USER_CODE
+        LEFT JOIN BOOK_RESERVATION AS BR
+        ON U.USER_CODE = BR.USER_CODE
         LEFT JOIN BOOK AS B
         ON BBR.BOOK_CODE = B.BOOK_CODE
         LEFT JOIN BOOK_INFO AS BI
@@ -134,29 +140,68 @@
 
 <!-- //////////////////////// 예약 //////////////////////////// -->
 
+    <!-- 예약내역 확인 -->
+    <select id="selectReserve" resultMap="bnrMapper.bookReserve">
+        SELECT RESERVE_CODE
+            , RESERVE_STATUS
+            , CARD_NUM
+            , BR.USER_CODE
+            , BR.BOOK_CODE
+            , USER_NAME
+            , CARD_STATUS
+            , USER_TEL
+            , BOOK_TITLE
+            , RESERVE_DATE
+            , RESERVE_CANCEL
+            , RESERVE_CNT
+        FROM BOOK_RESERVATION AS BR
+        LEFT JOIN USERS AS U
+        ON BR.USER_CODE = U.USER_CODE
+        LEFT JOIN BOOK AS B
+        ON BR.BOOK_CODE = B.BOOK_CODE
+        WHERE 1 = 1
+        <if test='userName != null and !userName.equals("")'>
+            AND USER_NAME = #{userName}
+        </if>
+        <if test='bookTitle != null and !bookTitle.equals("")'>
+            AND BOOK_TITLE = #{bookTitle}
+        </if>
+        <if test='cardNum != 0 and !cardNum.equals("")'>
+            AND CARD_NUM = ${cardNum}
+        </if>
+        <if test='bookCode1 != null and !bookCode1.equals("") and bookCode2 == null and bookCode2.equals("")'>
+            AND BOOK_CODE BETWEEN #{bookCode1} AND (SELECT MAX(BOOK_CODE) FROM BOOK)
+        </if>
+        <if test='bookCode2 != null and !bookCode2.equals("") and bookCode1 == null and bookCode1.equals("")'>
+            AND BOOK_CODE BETWEEN (SELECT MIN(BOOK_CODE) FROM BOOK) AND #{bookCode2}
+        </if>
+        <if test='bookCode1 != null and !bookCode1.equals("") and bookCode2 != null and !bookCode2.equals("")'>
+            AND BOOK_CODE BETWEEN #{bookCode1} AND #{bookCode2}
+        </if>
+        <if test='reserveDate1 != null and !reserveDate.equals("") and reserveDate2 == null and reserveDate2.equals("")'>
+            AND RESERVE_DATE BETWEEN #{reserveDate1} AND NOW()
+        </if>
+        <if test='reserveDate2 != null and !reserveDate2.equals("") and reserveDate1 == null and reserveDate1.equals("")'>
+            AND RESERVE_DATE BETWEEN CONCAT(YEAR(CURDATE()), '-01-01') AND #{reserveDate2}
+        </if>
+        <if test='reserveDate1 != null and !reserveDate1.equals("") and reserveDate2 != null and !reserveDate2.equals("")'>
+            AND RESERVE_DATE BETWEEN #{reserveDate1} AND #{reserveDate2}
+        </if>
+
+        <!-- 여기서부터 예외 빠바방 -->
+        <if test='cancelReserveDate1 != null and !cancelReserveDate1.equals("") and cancelReserveDate2 == null and cancelReserveDate2.equals("")'>
+            AND RESERVE_CANCEL BETWEEN #{cancelReserveDate1} AND NOW()
+        </if>
+        <if test='cancelReserveDate2 != null and !cancelReserveDate2.equals("") and cancelReserveDate1 == null and cancelReserveDate1.equals("")'>
+            AND RESERVE_CANCEL BETWEEN CONCAT(YEAR(CURDATE()), '-01-01') AND #{cancelReserveDate2}
+        </if>
+        <if test='cancelReserveDate1 != null and !cancelReserveDate1.equals("") and cancelReserveDate2 != null and !cancelReserveDate2.equals("")'>
+            AND RESERVE_CANCEL BETWEEN #{cancelReserveDate1} AND #{cancelReserveDate2}
+        </if>
+    </select>
+
 
 
 <!-- ////////////////////////////////////////////////////// -->
 
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

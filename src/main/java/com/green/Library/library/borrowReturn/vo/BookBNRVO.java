@@ -2,6 +2,7 @@ package com.green.Library.library.borrowReturn.vo;
 
 import com.green.Library.libraryBook.vo.LibraryBookInfoVO;
 import com.green.Library.libraryBook.vo.LibraryBookVO;
+import com.green.Library.web.member.vo.MemberVO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
