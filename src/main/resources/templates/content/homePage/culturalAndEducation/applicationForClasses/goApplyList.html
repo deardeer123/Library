@@ -38,20 +38,22 @@
                 </thead>
                 <tbody>
                     <tr th:each="board : ${boardList}" class="tr-list">
-                        <td><input type="checkbox" id="chk" checked onclick="allchk()"></td>
-                        <td>[[${board.MemberVO.userName}]]</td>
-                        <td>[[${board.boardTitle}]]</td>
-                        <td>[[${board.PlusVO.openDate}]]</td>
-                        <td>[[${board.PlusVO.closeDate}]]</td>
-                        <th:block th:if="${board.PlusVO.toDate}">
-                            <td style="font-weight: bold;">[[${board.PlusVO.toDate}]] ~ [[${board.PlusVO.fromDate}]]</td>
+                        <th:block th:if="${board.ApplyVO.applyStatus == '신청대기'}">
+                            <td><input type="checkbox" id="chk" checked onclick="allchk()"></td>
+                            <td>[[${board.MemberVO.userName}]]</td>
+                            <td>[[${board.boardTitle}]]</td>
+                            <td>[[${board.PlusVO.openDate}]]</td>
+                            <td>[[${board.PlusVO.closeDate}]]</td>
+                            <th:block th:if="${board.PlusVO.toDate}">
+                                <td style="font-weight: bold;">[[${board.PlusVO.toDate}]] ~ [[${board.PlusVO.fromDate}]]</td>
+                            </th:block>
+                            <td>[[${board.PlusVO.personnel}]] / [[${board.PlusVO.maximumPerson}]]</td>
+                            <td style="font-weight: bold;  color: cornflowerblue;">[[${board.ApplyVO.applyDate}]]</td>
+                            <td>[[${board.ApplyVO.applyStatus}]]</td>
+                            <td>
+                                <input type="button" class="btn" value="승인" th:onclick="approve([[${board.boardNum}]])">
+                            </td>
                         </th:block>
-                        <td>[[${board.PlusVO.personnel}]] / [[${board.PlusVO.maximumPerson}]]</td>
-                        <td style="font-weight: bold;  color: cornflowerblue;">[[${board.ApplyVO.applyDate}]]</td>
-                        <td>[[${board.ApplyVO.applyStatus}]]</td>
-                        <td>
-                            <input type="button" class="btn" value="승인" th:onclick="approve([[${board.boardNum}]])">
-                        </td>
                     </tr>
                 </tbody>
             </table>

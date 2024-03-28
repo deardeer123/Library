@@ -82,6 +82,7 @@
             ,A.USER_CODE
             ,BOARD_NUM
             ,USER_NAME
+            ,APPLY_STATUS
         FROM USERS AS U
         INNER JOIN APPLY AS A
         ON A.USER_CODE = U.USER_CODE
