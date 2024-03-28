@@ -93,7 +93,8 @@
         USER_CODE ,
         USER_ID ,
         USER_NAME,
-        USER_TEL
+        USER_TEL ,
+        IS_ADMIN
         FROM
         users
         where
