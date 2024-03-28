@@ -9,5 +9,6 @@ public class ApplyVO {
     private int userCode;
     private int boardNum;
     private String applyStatus;
+    private String confirm;
 
 }

@@ -84,7 +84,7 @@
                 </tr>
             </table>
             <div sec:authorize="hasRole('ROLE_N')" class="d-grid gap-2 col-4 mx-auto">
-                <th:block th:if="${board.PlusVO.personnel lt board.PlusVO.maximumPerson} and ${board.PlusVO.eventStatus == '진행예정'} ">
+                <th:block th:if="${board.PlusVO.personnel lt board.PlusVO.maximumPerson} and ${board.PlusVO.eventStatus == '진행예정'} and ${check != 1}">
                     <input class="btn btn-outline-success" type="button" th:onclick="dateView([[${board.boardNum}]])" value="신청하기">
                 </th:block>
             </div>

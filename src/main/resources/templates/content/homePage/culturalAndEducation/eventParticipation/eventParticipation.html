@@ -29,8 +29,8 @@
                 <tr>
                     <td colspan="4">
                         <select name="searchType">
-                            <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'boardTitle'}">프로그램명</option>
-                            <option value="TEACHER" th:selected="${searchVO.searchType == 'teacher'}">강사명</option>
+                            <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'board_Title'}">프로그램명</option>
+                            <option value="TEACHER" th:selected="${searchVO.searchType == 'TEACHER'}">강사명</option>
                         </select>
                         <input type="search" name="searchValue" th:value="${searchVO.searchValue}">
                         <input type="submit" value="검색">
@@ -65,9 +65,26 @@
                     </tr>
                 </tbody>
             </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item" th:if="${searchVO.prev}">
+                    <a class="page-link" aria-label="이전" th:href="@{/eventParticipation(nowPage=${searchVO.beginPage - 1})}">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <li class="page-item" th:each=" i : ${#numbers.sequence(searchVO.beginPage, searchVO.endPage)}">
+                    <a class="page-link" th:href="@{/eventParticipation(nowPage=${i})}">[[${i}]]</a>
+                  </li>
+                  <li class="page-item" th:if="${searchVO.next}">
+                    <a class="page-link"  aria-label="다음" th:href="@{/eventParticipation(nowPage=${searchVO.endPage + 1})}">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
             <div sec:authorize="hasRole('ROLE_Y')">
-                <input type="button" value="게시글 작성" onclick="location.href='/goParticipation'">
-                <input type="button" value="게시글 선택 삭제" onclick="goEventDeletes()">
+                <input type="button" class="btn btn-primary btn-sm" value="게시글 작성" onclick="location.href='/goParticipation'">
+                <input type="button" class="btn btn-primary btn-sm" value="게시글 선택 삭제" onclick="goEventDeletes()">
             </div>
         </div>
     </div>
