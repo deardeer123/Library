@@ -126,7 +126,11 @@
 <!--   해당 질문글의 order_num 으로 검색해서 answer_order_num이 0인 경우는 맨처음 답글을 단것 -->
 <!--    0이 아닌 경우에는 해당 질문글에 여러개의 답변이 달린것 -->
     <select id="chkAnswerOrderNum" resultType="int">
-        select max(ANSWER_ORDER_NUM)
+        select
+            case
+                when max(ANSWER_ORDER_NUM) is null then 0
+                else max(ANSWER_ORDER_NUM)
+            end
         from ask_and_answer_board
         where origin_order_num = ${originOrderNum}
     </select>
@@ -138,9 +142,7 @@
         WHERE board_num = ${boardNum};
     </select>
 
-<!--    -->
-
-
+<!--    질문글 인경우-->
     <insert id="insertAskAndAnswerBoard">
         insert into ASK_AND_ANSWER_BOARD (
         ASK_AND_ANSWER_BOARD_PASSWORD ,
@@ -158,6 +160,7 @@
         )
     </insert>
 
+<!--    답변글 인경우-->
     <insert id="insertAskAndAnswerBoard2">
         insert into ASK_AND_ANSWER_BOARD (
         ASK_AND_ANSWER_BOARD_PASSWORD ,
@@ -179,7 +182,7 @@
         )
     </insert>
 
-    <!--  이미지 등록  -->
+    <!--  파일 등록  -->
     <insert id="insertFileList">
         INSERT INTO ATTACHED_FILE(
         ORIGIN_FILE_NAME
@@ -195,7 +198,7 @@
             ,#{file.boardNum})
         </foreach>
     </insert>
-
+<!--게시판 등록-->
     <insert id="insertBoard">
         INSERT INTO BOARD(
         BOARD_TITLE
@@ -214,13 +217,6 @@
         ,#{boardNum}
         )
     </insert>
-
-    <!-- 조회수 증가-->
-    <update id="updateCnt">
-        UPDATE BOARD
-        SET BOARD_CNT = BOARD_CNT + 1
-        WHERE BOARD_NUM = #{boardNum}
-    </update>
 
     <select id="selectAskAndAnswerBoardList" resultMap="boardMapper.board">
         SELECT
@@ -296,7 +292,6 @@
     </select>
 
     <!--  조회수 증가  -->
-
     <update id="boardCntUp">
         UPDATE BOARD
         SET BOARD_CNT = BOARD_CNT + 1
@@ -329,6 +324,23 @@
         ORDER BY BOARD_NUM DESC
         LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
     </select>
+    
+<!--    질문응답 게시물 삭제 1-->
+    <delete id="deleteBoard">
+        delete from board
+        where board_num = #{boardNum}
+    </delete>
+<!--만약 질문글을 삭제할경우 답변글도 다같이 삭제해야함..-->
+    <select id="deleteAskBoard1" resultType="list">
+        select
+            board.board_num
+        from
+            board inner join ASK_AND_ANSWER_BOARD
+            on board.board_num = ASK_AND_ANSWER_BOARD.board_num
+        where
+        ASK_AND_ANSWER_BOARD.ORIGIN_ORDER_NUM = #{originOrderNum}
+    </select>
+
 
 </mapper>
 

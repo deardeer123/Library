@@ -32,12 +32,6 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
         return sqlSession.selectList("participationForumMapper.selectNotice");
     }
 
-    //조회수증가
-    @Override
-    public void updateCnt(int boardNo) {
-        sqlSession.update("participationForumMapper.updateCnt",boardNo);
-    }
-
     //공지사항 상세조회
     @Override
     public BoardVO noticeDetail(int boardNo) {
@@ -70,6 +64,7 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
     public int chkAnswerOrderNum(int originOrderNum) {
         return sqlSession.selectOne("participationForumMapper.chkAnswerOrderNum", originOrderNum);
     }
+
 
     //boardNum으로 origin_order_num 찾기
     @Override
@@ -127,6 +122,16 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
     @Override
     public BoardVO detailAskBoard2(int boardNum) {
         return sqlSession.selectOne("participationForumMapper.detailAskBoard",boardNum);
+    }
+
+    @Override
+    public void deleteBoard(int boardNum) {
+        sqlSession.delete("participationForumMapper.deleteBoard",boardNum);
+    }
+
+    @Override
+    public List<Integer> deleteAskBoard1(int originOrderNum) {
+        return sqlSession.selectList("participationForumMapper.deleteAskBoard1", originOrderNum);
     }
 
 

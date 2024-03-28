@@ -165,6 +165,7 @@ public class ParticipationForumController {
         return "content/homePage/forum/askAndAnswer";
     }
 
+//    시큐리티 작업해야함 로그인해야지 글작성 페이지 이동할 수 있도록
     @GetMapping("/askAndAnswerWrite")
     public String writeAskAndAnswer(Model model,HttpSession session, SearchVO searchVO){
 //        묻고 답하기 글 작성 페이지 이동
@@ -179,10 +180,11 @@ public class ParticipationForumController {
         int selectedSideMenuIndex = 2;
         model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
 
+        //userCode로 이름, 전화번호, 아이디, 코드 얻기
+        //근데 만약에 로그인을 하지 않고 글쓰기를 할려는 경우를 막아야함
+
         MemberVO memberVO = memberService.selectMemberInfoToUserCode((Integer) session.getAttribute("userCode"));
-        System.out.println(memberVO);
-
-
+        model.addAttribute("memberVO",memberVO);
 
         return "content/homePage/forum/askAndAnswerWrite";
     }
@@ -238,6 +240,8 @@ public class ParticipationForumController {
         //memberVO도 넣어줘야 하는데 일단 가짜 데이터 홍길동 넣음
 
         memberVO.setUserCode((Integer) session.getAttribute("userCode"));
+        //이게 안들어가지네...
+        boardVO.setUserCode((Integer) session.getAttribute("userCode"));
         memberVO.setUserId((String) session.getAttribute("userId"));
         boardVO.setMemberVO(memberVO);
 
@@ -247,7 +251,7 @@ public class ParticipationForumController {
     }
 
     @GetMapping("/goDetailAskBoard")
-    public String goDetailAskBoard(Model model, @RequestParam(name="boardNum")int boardNum){
+    public String goDetailAskBoard(Model model, @RequestParam(name="boardNum")int boardNum, HttpSession session){
         //묻고 답하기 게시물 보기
 
         //메뉴 정보
@@ -263,7 +267,20 @@ public class ParticipationForumController {
         //게시물 정보 던져주기
         BoardVO boardVO = participationForumService.detailAskBoard(boardNum);
         //System.out.println(boardVO);
+
+        int userCode = Optional.ofNullable((Integer)session.getAttribute("userCode")).orElse(0);
+        MemberVO memberVO = Optional.ofNullable(memberService.selectMemberInfoToUserCode(userCode)).orElse(
+                new MemberVO().builder()
+                        .userCode(0)
+                        .userId("Guest")
+                        .userName("Guset")
+                        .userTel("000-0000-0000")
+                        .isAdmin("N")
+                        .build()
+        );
         model.addAttribute("boardVO",boardVO);
+//        시큐리티 너무 어렵다 접속한사람 권한 확인할려고 던져줌
+        model.addAttribute("memberVO",memberVO);
 
         return "content/homePage/forum/detailAskBoard";
     }
@@ -320,7 +337,7 @@ public class ParticipationForumController {
 
         //답변한 게시판 번호
         askAndAnswerBoardVO.setIfAnswerBoardNum(askAndAnswerBoardVO.getAskAndAnswerBoardNum());
-        askAndAnswerBoardVO.setAnswerOrderNum(askBoardNum);
+        askAndAnswerBoardVO.setOriginOrderNum(participationForumService.searchOriginOrderNumForAnswer(askBoardNum));
 
         //답변한 순서
         int answerNum = participationForumService.chkAnswerOrderNum(askBoardNum);
@@ -332,7 +349,6 @@ public class ParticipationForumController {
         }else{
             answerNum += 1;
         }
-        askAndAnswerBoardVO.setOriginOrderNum(askBoardNum);
         askAndAnswerBoardVO.setAnswerOrderNum(answerNum);
 
         //boardVO에 객체 넣기
@@ -342,6 +358,27 @@ public class ParticipationForumController {
 
         //답변 등록
         participationForumService.insertAskAndAnswerBoard(boardVO);
+
+
+        return "redirect:/askAndAnswer";
+    }
+    //삭제 하기
+    @GetMapping("/askBoardDelete")
+    public String askBoardDelete(@RequestParam(name="boardNum") int boardNum ,
+                                 @RequestParam(name="isAnswerBoard") String isAnswerBoard){
+
+//        일단 boardNum으로 게시물 검색
+        //게시물 정보 던져주기
+        BoardVO boardVO = participationForumService.detailAskBoard(boardNum);
+        int originOrderNum = boardVO.getAskAndAnswerBoardVO().getOriginOrderNum();
+        List<Integer> list = participationForumService.deleteAskBoard1(originOrderNum);
+
+        System.out.println(list);
+        System.out.println(list);
+        System.out.println(list);
+        System.out.println(list);
+        System.out.println(list);
+        System.out.println(list);
 
 
         return "redirect:/askAndAnswer";

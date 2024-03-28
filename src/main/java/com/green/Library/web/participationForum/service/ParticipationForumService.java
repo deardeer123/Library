@@ -13,8 +13,6 @@ ParticipationForumService {
     //공지사항 조회
     List<BoardVO> selectNotice ();
 
-    //조회수증가
-    void updateCnt (int boardNo);
 
     //공지사항 상세조회
     BoardVO noticeDetail (int boardNo);
@@ -58,4 +56,9 @@ ParticipationForumService {
     //글 변경하기 위한 상세보기
     BoardVO detailAskBoard2(int boardNum);
 
+    //질문 응답 글 삭제
+    void deleteBoard(int boardNum);
+
+    //묻고 답하기 글 삭제
+    List<Integer> deleteAskBoard1(int originOrderNum);
 }
