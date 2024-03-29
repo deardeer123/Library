@@ -16,13 +16,21 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
     @Autowired
     private SqlSessionTemplate sqlSession;
 
-    ////////////////////// 대출 ////////////////////////
+    /////////////////////이용자 정보//////////////////////
 
     // 대출 정보 이력 조회
     @Override
     public MemberVO selectBorrowInfo(MemberVO memberVO) {
         return sqlSession.selectOne("bnrMapper.selectBorrowInfo", memberVO);
     }
+
+    // 이용자 소개 업데이트
+    @Override
+    public void updateUserIntro(int cardNum) {
+        sqlSession.update("bnrMapper.updateUserIntro", cardNum);
+    }
+
+    ////////////////////// 대출 ////////////////////////
 
     // 대출 시 BOOK_BNR INSERT + BOOK_INFO UPDATE
     @Override

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/bookAdmin")
@@ -122,6 +123,15 @@ public class BorrowReturnController {
             return new MemberVO();
         }
 
+    }
+
+    // 대출반납 페이지에서 이용자 정보 변경 메소드
+    @PostMapping("/updateUserIntro")
+    public String updateUserIntro(@RequestParam(name = "cardNum")int cardNum){
+
+        borrowReturnService.updateUserIntro(cardNum);
+
+        return "redirect:/bookAdmin/selectBorrowInfo";
     }
 
     //일관 반납
