@@ -31,7 +31,7 @@
                         </tr>
                         <tr>
                             <td>강사</td>
-                            <td><input type="date" class="form-control" name="teacher"></td>
+                            <td><input type="taxt" class="form-control" name="teacher"></td>
                             <td>인원</td>
                             <td>
                                 <div>
@@ -52,9 +52,9 @@
                             <td>운영기간</td>
                             <td colspan="3">
                                 <div style="display: flex;">
-                                    <input type="date" name="openDate" class="form-control">
+                                    <input type="date" name="openDate" id="openDate" class="form-control" onchange="dateCode()">
                                     <span style="display: inline-block; padding: 5px;">~</span>
-                                    <input type="date" name="closeDate" class="form-control">
+                                    <input type="date" name="closeDate" id="closeDate" class="form-control" onchange="dateCode()">
                                 </div>
                             </td>
                         </tr>
@@ -62,9 +62,9 @@
                             <td>신청기간</td>
                             <td colspan="3">
                                 <div style="display: flex;">
-                                    <input type="date" name="toDate" class="form-control">
+                                    <input type="date" name="toDate" id="toDate" class="form-control" onchange="dateCode()">
                                     <span style="display: inline-block; padding: 5px;">~</span>
-                                    <input type="date" name="fromDate" class="form-control">
+                                    <input type="date" name="fromDate" id="fromDate" class="form-control" onchange="dateCode()">
                                 </div>
                             </td>
                         </tr>
@@ -105,7 +105,7 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴 때 같이 실행되는 js -->
-    <!-- <script src="/"></script> -->
+    <script src="/js/content/culture/culture.js"></script>
 </th:block>
 
 </html>

@@ -26,12 +26,12 @@
             <form action="/courseGuide" method="post">
                 <tr>
                     <td colspan="4">
-                        <select name="searchType">
+                        <select name="searchType" class="form-select" style="width: 200px; display: inline-block;">
                             <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'BOARD_TITLE'}">제목</option>
                             <option value="USER_NAME" th:selected="${searchVO.searchType == 'USER_NAME'}">작성자</option>
                         </select>
-                        <input type="search" name="searchValue" th:value="${searchVO.searchValue}">
-                        <input type="submit" value="검색">
+                        <input type="search" class="form-control" style="width: 670px; display: inline-block;" name="searchValue" th:value="${searchVO.searchValue}">
+                        <input type="submit" class="btn btn-primary" style="margin-bottom: 3px;" value="검색">
                     </td>
                 </tr>
             </form>
@@ -50,7 +50,7 @@
                 <tbody>
                     <tr th:each="board : ${guideBoardList}">
                         <td><input th:value="${board.boardNum}" type="checkbox" class="chk" checked></td>
-                        <td><span th:onclick="|location.href='@{/eventDetailBoard(boardNum=${board.boardNum})}'|" style="cursor: pointer;">[[${board.boardTitle}]]</span></td>
+                        <td><span th:onclick="|location.href='@{/guideDetailBoard(boardNum=${board.boardNum})}'|" style="cursor: pointer;">[[${board.boardTitle}]]</span></td>
                         <td>[[${board.MemberVO.userName}]]</td>
                         <td>[[${board.boardDate}]]</td>
                         <td>[[${board.boardCnt}]]</td>

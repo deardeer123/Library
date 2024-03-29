@@ -80,8 +80,12 @@ public class CulturalAndEducationController {
 
     //게시판 등록 페이지
     @GetMapping("/goEventBoard")
-    public String goEventBoard(SearchVO searchVO){
-
+    public String goEventBoard(SearchVO searchVO, Model model){
+        System.out.println(webMenuService.selectWebMenuList("web"));
+        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
+        webMenuService.selectWebMenuList("member");
+        System.out.println(webMenuService.selectWebMenuList("member"));
+        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
         return "content/homePage/culturalAndEducation/libraryEvent/event_board";
     }
 
@@ -178,8 +182,15 @@ public class CulturalAndEducationController {
     //문화 게시판 수정
     @GetMapping("/culUpdate")
     public String culUpdate(BoardVO boardVO, Model model,HttpSession session){
+        System.out.println(webMenuService.selectWebMenuList("web"));
+        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
+        webMenuService.selectWebMenuList("member");
+        System.out.println(webMenuService.selectWebMenuList("member"));
+        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
         BoardVO board = boardService.selectBoardDetail(boardVO.getBoardNum());
+        System.out.println(board);
         model.addAttribute("board",board);
         return "content/homePage/culturalAndEducation/libraryEvent/culBoardUpdate";
 
@@ -199,8 +210,9 @@ public class CulturalAndEducationController {
     //    ----------------- 행사 참가신청 -------------------
     @RequestMapping("/eventParticipation")
     public String goEventParticipation(Model model,
-                                       BoardVO boardVO,
-                                       SearchVO searchVO){
+                                       ApplyVO applyVO,
+                                       SearchVO searchVO,
+                                       HttpSession session){
 
         //scheduleService.run();
 
@@ -226,8 +238,15 @@ public class CulturalAndEducationController {
         }
         searchVO.setBoardType(25);
 
+        int userCode = Optional.ofNullable((Integer) session.getAttribute("userCode")).orElse(0);
+        applyVO.setUserCode(userCode);
+        model.addAttribute("applyUser", memberService.selectApplyUser(applyVO.getUserCode()) );
+        model.addAttribute("apply",boardService.applyBoardList());
+
         List<BoardVO> boardList =  boardService.selectPlusList(searchVO);
         model.addAttribute("boardList",boardList);
+
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@"+ memberService.selectApplyUser(applyVO.getUserCode()));
         System.out.println(boardList);
         System.out.println("행사 참가신청");
         return "content/homePage/culturalAndEducation/eventParticipation/eventParticipation";
@@ -235,7 +254,12 @@ public class CulturalAndEducationController {
 
     // 참가신청 게시글 등록 페이지 이동
     @GetMapping("/goParticipation")
-    public String goParticipation(){
+    public String goParticipation(Model model){
+        System.out.println(webMenuService.selectWebMenuList("web"));
+        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
+        webMenuService.selectWebMenuList("member");
+        System.out.println(webMenuService.selectWebMenuList("member"));
+        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
         return "content/homePage/culturalAndEducation/eventParticipation/goParticipation";
     }
 
@@ -333,12 +357,21 @@ public class CulturalAndEducationController {
 
     //게시글 수정
     @PostMapping("/goEventUpdate")
-    public String goEventUpdate(BoardVO boardVO,PlusVO plusVO){
+    public String goEventUpdate(BoardVO boardVO,PlusVO plusVO,Model model){
+        System.out.println(webMenuService.selectWebMenuList("web"));
+        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
+        webMenuService.selectWebMenuList("member");
+        System.out.println(webMenuService.selectWebMenuList("member"));
+        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+
+
         System.out.println(boardVO);
         boardVO.setPlusVO(plusVO);
         boardService.updateEventBoardDetail(boardVO);
         return "redirect:/goDetailParticipation?boardNum="+boardVO.getBoardNum();
     }
+
+
 
     //게시글 삭제
     @GetMapping("/goEventDelete")
@@ -420,6 +453,34 @@ public class CulturalAndEducationController {
         System.out.println("평생교육 강좌안내");
         return "content/homePage/culturalAndEducation/courseGuide/courseGuide";
     }
+
+    @GetMapping("/guideDetailBoard")
+    public String guideDetailBoard(Model model, BoardVO boardVO, @RequestParam(name = "boardNum") int boardNum){
+        //드가기전 메뉴 정보좀 들고옴
+        //제대로 들고가는지 확인
+        System.out.println(webMenuService.selectWebMenuList("web"));
+        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
+
+        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
+        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
+        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
+        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
+        webMenuService.selectWebMenuList("member");
+        System.out.println(webMenuService.selectWebMenuList("member"));
+        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+
+        boardVO.setBoardNum(boardNum);
+
+        BoardVO board = boardService.selectBoardDetail(boardVO.getBoardNum());
+        boardService.boardCntUp(boardVO.getBoardNum());
+        model.addAttribute("board", board);
+        System.out.println(board);
+        return "content/homePage/culturalAndEducation/courseGuide/guideDetailBoard";
+    }
+
+
+
+
 
     //가이드 게시판 등록 페이지 이동
     @GetMapping("/goGuideInsertPage")
@@ -625,9 +686,9 @@ public class CulturalAndEducationController {
 
     //신청 취소
     @RequestMapping("/deleteApply")
-    @ResponseBody
-    public void deleteApply(BoardVO boardVO){
+    public String deleteApply(BoardVO boardVO){
         memberService.deleteApply(boardVO.getBoardNum());
+        return "redirect:/goApplyUserListPage";
     }
 
     //신청 확인
@@ -649,6 +710,59 @@ public class CulturalAndEducationController {
     public void upPersonnel(@RequestParam(name = "boardNum") int boardNum){
         System.out.println(boardNum);
         boardService.upPersonnel(boardNum);
+    }
+
+    //app 페이지 이동
+    @GetMapping("/goAppDetailPage")
+    public String goAppDetailPage(Model model, BoardVO boardVO,
+                                        @RequestParam(name = "boardNum") int boardNum,
+                                        ApplyVO applyVO,
+                                        HttpSession session){
+        //드가기전 메뉴 정보좀 들고옴
+        //제대로 들고가는지 확인
+        System.out.println(webMenuService.selectWebMenuList("web"));
+        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
+
+        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
+        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
+        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
+        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
+        webMenuService.selectWebMenuList("member");
+        System.out.println(webMenuService.selectWebMenuList("member"));
+        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+
+//        int userCode = Optional.ofNullable((Integer) session.getAttribute("userCode")).orElse(0);
+//        applyVO.setUserCode(userCode);
+
+        boardVO.setBoardNum(boardNum);
+        applyVO.setUserCode((Integer) session.getAttribute("userCode"));
+        model.addAttribute("check", boardService.applyCheck(applyVO));
+        BoardVO board = boardService.selectEventBoardDetail(boardVO.getBoardNum());
+        model.addAttribute("board", board);
+        System.out.println(board);
+        return "content/homePage/culturalAndEducation/applicationForClasses/goAppDetailBoard";
+    }
+
+
+    //app 게시물 수정 페이지 이동
+    @GetMapping("/goAppDetailBoard")
+    public String goAppDetailBoard(Model model, BoardVO boardVO, HttpSession session){
+        System.out.println(webMenuService.selectWebMenuList("web"));
+        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
+
+        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
+        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
+        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
+        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
+        webMenuService.selectWebMenuList("member");
+        System.out.println(webMenuService.selectWebMenuList("member"));
+        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+
+        boardVO.setUserCode((Integer) session.getAttribute("userCode"));
+        BoardVO board = boardService.selectEventBoardDetail(boardVO.getBoardNum());
+        model.addAttribute("board",board);
+        System.out.println(board);
+        return "redirect:/applicationForClasses";
     }
 
 

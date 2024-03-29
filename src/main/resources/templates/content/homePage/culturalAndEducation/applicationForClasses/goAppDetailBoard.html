@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴 때 같이 실행되는 css -->
-    <link rel="stylesheet" href="/css/content/homePage/culture.css">
+    <!-- <link rel="stylesheet" href="/"> -->
 </th:block>
 
 <th:block layout:fragment="contentFragment">
@@ -95,7 +96,7 @@
             </div>
             <div>
                 <input class="btn btn-success btn-lg" type="button" value="목록"
-                    onclick="location.href='/eventParticipation'">
+                    onclick="location.href='/applicationForClasses'">
             </div>
         </div>
     </div>
@@ -136,7 +137,6 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴 때 같이 실행되는 js -->
-    <script src="/js/content/culture/culture.js"></script>
+    <!-- <script src="/"></script> -->
 </th:block>
-
 </html>

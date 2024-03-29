@@ -590,3 +590,10 @@ INNER JOIN attached_file AS F
 ON B.BOARD_NUM = F.BOARD_NUM
 WHERE B.board_type = 25
 OR B.board_num = 20;
+
+SELECT 
+	CASE 
+		WHEN OPEN_DATE > NOW() THEN '다시 입력'
+		WHEN CLOSE_DATE > NOW() THEN '다시 입력'
+	END
+FROM board_plus;
