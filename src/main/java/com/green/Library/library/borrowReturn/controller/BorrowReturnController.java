@@ -133,6 +133,8 @@ public class BorrowReturnController {
         borrowReturnService.updateUserIntro(cardNum);
 
         System.out.println("이용자 정보 업데이트" + cardNum);
+        
+        // 리턴 html 안 됨
 
         return ;
     }
