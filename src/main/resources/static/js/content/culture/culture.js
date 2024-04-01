@@ -247,6 +247,10 @@ function dateCode() {
     // const fromMonth = fromDate.getMonth() + 1; // getMonth()는 0부터 시작하므로 1을 더함
     // const fromDay = fromDate.getDate();
 
+    //현재 날짜 구하기
+    let today = new Date();   
+    
+
 
     console.log("Open Date:", openYear, openMonth, openDay);
     console.log("Close Date:", closeYear, closeMonth, closeDay);
@@ -259,16 +263,23 @@ function dateCode() {
     console.log(pattern.test(openDate))
 
     if (openDate > closeDate) {
-        alert('데이터를 다시 입력하시길 바랍니다')
-        closeDate.remove();
+        let tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+
+         // openDateInput의 값을 변경하여 현재 날짜 + 1일로 설정
+        const tomorrowString = tomorrow.toISOString().split('T')[0]; // ISO 형식의 문자열로 변환
+        openDateValue.value = tomorrowString;
+        console.log(openDateValue)
+
+        alert('데이터를 다시 입력하시길 바랍니다');
         return ;
     }
-    else{
-        
+    else if(today> openDate){
+        alert('행사 시작 날짜를 다시 입력하시길 바랍니다.')
+        return ;
     }
-    // else if(){
-        
-    // }
+    
+    
 
 }
 
