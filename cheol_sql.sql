@@ -67,6 +67,23 @@ INSERT INTO HEADER_MENU(
 SELECT * FROM header_menu;
 SELECT * FROM side_menu;
 
+SELECT *
+FROM side_menu
+WHERE side_menu_page = 'notice';
+
+SELECT *
+FROM header_menu
+WHERE menu_num = 9;
+
+SELECT 
+side_menu.SIDE_MENU_INDEX ,
+header_menu.MENU_INDEX ,
+side_menu.SIDE_MENU_NUM
+FROM
+side_menu INNER JOIN header_menu
+ON side_menu.MENU_NUM = header_menu.MENU_NUM
+WHERE side_menu.side_menu_page = 'notice';
+
 -- 사이드 메뉴 데이터
 INSERT INTO SIDE_MENU(
 	SIDE_MENU_NAME ,
@@ -702,7 +719,9 @@ CREATE TABLE ATTACHED_FILE (
    , BOARD_NUM INT NOT NULL REFERENCES BOARD (BOARD_NUM) ON DELETE CASCADE
 );
 
+SELECT * FROM attached_file;
 
+SELECT * FROM board;
 
 SELECT * FROM users;
 
@@ -764,12 +783,12 @@ CREATE TABLE ASK_AND_ANSWER_BOARD(
 	, ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE VARCHAR(10)
 	, IS_ANSWER_BOARD VARCHAR(10) DEFAULT 'N' 
 	, IF_ANSWER_BOARD_NUM INT NOT NULL DEFAULT 0
+	, CHK_ASK_USER_CODE INT DEFAULT 0
 	, ORIGIN_ORDER_NUM INT
 	, ANSWER_ORDER_NUM INT
 	, BOARD_NUM INT NOT NULL REFERENCES board(BOARD_NUM) ON DELETE CASCADE
 	);
 
-	
 SELECT * FROM board;
 SELECT * FROM attached_file;
 SELECT * FROM ASK_AND_ANSWER_BOARD;
@@ -777,7 +796,7 @@ SELECT * FROM users;
 
 DELETE FROM board;
 DELETE FROM attached_file;
-DELETE FROM ASK_AND_ANSWER_BOARD;
+DELETE FROM ask_and_answer_board;
 
 
 
@@ -888,4 +907,16 @@ SELECT * FROM users;
 	
 	
 
-
+SELECT
+        header_menu.MENU_NUM ,
+        MENU_NAME ,
+        MENU_INDEX ,
+        MENU_TYPE,
+        SIDE_MENU_NAME ,
+        SIDE_MENU_PAGE ,
+        SIDE_MENU_INDEX ,
+        SIDE_MENU.SIDE_MENU_NUM
+        FROM
+        header_menu INNER JOIN side_menu
+        ON header_menu.MENU_NUM = side_menu.MENU_NUM
+        WHERE header_menu.MENU_TYPE = 'library';

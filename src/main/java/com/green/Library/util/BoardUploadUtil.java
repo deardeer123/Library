@@ -41,6 +41,7 @@ public class BoardUploadUtil {
                 uploadVO.setAttachedFileName(boardFileName);
                 uploadVO.setOriginFileName(upLoadFile.getOriginalFilename());
 
+                
 
                 upLoadFile.transferTo(mainFile);
                 uploadVO.setIsMain("Y");

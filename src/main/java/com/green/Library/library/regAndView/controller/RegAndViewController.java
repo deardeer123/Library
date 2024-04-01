@@ -11,6 +11,7 @@ import com.green.Library.libraryBook.vo.LibraryBookMidCategoryVO;
 import com.green.Library.libraryBook.vo.LibraryBookVO;
 import com.green.Library.util.UploadUtil;
 import com.green.Library.web.member.vo.MemberVO;
+import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
 import org.apache.ibatis.annotations.One;
 import org.springframework.core.annotation.MergedAnnotations;
@@ -36,14 +37,18 @@ public class RegAndViewController {
     @Resource(name="regAndViewService")
     RegAndViewService regAndViewService;
 
+    @Resource(name="webMenuService")
+    WebMenuService webMenuService;
+
     //----------------등록 열람----------------
     @GetMapping("/workingBook")
     public String goWorkingBook(Model model,
                                 BookSearchVO bookSearchVO,
                                 @RequestParam(name="update" ,required = false, defaultValue = "0") int update ,
                                 @RequestParam(name="delete", required = false, defaultValue = "0") int delete){
-        //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
+
+        //인터셉터로 넘겨줄 page
+        model.addAttribute("page", "workingBook");
 
         //전체 게시물 갯수 설정
         int totalDataCnt = regAndViewService.selectBookCnt(bookSearchVO);
@@ -57,21 +62,8 @@ public class RegAndViewController {
         model.addAttribute("bookList", regAndViewService.searchBookList(bookSearchVO));
 
         //변경 혹은 삭제 하고나서 해당 페이지로 이동 시 알람창 하나 띄우고 싶어서 적은 코드
-//        System.out.println(update);
         model.addAttribute("update", update);
-
-//        System.out.println(delete);
         model.addAttribute("delete", delete);
-
-
-        
-        
-        
-
-
-
-
-
 
 
         //초기화
@@ -90,8 +82,8 @@ public class RegAndViewController {
     //일단 책 정보 변경하는거 간단하게 가야할듯..
     @GetMapping("/changeBook")
     public String goChange(Model model, @RequestParam(name="bookCode")String bookCode){
-        //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
+        //인터셉터로 넘겨줄 page
+        model.addAttribute("page", "workingBook");
 
         //가기전에 카테고리 목록 리스트 가져오기
         //System.out.println(libraryBookService.selectCateList());
@@ -106,7 +98,7 @@ public class RegAndViewController {
         return "content/library/regAndView/changeBook";
     }
     @ResponseBody
-    @PostMapping("/selectCateList")
+    @PostMapping("/selectCateListFetch")
     public LibraryBookCategoryVO giveMeCateList(@RequestParam(name="bookCateCode")int bookCateCode){
         System.out.println("중분류 카테고리 넘겨주기");
         LibraryBookCategoryVO libraryBookCategoryVO = libraryBookService.selectCateOne(bookCateCode);
@@ -117,12 +109,6 @@ public class RegAndViewController {
     public String changeBook(LibraryBookVO libraryBookVO,
                              LibraryBookInfoVO libraryBookInfoVO,
                              @RequestParam(name="bookImg") MultipartFile bookImg){
-        System.out.println("책 내용바꾸기!!");
-
-        System.out.println(libraryBookVO);
-        System.out.println(libraryBookInfoVO);
-        System.out.println(bookImg.getOriginalFilename());
-        //아니 근데 이미지 변경하면서 원래 있던 이미지를 삭제해야하는데 맞는거 같은데
 
 
         if(bookImg.getOriginalFilename().equals("")){
@@ -172,7 +158,6 @@ public class RegAndViewController {
     //책 삭제하기
     @GetMapping("/deleteBook1")
     public String deleteBook1(@RequestParam(name="bookCode")String bookCode){
-        System.out.println(bookCode);
         //받은 북 코드를 보내서 book_breakage 테이블로 보낼거임
         LibraryBookVO libraryBookVO = regAndViewService.selectOneBook(bookCode);
 
@@ -188,18 +173,13 @@ public class RegAndViewController {
     }
 
     @ResponseBody
-    @PostMapping("/searchBook")
+    @PostMapping("/searchBookFetch")
     public Map<String,Object> doSearchBook(BookSearchVO bookSearchVO){
-
-
-        System.out.println("이동합니까?");
-        System.out.println(bookSearchVO);
         //가져갈 책 리스트
         List<LibraryBookVO> libraryBookVOList = regAndViewService.searchBookList(bookSearchVO);
 
         //페이징
         System.out.println(bookSearchVO.getNowPage());
-
 
         //전체 게시물 갯수 설정
         int totalDataCnt = regAndViewService.selectBookCnt(bookSearchVO);
@@ -207,19 +187,11 @@ public class RegAndViewController {
 
         //페이지 정보 세팅
         bookSearchVO.setPageInfo();
-        // 끝나는 페이지, 마지막 페이지 확인
-        System.out.println("endPage : " + bookSearchVO.getEndPage());
-        System.out.println("totalPage : " + bookSearchVO.getTotalPageCnt());
-        System.out.println("prev : " + bookSearchVO.getPrev());
-        System.out.println("next : " + bookSearchVO.getNext());
-
-
 
         //bookSearchVO 내용도 던져줄려면 map 써야할듯
         Map<String,Object> bookInfo = new HashMap<String,Object>();
         bookInfo.put("libraryBookVOList",regAndViewService.searchBookList(bookSearchVO));
         bookInfo.put("bookSearchVO",bookSearchVO);
-
 
        return bookInfo;
     }
@@ -227,8 +199,8 @@ public class RegAndViewController {
 
     @GetMapping("/collectionBook")
     public String goCollectionBook(Model model , BookSearchVO bookSearchVO){
-        //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
+        //인터셉터로 넘겨줄 page
+        model.addAttribute("page", "collectionBook");
 
         //페이징
         System.out.println(bookSearchVO.getNowPage());
@@ -241,78 +213,54 @@ public class RegAndViewController {
         //페이지 정보 세팅
         bookSearchVO.setPageInfo();
 
-        // 끝나는 페이지, 마지막 페이지 확인
-        System.out.println("endPage : " + bookSearchVO.getEndPage());
-        System.out.println("totalPage : " + bookSearchVO.getTotalPageCnt());
-        System.out.println("prev : " + bookSearchVO.getPrev());
-        System.out.println("next : " + bookSearchVO.getNext());
-
-
-//
         //대충 책 정보 가져 오고나서 해당 파일의 상세 정보등을 변경시키게
         System.out.println(regAndViewService.searchBookList(bookSearchVO));
         model.addAttribute("bookList", regAndViewService.searchBookList(bookSearchVO));
-
 
         System.out.println("소장 자료 관리 이동");
         return "content/library/regAndView/collectionBook";
     }
 
-
-    //이건
     @ResponseBody
-    @PostMapping("/modal")
-    public Map<String,Object> modal(@RequestParam(name="bookCode")String bookCode) {
-        System.out.println(bookCode);
-        Map<String,Object> bookInfo = new HashMap<>();
-        bookInfo.put("book",regAndViewService.selectOneBook(bookCode));
-        bookInfo.put("cateList",libraryBookService.selectCateList());
-
-        return bookInfo;
-    }
-
-    @ResponseBody
-    @PostMapping("/bookDetailInfo")
+    @PostMapping("/bookDetailInfoFetch")
     public Map<String,Object> bookInfo(@RequestParam(name="bookCode")String bookCode) {
-        System.out.println(bookCode);
+
         Map<String, Object> bookInfo = new HashMap<>();
         MemberVO memberVO = regAndViewService.bookDetailInfo(bookCode);
+        
         LibraryBookCategoryVO libraryBookCategoryVO = regAndViewService.selectCateNameOne(bookCode);
         bookInfo.put("memberVO",memberVO);
         bookInfo.put("libraryBookCategoryVO",libraryBookCategoryVO);
         return bookInfo;
+        
     }
-
+//내가 짜놓고 뭔지 모르겠네
     @ResponseBody
-    @PostMapping("/findBookWithCode")
+    @PostMapping("/findBookWithCodeFetch")
     public Map<String, Object> findBookWithCode(BookSearchVO bookSearchVO){
+        //책정보랑 그책에 관련된 회원들도 보여줘야함
         Map<String , Object> bookInfo = new HashMap<>();
-        System.out.println(bookSearchVO);
         String bookCode = bookSearchVO.getSearchValue();
         MemberVO memberVO = regAndViewService.bookDetailInfo(bookCode);
+
         LibraryBookCategoryVO libraryBookCategoryVO = regAndViewService.selectCateNameOne(bookCode);
         bookInfo.put("memberVO",memberVO);
         bookInfo.put("libraryBookCategoryVO",libraryBookCategoryVO);
 
         return bookInfo;
     }
-
-
 
     @GetMapping("/markImport")
     public String goMarkImport(Model model){
-        //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
+        //인터셉터로 넘겨줄 page
+        model.addAttribute("page", "markImport");
 
+        //바코드 출력을 위한 책 넘겨주기
         List<LibraryBookVO> bookList = regAndViewService.selectBookList2();
         model.addAttribute("bookList",bookList);
 
-
-        System.out.println("마크 반입 이동");
         return "content/library/regAndView/markImport";
     }
-
-
 
     @PostMapping("/printBarCode")
     public String printBarCode(@RequestParam(name="bookCodeList")List<String> bookCodeList,Model model){
@@ -322,4 +270,16 @@ public class RegAndViewController {
 
         return "content/library/regAndView/bar_code_print";
     }
+
+    //    //이건
+//    @ResponseBody
+//    @PostMapping("/modal")
+//    public Map<String,Object> modal(@RequestParam(name="bookCode")String bookCode) {
+//
+//        Map<String,Object> bookInfo = new HashMap<>();
+//        bookInfo.put("book",regAndViewService.selectOneBook(bookCode));
+//        bookInfo.put("cateList",libraryBookService.selectCateList());
+//
+//        return bookInfo;
+//    }
 }

@@ -40,10 +40,19 @@
         WHERE header_menu.MENU_TYPE = #{menuType}
     </select>
 
-<!--    선택된 메뉴 찾기-->
-    <select id="" resultType="int">
 
+<!--    페이지의 이름으로 부터 header_menu의 인덱스 번호와 side_menu의 인덱스 번호 구하기-->
+    <select id="selectIndexNum" resultType="map">
+        SELECT
+        side_menu.SIDE_MENU_INDEX ,
+        header_menu.MENU_INDEX ,
+        side_menu.SIDE_MENU_NUM
+        FROM
+        side_menu INNER JOIN header_menu
+        ON side_menu.MENU_NUM = header_menu.MENU_NUM
+        WHERE side_menu.side_menu_page = #{page}
     </select>
+
 
 
 </mapper>

@@ -1,0 +1,45 @@
+"thymeleaf html" : {
+        "scope": "html",
+        "prefix": "thymeleaf-html",
+        "body": [
+            "<!DOCTYPE html>",
+            "<html lang=\"ko\" xmlns:th=\"http://www.thymeleaf.org\"",
+            "\txmlns:layout=\"http://www.ultraq.net.nz/thymeleaf/layout\" >",
+            "<head>",
+            "<meta charset=\"UTF-8\">",
+            "<title>$1</title>",
+            "</head>",
+            "<body>",
+            "$2",
+            "</body>",
+            "</html>"
+        ],
+        "description": "thymeleaf + html 자동코드"
+    },
+
+    "thymeleaf content html" : {
+        "scope": "html",
+        "prefix": "thymeleaf-content-html",
+        "body": [
+            "<!DOCTYPE html>",
+            "<html lang=\"ko\" xmlns:th=\"http://www.thymeleaf.org\"",
+            "\txmlns:layout=\"http://www.ultraq.net.nz/thymeleaf/layout\"",
+            "\tlayout:decorate=\"~{fragment/layout파일명기입}\" >",
+            "$2",
+            "<th:block layout:fragment=\"content_css\">",
+            "\t<!-- html 파일이 열릴때 같이 실행되는 css -->",
+            "\t<link rel=\"stylesheet\" href=\"/\">",
+            "</th:block>",
+            "$2",
+            "<th:block layout:fragment=\"contentFragment\">",
+            "\t<!-- html 코드 작성 -->",
+            "</th:block>",
+            "$2",
+            "<th:block layout:fragment=\"content_js\">",
+            "\t<!-- html 파일이 열릴때 같이 실행되는 js -->",
+            "\t<script src=\"/\"></script>",
+            "</th:block>",
+            "</html>"
+        ],
+        "description": "thymeleaf + html 자동코드"
+    }

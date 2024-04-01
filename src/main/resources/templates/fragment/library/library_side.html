@@ -5,9 +5,33 @@
 <th:block th:fragment="sideFragment">
     <div class="row">
         <div class="col">
-            side
+
+            <th:block th:if="${selectedMenuIndex != null}">
+                <th:blcok th:each="e:${menuList}" th:if="${e.menuIndex == selectedMenuIndex}">
+                    <ul class="list-group list-group-flush">
+
+                        <th:block th:each="e1:${e.LibrarySideMenuVOList}">
+    
+                            <li class="list-group-item" 
+                            th:classappend="${e1.sideMenuIndex == selectedSideMenuIndex ? 'active' : ''}"
+                            th:onclick="goPage([[${e1.sideMenuPage}]] , [[${e1.sideMenuNum}]])"
+                            >
+                                [[${e1.sideMenuName}]]
+                            </li>
+                        
+                        </th:block>
+                    </ul>
+                </th:blcok>
+            </th:block>
+
         </div>
     </div>
+
+    <script>
+        function goSidePage(page, sideMenu){
+            location.href=`/bookAdmin/${page}`
+        }
+    </script>
 
     <!-- <script src="/js/fragment/libiary/library_side.js"></script> -->
 </th:block>

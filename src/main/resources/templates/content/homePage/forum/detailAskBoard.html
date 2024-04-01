@@ -55,7 +55,7 @@
                         <div class="col-1">
                             <!-- 수정하기 글쓴이 혹은 관리자만 볼 수 있어야함-->
                             <th:block th:if="${(boardVO.userCode == session.userCode) or (memberVO.isAdmin == 'Y')}">
-                                <input type="button" class="btn btn-primary" value="수정하기">
+                                <input type="button" class="btn btn-primary" value="수정하기" th:onclick="modifyAskBoard([[${boardVO.boardNum}]])">
                             </th:block>
                         </div>
                         <div class="col-1">
@@ -86,6 +86,10 @@
 
     <script>
         // 답변하러 가기
+        function modifyAskBoard(boardNum){
+            location.href=`/goModifyAskBoard?boardNum=${boardNum}`;
+        }
+
         function goAnswer(boardNum) {
             location.href = `/goAnswer?boardNum=${boardNum}`;
         }

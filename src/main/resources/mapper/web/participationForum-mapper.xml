@@ -10,29 +10,20 @@
         <result column="ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE" property="askAndAnswerBoardPublicOrPrivate" />
         <result column="IS_ANSWER_BOARD" property="isAnswerBoard" />
         <result column="IF_ANSWER_BOARD_NUM" property="ifAnswerBoardNum"/>
+        <result column="CHK_ASK_USER_CODE" property="chkAskUserCode" />
         <result column="origin_order_num" property="originOrderNum" />
         <result column="ANSWER_ORDER_NUM" property="answerOrderNum" />
         <result column="BOARD_NUM" property="boardNum" />
     </resultMap>
-
-<!--    &lt;!&ndash; 공지사항 등록&ndash;&gt;-->
-<!--    <insert id="insertBoard">-->
-<!--        INSERT INTO BOARD (-->
-<!--            BOARD_TITLE-->
-<!--            , CONTENT-->
-<!--            , BOARD_DATE-->
-<!--            , BOARD_TYPE-->
-<!--            , USER_CODE-->
-<!--            , BOARD_CNT-->
-<!--        ) VALUES (-->
-<!--            #{boardTitle}-->
-<!--            , #{content}-->
-<!--            , #{boardDate}-->
-<!--            , #{boardType}-->
-<!--            , #{userCode}-->
-<!--            , #{boardCnt}-->
-<!--        )-->
-<!--    </insert>-->
+<!--    그냥 게시물 갯수-->
+    <select id="normalTotalBoardCnt" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            board
+        WHERE
+            board_type = #{boardType}
+    </select>
 
     <!--  첨부파일 등록  -->
     <insert id="insertUploadFile">
@@ -54,31 +45,38 @@
 
     <!-- 공지사항 조회-->
     <select id="selectNotice" resultMap="boardMapper.board">
-        SELECT BOARD.BOARD_NO
+        SELECT
+            BOARD.BOARD_NUM
             , BOARD_TITLE
-            , CONTENT
-            , BOARD_DATE
-            , BOARD.USER_CODE
             , USERS.USER_NAME
+            , DATE_FORMAT(BOARD.BOARD_DATE, '%Y-%m-%d') AS BOARD_DATE
             , BOARD_CNT
         FROM BOARD INNER JOIN USERS
         ON BOARD.USER_CODE = USERS.USER_CODE
-        WHERE BOARD_TYPE = 31
-        ORDER BY BOARD_NO DESC
+        WHERE BOARD_TYPE = 29
+        <if test='searchValue != null and !searchValue.equals("")'>
+            and ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+        ORDER BY BOARD_NUM DESC
+        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
     </select>
 
 
     <!-- 공지사항 상세조회-->
     <select id="noticeDetail" resultMap="boardMapper.board">
-            SELECT BOARD.BOARD_NO
+            SELECT BOARD.BOARD_NUM
             , BOARD_TITLE
             , BOARD_DATE
             , BOARD_CNT
             , CONTENT
+            , ATTACHED_CODE
+            , ORIGIN_FILE_NAME
             , ATTACHED_FILE_NAME
+            , IS_MAIN
+            , USER_CODE
             FROM BOARD INNER JOIN ATTACHED_FILE
-            ON BOARD.BOARD_NO = ATTACHED_FILE.BOARD_NO
-            WHERE BOARD.BOARD_NO = #{boardNo}
+            ON BOARD.BOARD_NUM = ATTACHED_FILE.BOARD_NUM
+            WHERE BOARD.BOARD_NUM = #{boardNum}
     </select>
 
 
@@ -87,7 +85,7 @@
         SELECT IFNULL(MAX(BOARD_NO), 0) + 1 FROM BOARD
     </select>
 
-    <!--  등록한 게시물 정보 리스트  -->
+    <!--  등록한 묻고 답하기 게시물 정보 리스트  -->
     <select id="forumSelectBoardList" resultMap="boardMapper.board">
         SELECT
         BOARD.BOARD_NO
@@ -149,6 +147,7 @@
         ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE ,
         origin_order_num ,
         ANSWER_ORDER_NUM ,
+        CHK_ASK_USER_CODE,
         BOARD_NUM
         )
         VALUES(
@@ -156,6 +155,7 @@
         #{askAndAnswerBoardVO.askAndAnswerBoardPublicOrPrivate},
         #{askAndAnswerBoardVO.originOrderNum} ,
         #{askAndAnswerBoardVO.answerOrderNum} ,
+        #{askAndAnswerBoardVO.chkAskUserCode},
         #{boardNum}
         )
     </insert>
@@ -169,7 +169,8 @@
         origin_order_num ,
         ANSWER_ORDER_NUM ,
         is_answer_board ,
-        if_answer_board_num
+        if_answer_board_num ,
+        CHK_ASK_USER_CODE
         )
         VALUES(
         #{askAndAnswerBoardVO.askAndAnswerBoardPassword} ,
@@ -178,7 +179,8 @@
         #{askAndAnswerBoardVO.originOrderNum} ,
         #{askAndAnswerBoardVO.answerOrderNum} ,
         #{askAndAnswerBoardVO.isAnswerBoard} ,
-        #{askAndAnswerBoardVO.ifAnswerBoardNum}
+        #{askAndAnswerBoardVO.ifAnswerBoardNum} ,
+        #{askAndAnswerBoardVO.chkAskUserCode}
         )
     </insert>
 
@@ -218,15 +220,19 @@
         )
     </insert>
 
+<!--    묻고 답하기 게시물 리스트-->
     <select id="selectAskAndAnswerBoardList" resultMap="boardMapper.board">
         SELECT
             BOARD.BOARD_NUM ,
             BOARD.BOARD_TITLE ,
             DATE_FORMAT(BOARD.BOARD_DATE, '%Y-%m-%d') AS BOARD_DATE ,
             USERS.USER_NAME ,
+            USERS.USER_CODE ,
             BOARD.BOARD_CNT ,
             ASK_AND_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_NUM ,
             ASK_AND_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE ,
+            ASK_AND_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_PASSWORD ,
+            ASK_AND_ANSWER_BOARD.CHK_ASK_USER_CODE ,
             ASK_AND_ANSWER_BOARD.IS_ANSWER_BOARD ,
             ASK_AND_ANSWER_BOARD.IF_ANSWER_BOARD_NUM ,
             ask_and_answer_board.ORIGIN_ORDER_NUM ,
@@ -253,12 +259,13 @@
     FROM
         BOARD
     WHERE
-        board_type = 30
+        board_type = #{boardType}
     <if test='searchValue != null and !searchValue.equals("")'>
         AND ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
     </if>
     </select>
 
+<!--    게시물 상세보기-->
     <select id="detailAskBoard" resultMap="boardMapper.board">
         SELECT
             board.BOARD_NUM ,
@@ -270,11 +277,13 @@
             users.USER_CODE ,
             users.USER_ID ,
             users.IS_ADMIN ,
+            attached_file.ATTACHED_CODE ,
             attached_file.ORIGIN_FILE_NAME ,
             attached_file.ATTACHED_FILE_NAME ,
             ASK_and_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_NUM ,
             ASK_AND_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_PASSWORD ,
             ASK_AND_ANSWER_BOARD.ASK_AND_ANSWER_BOARD_PUBLIC_OR_PRIVATE ,
+            ASK_AND_ANSWER_BOARD.CHK_ASK_USER_CODE,
             ASK_AND_ANSWER_BOARD.IS_ANSWER_BOARD ,
             ASK_AND_ANSWER_BOARD.IF_ANSWER_BOARD_NUM ,
             ASK_AND_ANSWER_BOARD.ORIGIN_ORDER_NUM ,
@@ -328,10 +337,17 @@
 <!--    질문응답 게시물 삭제 1-->
     <delete id="deleteBoard">
         delete from board
-        where board_num = #{boardNum}
+        where
+        board_num in (
+        <foreach collection="list" item="boardNum" separator=",">
+            #{boardNum}
+        </foreach>
+        )
     </delete>
+
+
 <!--만약 질문글을 삭제할경우 답변글도 다같이 삭제해야함..-->
-    <select id="deleteAskBoard1" resultType="list">
+    <select id="deleteAskBoard1" resultType="map">
         select
             board.board_num
         from
@@ -340,6 +356,24 @@
         where
         ASK_AND_ANSWER_BOARD.ORIGIN_ORDER_NUM = #{originOrderNum}
     </select>
+
+    <update id="modifyAskBoard">
+        Update board
+        set
+            content = #{content}
+        where
+            board_num = #{boardNum}
+    </update>
+
+    <update id="modifyAskUpload">
+        Update ATTACHED_FILE
+        set
+        ORIGIN_FILE_NAME = #{OriginFileName} ,
+        ATTACHED_FILE_NAME = #{AttachedFileName} ,
+        IS_MAIN = #{isMain}
+        where
+        ATTACHED_CODE = #{AttachedCode}
+    </update>
 
 
 </mapper>

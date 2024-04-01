@@ -238,10 +238,8 @@
             let book_modal = new bootstrap.Modal('#book-modal');
 
 
-
-
             //------------------- 첫번째 방식 ---------------//
-            fetch('/bookAdmin/bookDetailInfo', { //요청경로
+            fetch('/bookAdmin/bookDetailInfoFetch', { //요청경로
                 method: 'POST',
                 cache: 'no-cache',
                 headers: {
@@ -422,7 +420,7 @@
                 let book_modal = new bootstrap.Modal('#book-modal');
 
                 // ------------------- 첫번째 방식 ---------------//
-                fetch('/bookAdmin/findBookWithCode', { //요청경로
+                fetch('/bookAdmin/findBookWithCodeFetch', { //요청경로
                     method: 'POST',
                     cache: 'no-cache',
                     headers: {
@@ -602,7 +600,7 @@
             console.log(nowPage)
 
             // ------------------- 첫번째 방식 ---------------//
-            fetch('/bookAdmin/searchBook', { //요청경로
+            fetch('/bookAdmin/searchBookFetch', { //요청경로
                 method: 'POST',
                 cache: 'no-cache',
                 headers: {
@@ -690,7 +688,7 @@
             console.log(search_value)
 
             // ------------------- 첫번째 방식 ---------------//
-            fetch('/bookAdmin/searchBook', { //요청경로
+            fetch('/bookAdmin/searchBookFetch', { //요청경로
                 method: 'POST',
                 cache: 'no-cache',
                 headers: {

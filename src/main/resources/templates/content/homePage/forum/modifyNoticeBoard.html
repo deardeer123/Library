@@ -10,7 +10,7 @@
 <th:block layout:fragment="contentFragment">
   <!-- html code 작성-->
 
-  <form action="/noticeWrite" method="post" enctype="multipart/form-data">
+  <form action="/modifyNoticeBoard" method="post" enctype="multipart/form-data">
     <input type="hidden" value="29" name="boardType">
     <div class="row">
       <div class="col">
@@ -32,15 +32,16 @@
 
               <tbody>
                 <tr>
-                  <td>제목 *</td>
-                  <td><input type="text" class="form-control" name="boardTitle"></td>
+                  <td>제목</td>
+                  <td>[[${boardVO.boardTitle}]]</td>
+                  <input type="hidden" name="bookTitle" th:value="${boardVO.boardTitle}">
+                  <input type="hidden" name="boardNum" th:value="${boardVO.boardNum}">
                 </tr>
 
                 <tr>
                   <td>작성자</td>
                   <td>
-                    [[${session.userName}]]
-                    <input type="hidden" name="userCode" th:value="${session.userCode}">
+                    [[${memberVO.userId}]]
                   </td>
                   <!-- 사용자 CODE 이거 나중에 수정해야함 !!!-->
                   <!-- <input type="hidden" value="2" name="userCode">
@@ -57,6 +58,7 @@
                 <tr>
                   <td>
                     첨부파일
+                    <input type="hidden" name="AttachedCode" th:value="${boardVO.fileList[0].AttachedCode}">
                   </td>
                   <td>
                     <input type="file" class="form-control" aria-describedby="fileHelpBlock" name="file">
