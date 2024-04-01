@@ -14,13 +14,22 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private SqlSessionTemplate sqlSession;
 
+    // 이용자 정보 조회
     @Override
     public List<MemberVO> selectUserInfoList(SearchUserVO searchUserVO) {
         return sqlSession.selectList("userMenuMapper.userSearch", searchUserVO);
     }
 
+    // 카드번호 부여
     @Override
     public void updateCardNum(MemberVO memberVO) {
         sqlSession.update("userMenuMapper.updateCardNum", memberVO);
     }
+
+    @Override
+    public MemberVO showUserDetail(int userCode) {
+        return sqlSession.selectOne("userMenuMapper.userSearch", userCode);
+    }
+
+
 }

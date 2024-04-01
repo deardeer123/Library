@@ -4,17 +4,54 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="userMenuMapper">
 
-    <!-- 유저 승인, cardNum이 0인 회원 조회 -->
+    <!-- 회원 조회 (상세 조회 시 다른 조건문이 작동해서 userDetail이라는 별도의 파라메터 설정)-->
     <select id="userSearch" resultMap="memberMapper.users">
-        SELECT USER_CODE
+        SELECT USER_NAME
+            , USER_CODE
             , USER_ID
-            , USER_NAME
-            , GENDER
-            , USER_TEL
-            , IS_ADMIN
             , CARD_NUM
+            , CASE
+                WHEN IS_ADMIN = 'Y' THEN 'ADMIN'
+                ELSE 'USER'
+              END AS IS_ADMIN
+            , CARD_STATUS
+            , USER_TEL
+            , USER_INTRO
+            , GENDER
+            , POST_CODE
+            , USER_ADDR
+            , ADDR_DETAIL
+            , EMAIL
+            , PUBLISH_DATE
+            , (SELECT MAX(BORROW_DATE)
+                FROM BOOK_BNR
+                WHERE USER_CODE = USERS.USER_CODE) AS RECENT_DATE
+            , (SELECT COUNT(BORROW_CODE)
+                FROM BOOK_BNR
+                WHERE USER_CODE = USERS.USER_CODE) AS BORROW_CNT
+            , (SELECT COUNT(*)
+                FROM BOOK_BNR
+                WHERE USER_CODE = USERS.USER_CODE
+                AND RETURN_DATE &gt; EX_RETURN_DATE) AS OVERDUE_CNT
         FROM USERS
         <where>
+            <if test='userCode == 0'>
+                1 = 1
+            </if>
+            <if test='userCode != 0 and userDetail != null'>
+                USER_CODE = #{userCode}
+            </if>
+        </where>
+        <if test='userDetail == null'>
+            <if test='cardNum1 != null and !cardNum1.equals("") and (cardNum2 == null and cardNum2.equals(""))'>
+                AND CARD_NUM BETWEEN ${cardNum1} AND (SELECT MAX(CARD_NUM) FROM USERS)
+            </if>
+            <if test='cardNum2 != null and !cardNum2.equals("") and (cardNum1 == null and cardNum1.equals(""))'>
+                AND CARD_NUM BETWEEN (SELECT MIN(CARD_NUM) FROM USERS) AND ${cardNum2}
+            </if>
+            <if test='cardNum1 != null and !cardNum1.equals("") and cardNum2 != null and !cardNum2.equals("")'>
+                AND CARD_NUM BETWEEN ${cardNum1} AND ${cardNum2}
+            </if>
             <if test='userName1 != null and !userName1.equals("") and userName2 == null and userName2.equals("")'>
                 AND USER_NAME BETWEEN #{userName1} AND '힣'
             </if>
@@ -33,14 +70,16 @@
             <if test='orderStandard != null and !orderStandard.equals("")'>
                 ORDER BY ${orderStandard} DESC
             </if>
-        </where>
-
+        </if>
     </select>
 
     <!-- cardNum 업데이트 -->
     <update id="updateCardNum">
         UPDATE USERS
-        SET CARD_NUM = (SELECT IFNULL(MAX(CARD_NUM), 0) + 1 FROM USERS)
+        SET
+            CARD_NUM = (SELECT IFNULL(MAX(CARD_NUM), 0) + 1 FROM USERS)
+            , PUBLISH_DATE = NOW()
+            , CARD_STATUS = '사용중'
         WHERE USER_CODE= #{userCode}
     </update>
 

@@ -1,6 +1,7 @@
 package com.green.Library.web.member.vo;
 
 import com.green.Library.library.borrowReturn.vo.BookBNRVO;
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import lombok.*;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public class MemberVO {
     private String publishDate;
     private String userIntro;
     private String cardStatus;
+    private String recentDate;
+    private int borrowCnt;
+    private int overdueCnt;
     private ApplyVO applyVO;
     private List<BookBNRVO> bookBorrowList;
 }

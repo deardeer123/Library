@@ -19,6 +19,9 @@
         <result property="publishDate" column="PUBLISH_DATE"/>
         <result property="userIntro" column="USER_INTRO"/>
         <result property="cardStatus" column="CARD_STATUS"/>
+        <result property="recentDate" column="RECENT_DATE"/>
+        <result property="borrowCnt" column="BORROW_CNT"/>
+        <result property="overdueCnt" column="OVERDUE_CNT"/>
         <association property="applyVO" resultMap="apply"/>
         <collection property="bookBorrowList" resultMap="bnrMapper.bookBNR"/>
     </resultMap>
