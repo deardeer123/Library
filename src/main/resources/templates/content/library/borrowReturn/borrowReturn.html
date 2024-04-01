@@ -72,12 +72,14 @@
                         </div>                        
                     </div>
 
+                    <!-- 이용자 정보 영역 -->
                     <div class="row mt-2" style="width: 430px; height: 210px; border:1px solid lightgray; padding: 6px; padding-top:12px; border-radius: 8px; margin-left: -4px; box-shadow:0px 6px 6px 0px gray;">
                         <div class="col mt-2" id="userInfo">
 
                         </div>
                     </div>
 
+                    <!-- 이용자 상세정보 모달 -->
                     <div class="modal fade" id="user-detail-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
@@ -102,18 +104,34 @@
 
                     <div class="row">
                         <div class="col">
-                            오늘 기준 반납예정일
+                            <div class="accordion" id="accordionPanelsStayOpenExample" style="width: 430px; padding-top:10px; border-radius: 8px; margin-left: -4px;">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                            반납 예정일
+                                        </button>
+                                    </h2>
+                                    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+                                        <div class="accordion-body">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col">
                             달력
                         </div>
                     </div>
                 </div>
+
+                <!-- 사이드 끝 -->
                 
-                 <!-- 본문 영역 -->
-                 <div class="col-8" id="brInfo">
+                <!-- 본문 영역 -->
+                <div class="col-8" id="brInfo">
                     <div class="row">
                         <div class="col">
                             <div style="background-color: #ddd; padding: 8px 8px;"><b>대출 (0/5)</b></div>
@@ -235,6 +253,7 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="/js/content/library/borrowReturn/borrowReturn.js"></script>
 </th:block>
 </html>

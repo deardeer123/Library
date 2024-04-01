@@ -98,10 +98,16 @@ function showModal(userCode){
             </tr>
             <tr>
                 <td rowspan="2" class="table-light">주소</td>
-                <td colspan="3">${data.postCode}</td>
+                <td colspan="3">
+                    <input type="text" name="postCode" class="form-control" placeholder="${data.postCode}" id="postCode" readonly>
+                    <input type="button" onclick="searchAddress()" value="주소 찾기" style="width: 90px;"class="btn btn-secondary">
+                </td>
             </tr>
             <tr>
-                <td colspan="3">${data.userAddr} ${data.addrDetail}</td>
+                <td colspan="3">
+                    <input type="text" placeholder="${data.userAddr}" name="userAddr" class="form-control" id="address" readonly>
+                    <input type="text" placeholder="${data.addrDetail}" name="addrDetail" class="form-control">
+                </td>
             </tr>
             <tr>
                 <td class="table-light">비고</td>`
@@ -155,4 +161,15 @@ function checkAll(){
     ones.forEach(chk => {
         chk.checked = isChecked;
     });
+}
+
+function searchAddress(){
+    new daum.Postcode({
+        oncomplete: function(data) {
+            
+            document.querySelector('#postCode').value = data.zonecode;
+            document.querySelector('#address').value = data.roadAddress;
+
+        }
+    }).open();
 }

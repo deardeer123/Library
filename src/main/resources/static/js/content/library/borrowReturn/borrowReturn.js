@@ -80,10 +80,16 @@ function selectMemberInfo(){
         </div>
         <div class="row mt-1" id="userIntro">
             <div class="col-8">
-                <textarea name="userIntro" class="form-control" rows="1">${data.userIntro}</textarea>
+                <textarea name="userIntro" class="form-control" rows="1">`
+                if(data.userIntro == null){
+                    str1 += ``
+                }else{
+                    str1 += `${data.userIntro}`
+                }
+                str1 += `</textarea>
             </div>
             <div class="col-4 d-grid">
-                <input type="button" class="btn btn-secondary" value="메모수정" th:onclick="updateUserIntro(${data.cardNum})">
+                <input type="button" class="btn btn-secondary" value="메모수정" th:onclick="updateUserIntro(${data.cardNum}, ${data.userIntro})">
             </div>
         </div>
         <div class="row mt-3">
@@ -209,22 +215,30 @@ function selectMemberInfo(){
     });
 }
 
+
 // 유저 인트로 업데이트
-function updateUserIntro(cardNum){
+function updateUserIntro(cardNum, userIntro){
 
     fetch('/bookAdmin/updateUserIntro', { //요청경로
         method: 'POST',
         cache: 'no-cache',
         headers: {
-            'Content-Type': 'application/json; charset=UTF-8'
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
         //컨트롤러로 전달할 데이터
-        body: JSON.stringify({
+        body: new URLSearchParams({
            // 데이터명 : 데이터값
-           'cardNum' : cardNum
+           'cardNum' : cardNum,
+            'userIntro' : userIntro
         })
     })
     .then((response) => {
+        if(!response.ok){
+            alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+            return ;
+        }
+    
+        //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
         return response.json(); //나머지 경우에 사용
     })
     //fetch 통신 후 실행 영역
@@ -237,6 +251,9 @@ function updateUserIntro(cardNum){
         console.log(err);
     });
 }
+
+
+
 
 // 모달 태그 선택
 const user_detail_modal = new bootstrap.Modal('#user-detail-modal');
@@ -338,10 +355,16 @@ function showModal(userCode){
             </tr>
             <tr>
                 <td rowspan="2" class="table-light">주소</td>
-                <td colspan="3">${data.postCode}</td>
+                <td colspan="3">
+                    <input type="text" name="postCode" class="form-control" placeholder="${data.postCode}" id="postCode" readonly>
+                    <input type="button" onclick="searchAddress()" value="주소 찾기" style="width: 90px;"class="btn btn-secondary">
+                </td>
             </tr>
             <tr>
-                <td colspan="3">${data.userAddr} ${data.addrDetail}</td>
+                <td colspan="3">
+                    <input type="text" placeholder="${data.userAddr}" name="userAddr" class="form-control" id="address" readonly>
+                    <input type="text" placeholder="${data.addrDetail}" name="addrDetail" class="form-control">
+                </td>
             </tr>
             <tr>
                 <td class="table-light">비고</td>`
@@ -382,4 +405,15 @@ function showModal(userCode){
         alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
         console.log(err);
     });    
+}
+
+function searchAddress(){
+    new daum.Postcode({
+        oncomplete: function(data) {
+            
+            document.querySelector('#postCode').value = data.zonecode;
+            document.querySelector('#address').value = data.roadAddress;
+
+        }
+    }).open();
 }

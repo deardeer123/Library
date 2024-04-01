@@ -126,10 +126,13 @@ public class BorrowReturnController {
     }
 
     // 대출반납 페이지에서 이용자 정보 변경 메소드
+    @ResponseBody
     @PostMapping("/updateUserIntro")
     public String updateUserIntro(@RequestParam(name = "cardNum")int cardNum){
 
         borrowReturnService.updateUserIntro(cardNum);
+
+        System.out.println("이용자 정보 업데이트" + cardNum);
 
         return "redirect:/bookAdmin/selectBorrowInfo";
     }
