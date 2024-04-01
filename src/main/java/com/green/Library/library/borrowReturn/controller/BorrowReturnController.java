@@ -134,7 +134,7 @@ public class BorrowReturnController {
 
         System.out.println("이용자 정보 업데이트" + cardNum);
 
-        return "redirect:/bookAdmin/selectBorrowInfo";
+        return ;
     }
 
     //일관 반납
