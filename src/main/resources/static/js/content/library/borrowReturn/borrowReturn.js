@@ -282,7 +282,7 @@ function showModal(userCode){
             <tr>
                 <td class="table-light">번호</td>
                 <td>${data.cardNum} 
-                    <button class="btn btn-primary">카드번호 재부여</button>
+                    <button class="btn btn-primary" onclick="">카드번호 재부여</button>
                 </td>
                 <td class="table-light">직급</td>
                 <td>
