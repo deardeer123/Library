@@ -61,11 +61,11 @@ public class UserController {
     // 이용자 관리에서 모달에 띄울 상세정보
     @ResponseBody
     @PostMapping("/showUserDetail")
-    public MemberVO showUserDetail(@RequestBody Map<String, String> userDetail, Model model){
+    public MemberVO showUserDetail(@RequestBody Map<String, String> userDetail){
 
         System.out.println("@@@@@@@@@@@@@" + userDetail);
 
-        // 오브젝트로 타입 문자열 변환 후 정수 변환
+        // 정수 변환
         int code = Integer.parseInt(userDetail.get("userCode"));
 
         Optional<Integer> userCode = Optional.ofNullable(code);
