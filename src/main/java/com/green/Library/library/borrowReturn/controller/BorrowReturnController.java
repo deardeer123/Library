@@ -35,7 +35,7 @@ public class BorrowReturnController {
 
     //이용자 조회와 대출반납 실행
     @ResponseBody
-    @PostMapping("/selectBorrowInfo")
+    @PostMapping("/selectBorrowInfoFetch")
     public MemberVO selectBorrowInfo(@RequestBody Map<String, String> inputData, BookBNRVO bookBNRVO){
         //input 태그에 입력한 데이터
         String cardNumOrBookCode = inputData.get("inputValue");
@@ -127,16 +127,12 @@ public class BorrowReturnController {
 
     // 대출반납 페이지에서 이용자 정보 변경 메소드
     @ResponseBody
-    @PostMapping("/updateUserIntro")
-    public String updateUserIntro(@RequestParam(name = "cardNum")int cardNum){
+    @PostMapping("/updateUserIntroFetch")
+    public void updateUserIntro(@RequestBody MemberVO memberVO){
 
-        borrowReturnService.updateUserIntro(cardNum);
-
-        System.out.println("이용자 정보 업데이트" + cardNum);
-        
-        // 리턴 html 안 됨
-
-        return ;
+        borrowReturnService.updateUserIntro(memberVO);
+        System.out.println("ddddddddddddddddddd" + memberVO);
+        System.out.println("이용자 정보 업데이트" + memberVO);
     }
 
     //일관 반납

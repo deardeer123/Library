@@ -6,7 +6,7 @@ function showModal(userCode){
     // 그림 그릴 모달 태그 선택
     const modalBody = document.querySelector('.modal-body');
 
-    fetch('/bookAdmin/showUserDetail', { //요청경로
+    fetch('/bookAdmin/showUserDetailFetch', { //요청경로
         method: 'POST',
         cache: 'no-cache',
         headers: {

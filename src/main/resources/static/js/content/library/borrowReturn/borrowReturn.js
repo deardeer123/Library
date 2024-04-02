@@ -3,10 +3,11 @@
 // document.querySelector('#return-date').value = new Date().toISOString().substring(0, 10);
 
 
-function selectMemberInfo(){
-    
+function selectMemberInfo() {
+
     // 그림 그릴 이용자 정보 태그 선택하기(userInfo)
     const userInfo = document.querySelector('#userInfo');
+    
 
     // 모든 테이블의 tbody 태그 선택
     // 1. 대출 내역 테이블 tbody
@@ -22,7 +23,7 @@ function selectMemberInfo(){
     const borrowDate = document.querySelector('#borrow-date').value;
     const returnDate = document.querySelector('#return-date').value;
 
-    fetch('/bookAdmin/selectBorrowInfo', { //요청경로
+    fetch('/bookAdmin/selectBorrowInfoFetch', { //요청경로
         method: 'POST',
         cache: 'no-cache',
         headers: {
@@ -30,121 +31,122 @@ function selectMemberInfo(){
         },
         //컨트롤러로 전달할 데이터
         body: JSON.stringify({
-            'inputValue' : inputValue,
-            'selectedCardNum' : selectedCardNum,
-            'borrowDate' : borrowDate,
-            'returnDate' : returnDate,
-            'userDetail' : String(false)
+            'inputValue': inputValue,
+            'selectedCardNum': selectedCardNum,
+            'borrowDate': borrowDate,
+            'returnDate': returnDate,
+            'userDetail': String(false)
         })
     })
-    .then((response) => {
-        return response.json(); //나머지 경우에 사용
-    })
-    //fetch 통신 후 실행 영역
-    .then((data) => {//data -> controller에서 리턴되는 데이터!
+        .then((response) => {
+            return response.json(); //나머지 경우에 사용
+        })
+        //fetch 통신 후 실행 영역
+        .then((data) => {//data -> controller에서 리턴되는 데이터!
 
-        console.log(data);
+            console.log(data);
 
-        if(data.userCode == 0){
-            alert('회원번호 혹은 책번호가 정확하지 않습니다.\n다시 입력하세요.');
-            return ;
-        }
+            if (data.userCode == 0) {
+                alert('회원번호 혹은 책번호가 정확하지 않습니다.\n다시 입력하세요.');
+                return;
+            }
 
-        //selectedCardNum 값을 이전에 입력한 값으로 저장
-        //조회가 됐으면 조회된 데이터, 아니면 0이 들어감
+            //selectedCardNum 값을 이전에 입력한 값으로 저장
+            //조회가 됐으면 조회된 데이터, 아니면 0이 들어감
 
-        document.querySelector('input[name="selectedCardNum"]').value = data.cardNum;
+            document.querySelector('input[name="selectedCardNum"]').value = data.cardNum;
 
-        userInfo.innerHTML = '';
-        
-        let str1 = '';
+            userInfo.innerHTML = '';
 
-        //조회한 데이터가 있을 때만 다시 그림
-        if(data.cardNum != 0){
+            let str1 = '';
 
-            str1= `
-        <div class="row">
-            <div class="col">
-                카드번호 : ${data.cardNum}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                이름 : ${data.userName}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                전화번호 : ${data.userTel}
-            </div>
-        </div>
-        <div class="row mt-1" id="userIntro">
-            <div class="col-8">
-                <textarea name="userIntro" class="form-control" rows="1">`
-                if(data.userIntro == null){
+            //조회한 데이터가 있을 때만 다시 그림
+            if (data.cardNum != 0) {
+
+                str1 = `
+                <div class="row">
+                    <div class="col">
+                        카드번호 : ${data.cardNum}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        이름 : ${data.userName}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        전화번호 : ${data.userTel}
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-8">
+                        <textarea id="userIntro" name="userIntro" class="form-control" rows="1" style="resize:none;">`
+                    
+                
+                        if (data.userIntro == null) {
                     str1 += ``
-                }else{
+                } else {
                     str1 += `${data.userIntro}`
                 }
                 str1 += `</textarea>
-            </div>
-            <div class="col-4 d-grid">
-                <input type="button" class="btn btn-secondary" value="메모수정" th:onclick="updateUserIntro(${data.cardNum}, ${data.userIntro})">
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-6 d-grid">
-                <input type="button" class="btn btn-secondary" value="SMS 전송">
-            </div>
-            <div class="col-6 d-grid">
-                <input type="button" class="btn btn-secondary" value="상세정보" onclick="showModal([[${data.cardNum}]])">
-            </div>
-        </div>
-        `;
+                    </div>
+                    <div class="col-4 d-grid">
+                        <input type="button" class="btn btn-secondary" value="메모수정" onclick="updateUserIntro(${data.cardNum})">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-6 d-grid">
+                        <input type="button" class="btn btn-secondary" value="SMS 전송">
+                    </div>
+                    <div class="col-6 d-grid">
+                        <input type="button" class="btn btn-secondary" value="상세정보" onclick="showModal(${data.cardNum})">
+                    </div>
+                </div>`;
 
-        userInfo.insertAdjacentHTML('afterbegin', str1);
+                userInfo.insertAdjacentHTML('afterbegin', str1);
 
-        // ---------------  각 테이블을 조회한 데이터를 바탕으로 다시 그림 ------------------------//
+                // ---------------  각 테이블을 조회한 데이터를 바탕으로 다시 그림 ------------------------//
 
-        borrow_list_tbody.innerHTML = '';
-        return_list_tbody.innerHTML = '';
-        reserve_list_tbody.innerHTML = '';
+                borrow_list_tbody.innerHTML = '';
+                return_list_tbody.innerHTML = '';
+                reserve_list_tbody.innerHTML = '';
 
-        let str2 = '';
-        let str3 = '';
-        let str4 = '';
+                let str2 = '';
+                let str3 = '';
+                let str4 = '';
 
-            ////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////
 
-            const data_cnt = data.bookBorrowList.length;
+                const data_cnt = data.bookBorrowList.length;
 
-            //대출 및 반납, 예약 내역이 없을 경우
-            if(data_cnt == 1 && data.bookBorrowList[0].bookCode == null){
-                str2 += `
+                //대출 및 반납, 예약 내역이 없을 경우
+                if (data_cnt == 1 && data.bookBorrowList[0].bookCode == null) {
+                    str2 += `
                     <td colspan="7">
                         대출 내역이 없습니다.
                     </td>`;
 
-                str3 += `
+                    str3 += `
                     <td colspan="7">
                         반납 내역이 없습니다.
                     </td>`;
 
-                str4 += `
+                    str4 += `
                     <td colspan="7">
                         예약 내역이 없습니다.
                     </td>`;
 
-        borrow_list_tbody.insertAdjacentHTML("afterbegin", str2);
-        return_list_tbody.insertAdjacentHTML("afterbegin", str3);
-        reserve_list_tbody.insertAdjacentHTML("afterbegin", str4);
+                    borrow_list_tbody.insertAdjacentHTML("afterbegin", str2);
+                    return_list_tbody.insertAdjacentHTML("afterbegin", str3);
+                    reserve_list_tbody.insertAdjacentHTML("afterbegin", str4);
 
-            }
-            else{
+                }
+                else {
 
-                data.bookBorrowList.forEach((bookBorrowInfo, idx) => {
-                    if(bookBorrowInfo.returnYN == 'N'){
-                        str2 += `
+                    data.bookBorrowList.forEach((bookBorrowInfo, idx) => {
+                        if (bookBorrowInfo.returnYN == 'N') {
+                            str2 += `
                         <tr>
                             <td>
                                 <img width="70px" src="/upload/${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}">
@@ -169,12 +171,12 @@ function selectMemberInfo(){
                             </td>
                         </tr>`;
 
-                        
-                    }
-                    
 
-                    if(bookBorrowInfo.returnYN == 'Y'){
-                        str3 += `
+                        }
+
+
+                        if (bookBorrowInfo.returnYN == 'Y') {
+                            str3 += `
                         <tr>
                             <td>
                                 <img width="70px" src="/upload/${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}">
@@ -198,58 +200,56 @@ function selectMemberInfo(){
                                 
                             </td>
                         </tr>`;
-                    }
-                    
-                });
+                        }
 
-                borrow_list_tbody.insertAdjacentHTML("afterbegin", str2);
-                return_list_tbody.insertAdjacentHTML("afterbegin", str3);
+                    });
+
+                    borrow_list_tbody.insertAdjacentHTML("afterbegin", str2);
+                    return_list_tbody.insertAdjacentHTML("afterbegin", str3);
+                }
+
             }
+        })
 
-        }})
-        
-    //fetch 통신 실패 시 실행 영역
-    .catch(err=>{
-        alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
-        console.log(err);
-    });
+        //fetch 통신 실패 시 실행 영역
+        .catch(err => {
+            alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+            console.log(err);
+        });
 }
 
 
 // 유저 인트로 업데이트
-function updateUserIntro(cardNum, userIntro){
-
-    fetch('/bookAdmin/updateUserIntro', { //요청경로
+function updateUserIntro(cardNum) {
+    // 유저 인트로 선택
+    let userIntro = document.querySelector('#userIntro').value;
+    
+    fetch('/bookAdmin/updateUserIntroFetch', { //요청경로
         method: 'POST',
         cache: 'no-cache',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            'Content-Type': 'application/json; charset=UTF-8'
         },
         //컨트롤러로 전달할 데이터
-        body: new URLSearchParams({
-           // 데이터명 : 데이터값
-           'cardNum' : cardNum,
-            'userIntro' : userIntro
+        body: JSON.stringify({
+            // 데이터명 : 데이터값
+            'cardNum': cardNum,
+            'userIntro': userIntro
         })
     })
-    .then((response) => {
-        if(!response.ok){
-            alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
-            return ;
-        }
-    
-        //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
-        return response.json(); //나머지 경우에 사용
-    })
-    //fetch 통신 후 실행 영역
-    .then((data) => {//data -> controller에서 리턴되는 데이터!
-        alert(data);
-    })
-    //fetch 통신 실패 시 실행 영역
-    .catch(err=>{
-        alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
-        console.log(err);
-    });
+        .then((response) => {
+            // return response.json(); //나머지 경우에 사용
+        })
+        //fetch 통신 후 실행 영역
+        .then((data) => {//data -> controller에서 리턴되는 데이터!
+
+        })
+        //fetch 통신 실패 시 실행 영역
+        .catch(err => {
+            alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+            console.log(err);
+        });
+
 }
 
 
@@ -258,7 +258,7 @@ function updateUserIntro(cardNum, userIntro){
 // 모달 태그 선택
 const user_detail_modal = new bootstrap.Modal('#user-detail-modal');
 
-function showModal(userCode){
+function showModal(userCode) {
 
     // 그림 그릴 모달 태그 선택
     const modalBody = document.querySelector('.modal-body');
@@ -271,24 +271,24 @@ function showModal(userCode){
         },
         //컨트롤러로 전달할 데이터
         body: JSON.stringify({
-           // 데이터명 : 데이터값
-           userCode : String(userCode),
-           userDetail : String(true)
+            // 데이터명 : 데이터값
+            userCode: String(userCode),
+            userDetail: String(true)
         })
     })
-    .then((response) => {
-        return response.json(); //나머지 경우에 사용
-    })
-    //fetch 통신 후 실행 영역
-    .then((data) => {//data -> controller에서 리턴되는 데이터!
-        
-        console.log(data);
+        .then((response) => {
+            return response.json(); //나머지 경우에 사용
+        })
+        //fetch 통신 후 실행 영역
+        .then((data) => {//data -> controller에서 리턴되는 데이터!
 
-        modalBody.innerHTML = '';
+            console.log(data);
 
-        let str = '';
+            modalBody.innerHTML = '';
 
-        str += `
+            let str = '';
+
+            str += `
         <table class="table table-bordered">
             <colgroup>
                 <col width="">
@@ -368,12 +368,12 @@ function showModal(userCode){
             </tr>
             <tr>
                 <td class="table-light">비고</td>`
-                if(data.userIntro == null){
-                    str += `<td colspan="3"></td>`
-                } else{
-                    str += `<td colspan="3">${data.userIntro}</td>`
-                }
-                
+            if (data.userIntro == null) {
+                str += `<td colspan="3"></td>`
+            } else {
+                str += `<td colspan="3">${data.userIntro}</td>`
+            }
+
             str += `</tr>
             <tr>
                 <td class="table-active" colspan="4" text-align>이용조회</td>
@@ -396,24 +396,52 @@ function showModal(userCode){
             </tr>
         </table>
         `
-        modalBody.insertAdjacentHTML('afterbegin', str);
+            modalBody.insertAdjacentHTML('afterbegin', str);
 
-        user_detail_modal.show();
-    })
-    //fetch 통신 실패 시 실행 영역
-    .catch(err=>{
-        alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
-        console.log(err);
-    });    
+            user_detail_modal.show();
+        })
+        //fetch 통신 실패 시 실행 영역
+        .catch(err => {
+            alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+            console.log(err);
+        });
 }
 
-function searchAddress(){
+function searchAddress() {
     new daum.Postcode({
-        oncomplete: function(data) {
-            
+        oncomplete: function (data) {
+
             document.querySelector('#postCode').value = data.zonecode;
             document.querySelector('#address').value = data.roadAddress;
 
         }
     }).open();
 }
+exReturnDate();
+function exReturnDate(){
+    // 태그 선택
+    let newDate = new Date()
+    console.log(`${newDate.getMonth()+1}월 ${newDate.getDate()}일`)
+    exReturnDate = newDate.setDate(newDate.getDate() + 14);
+
+    
+    let date = `${newDate.getFullYear()}-${newDate.getMonth()+1}-${newDate.getDate()}`
+  
+
+ 
+    
+    console.log(date)
+
+    let newDate1 = new Date(`'${date}'`)
+    console.log(newDate1.toLocaleDateString())
+    newDate1.setDate(newDate.getDate()+14)
+    console.log(newDate1.toDateString());
+    console.log(newDate1.toLocaleDateString());
+    console.log(newDate1.toDateString());
+    console.log(newDate1.toDateString());
+    console.log(newDate1.toDateString());
+    console.log(newDate1.toDateString().substring(0,4))
+    const accordion_body = document.querySelector(".accordion-body")
+    accordion_body.innerHTML=exReturnDate;
+}
+

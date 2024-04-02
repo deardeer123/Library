@@ -15,7 +15,7 @@ public interface BorrowReturnService {
 
     ///////////////////이용자 정보 변경/////////////////////
     //조회 된 이용자의 이용자 정보 변경
-    void updateUserIntro(int cardNum);
+    void updateUserIntro(MemberVO memberVO);
 
     //////////////////////대출 기능////////////////////////
     // 대출 시 book_borrow의 exReturnDate 업데이트

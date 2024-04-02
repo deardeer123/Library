@@ -60,7 +60,7 @@ public class UserController {
 
     // 이용자 관리에서 모달에 띄울 상세정보
     @ResponseBody
-    @PostMapping("/showUserDetail")
+    @PostMapping("/showUserDetailFetch")
     public MemberVO showUserDetail(@RequestBody Map<String, String> userDetail){
 
         System.out.println("@@@@@@@@@@@@@" + userDetail);
