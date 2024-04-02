@@ -1,50 +1,121 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
-  <!-- html 파일이 열릴때 같이 실행되는 css-->
+<!-- html 파일이 열릴때 같이 실행되는 css-->
 <th:block layout:fragment="content_css">
   <!-- <link rel="stylesheet" href="/"> -->
 </th:block>
 
 <th:block layout:fragment="contentFragment">
   <!-- html code 작성-->
+  <!-- html 코드 작성 -->
   <div class="row">
     <div class="col">
-      <h3>
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="50" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
-          <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
-        </svg>
-       / 참여마당 / 공지사항</h3>
-    </div>
 
-    <div class="row">
-      <div class="col-12" style="border-top: 1px solid black;">
-          <div style="float: left;">제목 : [[${noticeDetail.boardTitle}]]</div>
-          <div style="float: right;">작성일 : [[${noticeDetail.boardDate}]]</div>
-      </div>
-        <div class="col-12" style="border-bottom: 1px solid black;">
-          <div style="float: right;">조회수 : [[${noticeDetail.boardCnt}]]</div>
+      <div class="row mt-2">
+        <div class="col">
+          <!-- 제목 -->
+          <div class="h4 border border-start-0 border-end-0">
+            [[${boardVO.boardTitle}]]
+          </div>
+          <div>
+            <!-- 작성자, 작성일, 끝에는 조회수 -->
+            <div class="row border border-start-0 border-end-0 border-top-0">
+              <div class="col-2">작성자 : [[${memberVO.userId}]]</div>
+              <div class="col-3">작성일 : [[${boardVO.boardDate}]]</div>
+              <div class="col-5"></div>
+              <div class="col-2">조회수 : [[${boardVO.boardCnt}]]</div>
+            </div>
+          </div>
         </div>
-    </div>
-
-    <div class="row">
-      <div class="col" style="border-bottom: 1px solid black;">
-        [[${noticeDetail.content}]]
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col">
-        
+      <div class="row mt-5 mb-5">
+        <div class="col">
+          <!-- 글 내용 -->
+          [[${boardVO.content}]]
+        </div>
       </div>
-    </div>
 
+      <div class="row mt-5">
+        <div class="col">
+          <!-- 첨부된 파일, 끝에는 수정하기 버튼, 삭제하기 버튼, 답변하기 버튼(관리자), 목록으로 -->
+          <div class="row mt-5 mb-1">
+            <div class="col">
+              <!-- 첨부파일 명 -->
+              <th:block th:if="boardVO.fileList[0].OriginFileName != null">
+                <img th:src="@{/upload/} + ${boardVO.fileList[0].AttachedFileName}" class="rounded" alt="" width="250px"
+                  id="bookImg">
+                <div style="color: blue;">
+                  <form method="post" action="/download" id="downloadTag">
+                  <input type="hidden" name="OriginFileName" th:value="${boardVO.fileList[0].OriginFileName}">
+                  <input type="hidden" name="AttachedFileName" th:value="${boardVO.fileList[0].AttachedFileName}">
+                  <span
+                    onclick="download()">[[${boardVO.fileList[0].OriginFileName}]]</span>
+                  </form>
+                </div>
+              </th:block>
+
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-8"></div>
+            <div class="col-1">
+              <!-- 수정하기 글쓴이 혹은 관리자만 볼 수 있어야함-->
+              <th:block th:if="${(boardVO.userCode == session.userCode) or (memberVO.isAdmin == 'Y')}">
+                <input type="button" class="btn btn-primary" value="수정하기"
+                  th:onclick="modifyNoticeBoard([[${boardVO.boardNum}]])">
+              </th:block>
+            </div>
+
+            <div class="col-1 ">
+              <!-- 삭제하기 글쓴이 혹은 관리자만 볼 수 있어야 함-->
+              <th:block th:if="${(boardVO.userCode == session.userCode) or (memberVO.isAdmin == 'Y')}">
+                <input type="button" class="btn btn-danger" th:onclick="goDeleteNoticeBoard([[${boardVO.boardNum}]])"
+                  value="삭제하기">
+              </th:block>
+            </div>
+            <div class="col-1">
+              <!-- 목록으로 -->
+              <input type="button" class="btn btn-primary" value="목록으로" onclick="location.href='notice'">
+            </div>
+
+          </div>
+        </div>
+      </div>
+    
+
+    </div>
+  </div>
+
+  <script>
+    // 공지사항 수정
+    function modifyNoticeBoard(boardNum) {
+      location.href = `/modifyNoticeBoard?boardNum=${boardNum}`;
+    }
+
+    //삭제하기
+    function goDeleteNoticeBoard(boardNum) {
+      console.log(boardNum);
+
+      if (confirm("게시물을 삭제하실건가요?")) {
+        location.href = `/goDeleteNoticeBoard?boardNum=${boardNum}`
+      }
+    }
+
+    function download() {
+      const downloadTag = document.querySelector("#downloadTag");
+      downloadTag.submit();
+      
+    }
+  </script>
 </th:block>
 
 <th:block layout:fragment="content_js">
   <!-- html 파일이 열릴때 같이 실행되는 css-->
   <!-- <script src="/"></script> -->
 </th:block>
+
 </html>

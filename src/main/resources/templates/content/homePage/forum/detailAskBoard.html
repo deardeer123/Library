@@ -52,20 +52,25 @@
 
                     <div class="row">
                         <div class="col-8"></div>
-                        <div class="col-1 d-grid">
+                        <div class="col-1">
                             <!-- 수정하기 글쓴이 혹은 관리자만 볼 수 있어야함-->
-                            <input type="button" class="btn btn-primary" value="수정하기">
+                            <th:block th:if="${(boardVO.userCode == session.userCode) or (memberVO.isAdmin == 'Y')}">
+                                <input type="button" class="btn btn-primary" value="수정하기" th:onclick="modifyAskBoard([[${boardVO.boardNum}]])">
+                            </th:block>
                         </div>
-                        <div class="col-1 d-grid">
+                        <div class="col-1">
                             <!-- 답변하기 관리자만 볼 수 있어야 함 -->
-                            <input sec:authorize="hasRole('ROLE_Y')"
-                            type="button" class="btn btn-primary" th:onclick="goAnswer([[${boardVO.boardNum}]])"value="답변하기">
+                            <input sec:authorize="hasRole('ROLE_Y')" type="button" class="btn btn-primary"
+                                th:onclick="goAnswer([[${boardVO.boardNum}]])" value="답변하기">
                         </div>
-                        <div class="col-1 d-grid">
+                        <div class="col-1 ">
                             <!-- 삭제하기 글쓴이 혹은 관리자만 볼 수 있어야 함-->
-                            <input type="button" class="btn btn-danger" th:onclick="goDeleteBoard([[${boardVO.boardNum}]])" value="삭제하기">
+                            <th:block th:if="${(boardVO.userCode == session.userCode) or (memberVO.isAdmin == 'Y')}">
+                                <input type="button" class="btn btn-danger"
+                                    th:onclick="goDeleteBoard([[${boardVO.boardNum}]], [[${boardVO.askAndAnswerBoardVO.isAnswerBoard}]])" value="삭제하기">
+                            </th:block>
                         </div>
-                        <div class="col-1 d-grid">
+                        <div class="col-1">
                             <!-- 목록으로 -->
                             <input type="button" class="btn btn-primary" value="목록으로">
                         </div>
@@ -81,8 +86,26 @@
 
     <script>
         // 답변하러 가기
-        function goAnswer(boardNum){
-            location.href=`/goAnswer?boardNum=${boardNum}`;
+        function modifyAskBoard(boardNum){
+            location.href=`/goModifyAskBoard?boardNum=${boardNum}`;
+        }
+
+        function goAnswer(boardNum) {
+            location.href = `/goAnswer?boardNum=${boardNum}`;
+        }
+        //삭제하기
+        function goDeleteBoard(boardNum, isAnswerBoard){
+            console.log(boardNum);
+            console.log(isAnswerBoard);
+            if(confirm("게시물을 삭제하실건가요?")){
+                if(isAnswerBoard == 'N'){
+                    alert(`질문글도 다같이 삭제 ${isAnswerBoard}`)
+                    location.href=`/askBoardDelete?boardNum=${boardNum}&isAnswerBoard=${isAnswerBoard}`
+                }else{
+                    alert(`답글만 삭제 ${isAnswerBoard}`)
+                    location.href=`/askBoardDelete?boardNum=${boardNum}&isAnswerBoard=${isAnswerBoard}`
+                }
+            }
         }
     </script>
 </th:block>

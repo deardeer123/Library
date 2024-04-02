@@ -23,15 +23,8 @@ public class FindBookController {
 
     @RequestMapping("/findFullBook")
     public String goFindFullBook(Model model, BookSearchVO bookSearchVO){
-        //메뉴 정보
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        //상단 네비게이션
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
-        //선택한 메뉴의 인덱스 번호 보내주기
-        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
-        //선택한 사이드 메뉴의 인덱스 번호 보내주기
-        int selectedSideMenuIndex = 1;
-        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
+        //인터셉터에 notice라는 정보를 넘겨줌
+        model.addAttribute("page","findFullBook");
 
 
         //페이징

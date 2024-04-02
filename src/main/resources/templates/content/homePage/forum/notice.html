@@ -1,41 +1,62 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
 <th:block layout:fragment="content_css">
-    <!-- html 파일이 열릴때 같이 실행되는 css -->
-    <!-- <link rel="stylesheet" href="/"> -->
+  <!-- html 파일이 열릴때 같이 실행되는 css -->
+  <!-- <link rel="stylesheet" href="/"> -->
 </th:block>
 
 <th:block layout:fragment="contentFragment">
-    <!-- html 코드 작성 -->
-    <div class="row">
-      <div class="col">
+  <!-- html 코드 작성 -->
+  <div class="row">
+    <div class="col">
+      <form action="/notice" method="post">
         <div class="row">
           <div class="col">
             <!-- 검색창 -->
+            <div class="row mt-3">
+              <div class="col-2"></div>
+              <div class="col-3">
+                <div class="input-group mb-3">
+                  <select class="form-select" name="searchType">
+                    <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'BOARD_TITLE'}">제목</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-4">
+                <input type="text" class="form-control" name="searchValue" th:value="${searchVO.searchValue}"
+                  aria-label="Text input with dropdown button">
+              </div>
+
+              <div class="col-1">
+                <input type="submit" class="btn btn-outline-secondary" value="검색" id="inputGroupFileAddon04">
+              </div>
+
+            </div>
+
           </div>
         </div>
-        
+
         <div class="row">
           <div class="col">
             <!-- 전체 게시물 갯수 -->
-            <h4>전체 게시물 갯수 : 100개</h4>
+            <h4>전체 게시물 갯수 : [[${normalTotalBoardCnt}]]개</h4>
           </div>
         </div>
 
         <div class="row">
           <div class="col">
             <!-- 게시물 목록 -->
-            <table>
+            <table class="table table-bordered text-center align-middle">
               <thead>
                 <colgroup>
                   <col width="10%">
                   <col width="40%">
-                  <col width="">
-                  <col width="">
-                  <col width="">
+                  <col width="20%">
+                  <col width="20%">
+                  <col width="10%">
                 </colgroup>
                 <tr>
                   <td>번호</td>
@@ -46,15 +67,65 @@
                 </tr>
               </thead>
 
+              <tbody>
+                <th:block th:each="e,state:${boardVOList}">
+                  <tr th:onclick="goDetailNotice([[${e.boardNum}]])">
+                    <td>[[${#lists.size(boardVOList) - state.index}]]</td>
+                    <td>[[${e.boardTitle}]]</td>
+                    <td>[[${e.memberVO.userName}]]</td>
+                    <td>[[${e.boardDate}]]</td>
+                    <td>[[${e.boardCnt}]]</td>
+                  </tr>
+                </th:block>
+
+              </tbody>
             </table>
           </div>
         </div>
-      </div>
+
+        <div class="row mt-1">
+          <div class="col">
+            <!-- 페이징 -->
+            <div class="col-12 text-center">
+              <th:block th:if="${searchVO.prev}">
+                <a th:href="@{/notice(nowPage=${searchVO.beginPage - 1})}">이전</a>
+              </th:block>
+              <th:block th:each=" i : ${#numbers.sequence(searchVO.beginPage, searchVO.endPage)}">
+                <a th:href="@{/notice(nowPage=${i})}">[[${i}]]</a>
+              </th:block>
+              <th:block th:if="${searchVO.next}">
+                <a th:href="@{/notice(nowPage=${searchVO.endPage + 1})}">다음</a>
+              </th:block>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col">
+            <!-- 글쓰기 관리자만 할 수 있게  -->
+            <div class="col-1 float-end">
+              <!-- 답변하기 관리자만 볼 수 있어야 함 -->
+              <input sec:authorize="hasRole('ROLE_Y')" type="button" class="btn btn-primary"
+                onclick="location.href='/noticeWrite'" value="글쓰기">
+            </div>
+          </div>
+        </div>
+
+      </form>
     </div>
+  </div>
+
+  <script>
+    function goDetailNotice(boardNum) {
+
+      location.href = `noticeDetail?boardNum=${boardNum}`;
+    }
+  </script>
 </th:block>
 
 <th:block layout:fragment="content_js">
-    <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <!-- <script src="/"></script> -->
+  <!-- html 파일이 열릴때 같이 실행되는 js -->
+  <!-- <script src="/"></script> -->
 </th:block>
+
 </html>

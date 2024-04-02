@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+
+
 @RequestMapping("/bookAdmin")
 public class BuyController {
     //메뉴 불러올려고 적은거임
@@ -45,8 +47,8 @@ public class BuyController {
     //희망 자료
     @GetMapping("/wishBook")
     public String goWishBook(Model model){
-        //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
+        //인터셉터로 넘겨줄 page
+        model.addAttribute("page", "wishBook");
         //상대방이 원하는 책을 등록하는것
 
         System.out.println("희망 자료 이동");
@@ -55,8 +57,8 @@ public class BuyController {
     //삭제 자료
     @GetMapping("/deleteBook")
     public String goDeleteBook(Model model , BookSearchVO bookSearchVO){
-        //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
+        //인터셉터로 넘겨줄 page
+        model.addAttribute("page", "deleteBook");
 
 
         //제외한 책 갯수 설정
@@ -98,8 +100,8 @@ public class BuyController {
 
     @GetMapping("/buyBook")
     public String goBuyBook(Model model, @RequestParam(name="insert" , required = false, defaultValue = "0") int insert){
-        //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
+        //인터셉터로 넘겨줄 page
+        model.addAttribute("page", "buyBook");
 
         //가기전에 카테고리 목록 리스트 가져오기
         model.addAttribute("cateList",libraryBookService.selectCateList());
@@ -173,13 +175,11 @@ public class BuyController {
         return "redirect:/bookAdmin/buyBook?insert=1";
     }
 
-
     //안할거임 ㅅㄱ
     @GetMapping("/donatedBook")
     public String goDonatedBook(Model model){
-        //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
-
+        //인터셉터로 넘겨줄 page
+        model.addAttribute("page", "donatedBook");
 
         System.out.println("기증 자료 이동");
         return "content/library/buy/donatedBook";
