@@ -36,9 +36,11 @@
                             <div class="row">
                                 <div class="col-4 card" th:each="board : ${boardList}">
                                     <input th:value="${board.boardNum}" type="checkbox" class="chk" checked>
-                                    <a th:href="@{/eventDetailBoard(boardNum=${board.boardNum})}">
-                                        <img th:src="@{'/upload/' + ${board.fileList[0].attachedFileName}}" class="card-img-top" alt="...">
-                                    </a>
+
+                                            <a th:href="@{/eventDetailBoard(boardNum=${board.boardNum})}">
+                                                <img th:src="@{'/upload/' + ${board.fileList[0].attachedFileName}}" class="card-img-top" style="height: 350px;" alt="...">
+                                            </a>
+
                                     <div class="card-body"  style="font-weight: bold;">
                                         <p class="card-text">[[${board.boardTitle}]]</p>
                                         <p class="card-text">
