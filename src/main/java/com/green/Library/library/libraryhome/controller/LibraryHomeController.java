@@ -38,8 +38,8 @@ public class LibraryHomeController {
     @ResponseBody
     @PostMapping("/calendarData")
     public List<CalendarVO> calendarList(){
-       // Map<String,List<CalendarVO>> calenderEvent = new HashMap<>();
-        //calenderEvent.put("eventList",libraryHomeService.selectCalendarList());
+        Map<String,List<CalendarVO>> calenderEvent = new HashMap<>();
+        calenderEvent.put("eventList",libraryHomeService.selectCalendarList());
         return libraryHomeService.selectCalendarList();
     }
 

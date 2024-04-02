@@ -920,3 +920,7 @@ SELECT
         header_menu INNER JOIN side_menu
         ON header_menu.MENU_NUM = side_menu.MENU_NUM
         WHERE header_menu.MENU_TYPE = 'library';
+        
+
+SELECT * FROM YEAR_BY_TIME;
+-- DROP TABLE YEAR_BY_TIME;
