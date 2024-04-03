@@ -4,10 +4,7 @@ import com.green.Library.util.BoardUploadUtil;
 import com.green.Library.util.ScheduleService;
 import com.green.Library.web.board.service.BoardService;
 import com.green.Library.web.board.service.BoardServiceImpl;
-import com.green.Library.web.board.vo.BoardVO;
-import com.green.Library.web.board.vo.PlusVO;
-import com.green.Library.web.board.vo.SearchVO;
-import com.green.Library.web.board.vo.UploadVO;
+import com.green.Library.web.board.vo.*;
 import com.green.Library.web.culturalAndEducation.service.CulturalAndEducationServiceImpl;
 import com.green.Library.web.member.service.MemberService;
 import com.green.Library.web.member.service.MemberServiceImpl;
@@ -375,7 +372,8 @@ public class CulturalAndEducationController {
     @GetMapping("/movie")
     public String goMovie(Model model,
                           SearchVO searchVO,
-                          HttpSession session){
+                          HttpSession session,
+                          BoardVO boardVO){
         //인터셉터에 movie 정보를 넘겨줌
         model.addAttribute("page","movie");
         //전체 게시글 수
@@ -389,8 +387,8 @@ public class CulturalAndEducationController {
         searchVO.setBoardType(26);
 
         System.out.println(session.getAttribute("userName"));
-
-        model.addAttribute("boardList",boardService.selectBoardList(searchVO));
+        System.out.println(boardService.selectMovieList(searchVO));
+        model.addAttribute("boardList",boardService.selectMovieList(searchVO));
         System.out.println("영화 상영");
         return "content/homePage/culturalAndEducation/movie/movie";
     }
@@ -400,8 +398,30 @@ public class CulturalAndEducationController {
         return "content/homePage/culturalAndEducation/movie/movieInsertPage";
     }
 
-    public String insertMovie(){
+    @PostMapping("/insertMovie")
+    public String insertMovie(BoardVO boardVO,
+                              @RequestParam(name = "files") MultipartFile[] files,
+                              MovieVO movieVO){
+        //boardNo의 max값
+        int maxBoardNum = boardService.isNullBoardNo();
 
+        boardVO.setBoardTitle(movieVO.getMovieName());
+
+
+        // 멀티 이미지 첨부 기능
+        List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(files);
+        for (UploadVO file : fileList){
+            file.setBoardNum(maxBoardNum);
+        }
+        boardVO.setFileList(fileList);
+        boardVO.setBoardNum(maxBoardNum);
+
+        boardVO.setMovieVO(movieVO);
+
+        System.out.println(movieVO);
+        System.out.println(boardVO);
+
+        boardService.insertMovie(boardVO);
         return "redirect:/movie";
     }
 
