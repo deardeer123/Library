@@ -285,7 +285,7 @@ AND USER_PW = '0';
 
 
 -- 2024-02-28 
-CREATE TABLE BOARD(
+CREATE TABLE board(
   BOARD_NUM INT AUTO_INCREMENT PRIMARY KEY
   , BOARD_TITLE VARCHAR(50) NOT NULL
   , CONTENT VARCHAR(200)
@@ -296,6 +296,7 @@ CREATE TABLE BOARD(
 );
 -- 만약 board_no로 되어있는 경우 아래 쿼리문 실행할 것
 ALTER TABLE board CHANGE board_no BOARD_NUM INT AUTO_INCREMENT;
+ALTER TABLE board CHANGE CONTENT CONTENT VARCHAR(500);
 
 -- DROP TABLE board;
 
@@ -645,3 +646,17 @@ SELECT
         ON B.BOARD_NUM = F.BOARD_NUM;
         
         
+SELECT
+            MOVIE_NAME
+            , DATE_FORMAT(MOVIE_DAY, '%Y-%m-%d') AS MOVIE_DAY
+            , FILM_RATING
+            , DATE_FORMAT(MOVIE_START, '%H:%i') AS MOVIE_START
+            , DATE_FORMAT(MOVIE_END, '%H:%i') AS MOVIE_END
+            , ORIGIN_FILE_NAME
+            , CONTENT
+            , m.board_num
+        FROM BOARD AS B
+        INNER JOIN MOVIE AS M
+        ON B.BOARD_NUM = M.BOARD_NUM
+        INNER JOIN ATTACHED_FILE AS F
+        ON B.BOARD_NUM = F.BOARD_NUM;

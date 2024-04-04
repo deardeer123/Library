@@ -13,12 +13,15 @@ import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
+import org.apache.ibatis.javassist.expr.NewArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.xml.transform.Source;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,19 +89,7 @@ public class CulturalAndEducationController {
                                      BoardVO boardVO,
                                      @RequestParam(name = "mainFile") MultipartFile mainFile,
                                      @RequestParam(name = "subFile") MultipartFile[] subFile){
-        //드가기전 메뉴 정보좀 들고옴
-        //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","libraryEvent");
 
 
         //boardNo의 max값
@@ -132,16 +123,7 @@ public class CulturalAndEducationController {
     public String eventDetailBoard(Model model, BoardVO boardVO, @RequestParam(name = "boardNum") int boardNum){
         //드가기전 메뉴 정보좀 들고옴
         //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","libraryEvent");
 
         boardVO.setBoardNum(boardNum);
 
@@ -171,11 +153,7 @@ public class CulturalAndEducationController {
     //문화 게시판 수정
     @GetMapping("/culUpdate")
     public String culUpdate(BoardVO boardVO, Model model,HttpSession session){
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","libraryEvent");
 
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
         BoardVO board = boardService.selectBoardDetail(boardVO.getBoardNum());
@@ -232,11 +210,7 @@ public class CulturalAndEducationController {
     // 참가신청 게시글 등록 페이지 이동
     @GetMapping("/goParticipation")
     public String goParticipation(Model model){
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","eventParticipation");
         return "content/homePage/culturalAndEducation/eventParticipation/goParticipation";
     }
 
@@ -248,12 +222,7 @@ public class CulturalAndEducationController {
                                       HttpSession session,
                                       @RequestParam(name = "files") MultipartFile[] files){
 
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","eventParticipation");
 
         //boardNo의 max값
         int maxBoardNum = boardService.isNullBoardNo();
@@ -285,18 +254,7 @@ public class CulturalAndEducationController {
                                         @RequestParam(name = "boardNum") int boardNum,
                                         ApplyVO applyVO,
                                         HttpSession session){
-        //드가기전 메뉴 정보좀 들고옴
-        //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","eventParticipation");
 
 //        int userCode = Optional.ofNullable((Integer) session.getAttribute("userCode")).orElse(0);
 //        applyVO.setUserCode(userCode);
@@ -314,16 +272,7 @@ public class CulturalAndEducationController {
     //이벤트 게시물 수정 페이지 이동
     @GetMapping("/goEventUpdatePage")
     public String goEventUpdatePage(Model model, BoardVO boardVO, HttpSession session){
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","eventParticipation");
 
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
         BoardVO board = boardService.selectEventBoardDetail(boardVO.getBoardNum());
@@ -335,11 +284,7 @@ public class CulturalAndEducationController {
     //게시글 수정
     @PostMapping("/goEventUpdate")
     public String goEventUpdate(BoardVO boardVO,PlusVO plusVO,Model model){
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","eventParticipation");
 
 
         System.out.println(boardVO);
@@ -373,7 +318,7 @@ public class CulturalAndEducationController {
     public String goMovie(Model model,
                           SearchVO searchVO,
                           HttpSession session,
-                          BoardVO boardVO){
+                          MovieVO movieVO){
         //인터셉터에 movie 정보를 넘겨줌
         model.addAttribute("page","movie");
         //전체 게시글 수
@@ -394,7 +339,8 @@ public class CulturalAndEducationController {
     }
 
     @GetMapping("/goInsertMoviePage")
-    public String goInsertMoviePage(){
+    public String goInsertMoviePage(Model model){
+        model.addAttribute("page","movie");
         return "content/homePage/culturalAndEducation/movie/movieInsertPage";
     }
 
@@ -402,6 +348,7 @@ public class CulturalAndEducationController {
     public String insertMovie(BoardVO boardVO,
                               @RequestParam(name = "files") MultipartFile[] files,
                               MovieVO movieVO){
+
         //boardNo의 max값
         int maxBoardNum = boardService.isNullBoardNo();
 
@@ -424,6 +371,55 @@ public class CulturalAndEducationController {
         boardService.insertMovie(boardVO);
         return "redirect:/movie";
     }
+
+    @GetMapping("/goDetailMoviePage")
+    public String goDetailMoviePage(Model model,@RequestParam(name = "boardNum") int boardNum){
+        model.addAttribute("page","movie");
+        System.out.println(boardService.selectMovieDetail(boardNum));
+        model.addAttribute("board", boardService.selectMovieDetail(boardNum));
+        return "content/homePage/culturalAndEducation/movie/movieDetailPage";
+    }
+
+    @GetMapping("/goUpdateMoviePage")
+    public String goUpdateMoviePage(Model model,
+                                    @RequestParam(name = "boardNum") int boardNum){
+        model.addAttribute("page","movie");
+        System.out.println(boardService.selectMovieDetail(boardNum));
+        model.addAttribute("board", boardService.selectMovieDetail(boardNum));
+        return "content/homePage/culturalAndEducation/movie/movieUpdatePage";
+    }
+
+    @PostMapping("/updateMovie")
+    public String updateMovie(BoardVO boardVO,
+                              MovieVO movieVO,
+                              UploadVO uploadVO,
+                              @RequestParam(name = "file") MultipartFile file){
+        //boardNo의 max값
+        int maxBoardNum = boardService.isNullBoardNo();
+
+        boardVO.setBoardTitle(movieVO.getMovieName());
+
+        if(!uploadVO.getOriginFileName().equals(file.getOriginalFilename())){
+            // 멀티 이미지 첨부 기능
+            uploadVO = BoardUploadUtil.uploadFile(file);
+            uploadVO.setIsMain("N");
+            uploadVO.setBoardNum(boardVO.getBoardNum());
+            boardService.updateFile(uploadVO);
+        }
+        boardVO.setBoardNum(boardVO.getBoardNum());
+
+        boardVO.setMovieVO(movieVO);
+
+        boardService.updateMovie(boardVO);
+        return "redirect:/movie";
+    }
+
+    @GetMapping("/deleteMovie")
+    public String deleteMovie(@RequestParam(name = "boardNum") int boardNum){
+        boardService.movieDelete(boardNum);
+        return "redirect:/movie";
+    }
+
 
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -459,18 +455,7 @@ public class CulturalAndEducationController {
 
     @GetMapping("/guideDetailBoard")
     public String guideDetailBoard(Model model, BoardVO boardVO, @RequestParam(name = "boardNum") int boardNum){
-        //드가기전 메뉴 정보좀 들고옴
-        //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","courseGuide");
 
         boardVO.setBoardNum(boardNum);
 
@@ -488,16 +473,7 @@ public class CulturalAndEducationController {
     //가이드 게시판 등록 페이지 이동
     @GetMapping("/goGuideInsertPage")
     public String goGuideInsertPage(Model model){
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","courseGuide");
 
         return "content/homePage/culturalAndEducation/courseGuide/guideInsertPage";
     }
@@ -508,19 +484,7 @@ public class CulturalAndEducationController {
                                    HttpSession session,
                                    BoardVO boardVO,
                                    @RequestParam(name = "subFile") MultipartFile[] subFile){
-        //드가기전 메뉴 정보좀 들고옴
-        //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","courseGuide");
 
 
         //boardNo의 max값
@@ -587,16 +551,7 @@ public class CulturalAndEducationController {
     //수강신청 게시글 등록 페이지 이동
     @GetMapping("/goAppInsertPage")
     public String goAppInsertPage(Model model){
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","applicationForClasses");
         return "content/homePage/culturalAndEducation/applicationForClasses/goAppInsertPage";
     }
 
@@ -607,16 +562,7 @@ public class CulturalAndEducationController {
                             HttpSession session,
                             @RequestParam(name = "files") MultipartFile[] files,
                             Model model){
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","applicationForClasses");
 
 
         //boardNo의 max값
@@ -643,16 +589,7 @@ public class CulturalAndEducationController {
     //신청 기록 페이지
     @GetMapping("/goApplyListPage")
     public String goApplyListPage(Model model, BoardVO boardVO, HttpSession session, MemberVO memberVO, ApplyVO applyVO){
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","applicationForClasses");
 
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
         System.out.println("@@@@@@@@@@@@@@@@@" + boardService.applyBoardList());
@@ -663,16 +600,7 @@ public class CulturalAndEducationController {
     //회원 신청 기록 페이지
     @GetMapping("/goApplyUserListPage")
     public String goApplyUserListPage(Model model,BoardVO boardVO,HttpSession session){
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","applicationForClasses");
 
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
         model.addAttribute("userBoardList",memberService.applyUserBoardList(boardVO));
@@ -695,6 +623,7 @@ public class CulturalAndEducationController {
     //다중 삭제
     @GetMapping("/goAppDelete")
     public String goAppDelete(BoardVO boardVO){
+
         boardService.selectDeletes(boardVO);
         return "redirect:/applicationForClasses";
     }
@@ -713,18 +642,7 @@ public class CulturalAndEducationController {
                                         @RequestParam(name = "boardNum") int boardNum,
                                         ApplyVO applyVO,
                                         HttpSession session){
-        //드가기전 메뉴 정보좀 들고옴
-        //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","applicationForClasses");
 
 //        int userCode = Optional.ofNullable((Integer) session.getAttribute("userCode")).orElse(0);
 //        applyVO.setUserCode(userCode);
@@ -742,16 +660,7 @@ public class CulturalAndEducationController {
     //app 게시물 수정 페이지 이동
     @GetMapping("/goAppDetailBoard")
     public String goAppDetailBoard(Model model, BoardVO boardVO, HttpSession session){
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","applicationForClasses");
 
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
         BoardVO board = boardService.selectEventBoardDetail(boardVO.getBoardNum());

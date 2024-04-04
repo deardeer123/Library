@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.rmi.server.ExportException;
 import java.util.List;
+import java.util.Optional;
 
 @Service("boardService")
 public class BoardServiceImpl implements BoardService {
@@ -40,10 +41,6 @@ public class BoardServiceImpl implements BoardService {
         return sqlSession.selectOne("boardMapper.countBoard");
     }
 
-//    @Override
-//    public int maxBoardNo() {
-//        return sqlSession.selectOne("boardMapper.insertImgList");
-//    }
 
     public BoardVO selectBoardDetail() {
         return sqlSession.selectOne("boardMapper.selectBoardDetail");
@@ -51,10 +48,6 @@ public class BoardServiceImpl implements BoardService {
 
 
 
-//    @Override
-//    public void insertUploadFile(BoardVO boardVO) {
-//        sqlSession.insert("boardMapper.insertUpload");
-//    }
     public BoardVO selectBoardDetail(int boardNum) {
         return sqlSession.selectOne("boardMapper.selectBoardDetail", boardNum);
     }
@@ -147,7 +140,28 @@ public class BoardServiceImpl implements BoardService {
         sqlSession.insert("boardMapper.insertMovieFile", boardVO);
     }
 
+    @Override
+    public BoardVO selectMovieDetail(int boardNum) {
+        return sqlSession.selectOne("boardMapper.selectMovieDetail", boardNum);
+    }
 
+    @Override
+    public void updateMovie(BoardVO boardVO) {
+        sqlSession.update("boardMapper.updateMovie",boardVO);
+
+    }
+
+    @Override
+    public void updateFile(UploadVO uploadVO) {
+        sqlSession.update("boardMapper.updateFile",uploadVO);
+    }
+
+    @Override
+    public void movieDelete(int boardNum) {
+        sqlSession.delete("boardMapper.movieDelete",boardNum);
+        sqlSession.delete("boardMapper.eventFileDelete", boardNum);
+        sqlSession.delete("boardMapper.eventBoardDelete",boardNum);
+    }
 
 
 }

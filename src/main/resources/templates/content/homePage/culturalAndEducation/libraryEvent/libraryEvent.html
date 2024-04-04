@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
@@ -11,40 +10,35 @@
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
     <div class="row mt-4">
-        <div class="col-12">
-            <h3>
-              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="50" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
-                <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
-              </svg>
-             / 문화 행사/교육 / 도서관 행사</h3>
-          </div>
-        
+
         <div class="col mt-4">
             <table class="align-middle table">
                 <colgroup>
-                <col width="25%">
-                <col width="25%">
-                <col width="25%">
-                <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
                 </colgroup>
                 <th:block sec:authorize="hasRole('ROLE_Y')">
                     <div><input type="checkbox" id="allChk" onclick="allchk()" checked>전체 선택</div>
                 </th:block>
                 <tbody>
-                    <tr >
+                    <tr>
                         <td colspan="4">
                             <div class="row">
                                 <div class="col-4 card" th:each="board : ${boardList}">
                                     <input th:value="${board.boardNum}" type="checkbox" class="chk" checked>
 
-                                            <a th:href="@{/eventDetailBoard(boardNum=${board.boardNum})}">
-                                                <img th:src="@{'/upload/' + ${board.fileList[0].attachedFileName}}" class="card-img-top" style="height: 350px;" alt="...">
-                                            </a>
+                                    <a th:href="@{/eventDetailBoard(boardNum=${board.boardNum})}">
+                                        <img th:src="@{'/upload/' + ${board.fileList[0].attachedFileName}}"
+                                            class="card-img-top" style="height: 350px;" alt="...">
+                                    </a>
 
-                                    <div class="card-body"  style="font-weight: bold;">
+                                    <div class="card-body" style="font-weight: bold;">
                                         <p class="card-text">[[${board.boardTitle}]]</p>
                                         <p class="card-text">
-                                            [[${board.boardDate}]]<span style="padding-left: 130px; font-weight: 400;">[[${board.MemberVO.userName}]]</span>
+                                            [[${board.boardDate}]]<span
+                                                style="padding-left: 130px; font-weight: 400;">[[${board.MemberVO.userName}]]</span>
                                         </p>
                                     </div>
                                 </div>
@@ -58,10 +52,13 @@
                     <tr>
                         <td colspan="4">
                             <select name="searchType" class="form-select" style="width: 200px; display: inline-block;">
-                                <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'BOARD_TITLE'}">제목</option>
-                                <option value="USER_NAME" th:selected="${searchVO.searchType == 'USER_NAME'}">작성자</option>
+                                <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'BOARD_TITLE'}">제목
+                                </option>
+                                <option value="USER_NAME" th:selected="${searchVO.searchType == 'USER_NAME'}">작성자
+                                </option>
                             </select>
-                            <input type="search" class="form-control" style="width: 670px; display: inline-block;" name="searchValue" th:value="${searchVO.searchValue}">
+                            <input type="search" class="form-control" style="width: 670px; display: inline-block;"
+                                name="searchValue" th:value="${searchVO.searchValue}">
                             <input type="submit" class="btn btn-primary" style="margin-bottom: 3px;" value="검색">
                         </td>
                     </tr>
@@ -70,23 +67,26 @@
             <!-- 페이징 -->
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                  <li class="page-item" th:if="${searchVO.prev}">
-                    <a class="page-link" aria-label="이전" th:href="@{/libraryEvent(nowPage=${searchVO.beginPage - 1})}">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-                  <li class="page-item" th:each=" i : ${#numbers.sequence(searchVO.beginPage, searchVO.endPage)}">
-                    <a class="page-link" th:href="@{/libraryEvent(nowPage=${i})}">[[${i}]]</a>
-                  </li>
-                  <li class="page-item" th:if="${searchVO.next}">
-                    <a class="page-link"  aria-label="다음" th:href="@{/libraryEvent(nowPage=${searchVO.endPage + 1})}">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
+                    <li class="page-item" th:if="${searchVO.prev}">
+                        <a class="page-link" aria-label="이전"
+                            th:href="@{/libraryEvent(nowPage=${searchVO.beginPage - 1})}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:each=" i : ${#numbers.sequence(searchVO.beginPage, searchVO.endPage)}">
+                        <a class="page-link" th:href="@{/libraryEvent(nowPage=${i})}">[[${i}]]</a>
+                    </li>
+                    <li class="page-item" th:if="${searchVO.next}">
+                        <a class="page-link" aria-label="다음"
+                            th:href="@{/libraryEvent(nowPage=${searchVO.endPage + 1})}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
                 </ul>
-              </nav>
+            </nav>
             <div sec:authorize="hasRole('ROLE_Y')">
-                <input type="button" class="btn btn-primary btn-sm" value="게시글 작성" onclick="location.href='/goEventBoard'">
+                <input type="button" class="btn btn-primary btn-sm" value="게시글 작성"
+                    onclick="location.href='/goEventBoard'">
                 <input type="button" class="btn btn-primary btn-sm" value="게시글 삭제" th:onclick="culDeleteBoard()">
             </div>
         </div>
@@ -97,4 +97,5 @@
     <!-- html 파일이 열릴때 같이 실행되는 js -->
     <script src="/js/content/culture/culture.js"></script>
 </th:block>
+
 </html>

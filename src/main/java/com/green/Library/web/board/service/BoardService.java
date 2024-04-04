@@ -68,5 +68,12 @@ public interface BoardService {
 
     void insertMovie(BoardVO boardVO);
 
+    BoardVO selectMovieDetail(int boardNum);
+
+    void updateMovie(BoardVO boardVO);
+
+    void updateFile(UploadVO uploadVO);
+
+    void movieDelete(int boardNum);
 }
 

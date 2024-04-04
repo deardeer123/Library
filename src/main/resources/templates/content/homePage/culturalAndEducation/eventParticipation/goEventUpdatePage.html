@@ -36,16 +36,16 @@
                         <tr>
                             <td>프로그램명</td>
                             <td class="d-grid">
-                                <input type="text" name="boardTitle" class="form-control" style="border: 1px solid black;">
+                                <input type="text" name="boardTitle" class="form-control" style="border: 1px solid black;" th:value="${board.boardTitle}">
                             </td>
                         </tr>
                         <tr>
                             <td>강사명</td>
-                            <td class="d-grid"><input type="text" name="teacher" class="form-control" style="border: 1px solid black;"></td>
+                            <td class="d-grid"><input type="text" name="teacher" class="form-control" style="border: 1px solid black;" th:value="${board.PlusVO.teacher}"></td>
                         </tr>
                         <tr>
                             <td>대상</td>
-                            <td class="d-grid"><input type="text" name="target" class="form-control" style="border: 1px solid black;"></td>
+                            <td class="d-grid"><input type="text" name="target" class="form-control" style="border: 1px solid black;" th:value="${board.PlusVO.target}"></td>
                         </tr>
                         <tr>
                             <td>상태</td>
@@ -55,9 +55,9 @@
                             <td>운영기간</td>
                             <td>
                                 <div style="display: flex;">
-                                    <input type="date" name="openDate" class="form-control" style="border: 1px solid black;">
+                                    <input type="date" name="openDate" class="form-control" style="border: 1px solid black;" th:value="${board.PlusVO.openDate}">
                                     <span >~</span>
-                                    <input type="date" name="closeDate" class="form-control" style="border: 1px solid black;">
+                                    <input type="date" name="closeDate" class="form-control" style="border: 1px solid black;" th:value="${board.PlusVO.closeDate}">
                                 </div>
                             </td>
                         </tr>
@@ -65,9 +65,9 @@
                             <td>신청기간</td>
                             <td>
                                 <div style="display: flex;">
-                                    <input type="date" name="toDate" class="form-control" style="border: 1px solid black;">
+                                    <input type="date" name="toDate" class="form-control" style="border: 1px solid black;" th:value="${board.PlusVO.toDate}">
                                     <span style="padding: 5px;">~</span>
-                                    <input type="date" name="fromDate" class="form-control" style="border: 1px solid black;">
+                                    <input type="date" name="fromDate" class="form-control" style="border: 1px solid black;" th:value="${board.PlusVO.fromDate}">
                                 </div>
                             </td>
                         </tr>
@@ -76,7 +76,7 @@
                             <td>
                                 <div style="display: flex; justify-content: center; ">
                                     <span style="padding: 5px; "> [[${board.PlusVO.personnel}]] /</span>
-                                    <input type="number" name="maximumPerson" value="0" min="0" max="99" class="form-control" style="border: 1px solid black; width: 80px; ">
+                                    <input type="number" name="maximumPerson" min="0" max="99" class="form-control" style="border: 1px solid black; width: 80px; " th:value="${board.PlusVO.maximumPerson}">
                                 </div>
                                 
                                 
@@ -84,7 +84,7 @@
                         </tr>
                         <tr style="height: 600px;">
                             <td colspan="4">
-                                <textarea name="content" class="form-control" rows="25" style="border: 1px solid black;"></textarea>
+                                <textarea name="content" class="form-control" rows="25" style="border: 1px solid black;" th:value="${board.content}"></textarea>
                             </td>
                         </tr>
                         <tr>

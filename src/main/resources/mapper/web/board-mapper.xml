@@ -428,12 +428,13 @@
     <select id="selectMovieList" resultMap="board">
         SELECT
             MOVIE_NAME
-            , MOVIE_DAY
+            , DATE_FORMAT(MOVIE_DAY, '%Y-%m-%d') AS MOVIE_DAY
             , FILM_RATING
-            , MOVIE_START
-            , MOVIE_END
+            , DATE_FORMAT(MOVIE_START, '%H:%i') AS MOVIE_START
+            , DATE_FORMAT(MOVIE_END, '%H:%i') AS MOVIE_END
             , ORIGIN_FILE_NAME
             , ATTACHED_FILE_NAME
+            , M.BOARD_NUM
         FROM BOARD AS B
         INNER JOIN MOVIE AS M
         ON B.BOARD_NUM = M.BOARD_NUM
@@ -442,8 +443,11 @@
         <if test='searchValue != null and !searchValue.equals("")'>
             AND ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
         </if>
-        <if test='movieDay != null and !movieDay.equals("")'>
-            AND DATE_FORMAT(M.MOVIE_DAY, '%Y-%m-%d') = #{movieVO.movieDay}
+        <if test='fromDate != null and !fromDate.equals("")'>
+            AND DATE_FORMAT(MOVIE_DAY, '%Y-%m-%d') = #{fromDate}
+        </if>
+        <if test='toDate != null and !toDate.equals("")'>
+            AND DATE_FORMAT(MOVIE_DAY, '%Y-%m-%d') = #{toDate}
         </if>
         ORDER BY B.BOARD_NUM DESC
         LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
@@ -492,6 +496,48 @@
         </foreach>
 
     </insert>
+    <select id="selectMovieDetail" resultMap="board">
+        SELECT
+            MOVIE_NAME
+            , DATE_FORMAT(MOVIE_DAY, '%Y-%m-%d') AS MOVIE_DAY
+            , FILM_RATING
+            , DATE_FORMAT(MOVIE_START, '%H:%i') AS MOVIE_START
+            , DATE_FORMAT(MOVIE_END, '%H:%i') AS MOVIE_END
+            , ORIGIN_FILE_NAME
+            , ATTACHED_FILE_NAME
+            , CONTENT
+            , B.BOARD_NUM
+        FROM BOARD AS B
+        INNER JOIN MOVIE AS M
+        ON B.BOARD_NUM = M.BOARD_NUM
+        INNER JOIN ATTACHED_FILE AS F
+        ON B.BOARD_NUM = F.BOARD_NUM
+        WHERE M.BOARD_NUM = #{boardNum}
+    </select>
+    <update id="updateMovie">
+        UPDATE BOARD INNER JOIN MOVIE
+        ON BOARD.BOARD_NUM = MOVIE.BOARD_NUM
+        SET
+            MOVIE_NAME = #{movieVO.movieName}
+            , MOVIE_DAY = #{movieVO.movieDay}
+            , FILM_RATING = #{movieVO.filmRating}
+            , MOVIE_START = #{movieVO.movieStart}
+            , MOVIE_END = #{movieVO.movieEnd}
+            , CONTENT = #{content}
+        WHERE BOARD.BOARD_NUM = #{boardNum}
+    </update>
+    <update id="updateFile">
+        UPDATE ATTACHED_FILE
+        SET
+            ORIGIN_FILE_NAME  = #{originFileName}
+            , ATTACHED_FILE_NAME = #{attachedFileName}
+        WHERE ATTACHED_FILE.BOARD_NUM = #{boardNum}
+    </update>
+    <delete id="movieDelete">
+        DELETE
+        FROM MOVIE
+        WHERE BOARD_NUM = #{boardNum}
+    </delete>
 
 
 
