@@ -42,7 +42,7 @@
                             <td style="font-weight: bold;  color: cornflowerblue;">[[${board.ApplyVO.applyDate}]]</td>
                             <td>[[${board.ApplyVO.applyStatus}]]</td>
                             <td>
-                                <input type="button" class="btn btn-primary" value="승인" th:onclick="approve([[${board.boardNum}]])">
+                                <input type="button" class="btn btn-primary" value="승인" th:onclick="|location.href='@{/approve(boardNum=${board.boardNum})}'|">
                             </td>
                         </th:block>
                     </tr>

@@ -49,7 +49,7 @@
                                 </td>
                                 <td th:unless="${board.ApplyVO.applyStatus == '신청대기'}">
                                     <th:block th:if="${board.ApplyVO.confirm == 'N'}">
-                                        <input type="button" class="btn btn-primary" value="확인" th:onclick="CF([[${board.boardNum}]])">
+                                        <input type="button" class="btn btn-primary" value="확인" th:onclick="|location.href='@{/confirm(boardNum=${board.boardNum})}'|">
                                     </th:block>
                                 </td>
                             </th:block>

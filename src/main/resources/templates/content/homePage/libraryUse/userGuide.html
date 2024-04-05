@@ -1,20 +1,165 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
-    <link rel="stylesheet" href="/">
+    <link rel="stylesheet" href="/css/content/homePage/use.css">
 </th:block>
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    이용안내 및 자료실 소개
+    <div class="row">
+        <div class="col-12 mt-3">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="green" class="bi bi-book"
+                    viewBox="0 0 16 16" id="svg">
+                    <path
+                        d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783" />
+                </svg>
+            </span>
+            <span class="title-head align-middle">
+                <h2>이용시간</h2>
+            </span>
+        </div>
+        <div class="col-12 mt-3">
+            <table class="table table-bordered border-dark align-middle text-center">
+                <colgroup>
+                    <col width="30%">
+                    <col width="40%">
+                    <col width="30%">
+                </colgroup>
+                <thead class="table-thead">
+                    <tr>
+                        <td>구분</td>
+                        <td>화~일요일</td>
+                        <td>월요일</td>
+                    </tr>
+                </thead>
+                <tbody class="table-tbody">
+                    <tr>
+                        <td>영유아 자료실</td>
+                        <td rowspan="5">09:00 ~ 18:00</td>
+                        <td rowspan="5">미개방</td>
+                    </tr>
+                    <tr>
+                        <td>어린이 자료실</td>
+                    </tr>
+                    <tr>
+                        <td>종합 자료실</td>
+                    </tr>
+                    <tr>
+                        <td>연속 간행물실</td>
+                    </tr>
+                    <tr>
+                        <td>디지털 자료실</td>
+                    </tr>
+                    <tr>
+                        <td>자유 열람실</td>
+                        <td>09:00~22:00</td>
+                        <td>미개방</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tbox mt-2">
+            <span>자유열람실 이용안내</span>
+            <ul class="small-dot">
+                <li>
+                    자료대출회원증의 바코드를 인식시켜 사용자 인증
+                </li>
+                <li>
+                    원하는 좌석을 확인한 후 발권하여 해당 좌석 이용
+                </li>
+                <li>
+                    5시간마다 좌석발급시스템에서 이용시간 연장 신청(종료 1시간전부터 종료시점까지 재발급 가능)
+                </li>
+                <li>
+                    사용시간내 퇴실 시에는 다른 이용자를 위해 좌석발급시스템에서 반드시 좌석 반납처리
+                </li>
+            </ul>
+        </div>
+        <div class="tbox mt-2">
+            <span>디지털자료실 컴퓨터 이용안내</span>
+            <ul class="small-dot">
+                <li>
+                    인터넷 PC 이용시간(인터넷, 문서작성, 스캐너, 프린트 등)
+                    <ul class="small-ul">
+                        <li>
+                            좌석예약용 PC에 좌석 예약 후 사용 <span>※ 1일 1인 3시간 : 연장불가</span>
+                        </li>
+                        <li>
+                            자료대출회원증 필요(회원증 발급 종합자료실)
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    노트북 좌석 : 자율이용(노트북 소지자에 한함)
+                </li>
+                
+            </ul>
+            
+        </div>
+        <div class="col-12 mt-3">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="green" class="bi bi-book"
+                    viewBox="0 0 16 16" id="svg">
+                    <path
+                        d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783" />
+                </svg>
+            </span>
+            <span class="title-head align-middle">
+                <h2>자료실 소개</h2>
+            </span>
+        </div>
+        <div>
+            <table class="table table-bordered">
+                <tbody class="intro">
+                    <tr>
+                        <td rowspan="3" class="intro-td align-middle"> 자료실 </td>
+                        <td>
+                            매주 
+                            <span>월요일</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>법정 공휴일</span>(토, 일요일이 법정공휴일과 중복될 경우 휴관)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            특별한 사유로 
+                            <span>관장이 공고한 날</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3" class="intro-td align-middle"> 자유열람실 </td>
+                        <td>
+                            매주 
+                            <span>월요일</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>법정 공휴일</span>(토, 일요일이 법정공휴일과 중복될 경우 휴관)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            특별한 사유로 
+                            <span>관장이 공고한 날</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <script src="/"></script>
+    <!-- <script src="/"></script> -->
 </th:block>
+
 </html>

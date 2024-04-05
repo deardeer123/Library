@@ -37,8 +37,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int countBoard() {
-        return sqlSession.selectOne("boardMapper.countBoard");
+    public int countBoard(int boardType) {
+        return sqlSession.selectOne("boardMapper.countBoard", boardType);
     }
 
 

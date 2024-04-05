@@ -51,7 +51,7 @@ public class CulturalAndEducationController {
         searchVO.setBoardType(webMenuService.selectIndexNum("libraryEvent").get("SIDE_MENU_NUM"));
 
         //전체 게시글 수
-        int totalCulBoardCnt = boardService.isNullBoardNo();
+        int totalCulBoardCnt = boardService.countBoard(searchVO.getBoardType());
 
         searchVO.setTotalDataCnt(totalCulBoardCnt);
         searchVO.setPageInfo();
@@ -184,7 +184,7 @@ public class CulturalAndEducationController {
         model.addAttribute("page","eventParticipation");
 
 
-        int totalCulBoardCnt = boardService.isNullBoardNo();
+        int totalCulBoardCnt = boardService.countBoard(searchVO.getBoardType());
 
         searchVO.setTotalDataCnt(totalCulBoardCnt);
         searchVO.setPageInfo();
@@ -193,16 +193,11 @@ public class CulturalAndEducationController {
         }
         searchVO.setBoardType(25);
 
-        int userCode = Optional.ofNullable((Integer) session.getAttribute("userCode")).orElse(0);
-        applyVO.setUserCode(userCode);
-        model.addAttribute("applyUser", memberService.selectApplyUser(applyVO.getUserCode()) );
-        model.addAttribute("apply",boardService.applyBoardList());
 
         List<BoardVO> boardList =  boardService.selectPlusList(searchVO);
         model.addAttribute("boardList",boardList);
 
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@"+ memberService.selectApplyUser(applyVO.getUserCode()));
-        System.out.println(boardList);
+//        System.out.println(boardList);
         System.out.println("행사 참가신청");
         return "content/homePage/culturalAndEducation/eventParticipation/eventParticipation";
     }
@@ -256,12 +251,10 @@ public class CulturalAndEducationController {
                                         HttpSession session){
         model.addAttribute("page","eventParticipation");
 
+        boardVO.setBoardNum(boardNum);
 //        int userCode = Optional.ofNullable((Integer) session.getAttribute("userCode")).orElse(0);
 //        applyVO.setUserCode(userCode);
-
-        boardVO.setBoardNum(boardNum);
-        applyVO.setUserCode((Integer) session.getAttribute("userCode"));
-        model.addAttribute("check", boardService.applyCheck(applyVO));
+//        model.addAttribute("check", boardService.applyCheck(applyVO));
         BoardVO board = boardService.selectEventBoardDetail(boardVO.getBoardNum());
         model.addAttribute("board", board);
         System.out.println(board);
@@ -322,7 +315,7 @@ public class CulturalAndEducationController {
         //인터셉터에 movie 정보를 넘겨줌
         model.addAttribute("page","movie");
         //전체 게시글 수
-        int totalCulBoardCnt = boardService.isNullBoardNo();
+        int totalCulBoardCnt = boardService.countBoard(searchVO.getBoardType());
 
         searchVO.setTotalDataCnt(totalCulBoardCnt);
         searchVO.setPageInfo();
@@ -431,7 +424,7 @@ public class CulturalAndEducationController {
         //인터셉터에 courseGuide 정보를 넘겨줌
         model.addAttribute("page","courseGuide");
 
-        int totalCulBoardCnt = boardService.isNullBoardNo();
+        int totalCulBoardCnt = boardService.countBoard(searchVO.getBoardType());
 
         searchVO.setTotalDataCnt(totalCulBoardCnt);
         searchVO.setPageInfo();
@@ -514,7 +507,7 @@ public class CulturalAndEducationController {
 
 
 
-    ////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////강좌 수강신청
 
     @RequestMapping("/applicationForClasses")
     public String goApplicationForClasses(Model model, SearchVO searchVO, HttpSession session, ApplyVO applyVO){
@@ -522,7 +515,7 @@ public class CulturalAndEducationController {
         model.addAttribute("page","applicationForClasses");
 
 
-        int totalCulBoardCnt = boardService.isNullBoardNo();
+        int totalCulBoardCnt = boardService.countBoard(searchVO.getBoardType());
 
         searchVO.setTotalDataCnt(totalCulBoardCnt);
         searchVO.setPageInfo();
@@ -597,6 +590,16 @@ public class CulturalAndEducationController {
         return "content/homePage/culturalAndEducation/applicationForClasses/goApplyList";
     }
 
+    @GetMapping("/approve")
+    public String approve(@RequestParam(name = "boardNum") int boardNum){
+        //인원 증가 쿼리
+        boardService.upPersonnel(boardNum);
+
+        return "redirect:/goApplyListPage";
+    }
+
+
+
     //회원 신청 기록 페이지
     @GetMapping("/goApplyUserListPage")
     public String goApplyUserListPage(Model model,BoardVO boardVO,HttpSession session){
@@ -615,28 +618,21 @@ public class CulturalAndEducationController {
     }
 
     //신청 확인
-    @PostMapping("/confirm")
-    @ResponseBody
-    public void confirm(BoardVO boardVO){
+    @GetMapping("/confirm")
+    public String confirm(BoardVO boardVO){
         memberService.CF(boardVO.getBoardNum());
+        return "redirect:goApplyUserListPage";
     }
     //다중 삭제
     @GetMapping("/goAppDelete")
     public String goAppDelete(BoardVO boardVO){
-
         boardService.selectDeletes(boardVO);
         return "redirect:/applicationForClasses";
     }
 
-    //인원 증가 쿼리
-    @ResponseBody
-    @PostMapping("/upPersonnel")
-    public void upPersonnel(@RequestParam(name = "boardNum") int boardNum){
-        System.out.println(boardNum);
-        boardService.upPersonnel(boardNum);
-    }
 
-    //app 페이지 이동
+
+    //app 상세 페이지 이동
     @GetMapping("/goAppDetailPage")
     public String goAppDetailPage(Model model, BoardVO boardVO,
                                         @RequestParam(name = "boardNum") int boardNum,
@@ -644,11 +640,8 @@ public class CulturalAndEducationController {
                                         HttpSession session){
         model.addAttribute("page","applicationForClasses");
 
-//        int userCode = Optional.ofNullable((Integer) session.getAttribute("userCode")).orElse(0);
-//        applyVO.setUserCode(userCode);
-
         boardVO.setBoardNum(boardNum);
-        applyVO.setUserCode((Integer) session.getAttribute("userCode"));
+
         model.addAttribute("check", boardService.applyCheck(applyVO));
         BoardVO board = boardService.selectEventBoardDetail(boardVO.getBoardNum());
         model.addAttribute("board", board);

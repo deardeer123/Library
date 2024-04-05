@@ -21,7 +21,7 @@ public interface BoardService {
     int isNullBoardNo();
 
     //게시판 개수
-    int countBoard();
+    int countBoard(int boardType);
 
     //상세 게시판
     BoardVO selectBoardDetail();

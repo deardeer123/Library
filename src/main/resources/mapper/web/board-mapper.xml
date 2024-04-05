@@ -143,6 +143,7 @@
     <select id="countBoard" resultType="int">
         SELECT COUNT (BOARD_NUM)
         FROM BOARD
+        where board_type = #{boardType}
     </select>
 
 
