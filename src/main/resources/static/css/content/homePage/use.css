@@ -40,7 +40,7 @@
     font-size: 18px;
 }
 .small-dot > li::marker{
-    color: gray;
+    color: coral;
 }
 .small-ul > li{
     margin-top: 2px;

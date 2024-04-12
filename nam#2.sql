@@ -660,3 +660,12 @@ SELECT
         ON B.BOARD_NUM = M.BOARD_NUM
         INNER JOIN ATTACHED_FILE AS F
         ON B.BOARD_NUM = F.BOARD_NUM;
+        
+        
+SELECT * from 
+board
+WHERE board_type=28;
+
+SELECT * from electric_accidents_burn_range;
+
+SELECT * FROM factors_causing_electric_accidents;
