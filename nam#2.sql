@@ -285,7 +285,7 @@ AND USER_PW = '0';
 
 
 -- 2024-02-28 
-CREATE TABLE BOARD(
+CREATE TABLE board(
   BOARD_NUM INT AUTO_INCREMENT PRIMARY KEY
   , BOARD_TITLE VARCHAR(50) NOT NULL
   , CONTENT VARCHAR(200)
@@ -296,6 +296,7 @@ CREATE TABLE BOARD(
 );
 -- 만약 board_no로 되어있는 경우 아래 쿼리문 실행할 것
 ALTER TABLE board CHANGE board_no BOARD_NUM INT AUTO_INCREMENT;
+ALTER TABLE board CHANGE CONTENT CONTENT VARCHAR(500);
 
 -- DROP TABLE board;
 
@@ -613,3 +614,58 @@ SELECT
 		WHEN CLOSE_DATE > NOW() THEN '다시 입력'
 	END
 FROM board_plus;
+
+
+
+CREATE TABLE MOVIE(
+	MOVIE_NAME VARCHAR(50) PRIMARY KEY
+	, MOVIE_DAY DATETIME NOT NULL
+	, FILM_RATING VARCHAR(10)
+	, MOVIE_START TIME NOT NULL
+	, MOVIE_END TIME NOT NULL
+	, BOARD_NUM INT REFERENCES board(BOARD_NUM) 
+);
+
+SELECT * FROM board
+INNER JOIN movie
+ON board.BOARD_NUM = movie.BOARD_NUM;
+
+
+SELECT
+            MOVIE_NAME
+            , MOVIE_DAY
+            , FILM_RATING
+            , MOVIE_START
+            , MOVIE_END
+            , ORIGIN_FILE_NAME
+            , ATTACHED_FILE_NAME
+        FROM BOARD AS B
+        INNER JOIN MOVIE AS M
+        ON B.BOARD_NUM = M.BOARD_NUM
+        INNER JOIN ATTACHED_FILE AS F
+        ON B.BOARD_NUM = F.BOARD_NUM;
+        
+        
+SELECT
+            MOVIE_NAME
+            , DATE_FORMAT(MOVIE_DAY, '%Y-%m-%d') AS MOVIE_DAY
+            , FILM_RATING
+            , DATE_FORMAT(MOVIE_START, '%H:%i') AS MOVIE_START
+            , DATE_FORMAT(MOVIE_END, '%H:%i') AS MOVIE_END
+            , ORIGIN_FILE_NAME
+            , CONTENT
+            , m.board_num
+        FROM BOARD AS B
+        INNER JOIN MOVIE AS M
+        ON B.BOARD_NUM = M.BOARD_NUM
+        INNER JOIN ATTACHED_FILE AS F
+        ON B.BOARD_NUM = F.BOARD_NUM;
+        
+        
+SELECT * from 
+board
+WHERE board_type=28;
+
+SELECT * from electric_accidents_burn_range;
+
+SELECT * FROM factors_causing_electric_accidents;

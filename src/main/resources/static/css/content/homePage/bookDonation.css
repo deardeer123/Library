@@ -1,0 +1,98 @@
+.box{
+    font-size: 18px;
+}
+.head-div{
+    border: 1px solid darkgreen;
+    border-radius: 15px;
+    padding: 20px;
+    background-color: #fffef5;
+
+}
+
+.head-div li{
+    position: relative; 
+    margin-top: 3px;
+    margin-left: 15px;
+}
+
+.head-div > span:first-child{
+    display: inline-block;
+    padding-top: 10px;
+    /* margin-top: 10px; */
+}
+
+.head-div > div{
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.text-box > span{
+    display: inline-block;
+    margin-left: 20px;
+    font-weight: bold;
+    color: darkgreen;
+    font-size: large;
+}
+li::marker{
+    color: coral;
+}
+
+.title-span{
+    font-size: 20px;
+    margin-top: 30px;
+    font-weight: bold;
+    color: darkgreen;
+    
+}
+
+.download{
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 10px;
+    background-color: #fffef5;
+}
+
+
+
+
+.book-div-ul {
+    position: relative;
+    margin-top: 30px;
+
+}
+
+.book-header h4{
+    width: 500px;
+    padding: 10px;
+    font-weight: bold;
+    background-color: teal;
+    color: white;
+    margin: 20px;
+
+}
+
+.book-header > span{
+    display: inline-block;
+    margin-top: 25px;
+    
+}
+
+.book-div {
+    display: flex;
+    margin: 0;
+
+}
+.book-div > ul {
+    width: 50%;
+    line-height: 200%;
+}
+.book-span-ul{
+    margin-left: 5px;
+}
+.book-span-ul2{
+    margin-left: 40px;
+}
+
+.forum-target > ul{
+    list-style: square
+}

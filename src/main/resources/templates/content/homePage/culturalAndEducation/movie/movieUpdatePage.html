@@ -12,7 +12,7 @@
     <!-- html 코드 작성 -->
     <div class="row">
         <div class="col">
-            <form action="/insertMovie" method="post" enctype="multipart/form-data">
+            <form action="/updateMovie" method="post" enctype="multipart/form-data">
                 <table class="table table-bordered text-center align-middle border-Secondary">
                     <colgroup>
                         <col width="20%">
@@ -24,7 +24,7 @@
                         <tr>
                             <td>제목</td>
                             <td colspan="3">
-                                <input type="text" class="form-control" name="movieName">
+                                <input type="text" class="form-control" name="movieName" th:value="${board.MovieVO.movieName}">
                             </td>
                         </tr>
                         <tr>
@@ -32,7 +32,7 @@
                                 관람 등급
                             </td>
                             <td colspan="3">
-                                <select class="form-select" name="filmRating">
+                                <select class="form-select" name="filmRating" th:value="${board.MovieVO.filmRating}">
                                     <option value="전체이용가">전체이용가</option>
                                     <option value="12세 이용가">12세 이용가</option>
                                     <option value="15세 이용가">15세 이용가</option>
@@ -43,10 +43,10 @@
                         <tr>
                             <td>상영일</td>
                             <td>
-                                <input type="date" class="form-control" name="movieDay" style="margin-bottom: 5px;">
-                                <input type="time" class="form-control" name="movieStart" style="display: inline-block; width: 140px;">
+                                <input type="date" class="form-control" name="movieDay" style="margin-bottom: 5px;" th:value="${board.MovieVO.movieDay}">
+                                <input type="time" class="form-control" name="movieStart" style="display: inline-block; width: 140px;"  th:value="${board.MovieVO.movieStart}">
                                 <span>~</span>
-                                <input type="time" class="form-control" name="movieEnd" style="display: inline-block; width: 140px;">
+                                <input type="time" class="form-control" name="movieEnd" style="display: inline-block; width: 140px;"  th:value="${board.MovieVO.movieEnd}">
                             </td>
                             <td>작성자</td>
                             <td>[[${#authentication.name}]]</td>
@@ -55,18 +55,20 @@
                             <td colspan="4">
                                 <div class="form-floating">
                                     <textarea class="form-control" placeholder="Leave a comment here"
-                                        style="height: 600px" name="content"></textarea>
+                                        style="height: 600px" name="content" th:value="${board.content}"></textarea>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="4">
                                 <input type="file" style="margin-bottom: 5px; width: 50%;" class="form-control"
-                                    name="files">
+                                    name="file">
+                                    <input type="hidden" name="originFileName" th:value="${board.fileList[0].originFileName}">
                             </td>
                         </tr>
                     </tbody>
                     <input type="hidden" name="boardType" value="26">
+                    <input type="hidden" name="boardNum" th:value="${board.boardNum}">
                     <div class="mb-2 d-md-flex justify-content-end">
                         <input type="submit" class="btn btn-primary btn-sm" value="등록하기">
                     </div>

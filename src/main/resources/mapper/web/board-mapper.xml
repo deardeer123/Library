@@ -15,6 +15,7 @@
         <association property="applyVO" resultMap="memberMapper.apply"/>
         <association property="askAndAnswerBoardVO" resultMap="participationForumMapper.askAndAnswerBoardVO" />
         <association property="memberVO" resultMap="memberMapper.users"/>
+        <association property="movieVO" resultMap="movie"/>
         <collection property="fileList" resultMap="file"/>
     </resultMap>
 
@@ -40,6 +41,16 @@
         <result column="IS_MAIN" property="isMain"/>
         <result column="BOARD_NUM" property="boardNum"/>
     </resultMap>
+
+    <resultMap id="movie" type="com.green.Library.web.board.vo.MovieVO">
+        <id column="MOVIE_NAME" property="movieName"/>
+        <result column="MOVIE_DAY" property="movieDay"/>
+        <result column="FILM_RATING" property="filmRating"/>
+        <result column="MOVIE_START" property="movieStart"/>
+        <result column="MOVIE_END" property="movieEnd"/>
+        <result column="BOARD_NUM" property="boardNum"/>
+    </resultMap>
+
 
 
 <!--  //////////////////// 기본 게시글 /////////////////  -->
@@ -132,6 +143,7 @@
     <select id="countBoard" resultType="int">
         SELECT COUNT (BOARD_NUM)
         FROM BOARD
+        where board_type = #{boardType}
     </select>
 
 
@@ -414,6 +426,119 @@
         AND USER_CODE = #{userCode};
     </select>
 
+    <select id="selectMovieList" resultMap="board">
+        SELECT
+            MOVIE_NAME
+            , DATE_FORMAT(MOVIE_DAY, '%Y-%m-%d') AS MOVIE_DAY
+            , FILM_RATING
+            , DATE_FORMAT(MOVIE_START, '%H:%i') AS MOVIE_START
+            , DATE_FORMAT(MOVIE_END, '%H:%i') AS MOVIE_END
+            , ORIGIN_FILE_NAME
+            , ATTACHED_FILE_NAME
+            , M.BOARD_NUM
+        FROM BOARD AS B
+        INNER JOIN MOVIE AS M
+        ON B.BOARD_NUM = M.BOARD_NUM
+        INNER JOIN ATTACHED_FILE AS F
+        ON B.BOARD_NUM = F.BOARD_NUM
+        <if test='searchValue != null and !searchValue.equals("")'>
+            AND ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+        <if test='fromDate != null and !fromDate.equals("")'>
+            AND DATE_FORMAT(MOVIE_DAY, '%Y-%m-%d') = #{fromDate}
+        </if>
+        <if test='toDate != null and !toDate.equals("")'>
+            AND DATE_FORMAT(MOVIE_DAY, '%Y-%m-%d') = #{toDate}
+        </if>
+        ORDER BY B.BOARD_NUM DESC
+        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
+    </select>
+
+    <insert id="insertMovieBoard">
+        INSERT INTO BOARD(
+            CONTENT
+            , BOARD_TITLE
+            , BOARD_NUM
+            , BOARD_TYPE
+        ) VALUES(
+            #{content}
+            ,#{boardTitle}
+            ,#{boardNum}
+            ,#{boardType}
+        )
+    </insert>
+    <insert id="insertMovie">
+        INSERT INTO MOVIE(
+            MOVIE_NAME
+            ,MOVIE_DAY
+            ,FILM_RATING
+            ,MOVIE_START
+            ,MOVIE_END
+            ,BOARD_NUM
+        ) VALUES(
+            #{movieVO.movieName}
+            ,#{movieVO.movieDay}
+            ,#{movieVO.filmRating}
+            ,#{movieVO.movieStart}
+            ,#{movieVO.movieEnd}
+            ,#{boardNum}
+        )
+    </insert>
+    <insert id="insertMovieFile">
+        INSERT INTO ATTACHED_FILE(
+            ORIGIN_FILE_NAME
+            ,ATTACHED_FILE_NAME
+            ,BOARD_NUM
+        ) VALUES
+        <foreach collection="fileList" item="file" separator=",">
+            (#{file.originFileName}
+            ,#{file.attachedFileName}
+            ,#{file.boardNum})
+        </foreach>
+
+    </insert>
+    <select id="selectMovieDetail" resultMap="board">
+        SELECT
+            MOVIE_NAME
+            , DATE_FORMAT(MOVIE_DAY, '%Y-%m-%d') AS MOVIE_DAY
+            , FILM_RATING
+            , DATE_FORMAT(MOVIE_START, '%H:%i') AS MOVIE_START
+            , DATE_FORMAT(MOVIE_END, '%H:%i') AS MOVIE_END
+            , ORIGIN_FILE_NAME
+            , ATTACHED_FILE_NAME
+            , CONTENT
+            , B.BOARD_NUM
+        FROM BOARD AS B
+        INNER JOIN MOVIE AS M
+        ON B.BOARD_NUM = M.BOARD_NUM
+        INNER JOIN ATTACHED_FILE AS F
+        ON B.BOARD_NUM = F.BOARD_NUM
+        WHERE M.BOARD_NUM = #{boardNum}
+    </select>
+    <update id="updateMovie">
+        UPDATE BOARD INNER JOIN MOVIE
+        ON BOARD.BOARD_NUM = MOVIE.BOARD_NUM
+        SET
+            MOVIE_NAME = #{movieVO.movieName}
+            , MOVIE_DAY = #{movieVO.movieDay}
+            , FILM_RATING = #{movieVO.filmRating}
+            , MOVIE_START = #{movieVO.movieStart}
+            , MOVIE_END = #{movieVO.movieEnd}
+            , CONTENT = #{content}
+        WHERE BOARD.BOARD_NUM = #{boardNum}
+    </update>
+    <update id="updateFile">
+        UPDATE ATTACHED_FILE
+        SET
+            ORIGIN_FILE_NAME  = #{originFileName}
+            , ATTACHED_FILE_NAME = #{attachedFileName}
+        WHERE ATTACHED_FILE.BOARD_NUM = #{boardNum}
+    </update>
+    <delete id="movieDelete">
+        DELETE
+        FROM MOVIE
+        WHERE BOARD_NUM = #{boardNum}
+    </delete>
 
 
 

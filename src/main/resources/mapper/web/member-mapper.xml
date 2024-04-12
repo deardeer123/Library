@@ -107,13 +107,14 @@
 
     <select id="selectApplyUser" resultMap="apply">
         SELECT
-        A.APPLY_DATE
-        ,A.apply_STATUS
+            A.APPLY_DATE
+            ,A.apply_STATUS
         FROM apply AS A
         INNER JOIN users AS U
         ON A.USER_CODE = U.USER_CODE
         WHERE A.USER_CODE = #{userCode}
-        AND CONFIRM = 'N';
+        AND CONFIRM = 'N'
+        AND apply_Status='승인완료'
     </select>
 
     <select id="applyUserBoardList" resultMap="boardMapper.board">

@@ -1,8 +1,6 @@
 package com.green.Library.web.board.service;
 
-import com.green.Library.web.board.vo.BoardVO;
-import com.green.Library.web.board.vo.PlusVO;
-import com.green.Library.web.board.vo.SearchVO;
+import com.green.Library.web.board.vo.*;
 import com.green.Library.web.member.vo.ApplyVO;
 import com.green.Library.web.member.vo.MemberVO;
 import org.codehaus.groovy.transform.sc.transformers.CompareIdentityExpression;
@@ -23,7 +21,7 @@ public interface BoardService {
     int isNullBoardNo();
 
     //게시판 개수
-    int countBoard();
+    int countBoard(int boardType);
 
     //상세 게시판
     BoardVO selectBoardDetail();
@@ -65,5 +63,17 @@ public interface BoardService {
     void upPersonnel(int boardNum);
 
     int applyCheck(ApplyVO applyVO);
+
+    List<BoardVO> selectMovieList(SearchVO searchVO);
+
+    void insertMovie(BoardVO boardVO);
+
+    BoardVO selectMovieDetail(int boardNum);
+
+    void updateMovie(BoardVO boardVO);
+
+    void updateFile(UploadVO uploadVO);
+
+    void movieDelete(int boardNum);
 }
 
