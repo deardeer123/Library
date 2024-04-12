@@ -424,27 +424,32 @@ function exReturnDate(){
     const accordion_body = document.querySelector('.accordion-body')
 
     let newDate = new Date()
-    console.log(`${newDate.getMonth()+1}월 ${newDate.getDate()}일`)
+    //console.log(`${newDate.getMonth()+1}월 ${newDate.getDate()}일`)
     exReturnDate = newDate.setDate(newDate.getDate() + 14);
 
     
     let date = `${newDate.getFullYear()}-${newDate.getMonth()+1}-${newDate.getDate()}`
-  
 
- 
     
-    console.log(date)
+    
+    //console.log(date)
 
-    let newDate1 = new Date(`'${date}'`)
-    console.log(newDate1.toLocaleDateString())
+    let newDate1 = new Date(`${date}`)
+    //console.log(newDate1.toLocaleDateString())
     newDate1.setDate(newDate.getDate()+14)
-    console.log(newDate1.toDateString());
-    console.log(newDate1.toLocaleDateString());
-    console.log(newDate1.toDateString());
-    console.log(newDate1.toDateString());
-    console.log(newDate1.toDateString());
-    console.log(newDate1.toDateString().substring(0,4))
+    //console.log(newDate1.toDateString());
+    newDate1.toLocaleDateString();
+    //console.log(newDate1.toDateString());
+    //console.log(newDate1.toDateString());
+    //console.log(newDate1.toDateString());
+    console.log(newDate1.toDateString().substring(0,4));
+
+    const day = '';
+
+    if(newDate1.toDateString().substring(0,4) === 'Mon'){
+        day = '(월)'
+    }
     
-    accordion_body.innerHTML=exReturnDate;
+    accordion_body.innerHTML = newDate1.toLocaleDateString();
 }
 
