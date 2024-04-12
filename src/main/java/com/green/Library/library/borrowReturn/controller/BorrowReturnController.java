@@ -131,8 +131,7 @@ public class BorrowReturnController {
     public void updateUserIntro(@RequestBody MemberVO memberVO){
 
         borrowReturnService.updateUserIntro(memberVO);
-        System.out.println("ddddddddddddddddddd" + memberVO);
-        System.out.println("이용자 정보 업데이트" + memberVO);
+
     }
 
     //일관 반납
@@ -189,7 +188,6 @@ public class BorrowReturnController {
         System.out.println("출력 이력 관리 이동");
         return "content/library/borrowReturn/outputHistory";
     }
-
 
     //매개변수로 넘오언 데이터가 숫자 형식으로 변환가능한지 판단
     public boolean isNumberic(String str) {

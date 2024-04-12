@@ -417,9 +417,12 @@ function searchAddress() {
         }
     }).open();
 }
+
 exReturnDate();
 function exReturnDate(){
     // 태그 선택
+    const accordion_body = document.querySelector('.accordion-body')
+
     let newDate = new Date()
     console.log(`${newDate.getMonth()+1}월 ${newDate.getDate()}일`)
     exReturnDate = newDate.setDate(newDate.getDate() + 14);
@@ -441,7 +444,7 @@ function exReturnDate(){
     console.log(newDate1.toDateString());
     console.log(newDate1.toDateString());
     console.log(newDate1.toDateString().substring(0,4))
-    const accordion_body = document.querySelector(".accordion-body")
+    
     accordion_body.innerHTML=exReturnDate;
 }
 
