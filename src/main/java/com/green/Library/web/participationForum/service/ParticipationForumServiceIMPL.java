@@ -1,5 +1,6 @@
 package com.green.Library.web.participationForum.service;
 
+import com.green.Library.web.board.vo.UploadVO;
 import com.green.Library.web.participationForum.vo.AskAndAnswerBoardVO;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.print.Book;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service("ParticipationForumService")
@@ -18,25 +20,31 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
     @Autowired
     private SqlSessionTemplate sqlSession;
 
+    //그냥 전체 게시물 갯수
+    @Override
+    public int normalTotalBoardCnt(SearchVO searchVO) {
+        return sqlSession.selectOne("participationForumMapper.normalTotalBoardCnt",searchVO);
+    }
+
     //공지사항작성
     @Override
-//    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void insertNotice(BoardVO boardVO) {
-        sqlSession.insert("participationForumMapper.insertBoard", boardVO);
-        sqlSession.insert("participationForumMapper.insertUploadFile", boardVO);
+        sqlSession.insert("participationForumMapper.insertBoard",boardVO); //게시물 먼저 넣고
+        sqlSession.insert("boardMapper.insertFileList",boardVO); //첨부파일 넣고
+    }
+
+    @Override
+    public void boardCntUp(int boardNum) {
+        sqlSession.update("participationForumMapper.boardCntUp",boardNum);
     }
 
     //공지사항조회
     @Override
-    public List<BoardVO> selectNotice() {
-        return sqlSession.selectList("participationForumMapper.selectNotice");
+    public List<BoardVO> selectNotice(SearchVO searchVO) {
+        return sqlSession.selectList("participationForumMapper.selectNotice", searchVO);
     }
 
-    //조회수증가
-    @Override
-    public void updateCnt(int boardNo) {
-        sqlSession.update("participationForumMapper.updateCnt",boardNo);
-    }
 
     //공지사항 상세조회
     @Override
@@ -70,6 +78,7 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
     public int chkAnswerOrderNum(int originOrderNum) {
         return sqlSession.selectOne("participationForumMapper.chkAnswerOrderNum", originOrderNum);
     }
+
 
     //boardNum으로 origin_order_num 찾기
     @Override
@@ -106,10 +115,7 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
         return sqlSession.selectList("participationForumMapper.selectAnswerBoardList",searchVO);
     }
 
-    @Override
-    public List<BoardVO> selectAskAndAnswerBoardList2(SearchVO searchVO) {
-        return sqlSession.selectList("participationForumMapper.selectAskAndAnswerBoardList2",searchVO);
-    }
+
 
     //글 갯수 찾기
     @Override
@@ -117,17 +123,42 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
         return sqlSession.selectOne("participationForumMapper.partiCountBoard",searchVO);
     }
 
+    //상세보기
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BoardVO detailAskBoard(int boardNum) {
         sqlSession.update("participationForumMapper.boardCntUp",boardNum);
         return sqlSession.selectOne("participationForumMapper.detailAskBoard",boardNum);
     }
-
+    //상세보기 (조회수 증가 x)
     @Override
     public BoardVO detailAskBoard2(int boardNum) {
         return sqlSession.selectOne("participationForumMapper.detailAskBoard",boardNum);
     }
+
+    //삭제
+    @Override
+    public void deleteBoard(List<Integer> boardNumList) {
+        sqlSession.delete("participationForumMapper.deleteBoard",boardNumList);
+    }
+
+    //삭제할 boardNum ㄱ져오기
+    @Override
+    public List<Map<String, Integer>> deleteAskBoard1(int originOrderNum) {
+        return sqlSession.selectList("participationForumMapper.deleteAskBoard1", originOrderNum);
+    }
+    //질문 답변 글 수정하기
+    @Override
+    public void modifyAskBoard(BoardVO boardVO) {
+        sqlSession.update("participationForumMapper.modifyAskBoard", boardVO);
+    }
+
+    //업로드 파일 변경시키기
+    @Override
+    public void modifyAskUpload(UploadVO uploadVO) {
+        sqlSession.update("participationForumMapper.modifyAskUpload",uploadVO);
+    }
+    
 
 
 }

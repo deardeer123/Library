@@ -1,6 +1,7 @@
 package com.green.Library.web.participationForum.controller;
 
 import com.green.Library.util.BoardUploadUtil;
+import com.green.Library.util.ConstantVariable;
 import com.green.Library.web.board.service.BoardServiceImpl;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
@@ -12,19 +13,20 @@ import com.green.Library.web.participationForum.vo.AskAndAnswerBoardVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.Session;
+import org.apache.ibatis.javassist.expr.NewArray;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @Controller
 @RequestMapping("/")
@@ -35,10 +37,8 @@ public class ParticipationForumController {
     private ParticipationForumServiceIMPL participationForumService;
     @Resource(name = "boardService")
     private BoardServiceImpl boardService;
-
     @Resource(name= "memberService")
     private MemberService memberService;
-
 
     private final int selectedMenuIndex = 4;
 
@@ -47,31 +47,41 @@ public class ParticipationForumController {
 
     //공지사항조회
     @RequestMapping("/notice")
-    public String goNotice(Model model, SearchVO searchVO){
-        //메뉴 정보
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        //상단 네비게이션 정보
+    public String goNotice(Model model, SearchVO searchVO, HttpSession session){
+        //인터셉터에 notice라는 정보를 넘겨줌
+        model.addAttribute("page","notice");
+        //boardType을 searchVO로 보내줘야함
+        searchVO.setBoardType(webMenuService.selectIndexNum("notice").get("SIDE_MENU_NUM"));
 
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
-        //선택한 메뉴의 인덱스 번호 보내주기
-        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
-        //선택한 사이드메뉴 인덱스 번호 보내주기
-        int selectedSideMenuIndex = 1;
-        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
+        //총 게시판 갯수
+        int boardCnt = participationForumService.partiCountBoard(searchVO);
 
-        System.out.println("공지사항");
+        //페이징
+        searchVO.setTotalDataCnt(boardCnt);
+        searchVO.setPageInfo();
 
-//        //전체데이터수
-//        int totalBoardCnt= participationForumService.partiCountBoard(searchVO);
-//        searchVO.setTotalDataCnt(totalBoardCnt);
-//
-//        //페이지정보세팅
-//        searchVO.setPageInfo();
-//
-//        //글목록 조회
-//        model.addAttribute("noticeList", participationForumService.forumSelectBoardList(searchVO));
+        //계속 이상하게 나오길래 넣은 코드입니다.
+        if(boardCnt == 0){
+            searchVO.setEndPage(1);
+        }
 
 
+        //묻는 글 들고오기
+        List<BoardVO> boardVOList = participationForumService.selectNotice(searchVO);
+        model.addAttribute("boardVOList", boardVOList);
+
+        //현재 접속하고 있는 사람의 권한 정보가 필요한데.. 널값 체크 적당히 하면서 던져주기
+        int userCode = Optional.ofNullable((Integer)session.getAttribute("userCode")).orElse((Integer) 0);
+        Optional<MemberVO> memberOptional = Optional.ofNullable(memberService.selectMemberInfoToUserCode(userCode));
+        String isAdmin = memberOptional.map(s-> s.getIsAdmin()).orElse("N");
+
+        model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("userCode", userCode);
+
+
+        //그냥 공지사항 갯수
+        int normalTotalBoardCnt = participationForumService.normalTotalBoardCnt(searchVO);
+        model.addAttribute("normalTotalBoardCnt", normalTotalBoardCnt);
 
         return "content/homePage/forum/notice";
     }
@@ -79,73 +89,140 @@ public class ParticipationForumController {
 
     //공지사항 글쓰기 페이지이동
     @GetMapping("/noticeWrite")
-    public String noticeWrite (Model model){
-        //메뉴 정보
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        //상단 네비게이션 정보
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+    public String noticeWrite (Model model, HttpSession session){
+        //인터셉터한테 넘겨줄 page 정보
+        model.addAttribute("page","notice");
 
+        //관리자의 정보도 같이 던져주는 걸로
+        MemberVO memberVO = memberService.selectMemberInfoToUserCode(Optional.ofNullable((Integer)session.getAttribute("userCode")).get());
+        model.addAttribute("memberVO", memberVO);
 
-        return "content/homePage/forum/noticeWrite2";
+        return "content/homePage/forum/noticeWrite";
     }
 
     //공지사항 글쓰기
     @PostMapping("/noticeWrite")
     public String noticeWrite(BoardVO boardVO, HttpSession session, Model model,
-                              @RequestParam(name = "files") MultipartFile[] files){
-//        //로그인 정보 전달
-//        MemberVO loginInfo = (MemberVO) session.getAttribute("loginInfo");
-//        boardVO.setUserCode(loginInfo.getUserCode());
-//        model.addAttribute("loginInfo",loginInfo);
-//
-//        //게시글 다음 최대값 조회
-//        int boardNo = participationForumService.selectNextBoardCode();
-//        boardVO.setBoardNum(boardNo);
-//
-//        //첨부파일등록
-//        List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(files);
-//        for (UploadVO file : fileList){
-//            file.setBoardNum(boardNo);
-//        }
-//        boardVO.setFileList(fileList);
-//
-//        //글등록
-//        participationForumService.insertNotice(boardVO);
+                              @RequestParam(name = "file") MultipartFile file){
+        //인터셉터한테 넘겨줄 page 정보
+        model.addAttribute("page","notice");
 
+        //게시판 번호 구하기
+        int boardNum = boardService.isNullBoardNo();
+        boardVO.setBoardNum(boardNum);
+
+        //userCode구하기
+        int userCode = Optional.ofNullable((Integer)session.getAttribute("userCode")).orElse(boardVO.getUserCode());
+        MemberVO memberVO = memberService.selectMemberInfoToUserCode(userCode);
+        boardVO.setUserCode(userCode); //알아서 들고 오겠지만 혹시 몰라서 작성
+        boardVO.setMemberVO(memberVO); //알아서 들고 오겠지만 혹시 몰라서 작성
+
+        //혹시 파일을 파일을 업로드 하지않는경우를 생각하여 옵셔널 사용
+        UploadVO uploadVO = Optional.ofNullable(BoardUploadUtil.uploadFile(file))
+                .orElse(new UploadVO().builder()
+                        .isMain("N")
+                        .AttachedFileName("")
+                        .OriginFileName("")
+                        .build());
+
+        //uploadVO에도 boardNum 넣어주기
+        uploadVO.setBoardNum(boardNum);
+
+        //fileList 만들고 그안에 uploadVO를 넣은 다음 boardVO에 넣어주기
+        List<UploadVO> fileList = new ArrayList<>();
+        fileList.add(uploadVO);
+        boardVO.setFileList(fileList);
+
+        //쿼리 실행
+        participationForumService.insertNotice(boardVO);
+        
         return "redirect:/notice";
     }
     //공지사항 글 상세조회
     @GetMapping("/noticeDetail")
-    public String noticeDetail(@RequestParam(name = "boardNo") int boardNo, Model model){
-//        //조회수 증가
-//        participationForumService.updateCnt(boardNo);
-//
-//        //공지 상세조회
-//        BoardVO noticeDetail = participationForumService.noticeDetail(boardNo);
-//        model.addAttribute("noticeDetail", noticeDetail);
-//
-//        System.out.println("************************************" + noticeDetail);
+    public String noticeDetail(@RequestParam(name = "boardNum") int boardNum, Model model){
+        //인터셉터한테 넘겨줄 page 정보
+        model.addAttribute("page","notice");
+
+        //조회수 증가
+        participationForumService.boardCntUp(boardNum);
+
+        //상세보기 할 게시판 찾기
+        BoardVO boardVO = participationForumService.noticeDetail(boardNum);
+        //유저정보 뺴오기 위한 userCode
+        int userCode = boardVO.getUserCode();
+        MemberVO memberVO = memberService.selectMemberInfoToUserCode(userCode);
+
+        //자료 던져주기
+        model.addAttribute("boardVO", boardVO);
+        model.addAttribute("memberVO", memberVO);
 
         return "content/homePage/forum/noticeDetail";
     }
 
+    //공지사항 수정하러가기
+    @GetMapping("/modifyNoticeBoard")
+    public String modifyNoticeBoard(Model model, @RequestParam(name ="boardNum")int boardNum){
+
+        //넘겨받은 boardNum으로 게시물정보, 게시물 작성자 정보를 얻음
+        BoardVO boardVO = participationForumService.noticeDetail(boardNum);
+        MemberVO memberVO = memberService.selectMemberInfoToUserCode(boardVO.getUserCode());
+
+        model.addAttribute("boardVO", boardVO);
+        model.addAttribute("memberVO", memberVO);
+
+        return "content/homePage/forum/modifyNoticeBoard";
+    }
+
+    //공지사항 변경하기
+    @PostMapping("modifyNoticeBoard")
+    public String modifyNoticeBoard2(BoardVO boardVO,UploadVO uploadVO,
+                                     @RequestParam(name="file")MultipartFile file){
+        //업로드된 파일의 코드
+        int attchedCode = uploadVO.getAttachedCode();
+
+        int boardNum = boardVO.getBoardNum();
+
+        //새로 파일이 등록이 되었는지 확인
+        if(!file.getOriginalFilename().equals("")){
+            UploadVO uploadVO1 = BoardUploadUtil.uploadFile(file);
+            uploadVO1.setBoardNum(boardNum);
+            uploadVO1.setAttachedCode(attchedCode);
+
+            participationForumService.modifyAskUpload(uploadVO1);
+        }
+        participationForumService.modifyAskBoard(boardVO);
+
+        return "redirect:/notice";
+    }
+
+    //공지사항 삭제하기
+    @GetMapping("goDeleteNoticeBoard")
+    public String goDeleteNoticeBoard(@RequestParam(name="boardNum") int boardNum, Model model){
+
+//       게시물 삭제할떄 boardNum 리스트로 보내줘야함..
+        List<Integer> boardNumList = new ArrayList<>();
+        boardNumList.add(boardNum);
+
+        //boardNum이 담긴 리스트를 쿼리문으로 던져주기
+        participationForumService.deleteBoard(boardNumList);
+
+        return "redirect:/notice";
+    }
+
+
     //묻고답하기
     @GetMapping("/askAndAnswer")
-    public String goAskAndAnswer(Model model, SearchVO searchVO){
-        //메뉴 정보
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        //네비게이션
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
-        //선택한 메뉴의 인덱스 번호 보내주기
-        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
-        //선택한 사이드메뉴 인덱스 번호 보내주기
-        int selectedSideMenuIndex = 2;
-        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
+    public String goAskAndAnswer(Model model, SearchVO searchVO, HttpSession session){
+        //인터셉터한테 ansAndAnswer 보내주기
+        model.addAttribute("page", "askAndAnswer");
+        //boardType을 searchVO로 보내줘야함
+        searchVO.setBoardType(webMenuService.selectIndexNum("askAndAnswer").get("SIDE_MENU_NUM"));
 
-        System.out.println(searchVO.getBoardType());
         System.out.println("묻고답하기");
         //총 게시판 갯수
         int boardCnt = participationForumService.partiCountBoard(searchVO);
+
         //페이징
         searchVO.setTotalDataCnt(boardCnt);
         searchVO.setPageInfo();
@@ -157,32 +234,39 @@ public class ParticipationForumController {
         if(boardCnt == 0){
             searchVO.setEndPage(1);
         }
-
-//        //묻는 글 들고오기
+       //묻는 글 들고오기
         List<BoardVO> boardVOList = participationForumService.selectAskAndAnswerBoardList(searchVO);
         model.addAttribute("boardVOList", boardVOList);
+
+        //현재 접속하고 있는 사람의 권한 정보가 필요한데.. 널값 체크 적당히 하면서 던져주기
+        int userCode = Optional.ofNullable((Integer)session.getAttribute("userCode")).orElse((Integer) 0);
+        Optional<MemberVO> memberOptional = Optional.ofNullable(memberService.selectMemberInfoToUserCode(userCode));
+        String isAdmin = memberOptional.map(s-> s.getIsAdmin()).orElse("N");
+
+        model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("userCode", userCode);
+
+        //그냥 공지사항 갯수
+        int normalTotalBoardCnt = participationForumService.normalTotalBoardCnt(searchVO);
+        model.addAttribute("normalTotalBoardCnt", normalTotalBoardCnt);
 
         return "content/homePage/forum/askAndAnswer";
     }
 
+//    시큐리티 작업해야함 로그인해야지 글작성 페이지 이동할 수 있도록
     @GetMapping("/askAndAnswerWrite")
     public String writeAskAndAnswer(Model model,HttpSession session, SearchVO searchVO){
-//        묻고 답하기 글 작성 페이지 이동
+        //묻고 답하기 글 작성 페이지 이동
+        //인터셉터한테 ansAndAnswer 보내주기
+        model.addAttribute("page", "askAndAnswer");
+        //boardType을 searchVO로 보내줘야함
+        searchVO.setBoardType(webMenuService.selectIndexNum("askAndAnswer").get("SIDE_MENU_NUM"));
 
-        //메뉴 정보
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        //네비게이션
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
-        //선택한 메뉴의 인덱스 번호 보내주기
-        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
-        //선택한 사이드메뉴 인덱스 번호 보내주기
-        int selectedSideMenuIndex = 2;
-        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
+        //userCode로 이름, 전화번호, 아이디, 코드 얻기
+        //근데 만약에 로그인을 하지 않고 글쓰기를 할려는 경우를 막아야함
 
         MemberVO memberVO = memberService.selectMemberInfoToUserCode((Integer) session.getAttribute("userCode"));
-        System.out.println(memberVO);
-
-
+        model.addAttribute("memberVO",memberVO);
 
         return "content/homePage/forum/askAndAnswerWrite";
     }
@@ -232,12 +316,17 @@ public class ParticipationForumController {
         int answerOrderNum = 0;
         askAndAnswerBoardVO.setAnswerOrderNum(answerOrderNum);
 
+        //이글을 질문한 유저코드 넣기
+        askAndAnswerBoardVO.setChkAskUserCode((Integer) session.getAttribute("userCode"));
+
         //boardVO에 askAndAnswerBoardVO 넣기
         boardVO.setAskAndAnswerBoardVO(askAndAnswerBoardVO);
 
         //memberVO도 넣어줘야 하는데 일단 가짜 데이터 홍길동 넣음
 
         memberVO.setUserCode((Integer) session.getAttribute("userCode"));
+        //이게 안들어가지네...
+        boardVO.setUserCode((Integer) session.getAttribute("userCode"));
         memberVO.setUserId((String) session.getAttribute("userId"));
         boardVO.setMemberVO(memberVO);
 
@@ -245,25 +334,50 @@ public class ParticipationForumController {
 
         return "redirect:/askAndAnswer";
     }
+    @ResponseBody
+    @PostMapping("/askBoardPasswordCheckFetch")
+    public Map<String, Object> askBoardPasswordCheck(@RequestParam(name= "passwd")String passwd,
+                                        @RequestParam(name="boardNum")int boardNum){
+        //넘어온 passwd와 게시판 비밀번호 비교 만약에 맞다면 isRight에 Y을 담고 아니면 N을 담음
+        String isRight ="";
+
+        //가져온 boardNum으로 해당 게시물의 비밀번호를 얻어와야함
+        Optional<BoardVO> optionalBoardVO = Optional.ofNullable(participationForumService.detailAskBoard(boardNum));
+        String chkPasswd = optionalBoardVO.map(s->s.getAskAndAnswerBoardVO()).map(s->s.getAskAndAnswerBoardPassword()).get();
+
+        //비교해서 맞으면 Y 아니믄 N
+        isRight = passwd.equals(chkPasswd)?"Y":"N";
+
+        //map 타입으로 자료 던져주기
+        Map<String, Object> map = new HashMap<>();
+        map.put("isRight", isRight);
+        map.put("boardNum", boardNum);
+
+        return map;
+    }
 
     @GetMapping("/goDetailAskBoard")
-    public String goDetailAskBoard(Model model, @RequestParam(name="boardNum")int boardNum){
+    public String goDetailAskBoard(Model model, @RequestParam(name="boardNum")int boardNum, HttpSession session){
         //묻고 답하기 게시물 보기
-
-        //메뉴 정보
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        //네비게이션
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
-        //선택한 메뉴의 인덱스 번호 보내주기
-        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
-        //선택한 사이드메뉴 인덱스 번호 보내주기
-        int selectedSideMenuIndex = 2;
-        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
+        model.addAttribute("page", "askAndAnswer");
 
         //게시물 정보 던져주기
         BoardVO boardVO = participationForumService.detailAskBoard(boardNum);
         //System.out.println(boardVO);
+
+        int userCode = Optional.ofNullable((Integer)session.getAttribute("userCode")).orElse(0);
+        MemberVO memberVO = Optional.ofNullable(memberService.selectMemberInfoToUserCode(userCode)).orElse(
+                new MemberVO().builder()
+                        .userCode(0)
+                        .userId("Guest")
+                        .userName("Guset")
+                        .userTel("000-0000-0000")
+                        .isAdmin("N")
+                        .build()
+        );
         model.addAttribute("boardVO",boardVO);
+//        시큐리티 너무 어렵다 접속한사람 권한 확인할려고 던져줌
+        model.addAttribute("memberVO",memberVO);
 
         return "content/homePage/forum/detailAskBoard";
     }
@@ -271,15 +385,7 @@ public class ParticipationForumController {
     //답변해주기
     @GetMapping("goAnswer")
     public String goAnswer(Model model, @RequestParam(name="boardNum") int boardNum){
-        ///메뉴 정보
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        //네비게이션
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
-        //선택한 메뉴의 인덱스 번호 보내주기
-        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
-        //선택한 사이드메뉴 인덱스 번호 보내주기
-        int selectedSideMenuIndex = 2;
-        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
+        model.addAttribute("page", "askAndAnswer");
 
         //게시물 정보 던져주기
         Optional<BoardVO> boardVO1 = Optional.of(participationForumService.detailAskBoard2(boardNum));
@@ -320,7 +426,7 @@ public class ParticipationForumController {
 
         //답변한 게시판 번호
         askAndAnswerBoardVO.setIfAnswerBoardNum(askAndAnswerBoardVO.getAskAndAnswerBoardNum());
-        askAndAnswerBoardVO.setAnswerOrderNum(askBoardNum);
+        askAndAnswerBoardVO.setOriginOrderNum(participationForumService.searchOriginOrderNumForAnswer(askBoardNum));
 
         //답변한 순서
         int answerNum = participationForumService.chkAnswerOrderNum(askBoardNum);
@@ -332,7 +438,6 @@ public class ParticipationForumController {
         }else{
             answerNum += 1;
         }
-        askAndAnswerBoardVO.setOriginOrderNum(askBoardNum);
         askAndAnswerBoardVO.setAnswerOrderNum(answerNum);
 
         //boardVO에 객체 넣기
@@ -346,40 +451,118 @@ public class ParticipationForumController {
 
         return "redirect:/askAndAnswer";
     }
+    //삭제 하기
+    @GetMapping("/askBoardDelete")
+    public String askBoardDelete(@RequestParam(name="boardNum") int boardNum ,
+                                 @RequestParam(name="isAnswerBoard") String isAnswerBoard){
+
+//        일단 boardNum으로 게시물 검색
+        //게시물 정보 던져주기
+        BoardVO boardVO = participationForumService.detailAskBoard(boardNum);
+        int originOrderNum = boardVO.getAskAndAnswerBoardVO().getOriginOrderNum();
+
+        //boardNum을 담을 리스트
+        List<Integer> boardNumList = new ArrayList<>();
+
+        //만약에 inAnswerBoard가 'Y'인 경우는 답글만 삭제하는 경우임
+        if(isAnswerBoard.equals("Y")){
+            boardNumList.add(boardNum);
+
+        }else{//만약에 'N' 인경우는 질문글을 삭제하는 경우
+
+            //던져준 originOrderNum을 통해 같은 originOrderNum을을 가지는 boardNum 값을 구하는 쿼리문
+            //내가 적어놓고도 참 어이없다.
+            List<Map<String, Integer>> map = participationForumService.deleteAskBoard1(originOrderNum);
+            map.forEach(s-> boardNumList.add(s.get("board_num")));
+        }
+
+        //boardNum이 담긴 리스트를 쿼리문으로 던져주기
+        participationForumService.deleteBoard(boardNumList);
+
+        return "redirect:/askAndAnswer";
+    }
+
+    //    게시물 수정 하러 하기!!!
+    @GetMapping("/goModifyAskBoard")
+    public String goModifyAskBoard(@RequestParam(name = "boardNum")int boardNum, Model model){
+
+        model.addAttribute("page", "askAndAnswer");
+
+        Optional<BoardVO> optionalBoardVO = Optional.ofNullable(participationForumService.detailAskBoard2(boardNum));
+        model.addAttribute(optionalBoardVO.get());
+
+        return "content/homePage/forum/modifyAskBoard";
+    }
+
+    @PostMapping("/goModifyAskBoard2")
+    public String goModifyAskBoard2(BoardVO boardVO, UploadVO uploadVO,
+                                    @RequestParam(name="file")MultipartFile file){
+        //업로드된 파일의 코드
+        int attchedCode = uploadVO.getAttachedCode();
+        
+        //만약에 첨부파일이 없는 경우는 예전에 있던 값을 그대로 유지할 필요가 있음
+        if(!file.getOriginalFilename().equals("")){
+            //첨부파일 넣기
+            uploadVO = BoardUploadUtil.uploadFile(file);
+
+            //첨부파일 게시판 번호 넣어주기
+            uploadVO.setBoardNum(boardVO.getBoardNum());
+            uploadVO.setAttachedCode(attchedCode);
+            //첨부파일 변경하기
+            participationForumService.modifyAskUpload(uploadVO);
+        }
+        
+        //수정하기
+        participationForumService.modifyAskBoard(boardVO);
+
+        return "redirect:/askAndAnswer";
+    }
+
+    //파일 다운로드
+    @PostMapping("/download")
+    public ResponseEntity<org.springframework.core.io.Resource> downloadFile(UploadVO uploadVO) throws Exception {
+
+        System.out.println(uploadVO);
+        //파일 경로
+        String path = ConstantVariable.UPLOAD_PATH;
+        //저장된 파일명
+        String uploadFileName = uploadVO.getAttachedFileName();
+        //저장된 파일의 원래 이름
+        String uploadFileOriginName = uploadVO.getOriginFileName();
+
+        System.out.println(uploadFileName);
+        System.out.println(uploadFileOriginName);
+
+        //UrlResource는 Resource 인터페으스이 구현체로 new UrlResource("file:" + "파일이 저장된 경로")로 사용
+        UrlResource resource = new UrlResource("file:" + path + uploadFileName);
+
+        System.out.println(resource.getFilename());
+
+        //다운로드 할때의 파일명 지정
+        String encodeFileName = UriUtils.encode(uploadFileOriginName, StandardCharsets.UTF_8);
+
+        //파일 다운로드 대화상자가 뜨도록 헤더를 성정해주는것
+        // Content-Disposition 헤더에 attachment; filename="업로드 파일명" 값을 준다.
+        String contentDisposition = "attachment; filename=\"" + encodeFileName + "\"";
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+                .body(resource);
+
+    }
 
 
 
     @GetMapping("/bookDonation")
     public String goBookDonation(Model model){
-        ///메뉴 정보
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        //네비게이션
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
-        //선택한 메뉴의 인덱스 번호 보내주기
-        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
-        //선택한 사이드메뉴 인덱스 번호 보내주기
-        int selectedSideMenuIndex = 3;
-        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
-
-
-
+        model.addAttribute("page", "bookDonation");
 
         System.out.println("자료기증");
         return "content/homePage/forum/bookDonation";
     }
     @GetMapping("/lockerReservation")
     public String goLockerReservation(Model model){
-        //메뉴 정보
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        //네비게이션
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
-        //선택한 메뉴의 인덱스 번호 보내주기
-        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
-        //선택한 사이드메뉴 인덱스 번호 보내주기
-        int selectedSideMenuIndex = 4;
-        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
-
-
+        model.addAttribute("page", "lockerReservation");
 
         System.out.println("사물함예약");
         return "content/homePage/forum/lockerReservation";

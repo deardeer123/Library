@@ -36,7 +36,7 @@
       <!-- 전체 게시물 갯수 -->
       <div class="row">
         <div class="col">
-          전체게시글 수 총 N 개
+          전체게시글 수 총 [[${normalTotalBoardCnt}]] 개
         </div>
       </div>
 
@@ -65,7 +65,8 @@
               <!-- 조회된 묻고 답하기 게시물들 -->
 
               <th:block th:each="e3, state :${boardVOList}">
-                <tr th:onclick="detailAskBoard([[${e3.boardNum}]])">
+                <tr th:onclick="detailAskBoard([[${e3.boardNum}]], [[${e3.askAndAnswerBoardVO.askAndAnswerBoardPublicOrPrivate}]],
+                 [[${isAdmin}]], [[${userCode}]], [[${e3.userCode}]], [[${e3.askAndAnswerBoardVO.chkAskUserCode}]])">
                   <td>[[${#lists.size(boardVOList) - state.index}]]</td>
                   <td>
                     <!-- 만약에 비밀글 인경우 -->
@@ -119,13 +120,112 @@
     </div>
   </div>
 
+  <!-- Modal -->
+  <div class="modal fade" id="passwdModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col">
+              <div>
+                비밀번호를 입력해주세요
+              </div>
+              <div>
+                <input type="text" class="form-control" id="chkPasswd">
+                <input type="hidden" id="chkBoardNum">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="chkPasswd()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
   <script>
-    function detailAskBoard(boardNum) {
+    function detailAskBoard(boardNum, askAndAnswerBoardPublicOrPrivate,
+      isAdmin, userCode, boardUserCode, chkAskUserCode) {
+      console.log(boardNum)
+      console.log(askAndAnswerBoardPublicOrPrivate)
+      console.log(isAdmin)
+
+      //작성자가 질문글을 쓰고 관리자가 답변해줬을경우 작성자는 자신의 글에 답변 달린것을 그냥 확인할 수 있게 해줘야함
+
+      //만약에 askAndAnswerBoardPublicOrPrivate이 public인 경우는 비밀글이 아님.
+      if ((askAndAnswerBoardPublicOrPrivate == 'public' | isAdmin == 'Y' |
+       userCode == boardUserCode | chkAskUserCode == userCode)) {
+        location.href = `/goDetailAskBoard?boardNum=${boardNum}`;
+      } else {
+        
+        // public이 아닌경우는 비밀번호를 확인하고 들어감
+        // 근데 관리자, 글작성자는 그냥 들어가게 하고 싶은데
+        const passwdModal = new bootstrap.Modal('#passwdModal')
+        const chkBoardNumTag = document.querySelector("#chkBoardNum");
+        chkBoardNumTag.value = boardNum;
+        passwdModal.show();
+      }
+    }
+
+    function chkPasswd() {
+      let passwd = document.querySelector("#chkPasswd").value;
+      let chkBoardNumTag = document.querySelector("#chkBoardNum");
+      boardNum = chkBoardNumTag.value;
+
+      console.log(passwd)
       console.log(boardNum)
 
-      location.href = `/goDetailAskBoard?boardNum=${boardNum}`;
+      // ------------------- 첫번째 방식 ---------------//
+      fetch('/askBoardPasswordCheckFetch', { //요청경로
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        //컨트롤러로 전달할 데이터
+        body: new URLSearchParams({
+          // 데이터명 : 데이터값
+          passwd : passwd ,
+          boardNum , boardNum
+        })
+      })
+        .then((response) => {
+          if (!response.ok) {
+            alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+            return;
+          }
+
+          //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+          return response.json(); //나머지 경우에 사용
+        })
+        //fetch 통신 후 실행 영역
+        .then((data) => {//data -> controller에서 리턴되는 데이터!
+          console.log(data)
+          if(data.isRight == 'Y'){
+            location.href = `/goDetailAskBoard?boardNum=${data.boardNum}`;
+          }else{
+            alert("비밀번호 틀렸어요")
+            location.href = `/askAndAnswer`;
+          }
+
+        })
+        //fetch 통신 실패 시 실행 영역
+        .catch(err => {
+          alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+          console.log(err);
+        });
+
     }
+
+
   </script>
 </th:block>
 

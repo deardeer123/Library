@@ -31,6 +31,7 @@
         <result property="userCode" column="USER_CODE"/>
         <result property="boardNum" column="BOARD_NUM"/>
         <result property="applyStatus" column="APPLY_STATUS"/>
+        <result property="confirm" column="CONFIRM"/>
     </resultMap>
 
     <insert id="insertMember">
@@ -104,7 +105,58 @@
         user_code = #{userCode};
     </select>
 
+    <select id="selectApplyUser" resultMap="apply">
+        SELECT
+        A.APPLY_DATE
+        ,A.apply_STATUS
+        FROM apply AS A
+        INNER JOIN users AS U
+        ON A.USER_CODE = U.USER_CODE
+        WHERE A.USER_CODE = #{userCode}
+        AND CONFIRM = 'N';
+    </select>
 
+    <select id="applyUserBoardList" resultMap="boardMapper.board">
+        SELECT
+        PLUS_CODE
+        ,B.BOARD_NUM
+        ,BOARD_TITLE
+        , BOARD_TYPE
+        ,TEACHER
+        ,TARGET
+        , DATE_FORMAT(OPEN_DATE, '%Y-%m-%d') AS OPEN_DATE
+        , DATE_FORMAT(CLOSE_DATE, '%Y-%m-%d') AS CLOSE_DATE
+        , DATE_FORMAT(TO_DATE, '%Y-%m-%d') AS TO_DATE
+        , DATE_FORMAT(FROM_DATE, '%Y-%m-%d') AS FROM_DATE
+        ,PERSONNEL
+        ,MAXIMUM_PERSON
+        ,EVENT_STATUS
+        ,DATE_FORMAT(A.APPLY_DATE, '%Y-%m-%d') AS APPLY_DATE
+        ,A.USER_CODE
+        ,APPLY_STATUS
+        ,U.USER_NAME
+        ,A.CONFIRM
+        FROM BOARD AS B
+        INNER JOIN BOARD_PLUS AS P
+        ON B.BOARD_NUM = P.BOARD_NUM
+        INNER JOIN apply AS A
+        ON B.BOARD_NUM = A.BOARD_NUM
+        INNER JOIN USERS AS U
+        ON A.USER_CODE = U.USER_CODE
+        WHERE A.USER_CODE = #{userCode}
+    </select>
+
+    <delete id="deleteApply">
+        DELETE
+        FROM APPLY
+        WHERE BOARD_NUM = #{boardNum}
+    </delete>
+
+    <update id="CF">
+        UPDATE APPLY
+        SET CONFIRM = 'Y'
+        WHERE BOARD_NUM = #{boardNum}
+    </update>
 
 
 </mapper>

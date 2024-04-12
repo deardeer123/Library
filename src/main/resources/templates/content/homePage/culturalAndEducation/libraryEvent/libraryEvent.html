@@ -18,20 +18,7 @@
               </svg>
              / 문화 행사/교육 / 도서관 행사</h3>
           </div>
-        <div class="col-12 mt-4" style="text-align: center;">
-            <form action="/libraryEvent" method="post">
-                <tr>
-                    <td colspan="4">
-                        <select name="searchType">
-                            <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'boardTitle'}">제목</option>
-                            <option value="USER_ID" th:selected="${searchVO.searchType == 'userId'}">작성자</option>
-                        </select>
-                        <input type="search" name="searchValue" th:value="${searchVO.searchValue}">
-                        <input type="submit" value="검색">
-                    </td>
-                </tr>
-            </form>
-        </div>
+        
         <div class="col mt-4">
             <table class="align-middle table">
                 <colgroup>
@@ -49,13 +36,16 @@
                             <div class="row">
                                 <div class="col-4 card" th:each="board : ${boardList}">
                                     <input th:value="${board.boardNum}" type="checkbox" class="chk" checked>
-                                    <a th:href="@{/eventDetailBoard(boardNum=${board.boardNum})}">
-                                        <img th:src="@{'/upload/' + ${board.fileList[0].attachedFileName}}" class="card-img-top" alt="...">
-                                    </a>
-                                    <div class="card-body">
+
+                                            <a th:href="@{/eventDetailBoard(boardNum=${board.boardNum})}">
+                                                <img th:src="@{'/upload/' + ${board.fileList[0].attachedFileName}}" class="card-img-top" style="height: 350px;" alt="...">
+                                            </a>
+
+                                    <div class="card-body"  style="font-weight: bold;">
                                         <p class="card-text">[[${board.boardTitle}]]</p>
-                                        <p class="card-text">[[${board.MemberVO.userName}]]</p>
-                                        <p class="card-text">[[${board.boardDate}]]</p>
+                                        <p class="card-text">
+                                            [[${board.boardDate}]]<span style="padding-left: 130px; font-weight: 400;">[[${board.MemberVO.userName}]]</span>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -63,6 +53,20 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="col-12 mt-4" style="text-align: center;">
+                <form action="/libraryEvent" method="post">
+                    <tr>
+                        <td colspan="4">
+                            <select name="searchType" class="form-select" style="width: 200px; display: inline-block;">
+                                <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'BOARD_TITLE'}">제목</option>
+                                <option value="USER_NAME" th:selected="${searchVO.searchType == 'USER_NAME'}">작성자</option>
+                            </select>
+                            <input type="search" class="form-control" style="width: 670px; display: inline-block;" name="searchValue" th:value="${searchVO.searchValue}">
+                            <input type="submit" class="btn btn-primary" style="margin-bottom: 3px;" value="검색">
+                        </td>
+                    </tr>
+                </form>
+            </div>
             <!-- 페이징 -->
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">

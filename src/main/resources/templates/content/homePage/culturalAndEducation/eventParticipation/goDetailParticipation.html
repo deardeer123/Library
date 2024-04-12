@@ -73,7 +73,7 @@
         <div class="col-12">
             <table class="table-bordered table">
                 <tr style="height: 600px;">
-                    <td>
+                    <td colspan="4">
                         [[${board.content}]]
                     </td>
                 </tr>
@@ -84,14 +84,14 @@
                 </tr>
             </table>
             <div sec:authorize="hasRole('ROLE_N')" class="d-grid gap-2 col-4 mx-auto">
-                <th:block th:if="${board.PlusVO.personnel lt board.PlusVO.maximumPerson} and ${board.PlusVO.eventStatus == '진행예정'} ">
+                <th:block th:if="${board.PlusVO.personnel lt board.PlusVO.maximumPerson} and ${board.PlusVO.eventStatus == '진행예정'} and ${check != 1}">
                     <input class="btn btn-outline-success" type="button" th:onclick="dateView([[${board.boardNum}]])" value="신청하기">
                 </th:block>
             </div>
-            <div sec:authorize="hasRole('ROLE_Y')">
-                <input type="button" th:onclick="|location.href='@{/goEventUpdatePage(boardNum=${board.boardNum})}'|"
-                    value="수정하기">
-                <input type="button" th:onclick="deleteEventBoard([[${board.boardNum}]])" value="선택 삭제하기">
+            <div sec:authorize="hasRole('ROLE_Y')" class="d-md-flex justify-content-end">
+                <input type="button" class="btn btn-primary btn-sm" style="margin-right: 5px;" th:onclick="|location.href='@{/goEventUpdatePage(boardNum=${board.boardNum})}'|"
+                    value="게시물 수정">
+                <input type="button" class="btn btn-primary btn-sm" th:onclick="deleteEventBoard([[${board.boardNum}]])" value="게시물 삭제">
             </div>
             <div>
                 <input class="btn btn-success btn-lg" type="button" value="목록"

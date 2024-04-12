@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragment/homepage/homePage_detail_layout}">
+
+<!-- html 파일이 열릴때 같이 실행되는 css-->
+<th:block layout:fragment="content_css">
+  <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+  <!-- html code 작성-->
+
+  <form action="/modifyNoticeBoard" method="post" enctype="multipart/form-data">
+    <input type="hidden" value="29" name="boardType">
+    <div class="row">
+      <div class="col">
+
+        <div class="row">
+          <div class="col">
+            * 로 표시된 항목은 필수 기입 사항 입니다.
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <!-- 게시물 작성 폼 -->
+            <table class="table table-bordered">
+              <colgroup>
+                <col width="30%">
+                <col width="*">
+              </colgroup>
+
+              <tbody>
+                <tr>
+                  <td>제목</td>
+                  <td>[[${boardVO.boardTitle}]]</td>
+                  <input type="hidden" name="bookTitle" th:value="${boardVO.boardTitle}">
+                  <input type="hidden" name="boardNum" th:value="${boardVO.boardNum}">
+                </tr>
+
+                <tr>
+                  <td>작성자</td>
+                  <td>
+                    [[${memberVO.userId}]]
+                  </td>
+                  <!-- 사용자 CODE 이거 나중에 수정해야함 !!!-->
+                  <!-- <input type="hidden" value="2" name="userCode">
+                  <input type="hidden" value="홍길동" name="userName"> -->
+                </tr>
+
+                <tr>
+                  <td>내용</td>
+                  <td>
+                    <textarea style="resize: none;" name="content" id="" cols="80" rows="15"></textarea>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    첨부파일
+                    <input type="hidden" name="AttachedCode" th:value="${boardVO.fileList[0].AttachedCode}">
+                  </td>
+                  <td>
+                    <input type="file" class="form-control" aria-describedby="fileHelpBlock" name="file">
+                    <div id="fileHelpBlock" class="form-text">
+                      <p>첨부파일은 최대 1개까지 가능하며, 각 파일의 용량은 최대 10MB까지 업로드 할 수 있습니다.</p>
+                      <p>첨부파일 중 확장자가 .htm .html .txt 인 파일은 .zip .rar 등으로 압축해서 올리세요.</p>
+                      <p>파일명에 쉼표, 마침표 등 특수문자는 제외해 주시기 바랍니다.</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- 취소 버튼 등록버튼 -->
+        <!-- 취소 버튼 누르면 다시 묻고 답하기 목록 화면으로 이동 -->
+        <!-- 등록은 그말대로 등록 -->
+
+        <div class="row">
+          <div class="col">
+            <div class="float-start">
+              <input type="button" class="btn btn-primary" value="취소" onclick="location.href='/notice'">
+            </div>
+
+          </div>
+          <div class="col">
+            <div class="float-end">
+              <input type="submit" class="btn btn-primary" value="글작성">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</th:block>
+
+<th:block layout:fragment="content_js">
+  <!-- html 파일이 열릴때 같이 실행되는 css-->
+  <!-- <script src="/"></script> -->
+</th:block>
+
+</html>
