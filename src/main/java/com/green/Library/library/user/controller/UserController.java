@@ -81,7 +81,6 @@ public class UserController {
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
-
         System.out.println("이용자 승인 이동");
         return "content/library/user/userApproval";
     }

@@ -326,8 +326,8 @@ function showModal(userCode) {
                 <td class="table-light">성별</td>
                 <td>
                     <select name="gender" class="form-select">
-                        <option value="남자">남자</option>
-                        <option value="여자">여자</option>
+                        <option value="남성">남성</option>
+                        <option value="여성">여성</option>
                     </select>
                 </td>
             </tr>
@@ -435,8 +435,8 @@ function exReturnDate(){
     //console.log(date)
 
     let newDate1 = new Date(`${date}`)
-    //console.log(newDate1.toLocaleDateString())
-    newDate1.setDate(newDate.getDate()+14)
+    console.log(newDate1.toLocaleDateString())
+    //console.log(newDate1.setDate(newDate.getDate()+14))
     //console.log(newDate1.toDateString());
     newDate1.toLocaleDateString();
     //console.log(newDate1.toDateString());
@@ -444,12 +444,15 @@ function exReturnDate(){
     //console.log(newDate1.toDateString());
     console.log(newDate1.toDateString().substring(0,4));
 
-    const day = '';
+    const days = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)'];
+    const nowDay = '';
 
-    if(newDate1.toDateString().substring(0,4) === 'Mon'){
-        day = '(월)'
-    }
+    newDate1.toDateString().substring(0,4).forEach((e, i) => {
+        if(e === 'Mon'){
+            nowDay === days[0];
+        }
+    });
     
-    accordion_body.innerHTML = newDate1.toLocaleDateString();
+    accordion_body.innerHTML = newDate1.toLocaleDateString() + nowDay;
 }
 

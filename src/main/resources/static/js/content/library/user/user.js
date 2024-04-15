@@ -69,8 +69,8 @@ function showModal(userCode){
                 <td class="table-light">성별</td>
                 <td>
                     <select name="gender" class="form-select">
-                        <option value="남자">남자</option>
-                        <option value="여자">여자</option>
+                        <option value="남성">남성</option>
+                        <option value="여성">여성</option>
                     </select>
                 </td>
             </tr>
