@@ -52,7 +52,7 @@ public class UserController {
     // 이용자 관리에서 모달에 띄울 상세정보
     @ResponseBody
     @PostMapping("/showUserDetailFetch")
-    public MemberVO showUserDetail(@RequestBody Map<String, String> userDetail){
+    public MemberVO showUserDetail1(@RequestBody Map<String, String> userDetail){
 
         System.out.println("@@@@@@@@@@@@@" + userDetail);
 
@@ -94,13 +94,18 @@ public class UserController {
     }
 
     // 이용자 cardNum update
-    @PostMapping("/updateCardNum")
-    public String updateCardNum(MemberVO memberVO){
+    @ResponseBody
+    @PostMapping("/updateCardNumFetch")
+    public String updateCardNum(@RequestParam(name = "userCodeList") List<Integer> userCodeList){
+
+        userCodeList.forEach(s -> userService.updateCardNum(new MemberVO().builder()
+                        .userCode(s)
+                .build()));
 
         // cardNum 업데이트 쿼리
-        userService.updateCardNum(memberVO);
+        //memberVOList.forEach(s -> userService.updateCardNum(s));
 
-        return "redirect:/bookAdmin/userApproval";
+        return "a";
     }
 
     //연체자 관리

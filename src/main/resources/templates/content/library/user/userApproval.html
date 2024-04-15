@@ -80,7 +80,6 @@
                     </div>
                 </form>
                     
-                <form action="/bookAdmin/updateCardNum" method="post">
                     <div class="row">
                         <div class="col">
                             <table class="table search-userInfos-table table-bordered text-center">
@@ -125,12 +124,12 @@
                                     <th:block th:unless="${#lists.isEmpty(membersInfo)}">
                                         <tr th:each="memberInfo : ${membersInfo}">
                                             <input id="userCode" type="hidden" name="userCode" th:value="${memberInfo.userCode}">
-                                            <td><input type="checkbox" class="form-check-input one"></td>
-                                            <td>[[${memberInfo.userName}]]([[${memberInfo.userId}]])</td>
+                                            <td><input type="checkbox" class="form-check-input one" th:value="${memberInfo.userCode}"></td>
+                                            <td th:onclick="showModal([[${memberInfo.userCode}]])">[[${memberInfo.userName}]]([[${memberInfo.userId}]])</td>
                                             <td>[[${memberInfo.isAdmin}]]</td>
                                             <td>[[${memberInfo.gender}]]</td>
                                             <td>[[${memberInfo.userTel}]]</td>
-                                            <td><input type="submit" class="btn btn-primary" value="승인"></td>
+                                            <td><input type="button" class="btn btn-primary" value="승인" th:onclick="updateCardNum([[${memberInfo.userCode}]])"></td>
                                         </tr>
                                     </th:block>
                                 </tbody>
@@ -162,13 +161,12 @@
                                     </th:block>
                                 </div>
                                 <div class="col-6 d-grid gap-2 d-md-flex justify-content-md-end">
-                                    <button type="submit" class="btn btn-primary">전체 승인</button>
+                                    <button type="button" class="btn btn-primary" onclick="updateCardNum(0)">전체 승인</button>
                                     
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
 
                 <!-- 모달 -->
                 <div class="modal fade" id="user-detail-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
