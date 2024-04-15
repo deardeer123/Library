@@ -1,8 +1,7 @@
 package com.green.Library.web.board.service;
 
-import com.green.Library.web.board.vo.BoardVO;
-import com.green.Library.web.board.vo.PlusVO;
-import com.green.Library.web.board.vo.SearchVO;
+import com.green.Library.web.board.vo.*;
+import com.green.Library.web.member.vo.ApplyVO;
 import com.green.Library.web.member.vo.MemberVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.rmi.server.ExportException;
 import java.util.List;
+import java.util.Optional;
 
 @Service("boardService")
 public class BoardServiceImpl implements BoardService {
@@ -37,14 +37,10 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int countBoard() {
-        return sqlSession.selectOne("boardMapper.countBoard");
+    public int countBoard(int boardType) {
+        return sqlSession.selectOne("boardMapper.countBoard", boardType);
     }
 
-//    @Override
-//    public int maxBoardNo() {
-//        return sqlSession.selectOne("boardMapper.insertImgList");
-//    }
 
     public BoardVO selectBoardDetail() {
         return sqlSession.selectOne("boardMapper.selectBoardDetail");
@@ -52,10 +48,6 @@ public class BoardServiceImpl implements BoardService {
 
 
 
-//    @Override
-//    public void insertUploadFile(BoardVO boardVO) {
-//        sqlSession.insert("boardMapper.insertUpload");
-//    }
     public BoardVO selectBoardDetail(int boardNum) {
         return sqlSession.selectOne("boardMapper.selectBoardDetail", boardNum);
     }
@@ -130,7 +122,46 @@ public class BoardServiceImpl implements BoardService {
         sqlSession.update("boardMapper.upPersonnel", boardNum);
     }
 
+    @Override
+    public int applyCheck(ApplyVO applyVO) {
+        return sqlSession.selectOne("boardMapper.applyCheck",applyVO);
+    }
 
+    @Override
+    public List<BoardVO> selectMovieList(SearchVO searchVO) {
+        return sqlSession.selectList("boardMapper.selectMovieList", searchVO);
+    }
+
+    @Override
+    @Transactional(rollbackFor = ExportException.class)
+    public void insertMovie(BoardVO boardVO) {
+        sqlSession.insert("boardMapper.insertMovieBoard",boardVO);
+        sqlSession.insert("boardMapper.insertMovie", boardVO);
+        sqlSession.insert("boardMapper.insertMovieFile", boardVO);
+    }
+
+    @Override
+    public BoardVO selectMovieDetail(int boardNum) {
+        return sqlSession.selectOne("boardMapper.selectMovieDetail", boardNum);
+    }
+
+    @Override
+    public void updateMovie(BoardVO boardVO) {
+        sqlSession.update("boardMapper.updateMovie",boardVO);
+
+    }
+
+    @Override
+    public void updateFile(UploadVO uploadVO) {
+        sqlSession.update("boardMapper.updateFile",uploadVO);
+    }
+
+    @Override
+    public void movieDelete(int boardNum) {
+        sqlSession.delete("boardMapper.movieDelete",boardNum);
+        sqlSession.delete("boardMapper.eventFileDelete", boardNum);
+        sqlSession.delete("boardMapper.eventBoardDelete",boardNum);
+    }
 
 
 }

@@ -29,6 +29,10 @@ public class InterceptorConfig implements WebMvcConfigurer {
                     .excludePathPatterns("/bookAdmin/**Fetch");
 
 //                .addPathPatterns("/bookAdmin/workingBook");
+        registry.addInterceptor(getLoginInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns("/**Fetch")
+                .excludePathPatterns("/bookAdmin/**");
 
     }
 
@@ -41,4 +45,10 @@ public class InterceptorConfig implements WebMvcConfigurer {
     WebInterceptor getWebInterceptor(){
         return new WebInterceptor();
     }
+
+    @Bean
+    LoginInterceptor getLoginInterceptor(){
+        return new LoginInterceptor();
+    }
+
 }

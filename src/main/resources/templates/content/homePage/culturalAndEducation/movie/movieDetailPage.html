@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
+
+<th:block layout:fragment="content_css">
+    <!-- html 파일이 열릴 때 같이 실행되는 css -->
+    <link rel="stylesheet" href="/">
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+    <!-- html 코드 작성 -->
+    <div class="row">
+        <div class="head-title">
+            <span>
+                <h3>
+                    [[${board.MovieVO.movieName}]]
+                </h3>
+            </span>
+        </div>
+        <div class="col-5 body-img " th:each="file : ${board.fileList}" style="padding: 10px; width: 449px; height: 450px;">
+            <img th:src="@{'/upload/' + ${file.attachedFileName}}">
+        </div>
+        <div class="col-7 body-comment" style="padding: 10px;">
+            <dl>
+                <dt style="float: left;">상영일자</dt>
+                <dd>[[${board.MovieVO.movieDay}]]</dd>
+            </dl>
+            <dl>
+                <dt style="float: left;">상영시간</dt>
+                <dd>
+                    [[${board.MovieVO.movieStart}]]
+                    ~ 
+                    [[${board.MovieVO.movieEnd}]]
+                </dd>
+            </dl>
+            <dl>
+                <dt style="float: left;">관람등급</dt>
+                <dd>[[${board.MovieVO.filmRating}]]</dd>
+            </dl>
+        </div>
+        <div sec:authorize="hasRole('ROLE_Y')" class="d-md-flex justify-content-end">
+            <input type="button" style="margin-right: 5px;" class="btn btn-primary btn-sm" value="게시글 수정"
+                th:onclick="|location.href='@{/goUpdateMoviePage(boardNum=${board.boardNum})}'|">
+            <input type="button" class="btn btn-primary btn-sm" value="게시글 삭제" th:onclick="|location.href='@{/deleteMovie(boardNum=${board.boardNum})}'|">
+        </div>
+        <div>
+            <input class="btn btn-success btn-lg" type="button" value="목록" onclick="location.href='/movie'">
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="content_js">
+    <!-- html 파일이 열릴 때 같이 실행되는 js -->
+    <script src="/"></script>
+</th:block>
+
+</html>

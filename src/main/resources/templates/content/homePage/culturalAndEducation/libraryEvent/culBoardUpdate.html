@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴 때 같이 실행되는 css -->
@@ -10,43 +9,53 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    <div class="row ">
+    <div class="row">
         <div class="col-12">
-            <h3>게시글 수정</h3>
+            <h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="50" fill="currentColor" class="bi bi-book"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783" />
+                </svg>
+                / 문화 행사/교육 / 게시글 수정
+            </h3>
+            
         </div>
+    </div>
+    
+    <div class="row ">
+        
         <div class="col">
             <form action="/culUpdateBoard" method="post">
-                <table class="align-middle">
-                    <colgroup>
-                    <col width="25%">
-                    <col width="25%">
-                    <col width="25%">
-                    <col width="25%">
-                    </colgroup>
+                <table class=" table table-bordered align-middle text-center">
                     <thead>
                         <tr>
                             <td>
                                 제목
                             </td>
-                            <td colspan="3"><input type="text" name="boardTitle"></td>
+                            <td colspan="3">
+                                <input type="text" name="boardTitle" class="form-control">
+                            </td>
                         </tr>
                         <tr>
                             <td>작성자</td>
-                            <td colspan="3" sec:authorize="isAuthenticated()" sec:authentication="name"></td>
+                            <td style="font-weight: bold;" colspan="3" sec:authorize="isAuthenticated()"
+                                sec:authentication="name"></td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td colspan="4">
-                                <textarea name="content" cols="100" rows="20"></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div><input type="submit" value="게시물 수정"></div>
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Leave a comment here"
+                                        style="height: 600px"></textarea>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
+                    <div class="mb-2 d-md-flex justify-content-end">
+                        <input type="submit" class="btn btn-primary btn-sm" value="수정하기">
+                    </div>
                     <input type="hidden" name="boardNum" th:value="${board.boardNum}">
                     <input type="hidden" name="userCode" th:value="${session.userCode}">
                 </table>
@@ -59,4 +68,5 @@
     <!-- html 파일이 열릴 때 같이 실행되는 js -->
     <!-- <script src="/"></script> -->
 </th:block>
+
 </html>

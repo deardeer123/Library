@@ -21,6 +21,7 @@ public class BoardVO {
     private int userCode;
     private int boardCnt;
     private int boardType;
+    private MovieVO movieVO;
     private MemberVO memberVO;
     private PlusVO plusVO;
     private ApplyVO applyVO;
