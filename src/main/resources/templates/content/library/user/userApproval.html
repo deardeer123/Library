@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col">
 
-                <form action="/bookAdmin/letUserApproval" method="post">
+                <form action="/bookAdmin/userApproval" method="post">
                     <div class="row mb-5">
                         <div class="col">
 
@@ -130,7 +130,7 @@
                                             <td>[[${memberInfo.isAdmin}]]</td>
                                             <td>[[${memberInfo.gender}]]</td>
                                             <td>[[${memberInfo.userTel}]]</td>
-                                            <td><input type="button" class="btn btn-primary" value="승인"></td>
+                                            <td><input type="submit" class="btn btn-primary" value="승인"></td>
                                         </tr>
                                     </th:block>
                                 </tbody>
@@ -169,6 +169,29 @@
                         </div>
                     </div>
                 </form>
+
+                <!-- 모달 -->
+                <div class="modal fade" id="user-detail-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">이용자 상세 정보</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <div class="row">
+                                    <div class="col">
+                                        <button class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                        <button class="btn btn-primary">저장</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
 
