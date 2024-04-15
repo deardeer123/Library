@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/library/library_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/library/library_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
@@ -10,6 +9,34 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
+    <style>
+        /* calendar.html */
+
+        .fc-col-header-cell-cushion,
+        .fc-daygrid-day-number {
+            text-decoration: none;
+        }
+
+        .fc-scrollgrid-sync-inner>.fc-col-header-cell-cushion,
+        .fc-day-mon .fc-daygrid-day-number,
+        .fc-day-tue .fc-daygrid-day-number,
+        .fc-day-wed .fc-daygrid-day-number,
+        .fc-day-thu .fc-daygrid-day-number,
+        .fc-day-fri .fc-daygrid-day-number {
+            color: black;
+        }
+
+        .fc-day-sun .fc-col-header-cell-cushion,
+        .fc-day-sun a {
+            color: red;
+        }
+
+        .fc-day-sat .fc-col-header-cell-cushion,
+        .fc-day-sat a {
+            color: blue;
+        }
+    </style>
+
     <div class="row">
         <div class="col">
 
@@ -108,6 +135,24 @@
                         <div class="row mt-1">
                             <div class="col">
                                 <input type="date" name="start" class="form-control">
+                                <input type="time" name="time" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col">
+                                <select class="form-select" name="color">
+                                    <option value="blue">영화</option>
+                                    <option value="red">휴무일</option>
+                                    <option value="green">강의</option>
+                                    <option value="blue">행사</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col">
+                                <input type="text" class="form-control" name="url" placeholder="url">
                             </div>
                         </div>
 
@@ -198,6 +243,8 @@
                     var calendar = new FullCalendar.Calendar(calendarEl, {
                         height: 350,
                         initialView: 'dayGridMonth',
+                        //시간표시 제거하기
+                        displayEventTime: false,
                         locale: 'ko',
                         //이벤트
                         events: eventList

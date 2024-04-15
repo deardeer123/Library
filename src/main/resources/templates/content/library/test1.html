@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment//library/library_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment//library/library_detail_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
@@ -9,12 +8,39 @@
 </th:block>
 
 <th:block layout:fragment="contentFragment">
+    <link rel="stylesheet" href="resources/css/plugin/datepicker/bootstrap-datepicker.css">
     <!-- html 코드 작성 -->
-    메뉴 누르면 가는 페이지
+    <div class="row">
+        <div class="col">
+            <!-- 날짜 설정 테스트 -->
+            <div class="input-daterange input-group" id="datepicker">
+                <input type="text" class="input-sm form-control" name="start" />
+                <span class="input-group-addon">to</span>
+                <input type="text" class="input-sm form-control" name="end" />
+            </div>
+        </div>
+    </div>
+
+    <!-- datepicker -->
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.ko.min.js"
+        integrity="sha512-L4qpL1ZotXZLLe8Oo0ZyHrj/SweV7CieswUODAAPN/tnqN3PA1P+4qPu5vIryNor6HQ5o22NujIcAZIfyVXwbQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <script>
+        jQuery('#sandbox-container .input-daterange').datepicker({
+            startDate: "04/15/2024",
+            endDate: "04/20/2024"
+        });
+    </script>
+
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <script src="/"></script>
+    <!-- <script src="/"></script> -->
 </th:block>
+
 </html>

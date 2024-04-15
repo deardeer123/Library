@@ -641,8 +641,29 @@ CREATE TABLE calendar(
 	CALENDAR_START DATETIME NOT NULL
 	);
 	
+-- 추가
+ALTER TABLE calendar ADD CALENDAR_URL VARCHAR(100);
+ALTER TABLE calendar ADD CALENDAR_TYPE VARCHAR(20);
+-- 변경
+ALTER TABLE calendar DROP CALENDAR_TYPE;
+ALTER TABLE calendar ADD CALENDAR_COLOR VARCHAR(20);
+
+	
 
 SELECT * FROM calendar;
+
+SELECT
+        CALENDAR_TITLE ,
+        CALENDAR_START ,
+        CASE
+            WHEN CALENDAR_TYPE = 'movie' THEN 'blue'
+            WHEN CALENDAR_TYPE = 'event' THEN 'blue'
+            WHEN CALENDAR_TYPE = 'closeDay' Then 'red'
+            ELSE 'green'
+        END ,
+        CALENDAR_URL
+        FROM
+        calendar;
 
 
 -- 캘린더 데이터
@@ -922,5 +943,115 @@ SELECT
         WHERE header_menu.MENU_TYPE = 'library';
         
 
-SELECT * FROM YEAR_BY_TIME;
+SELECT * FROM year_by_time;
+
+SELECT * FROM calendar;
+
+CREATE TABLE board_plus(
+   PLUS_CODE INT PRIMARY KEY AUTO_INCREMENT
+   ,TEACHER VARCHAR(20) NOT NULL
+   ,TARGET VARCHAR(50) NOT NULL
+   ,OPEN_DATE DATETIME NOT NULL
+   ,CLOSE_DATE DATETIME NOT NULL
+   ,TO_DATE DATE NOT NULL
+   ,FROM_DATE DATE NOT NULL
+   ,PERSONNEL INT DEFAULT 0
+   ,MAXIMUM_PERSON INT
+   ,EVENT_STATUS VARCHAR(20)
+   ,BOARD_NUM INT REFERENCES board (BOARD_NUM)
+);
 -- DROP TABLE YEAR_BY_TIME;
+
+CREATE TABLE Electric_Accident_Burn_Range (
+YEARS INT PRIMARY KEY ,
+BURNRANGE0_5 INT ,
+BURNRANGE6_10 INT ,
+BURNRANGE11_21 INT ,
+BURNRANGE21_30 INT ,
+BURNRANGE31_40 INT ,
+BURNRANGE41_50 INT ,
+BURNRANGE51_60 INT ,
+BURNRANGE60_OVER INT
+);
+
+SELECT * FROM Electric_Accident_Burn_Range;
+
+CREATE TABLE ELECTRIC_ACCIDENTS_BY_DAY (
+OCCURRED_YEAR INT PRIMARY KEY , 
+SUNDAY INT ,
+MONDAY INT ,
+TUESDAY INT ,
+WEDNESDAY INT ,
+THURSDAY INT , 
+FRIDAY INT , 
+SATURDAY INT 
+)
+
+SELECT * FROM electric_accidents_burn_range;
+DELETE FROM electric_accidents_burn_range;
+
+
+INSERT INTO electric_accidents_burn_range
+ VALUES 
+ (2016,300,184,35,16,3,2,2,4),
+ (2017,357,102,38,24,7,2,1,1),
+ (2018,339,101,46,19,4,4,1,1),
+ (2019,393,61,36,8,6,2,0,2),
+ (2020,272,67,35,19,8,2,2,3),
+ (2021,261,74,45,19,8,3,2,0),
+ (2022,258,77,38,14,11,3,1,3);
+DROP TABLE electric_accidents_burn_range;
+DROP TABLE electric_accidents_by_time ;
+DROP TABLE electric_accidents_by_day;
+DROP TABLE current_status_of_electric_accidents;
+DROP TABLE factors_causing_electric_accidents;
+DROP TABLE electric_accidents_fire_statistics;
+
+SELECT * FROM electric_accidents_burn_range;
+SELECT * FROM electric_accidents_by_time;
+SELECT * FROM electric_accidents_by_day;
+SELECT * FROM current_status_of_electric_accidents;
+SELECT * FROM factors_causing_electric_accidents;
+SELECT * FROM electric_accidents_fire_statistics;
+
+CREATE TABLE asdf{
+ asdf11 FLOAT 
+
+ INSERT INTO ELECTRIC_ACCIDENTS_BY_TIME VALUES
+  (2016,5,1,1,11,39,90,58,69,75,42,33,13,109),
+  (2017,3,5,3,18,58,95,61,101,75,43,32,19,19),
+  (2018,5,6,7,17,57,104,64,90,71,36,25,16,17),
+  (2019,3,6,1,5,38,106,77,118,65,51,26,12,0),
+  (2020,6,2,4,24,85,72,64,64,33,18,16,20,0),
+  (2021,4,2,5,21,89,57,89,70,33,22,12,8,0),
+  (2022,1,5,5,27,71,71,74,73,34,20,8,16,0);
+  
+  
+  SELECT
+                     
+   sum(SUNDAY) AS SUNDAY ,
+   sum(MONDAY) ,
+   sum(TUESDAY) ,
+   sum(WEDNESDAY) ,
+	sum(THURSDAY) ,
+   sum(FRIDAY) ,
+   sum(SATURDAY)
+FROM
+   electric_accidents_by_day;
+
+SELECT * from electric_accidents_by_day;
+
+SELECT
+                        max(SUNDAY) as sunday ,
+                        max(MONDAY) as MONDAY ,
+                        max(TUESDAY) as TUESDAY,
+                        max(WEDNESDAY) as WEDNESDAY ,
+                        max(THURSDAY) as THURSDAY ,
+                        max(FRIDAY) as FRIDAY,
+                        max(SATURDAY) as SATURDAY
+                FROM
+                        electric_accidents_by_day;
+            	
+            	
+            	
+SELECT VERSION();calendar
