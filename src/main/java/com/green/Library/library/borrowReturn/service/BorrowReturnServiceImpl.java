@@ -26,8 +26,8 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
 
     // 이용자 소개 업데이트
     @Override
-    public void updateUserIntro(int cardNum) {
-        sqlSession.update("bnrMapper.updateUserIntro", cardNum);
+    public void updateUserIntro(MemberVO memberVO) {
+        sqlSession.update("bnrMapper.updateUserIntro", memberVO);
     }
 
     ////////////////////// 대출 ////////////////////////

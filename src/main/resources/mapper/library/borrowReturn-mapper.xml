@@ -36,6 +36,9 @@
         , U.USER_CODE
         , USER_NAME
         , USER_TEL
+        , POST_CODE
+        , USER_ADDR
+        , ADDR_DETAIL
         , BORROW_CODE
         , BORROW_DATE
         , RETURN_YN

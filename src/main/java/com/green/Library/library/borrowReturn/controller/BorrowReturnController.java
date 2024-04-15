@@ -35,7 +35,7 @@ public class BorrowReturnController {
 
     //이용자 조회와 대출반납 실행
     @ResponseBody
-    @PostMapping("/selectBorrowInfo")
+    @PostMapping("/selectBorrowInfoFetch")
     public MemberVO selectBorrowInfo(@RequestBody Map<String, String> inputData, BookBNRVO bookBNRVO){
         //input 태그에 입력한 데이터
         String cardNumOrBookCode = inputData.get("inputValue");
@@ -126,12 +126,12 @@ public class BorrowReturnController {
     }
 
     // 대출반납 페이지에서 이용자 정보 변경 메소드
-    @PostMapping("/updateUserIntro")
-    public String updateUserIntro(@RequestParam(name = "cardNum")int cardNum){
+    @ResponseBody
+    @PostMapping("/updateUserIntroFetch")
+    public void updateUserIntro(@RequestBody MemberVO memberVO){
 
-        borrowReturnService.updateUserIntro(cardNum);
+        borrowReturnService.updateUserIntro(memberVO);
 
-        return "redirect:/bookAdmin/selectBorrowInfo";
     }
 
     //일관 반납
@@ -188,7 +188,6 @@ public class BorrowReturnController {
         System.out.println("출력 이력 관리 이동");
         return "content/library/borrowReturn/outputHistory";
     }
-
 
     //매개변수로 넘오언 데이터가 숫자 형식으로 변환가능한지 판단
     public boolean isNumberic(String str) {
