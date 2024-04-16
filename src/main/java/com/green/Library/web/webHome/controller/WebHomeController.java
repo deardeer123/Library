@@ -56,4 +56,14 @@ public class WebHomeController {
         return "content/homePage/test1";
     }
 
+    @GetMapping("/test2")
+    public String goTest2(Model model){
+        //메뉴 정보 보내기
+        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
+        //로그인 네비게이션 정보.
+        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+
+        return "content/homePage/test2";
+    }
+
 }
