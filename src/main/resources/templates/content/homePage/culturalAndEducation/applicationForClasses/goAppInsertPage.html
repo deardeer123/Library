@@ -11,66 +11,92 @@
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
     <div class="row ">
-        
+        <div class="col-12">
+            <h3>게시글 등록</h3>
+        </div>
         <div class="col">
             <form action="/appInsert" method="post" enctype="multipart/form-data">
-                <table class="align-middle">
-                    <thead>
-                        <tr>
-                            <td>
-                                프로그램명
+                <table class="table table-bordered align-middle text-center">
+                    <colgroup>
+                        <col width="25%">
+                        <col width="25%">
+                        <col width="25%">
+                        <col width="25%">
+                    </colgroup>
+                    <tbody>
+                        <tr>                            
+                            <td>프로그램명</td>
+                            <td colspan="3">
+                                <input type="text" class="form-control" name="boardTitle">
                             </td>
-                            <td><input type="text" name="boardTitle"></td>
-                            <td>강사명</td>
-                            <td><input type="text" name="teacher"></td>
                         </tr>
                         <tr>
-                            <td>운영기간</td>
+                            <td>강사</td>
+                            <td><input type="taxt" class="form-control" name="teacher"></td>
+                            <td>인원</td>
                             <td>
-                                <input type="date" name="openDate">
-                                <input type="date" name="closeDate">
-                            </td>
-                            <td>신청기간</td>
-                            <td>
-                                <input type="date" name="toDate">
-                                <input type="date" name="fromDate">
+                                <div>
+                                    <input type="number" class="form-control"
+                                        style="width: 80px; display: inline-block;" name="personnel" value="0" min="0"
+                                        max="0"> /
+                                    <input type="number" class="form-control"
+                                        style="width: 80px; display: inline-block;" name="maximumPerson" min="0"
+                                        max="99">
+                                </div>
                             </td>
                         </tr>
                         <tr>
                             <td>대상</td>
-                            <td><input type="text" name="target"></td>
-                            <td>정원</td>
-                            <td>
-                                <input type="number" name="personnel" value="0" min="0" max="0"> /
-                                <input type="number" name="maximumPerson" min="0" max="99">
+                            <td colspan="3"><input type="text" name="target" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td>운영기간</td>
+                            <td colspan="3">
+                                <div style="display: flex;">
+                                    <input type="date" name="openDate" id="openDate" class="form-control" onchange="dateCode()">
+                                    <span style="display: inline-block; padding: 5px;">~</span>
+                                    <input type="date" name="closeDate" id="closeDate" class="form-control" onchange="dateCode()">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>신청기간</td>
+                            <td colspan="3">
+                                <div style="display: flex;">
+                                    <input type="date" name="toDate" id="toDate" class="form-control" onchange="dateCode()">
+                                    <span style="display: inline-block; padding: 5px;">~</span>
+                                    <input type="date" name="fromDate" id="fromDate" class="form-control" onchange="dateCode()">
+                                </div>
                             </td>
                         </tr>
                         <tr>
                             <td>상태</td>
-                            <td>
-                                <input type="radio" value="진행예정" name="eventStatus" checked> 진행예정
-                                <input type="radio" value="진행중" name="eventStatus"> 진행중
+                            <td colspan="3">
+                                <input type="radio" value="진행예정" name="eventStatus" class="form-check-input" checked>
+                                진행예정
                             </td>
                         </tr>
-                    </thead>
-                    <tbody>
                         <tr>
                             <td colspan="4">
-                                <textarea name="content" cols="100" rows="20"></textarea>
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Leave a comment here"
+                                        style="height: 600px"></textarea>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <input type="file" style="margin-bottom: 5px; width: 300px;" class="form-control"
+                                    name="files">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input type="file" name="files">
+                                <input type="submit" class="btn btn-primary btn-sm" value="등록하기">
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div><input type="submit" value="등록하기"></div>
-                            </td>
-                        </tr>
-                        <input type="hidden" name="boardType" value="28">
                     </tbody>
+                        <input type="hidden" name="boardType" value="28">
                 </table>
             </form>
         </div>
