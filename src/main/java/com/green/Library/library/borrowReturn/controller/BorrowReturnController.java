@@ -112,8 +112,7 @@ public class BorrowReturnController {
                 //사용자 정보 및 대출내역  조회
                 return borrowReturnService.selectBorrowInfo(vo);
 
-            }
-            else{
+            } else{
                 return new MemberVO();
             }
 

@@ -15,4 +15,7 @@ public interface UserService {
 
     // 이용자 상세 정보 조회
     MemberVO showUserDetail(int userCode);
+
+    // 이용자 상세 정보 수정
+    void userDetailUpdate(MemberVO memberVO);
 }

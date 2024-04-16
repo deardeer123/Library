@@ -69,7 +69,7 @@
         UPDATE USERS
         SET
             USER_INTRO = #{userIntro}
-        WHERE CARD_NUM = #{cardNum}
+        WHERE USER_CODE = #{userCode}
     </update>
 
 
