@@ -125,13 +125,20 @@ public class MemberController {
         session.removeAttribute("loginInfo");
         return "redirect:/home";
     }
-
+    //회원 신청란
     @RequestMapping("/applyApp")
     public String apply(HttpSession session, ApplyVO applyVO , @RequestParam(name = "boardNum") int boardNum){
         applyVO.setUserCode((Integer) session.getAttribute("userCode"));
         System.out.println(session.getAttribute("userCode"));
         memberService.apply(applyVO);
         return "redirect:/goDetailParticipation?boardNum="+ boardNum;
+    }
+
+
+    //마이페이지
+    @GetMapping("/goMyPage")
+    public String goMyPage(){
+        return "/content/homePage/member/myPage";
     }
 
 
