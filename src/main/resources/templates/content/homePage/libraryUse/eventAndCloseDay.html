@@ -10,6 +10,35 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
+
+    <style>
+        /* calendar.html */
+
+        .fc-col-header-cell-cushion,
+        .fc-daygrid-day-number {
+            text-decoration: none;
+        }
+
+        .fc-scrollgrid-sync-inner>.fc-col-header-cell-cushion,
+        .fc-day-mon .fc-daygrid-day-number,
+        .fc-day-tue .fc-daygrid-day-number,
+        .fc-day-wed .fc-daygrid-day-number,
+        .fc-day-thu .fc-daygrid-day-number,
+        .fc-day-fri .fc-daygrid-day-number {
+            color: black;
+        }
+
+        .fc-day-sun .fc-col-header-cell-cushion,
+        .fc-day-sun a {
+            color: red;
+        }
+
+        .fc-day-sat .fc-col-header-cell-cushion,
+        .fc-day-sat a {
+            color: blue;
+        }
+    </style>
+
     <div class="row">
         <div class="col">
             <!-- 달력 -->
@@ -55,10 +84,11 @@
                     var calendar = new FullCalendar.Calendar(calendarEl, {
                         height: 600,
                         initialView: 'dayGridMonth',
+                        //시간표시 제거하기
+                        displayEventTime: false,
                         locale: 'ko',
                         //이벤트
                         events: eventList
-
                     });
                     calendar.render();
 

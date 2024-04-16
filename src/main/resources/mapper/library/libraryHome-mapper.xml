@@ -6,30 +6,41 @@
     <resultMap id="calendar" type="com.green.Library.library.libraryhome.vo.CalendarVO">
         <result column="CALENDAR_TITLE" property="title" />
         <result column="CALENDAR_START" property="start" />
+        <result column="CALENDAR_COLOR" property="color" />
+        <result column="CALENDAR_URL" property="url" />
     </resultMap>
 
+<!--    캘린터 검색-->
     <select id="selectCalendarList" resultMap="calendar">
         SELECT
         CALENDAR_TITLE ,
-        DATE_FORMAT(CALENDAR_START, '%Y-%m-%d') AS CALENDAR_START
+        CALENDAR_START ,
+        CALENDAR_COLOR ,
+        CALENDAR_URL
         FROM
         CALENDAR
     </select>
-
+<!-- 캘린더 추가 -->
     <insert id="insertCalendar">
         INSERT INTO CALENDAR(
-        CALENDAR_TITLE ,
-        CALENDAR_START)
+            CALENDAR_TITLE ,
+            CALENDAR_START ,
+            CALENDAR_COLOR ,
+            CALENDAR_URL
+        )
         values(
-        #{title},
-        #{start}
+            #{title} ,
+            #{start} ,
+            #{color} ,
+            #{url}
         )
     </insert>
-
+<!--캘린더 삭제-->
     <delete id="deleteCalendar">
-        delete from calendar
+        delete from
+            calendar
         where
-        CALENDAR_TITLE = #{title} and CALENDAR_START = #{start}
+            CALENDAR_TITLE = #{title}
     </delete>
 </mapper>
 

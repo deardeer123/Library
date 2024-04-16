@@ -25,19 +25,8 @@ public class UserController {
 
     //-----------이용자------------------
     //이용자 관리
-    @GetMapping("/user")
-    public String goUser(Model model){
-        //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
-
-
-        System.out.println(" 이동");
-        return "content/library/user/user";
-    }
-
-    // 이용자 관리 검색 기능
-    @RequestMapping("/letUserSearch")
-    public String letUserSearch(Model model, SearchUserVO searchUserVO){
+    @RequestMapping("/user")
+    public String goUser(Model model, SearchUserVO searchUserVO){
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
@@ -55,13 +44,15 @@ public class UserController {
 
         model.addAttribute("membersInfo", filterIsCardNum);
 
+
+        System.out.println(" 이동");
         return "content/library/user/user";
     }
 
     // 이용자 관리에서 모달에 띄울 상세정보
     @ResponseBody
-    @PostMapping("/showUserDetail")
-    public MemberVO showUserDetail(@RequestBody Map<String, String> userDetail){
+    @PostMapping("/showUserDetailFetch")
+    public MemberVO showUserDetail1(@RequestBody Map<String, String> userDetail){
 
         System.out.println("@@@@@@@@@@@@@" + userDetail);
 
@@ -76,20 +67,9 @@ public class UserController {
     }
 
     //이용자 승인
-    @GetMapping("/userApproval")
-    public String goUserApproval(Model model){
+    @RequestMapping("/userApproval")
+    public String goUserApproval(Model model, SearchUserVO searchUserVO){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
-
-
-        System.out.println("이용자 승인 이동");
-        return "content/library/user/userApproval";
-    }
-
-    // 이용자 승인 페이지 조회(cardNum 부여 하기 위해 우선 select)
-    @RequestMapping("/letUserApproval")
-    public String letUserApproval(Model model, SearchUserVO searchUserVO){
-
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
         // 이용자 정보 전체 조회
@@ -109,17 +89,23 @@ public class UserController {
 
         System.out.println(filterNoCardNum);
 
+        System.out.println("이용자 승인 이동");
         return "content/library/user/userApproval";
     }
 
     // 이용자 cardNum update
-    @PostMapping("/updateCardNum")
-    public String updateCardNum(MemberVO memberVO){
+    @ResponseBody
+    @PostMapping("/updateCardNumFetch")
+    public String updateCardNum(@RequestParam(name = "userCodeList") List<Integer> userCodeList){
+
+        userCodeList.forEach(s -> userService.updateCardNum(new MemberVO().builder()
+                        .userCode(s)
+                .build()));
 
         // cardNum 업데이트 쿼리
-        userService.updateCardNum(memberVO);
+        //memberVOList.forEach(s -> userService.updateCardNum(s));
 
-        return "redirect:/bookAdmin/letUserApproval";
+        return "a";
     }
 
     //연체자 관리
