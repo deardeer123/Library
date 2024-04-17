@@ -87,14 +87,16 @@
                                     <h1 class="modal-title fs-5" id="exampleModalLabel">이용자 상세 정보</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body">
-                                    
-                                </div>
+                                    <div class="modal-body">
+                                        
+
+                                        
+                                    </div>
                                 <div class="modal-footer">
                                     <div class="row">
                                         <div class="col">
                                             <button class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                            <button class="btn btn-primary" onclick="updateUserDetail()">저장</button>
+                                            <button class="btn btn-primary" onclick="updateUserDetail()" data-bs-dismiss="modal">저장</button>
                                         </div>
                                     </div>
                                 </div>
@@ -152,7 +154,7 @@
                                         <td>서명</td>
                                         <td>청구기호</td>
                                         <td>대출일</td>
-                                        <td><pre>반납<br>예정일<br>(연체일)</pre></td>
+                                        <td>반납예정일(연체일)</td>
                                         <td>대출처리자</td>
                                     </tr>
                                 </thead>
