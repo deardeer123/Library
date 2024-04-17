@@ -1,7 +1,4 @@
 
-
-
-
 function deleteBoard() {
     if (confirm('게시물을 삭제하시겠습니까')) {
         location.href = '/cuLDeleteBoard';
@@ -141,8 +138,8 @@ function approve(boardNum) {
 }
 
 function deleteApply(boardNum) {
-    location.href=`/deleteApply?boardNum=${boardNum}`
-    
+    location.href = `/deleteApply?boardNum=${boardNum}`
+
 }
 
 function CF(boardNum) {
@@ -248,8 +245,8 @@ function dateCode() {
     // const fromDay = fromDate.getDate();
 
     //현재 날짜 구하기
-    let today = new Date();   
-    
+    let today = new Date();
+
 
 
     console.log("Open Date:", openYear, openMonth, openDay);
@@ -266,27 +263,172 @@ function dateCode() {
         let tomorrow = new Date(today);
         tomorrow.setDate(today.getDate() + 1);
 
-         // openDateInput의 값을 변경하여 현재 날짜 + 1일로 설정
+        // openDateInput의 값을 변경하여 현재 날짜 + 1일로 설정
         const tomorrowString = tomorrow.toISOString().split('T')[0]; // ISO 형식의 문자열로 변환
         openDateValue.value = tomorrowString;
         console.log(openDateValue)
 
         alert('데이터를 다시 입력하시길 바랍니다');
-        return ;
+        return;
     }
-    else if(today> openDate){
+    else if (today > openDate) {
         alert('행사 시작 날짜를 다시 입력하시길 바랍니다.')
-        return ;
+        return;
     }
-    
-    
 
+
+
+}
+
+// 행사 참가신청 삭제 (캘린더 포함)
+function eventDelete(boardNum, openDate, boardTitle) {
+    // ------------------- 첫번째 방식 ---------------//
+    fetch('/goEventDelete', { //요청경로
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        //컨트롤러로 전달할 데이터
+        body: new URLSearchParams({
+            // 데이터명 : 데이터값
+            boardNum: boardNum,
+            openDate: openDate,
+            boardTitle: boardTitle
+        })
+    })
+        .then((response) => {
+            if (!response.ok) {
+                alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                return;
+            }
+
+            return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+            //return response.json(); //나머지 경우에 사용
+        })
+        //fetch 통신 후 실행 영역
+        .then((data) => {//data -> controller에서 리턴되는 데이터!
+            location.href = '/eventParticipation';
+        })
+        //fetch 통신 실패 시 실행 영역
+        .catch(err => {
+            alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+            console.log(err);
+        });
 }
 
 
 
+// 영화 게시판 삭제 (캘린더 포함)
+function deleteMovie(boardNum, movieDay, movieName) {
+    // ------------------- 첫번째 방식 ---------------//
+    fetch('/deleteMovie', { //요청경로
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        //컨트롤러로 전달할 데이터
+        body: new URLSearchParams({
+            // 데이터명 : 데이터값
+            boardNum: boardNum,
+            movieDay: movieDay,
+            movieName: movieName
+        })
+    })
+        .then((response) => {
+            if (!response.ok) {
+                alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                return;
+            }
+
+            return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+            //return response.json(); //나머지 경우에 사용
+        })
+        //fetch 통신 후 실행 영역
+        .then((data) => {//data -> controller에서 리턴되는 데이터!
+            location.href = '/movie';
+        })
+        //fetch 통신 실패 시 실행 영역
+        .catch(err => {
+            alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+            console.log(err);
+        });
+}
+
+// 영화 게시판 삭제 (캘린더 포함)
+function deleteGuide(boardNum, boardDate, boardTitle) {
+    // ------------------- 첫번째 방식 ---------------//
+    fetch('/deleteGuide', { //요청경로
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        //컨트롤러로 전달할 데이터
+        body: new URLSearchParams({
+            // 데이터명 : 데이터값
+            boardNum: boardNum,
+            boardDate: boardDate,
+            boardTitle: boardTitle
+        })
+    })
+        .then((response) => {
+            if (!response.ok) {
+                alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                return;
+            }
+
+            return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+            //return response.json(); //나머지 경우에 사용
+        })
+        //fetch 통신 후 실행 영역
+        .then((data) => {//data -> controller에서 리턴되는 데이터!
+            location.href = '/courseGuide';
+        })
+        //fetch 통신 실패 시 실행 영역
+        .catch(err => {
+            alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+            console.log(err);
+        });
+}
 
 
+// 수강신청 게시판 삭제 (캘린더 포함)
+function deleteAppBoard(boardNum, openDate, boardTitle) {
+    // ------------------- 첫번째 방식 ---------------//
+    fetch('/deleteAppBoard', { //요청경로
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        //컨트롤러로 전달할 데이터
+        body: new URLSearchParams({
+            // 데이터명 : 데이터값
+            boardNum: boardNum,
+            openDate: openDate,
+            boardTitle: boardTitle
+        })
+    })
+        .then((response) => {
+            if (!response.ok) {
+                alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                return;
+            }
 
+            return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+            //return response.json(); //나머지 경우에 사용
+        })
+        //fetch 통신 후 실행 영역
+        .then((data) => {//data -> controller에서 리턴되는 데이터!
+            location.href = '/applicationForClasses';
+        })
+        //fetch 통신 실패 시 실행 영역
+        .catch(err => {
+            alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+            console.log(err);
+        });
+}
 
 
