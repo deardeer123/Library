@@ -84,8 +84,8 @@
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">이용자 상세 정보</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">이용자 상세 정보</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     
@@ -94,7 +94,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <button class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                            <button class="btn btn-primary">저장</button>
+                                            <button class="btn btn-primary" onclick="updateUserDetail()">저장</button>
                                         </div>
                                     </div>
                                 </div>
@@ -134,7 +134,7 @@
                 <div class="col-8" id="brInfo">
                     <div class="row">
                         <div class="col">
-                            <div style="background-color: #ddd; padding: 8px 8px;"><b>대출 (0/5)</b></div>
+                            <div style="background-color: #ddd; padding: 8px 8px;" id="renderCnt"><b>대출(0/5)</b></div>
                             <table class="table borrow-list-table align-middle text-center">
                                 <colgroup>
                                     <col width="10%">
@@ -168,7 +168,7 @@
 
                     <div class="row">
                         <div class="col">
-                            <div style="background-color: #ddd; padding: 8px 8px;"><b>반납 (0)</b></div>
+                            <div style="background-color: #ddd; padding: 8px 8px;" id="returnCnt">반납(0)</div>
                             <table class="table return-list-table text-center">
                                 <colgroup>
                                     <col width="10%">

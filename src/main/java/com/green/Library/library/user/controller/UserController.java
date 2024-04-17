@@ -90,6 +90,7 @@ public class UserController {
         System.out.println(filterNoCardNum);
 
         System.out.println("이용자 승인 이동");
+
         return "content/library/user/userApproval";
     }
 
@@ -99,13 +100,18 @@ public class UserController {
     public String updateCardNum(@RequestParam(name = "userCodeList") List<Integer> userCodeList){
 
         userCodeList.forEach(s -> userService.updateCardNum(new MemberVO().builder()
-                        .userCode(s)
-                .build()));
-
-        // cardNum 업데이트 쿼리
-        //memberVOList.forEach(s -> userService.updateCardNum(s));
+                    .userCode(s)
+                    .build()));
 
         return "a";
+    }
+
+    // 모달 상세정보 수정 업데이트
+    @ResponseBody
+    @PostMapping("/updateUserDetailFetch")
+    public void userDetailUpdate(@RequestBody MemberVO memberVO){
+
+//        userService.userDetailUpdate(info -> memberVO);
     }
 
     //연체자 관리

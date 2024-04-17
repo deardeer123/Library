@@ -123,7 +123,6 @@
                                     </th:block>
                                     <th:block th:unless="${#lists.isEmpty(membersInfo)}">
                                         <tr th:each="memberInfo : ${membersInfo}">
-                                            <input id="userCode" type="hidden" name="userCode" th:value="${memberInfo.userCode}">
                                             <td><input type="checkbox" class="form-check-input one" th:value="${memberInfo.userCode}"></td>
                                             <td th:onclick="showModal([[${memberInfo.userCode}]])">[[${memberInfo.userName}]]([[${memberInfo.userId}]])</td>
                                             <td>[[${memberInfo.isAdmin}]]</td>

@@ -1,6 +1,6 @@
 // 대출 일자와 반납 일자 html에 default 값 오늘로
-// document.querySelector('#borrow-date').value = new Date().toISOString().substring(0, 10);
-// document.querySelector('#return-date').value = new Date().toISOString().substring(0, 10);
+document.querySelector('#borrow-date').value = new Date().toISOString().substring(0, 10);
+document.querySelector('#return-date').value = new Date().toISOString().substring(0, 10);
 
 
 function selectMemberInfo() {
@@ -18,6 +18,8 @@ function selectMemberInfo() {
     const reserve_list_tbody = document.querySelector('.reserve-list-table tbody');
 
     // 들어오는 데이터 관리
+    const renderCnt = document.querySelector('#renderCnt');
+    const returnCnt = document.querySelector('#returnCnt');
     const inputValue = document.querySelector('#inputData').value;
     const selectedCardNum = document.querySelector('input[name="selectedCardNum"]').value
     const borrowDate = document.querySelector('#borrow-date').value;
@@ -92,7 +94,7 @@ function selectMemberInfo() {
                 str1 += `</textarea>
                     </div>
                     <div class="col-4 d-grid">
-                        <input type="button" class="btn btn-secondary" value="메모수정" onclick="updateUserIntro(${data.cardNum})">
+                        <input type="button" class="btn btn-secondary" value="메모수정" onclick="updateUserIntro(${data.userCode})">
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -100,7 +102,7 @@ function selectMemberInfo() {
                         <input type="button" class="btn btn-secondary" value="SMS 전송">
                     </div>
                     <div class="col-6 d-grid">
-                        <input type="button" class="btn btn-secondary" value="상세정보" onclick="showModal(${data.cardNum})">
+                        <input type="button" class="btn btn-secondary" value="상세정보" onclick="showModal(${data.userCode})">
                     </div>
                 </div>`;
 
@@ -111,10 +113,15 @@ function selectMemberInfo() {
                 borrow_list_tbody.innerHTML = '';
                 return_list_tbody.innerHTML = '';
                 reserve_list_tbody.innerHTML = '';
+                
+                returnCnt.innerHTML = '';
+
 
                 let str2 = '';
                 let str3 = '';
                 let str4 = '';
+                let cnt1 = '';
+                let cnt2 = '';
 
                 ////////////////////////////////////////////////////
 
@@ -144,8 +151,15 @@ function selectMemberInfo() {
                 }
                 else {
 
+                    renderCnt.innerHTML = '';
+                    returnCnt.innerHTML = '';
+                    let renCnt = 0;
+                    let retCnt = 0;
+
                     data.bookBorrowList.forEach((bookBorrowInfo, idx) => {
                         if (bookBorrowInfo.returnYN == 'N') {
+                            renCnt = renCnt + 1;
+
                             str2 += `
                         <tr>
                             <td>
@@ -170,12 +184,19 @@ function selectMemberInfo() {
                                 
                             </td>
                         </tr>`;
-
-
                         }
+
+                        // else{
+                        //     if(renCnt == 6){
+                        //         alert('최대 대출 권수를 초과 하였습니다.');
+                        //      구현 하고싶은데 좀 있다가... 
+                        //     }
+                        // }
 
 
                         if (bookBorrowInfo.returnYN == 'Y') {
+                            retCnt = retCnt + 1;
+
                             str3 += `
                         <tr>
                             <td>
@@ -204,6 +225,15 @@ function selectMemberInfo() {
 
                     });
 
+                    cnt1 += `
+                            <b>대출(${renCnt}/5)</b>
+                        `;
+                    cnt2 += `
+                            <b>반납(${retCnt})</b>
+                        `;
+
+                    renderCnt.insertAdjacentHTML("afterbegin", cnt1);
+                    returnCnt.insertAdjacentHTML("afterbegin", cnt2);
                     borrow_list_tbody.insertAdjacentHTML("afterbegin", str2);
                     return_list_tbody.insertAdjacentHTML("afterbegin", str3);
                 }
@@ -220,7 +250,7 @@ function selectMemberInfo() {
 
 
 // 유저 인트로 업데이트
-function updateUserIntro(cardNum) {
+function updateUserIntro(userCode) {
     // 유저 인트로 선택
     let userIntro = document.querySelector('#userIntro').value;
     
@@ -233,7 +263,7 @@ function updateUserIntro(cardNum) {
         //컨트롤러로 전달할 데이터
         body: JSON.stringify({
             // 데이터명 : 데이터값
-            'cardNum': cardNum,
+            'userCode': userCode,
             'userIntro': userIntro
         })
     })
@@ -252,9 +282,6 @@ function updateUserIntro(cardNum) {
 
 }
 
-
-
-
 // 모달 태그 선택
 const user_detail_modal = new bootstrap.Modal('#user-detail-modal');
 
@@ -263,7 +290,7 @@ function showModal(userCode) {
     // 그림 그릴 모달 태그 선택
     const modalBody = document.querySelector('.modal-body');
 
-    fetch('/bookAdmin/showUserDetail', { //요청경로
+    fetch('/bookAdmin/showUserDetailFetch', { //요청경로
         method: 'POST',
         cache: 'no-cache',
         headers: {
@@ -287,7 +314,6 @@ function showModal(userCode) {
             modalBody.innerHTML = '';
 
             let str = '';
-
             str += `
         <table class="table table-bordered">
             <colgroup>
@@ -297,16 +323,22 @@ function showModal(userCode) {
                 <col width="">
             </colgroup>
             <tr>
+                <input type="hidden" value="${data.userCode}" id="getUserCode">
                 <td class="table-light">번호</td>
                 <td>${data.cardNum} 
-                    <button class="btn btn-primary" onclick="">카드번호 재부여</button>
+                    <button class="btn btn-primary" onclick="reGrant(${data.userCode})">카드번호 재부여</button>
                 </td>
                 <td class="table-light">직급</td>
                 <td>
-                    <select name="isAdmin" class="form-select">
-                        <option value="USER">이용자</option>
-                        <option value="ADMIN">관리자</option>
-                    </select>
+                    <select name="isAdmin" class="form-select">`
+                    if(data.isAdmin == 'USER'){
+                    str += `<option value="USER" selected>이용자</option>
+                        <option value="ADMIN">관리자</option>`
+                    }else{
+                    str += `<option value="USER">이용자</option>
+                        <option value="ADMIN" selected>관리자</option>`
+                    }
+                    str += `</select>
                 </td>
             </tr>
             <tr>
@@ -314,10 +346,15 @@ function showModal(userCode) {
                 <td>${data.userName}</td>
                 <td class="table-light">카드상태</td>
                 <td>
-                    <select name="cardStatus" class="form-select">
-                        <option value="사용중">사용중</option>
-                        <option value="분실">분실</option>
-                    </select>
+                    <select name="cardStatus" class="form-select">`
+                    if(data.cardStatus == '사용중'){
+                    str += `<option value="사용중" selected>사용중</option>
+                        <option value="분실">분실</option>`
+                    }else{
+                    str += `<option value="사용중">사용중</option>
+                        <option value="분실" selected>분실</option>`
+                    }
+                    str += `</select>
                 </td>
             </tr>
             <tr>
@@ -333,7 +370,7 @@ function showModal(userCode) {
             </tr>
             <tr>
                 <td class="table-light">이메일</td>
-                <td>${data.email}</td>
+                <td><input type="text" value="${data.email}" name="email" class="form-control"></td>
                 <td class="table-light">이메일 수신 여부</td>
                 <td>
                     <select class="form-select">
@@ -344,7 +381,7 @@ function showModal(userCode) {
             </tr>
             <tr>
                 <td class="table-light">전화번호</td>
-                <td>${data.userTel}</td>
+                <td><input type="text" value="${data.userTel}" name="userTel" class="form-control"></td>
                 <td class="table-light">SMS 수신여부</td>
                 <td>
                     <select class="form-select">
@@ -356,7 +393,7 @@ function showModal(userCode) {
             <tr>
                 <td rowspan="2" class="table-light">주소</td>
                 <td colspan="3">
-                    <input type="text" name="postCode" class="form-control" placeholder="${data.postCode}" id="postCode" readonly>
+                    <input type="text" name="postCode" class="form-control" placeholder="${data.postCode}" id="postCode" style="width: 200px;" readonly>
                     <input type="button" onclick="searchAddress()" value="주소 찾기" style="width: 90px;"class="btn btn-secondary">
                 </td>
             </tr>
@@ -369,9 +406,9 @@ function showModal(userCode) {
             <tr>
                 <td class="table-light">비고</td>`
             if (data.userIntro == null) {
-                str += `<td colspan="3"></td>`
+                str += `<td colspan="3" name="userIntro"></td>`
             } else {
-                str += `<td colspan="3">${data.userIntro}</td>`
+                str += `<td colspan="3"><textarea name="userIntro" class="form-control">${data.userIntro}</textarea></td>`
             }
 
             str += `</tr>
@@ -418,6 +455,7 @@ function searchAddress() {
     }).open();
 }
 
+// 대출반납 페이지 반납 예정일
 exReturnDate();
 function exReturnDate(){
     // 태그 선택
@@ -447,12 +485,98 @@ function exReturnDate(){
     const days = ['(월)', '(화)', '(수)', '(목)', '(금)', '(토)', '(일)'];
     const nowDay = '';
 
-    newDate1.toDateString().substring(0,4).forEach((e, i) => {
-        if(e === 'Mon'){
-            nowDay === days[0];
-        }
-    });
+    // newDate1.toDateString().substring(0,4).forEach((e, i) => {
+    //     if(e === 'Mon'){
+    //         nowDay === days[0];
+    //     }
+    // });
     
     accordion_body.innerHTML = newDate1.toLocaleDateString() + nowDay;
+}
+
+// 카드번호 재부여
+
+const reGrant = (userCode) => {
+
+    fetch('/bookAdmin/updateCardNumFetch', { //요청경로
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        //컨트롤러로 전달할 데이터
+        body: new URLSearchParams({
+            // 데이터명 : 데이터값
+            "userCodeList": chkTags
+        })
+    })
+        .then((response) => {
+            if (!response.ok) {
+                alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                return;
+            }
+
+            return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+            //return response.json(); //나머지 경우에 사용
+        })
+        //fetch 통신 후 실행 영역
+        .then((data) => {//data -> controller에서 리턴되는 데이터!
+            alert('변경 되었습니다.');
+
+        })
+        //fetch 통신 실패 시 실행 영역
+        .catch(err => {
+            alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+            console.log(err);
+        });
+}
+
+// 이용자 정보 업데이트
+
+const updateUserDetail = () => {
+
+    const userCode = document.querySelector('input[type="hidden"]').value;
+    const isAdmin = document.querySelector('select[name="isAdmin"]').value;
+    const cardStatus = document.querySelector('select[name="cardStatus"]').value;
+    const gender = document.querySelector('select[name="gender"]').value;
+    const email = document.querySelector('input[name="email"]').value;
+    const userTel = document.querySelector('input[name="userTel"]').value;
+    const postCode = document.querySelector('input[name="postCode"]').value;
+    const userAddr = document.querySelector('input[name="userAddr"]').value;
+    const addrDetail = document.querySelector('input[name="addrDetail"]').value;
+    
+    fetch('/bookAdmin/updateUserDetailFetch', { //요청경로
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+        },
+        //컨트롤러로 전달할 데이터
+        body: JSON.stringify({
+           // 데이터명 : 데이터값
+            userCode : userCode
+            , isAdmin : isAdmin
+            , cardStatus : cardStatus
+            , gender : gender
+            , email : email
+            , userTel : userTel
+            , postCode : postCode
+            , userAddr : userAddr
+            , addrDetail : addrDetail
+        })
+    })
+    .then((response) => {
+        return response.json(); //나머지 경우에 사용
+    })
+    //fetch 통신 후 실행 영역
+    .then((data) => {//data -> controller에서 리턴되는 데이터!
+        
+    })
+    //fetch 통신 실패 시 실행 영역
+    .catch(err=>{
+        alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+        console.log(err);
+    });
+    
 }
 

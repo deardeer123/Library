@@ -83,6 +83,20 @@
         WHERE USER_CODE= #{userCode}
     </update>
 
+    <!-- 이용자 정보 업데이트 -->
+    <update id="userDetailUpdate">
+        UPDATE USERS
+        SET
+            IS_ADMIN = #{isAdmin}
+            , CARD_STATUS = #{cardStatus}
+            , GENDER = #{gender}
+            , EMAIL = #{email}
+            , USER_TEL = #{userTel}
+            , POST_CODE = #{postCode}
+            , USER_ADDR = #{userAddr}
+            , ADDR_DETAIL = #{addrDetail}
+        WHERE USER_CODE = #{userCode}
+    </update>
 
 </mapper>
 
