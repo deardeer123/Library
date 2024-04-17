@@ -10,10 +10,11 @@
             , USER_CODE
             , USER_ID
             , CARD_NUM
+            , IS_ADMIN
             , CASE
-                WHEN IS_ADMIN = 'Y' THEN 'ADMIN'
-                ELSE 'USER'
-              END AS IS_ADMIN
+                WHEN IS_ADMIN = 'Y' THEN '관리자'
+                ELSE '이용자'
+            END AS IS_ADMIN
             , CARD_STATUS
             , USER_TEL
             , USER_INTRO
@@ -95,6 +96,10 @@
             , POST_CODE = #{postCode}
             , USER_ADDR = #{userAddr}
             , ADDR_DETAIL = #{addrDetail}
+            , USER_INTRO = #{userIntro}
+            , CARD_NUM = #{cardNum}
+            , USER_ID = #{userId}
+            , USER_NAME = #{userName}
         WHERE USER_CODE = #{userCode}
     </update>
 
