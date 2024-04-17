@@ -44,6 +44,27 @@
         WHERE book_code = #{bookCode}
     </select>
 
+<!--    대출많은책 10권찾기-->
+    <select id="manyRentBook" resultMap="findBook">
+        SELECT
+        find_book_view.BOOK_CODE,
+        BOOK_TITLE,
+        BOOK_WRITER,
+        BOOK_PUB,
+        BOOK_YEAR,
+        book_info.BOOK_BORROW_AVAILABLE,
+        book_info.book_intro,
+        book_info.BOOK_INFO_ATTACHED_FILE_NAME,
+        BOOK_CATE_NAME,
+        BOOK_MID_CATE_NAME,
+        book_info.BOOK_REGDATE
+        FROM find_book_view INNER JOIN book_info
+        ON find_book_view.BOOK_CODE = book_info.BOOK_CODE
+        ORDER by book_info.BOOK_BORROW_CNT desc
+        LIMIT 37;
+    </select>
+
+
 </mapper>
 
 

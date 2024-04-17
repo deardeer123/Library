@@ -13,4 +13,6 @@ public interface FindBookService {
     FindBookVO findBookOne(String bookCode);
 //    책 갯수
     int selectFindBookCnt(BookSearchVO bookSearchVO);
+    //대출 많이한책 10권 찾기
+    List<FindBookVO> manyRentBook ();
 }

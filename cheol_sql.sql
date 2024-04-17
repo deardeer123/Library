@@ -1052,6 +1052,37 @@ SELECT
                 FROM
                         electric_accidents_by_day;
             	
-            	
-            	
-SELECT VERSION();calendar
+SELECT * FROM find_book_view;
+
+SELECT * FROM book_info;
+  	
+  SELECT
+        find_book_view.BOOK_CODE,
+        BOOK_TITLE,
+        BOOK_WRITER,
+        BOOK_PUB,
+        BOOK_YEAR,
+        book_info.BOOK_BORROW_AVAILABLE,
+        book_info.book_intro,
+        book_info.BOOK_INFO_ATTACHED_FILE_NAME,
+        BOOK_CATE_NAME,
+        BOOK_MID_CATE_NAME,
+        book_info.BOOK_REGDATE
+        FROM find_book_view INNER JOIN book_info
+        ON find_book_view.BOOK_CODE = book_info.BOOK_CODE
+        ORDER by book_info.BOOK_BORROW_CNT desc
+        LIMIT 37; 	
+  	
+SELECT
+ book_title,
+ book_writer,
+ BOOK_BORROW_CNT
+ FROM book INNER JOIN book_info
+ ON book.BOOK_CODE = book_info.BOOK_CODE
+ ORDER by book_info.BOOK_BORROW_CNT desc
+LIMIT 36;
+ 
+ 
+SELECT *
+FROM book INNER JOIN book_info
+ON book.BOOK_CODE = book_info.BOOK_CODE;

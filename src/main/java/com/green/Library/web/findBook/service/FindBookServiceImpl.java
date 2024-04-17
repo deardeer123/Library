@@ -27,4 +27,10 @@ public class FindBookServiceImpl implements FindBookService{
     public int selectFindBookCnt(BookSearchVO bookSearchVO) {
         return sqlSession.selectOne("selectFindBookCnt",bookSearchVO);
     }
+
+    @Override
+    public List<FindBookVO> manyRentBook() {
+        return sqlSession.selectList("findBookMapper.manyRentBook");
+    }
+
 }
