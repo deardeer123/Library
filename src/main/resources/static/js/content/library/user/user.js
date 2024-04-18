@@ -24,8 +24,8 @@ function showModal(userCode) {
         })
         //fetch 통신 후 실행 영역
         .then((data) => {//data -> controller에서 리턴되는 데이터!
-
-            // console.log(data);
+            
+            console.log(data);
 
             modalBody.innerHTML = '';
 
@@ -40,7 +40,6 @@ function showModal(userCode) {
             </colgroup>
             <tr>
                 <input type="hidden" name="userCode" value="${data.userCode}" id="getUserCode">
-                <input type="hidden" name="cardNum" value="${data.cardNum}">
                 <td class="table-light">번호</td>
                 <td><span id="detailCardNum">${data.cardNum}</span>
                     <button class="btn btn-primary" onclick="reGrant(${data.userCode})">카드번호 재부여</button>
@@ -48,10 +47,10 @@ function showModal(userCode) {
                 <td class="table-light">직급</td>
                 <td>
                     <select name="isAdmin" class="form-select">`
-                    if(data.isAdmin == 'USER'){
+                    if(data.isAdmin == '이용자'){
                     str += `<option value="N" selected>이용자</option>
                         <option value="Y">관리자</option>`
-                    }else{
+                    }else if(data.isAdmin == '관리자'){
                     str += `<option value="N">이용자</option>
                         <option value="Y" selected>관리자</option>`
                     }
@@ -128,7 +127,7 @@ function showModal(userCode) {
             <tr>
                 <td class="table-light">비고</td>`
             if (data.userIntro == null) {
-                str += `<td colspan="3" name="userIntro"></td>`
+                str += `<td colspan="3" name="userIntro"><textarea id="detailUserIntro" name="userIntro" class="form-control"></textarea></td>`
             } else {
                 str += `<td colspan="3"><textarea id="detailUserIntro" name="userIntro" class="form-control">${data.userIntro}</textarea></td>`
             }
@@ -139,7 +138,7 @@ function showModal(userCode) {
             </tr>
             <tr>
                 <td class="table-light">대출</td>
-                <td colspan="3">${data.borrowCnt}건</td>
+                <td colspan="3" id="borrowCnt">${data.borrowCnt}</td>
             </tr>
             <tr>
                 <td class="table-light">예약</td>
@@ -147,11 +146,11 @@ function showModal(userCode) {
             </tr>
             <tr>
                 <td class="table-light">연체</td>
-                <td colspan="3">${data.overdueCnt}건</td>
+                <td colspan="3" id="overdueCnt">${data.overdueCnt}</td>
             </tr>
             <tr>
                 <td class="table-light">최근 대출일</td>
-                <td colspan="3">${data.recentDate}</td>
+                <td colspan="3" id="recentDate">${data.recentDate}</td>
             </tr>
         </table>
         `
@@ -189,3 +188,111 @@ function searchAddress(){
         }
     }).open();
 }
+
+// 이용자 정보 업데이트
+
+// function updateUserDetail (){
+    
+//     alert(111);
+//     // 업데이트 할 모달 정보 선택
+//     const cardNum = document.querySelector('#detailCardNum').innerHTML;
+//     const userId = document.querySelector('#detailUserId').value;
+//     const userName = document.querySelector('#detailUserName').value;
+//     const userCode = document.querySelector('#getUserCode').value;
+//     const isAdmin = document.querySelector('select[name="isAdmin"]').value;
+//     const cardStatus = document.querySelector('select[name="cardStatus"]').value;
+//     const gender = document.querySelector('select[name="gender"]').value;
+//     const email = document.querySelector('input[name="email"]').value;
+//     const userTel = document.querySelector('input[name="userTel"]').value;
+//     const postCode = document.querySelector('input[name="postCode"]').value;
+//     const userAddr = document.querySelector('input[name="userAddr"]').value;
+//     const addrDetail = document.querySelector('input[name="addrDetail"]').value;
+//     const userIntro = document.querySelector('#detailUserIntro').value;
+//     const borrowCnt = document.querySelector('#borrowCnt').innerHTML;
+//     const overdueCnt = document.querySelector('#overdueCnt').innerHTML;
+
+//     // 이용자 관리 페이지에 바뀐 거 다시 그려주기
+//     const tbody = document.querySelectorAll('tbody');
+
+
+//     const test_data = {
+//         // 데이터명 : 데이터값
+//         userCode : userCode
+//         , isAdmin : isAdmin
+//         , cardStatus : cardStatus
+//         , gender : gender
+//         , email : email
+//         , userTel : userTel
+//         , postCode : postCode
+//         , userAddr : userAddr
+//         , addrDetail : addrDetail
+//         , userIntro : userIntro
+//         , cardNum : cardNum
+//         , userId : userId
+//         , userName : userName
+//         , borrowCnt : borrowCnt
+//         , overdueCnt : overdueCnt
+//     };
+
+//     console.log(test_data);
+
+//     fetch('/bookAdmin/updateUserDetailFetch', { //요청경로
+//         method: 'POST',
+//         cache: 'no-cache',
+//         headers: {
+//             'Content-Type': 'application/json; charset=UTF-8'
+//         },
+//         //컨트롤러로 전달할 데이터
+//         body: JSON.stringify(test_data)
+//     })
+//     .then((response) => {
+//         return response.json(); //나머지 경우에 사용
+//     })
+//     //fetch 통신 후 실행 영역
+//     .then((data) => {//data -> controller에서 리턴되는 데이터!
+//         alert('수정 되었습니다.');
+        
+//         tbody.innerHTML = '';
+//         str = '';
+
+//         data.forEach((memberInfo, idx)=> {
+//             str += `
+//             <tr>
+//                 <td rowspan="2"><input type="checkbox" class="form-check-input one"></td>
+//                 <td rowspan="2" th:onclick="showModal([[${memberInfo.userCode}]])">
+//                     [[${memberInfo.userName}]]([[${memberInfo.userId}]]) [[${memberInfo.cardNum}]]
+//                 </td>
+//                 <td th:if="${memberInfo.isAdmin == 'Y'}">
+//                     <input type="hidden" value="Y">
+//                     관리자
+//                 </td>
+//                 <td th:unless="${memberInfo.isAdmin == 'Y'}">
+//                     <input type="hidden" value="N">
+//                     이용자
+//                 </td>
+//                 <td>
+//                     [[${memberInfo.cardStatus}]]
+//                 </td>
+//                 <td>
+//                     [[${memberInfo.userTel}]]
+//                 </td>
+//             </tr>
+//             <tr>
+//                 <td>[[${memberInfo.borrowCnt}]]</td>
+//                 <td>[[${memberInfo.overdueCnt}]]</td>
+//                 <td>[[${memberInfo.userIntro}]]</td>
+//             </tr>
+//             `
+//         })
+
+        
+
+//         tbody.insertAdjacentHTML("afterbegin", str);
+//     })
+//     //fetch 통신 실패 시 실행 영역
+//     .catch(err=>{
+//         alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+//         console.log(err);
+//     });
+    
+// }

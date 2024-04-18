@@ -131,10 +131,10 @@ function showModal(userCode) {
                 <td class="table-light">직급</td>
                 <td>
                     <select name="isAdmin" class="form-select">`
-                    if(data.isAdmin == 'USER'){
+                    if(data.isAdmin == '이용자'){
                     str += `<option value="N" selected>이용자</option>
                         <option value="Y">관리자</option>`
-                    }else{
+                    }else if(data.isAdmin == '관리자'){
                     str += `<option value="N">이용자</option>
                         <option value="Y" selected>관리자</option>`
                     }
@@ -211,13 +211,14 @@ function showModal(userCode) {
             <tr>
                 <td class="table-light">비고</td>`
             if (data.userIntro == null) {
-                str += `<td colspan="3" name="userIntro"></td>`
+                str += `<td colspan="3" name="userIntro"><textarea id="detailUserIntro" name="userIntro" class="form-control"></textarea></td>`
             } else {
-                str += `<td colspan="3"><textarea id="detailUserIntro" name="userIntro" class="form-control">${data.userIntro}</textarea></td>`;
+                str += `<td colspan="3"><textarea id="detailUserIntro" name="userIntro" class="form-control">${data.userIntro}</textarea></td>`
             }
 
-            str += `</table>`;
-            
+            str += `</tr>
+        </table>
+        `
             modalBody.insertAdjacentHTML('afterbegin', str);
 
             user_detail_modal.show();
@@ -227,4 +228,111 @@ function showModal(userCode) {
             alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
             console.log(err);
         });
+}
+
+// 이용자 정보 업데이트
+
+const updateUserDetail = () => {
+
+    // 업데이트 할 모달 정보 선택
+    const cardNum = document.querySelector('#detailCardNum').innerHTML;
+    const userId = document.querySelector('#detailUserId').value;
+    const userName = document.querySelector('#detailUserName').value;
+    const userCode = document.querySelector('input[type="hidden"]').value;
+    const isAdmin = document.querySelector('select[name="isAdmin"]').value;
+    const cardStatus = document.querySelector('select[name="cardStatus"]').value;
+    const gender = document.querySelector('select[name="gender"]').value;
+    const email = document.querySelector('input[name="email"]').value;
+    const userTel = document.querySelector('input[name="userTel"]').value;
+    const postCode = document.querySelector('input[name="postCode"]').value;
+    const userAddr = document.querySelector('input[name="userAddr"]').value;
+    const addrDetail = document.querySelector('input[name="addrDetail"]').value;
+    const userIntro = document.querySelector('#detailUserIntro').value;
+
+    // 대출반납 페이지에 바뀐 거 다시 그려주기(카드번호, 이름, 전화번호, 비고란)
+    const userInfo = document.querySelector('#userInfo');
+    
+    fetch('/bookAdmin/updateUserDetailFetch', { //요청경로
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+        },
+        //컨트롤러로 전달할 데이터
+        body: JSON.stringify({
+           // 데이터명 : 데이터값
+            "userCode" : userCode
+            , "isAdmin" : isAdmin
+            , "cardStatus" : cardStatus
+            , "gender" : gender
+            , "email" : email
+            , "userTel" : userTel
+            , "postCode" : postCode
+            , "userAddr" : userAddr
+            , "addrDetail" : addrDetail
+            , "userIntro" : userIntro
+            , "cardNum" : cardNum
+            , "userId" : userId
+            , "userName" : userName
+        })
+    })
+    .then((response) => {
+        return response.json(); //나머지 경우에 사용
+    })
+    //fetch 통신 후 실행 영역
+    .then((data) => {//data -> controller에서 리턴되는 데이터!
+        alert('수정 되었습니다.');
+
+        console.log(data);
+        
+        userInfo.innerHTML = '';
+        str = '';
+
+        str += `
+        <div class="row">
+            <div class="col">
+                카드번호 : ${data.cardNum}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                이름 : ${data.userName}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                전화번호 : ${data.userTel}
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-8">
+                <textarea id="userIntro" name="userIntro" class="form-control" rows="1" style="resize:none;">`
+                if (data.userIntro == null) {
+                    str += ``
+                } else {
+                    str += `${data.userIntro}`
+                }
+        str += `</textarea>
+            </div>
+            <div class="col-4 d-grid">
+                <input type="button" class="btn btn-secondary" value="메모수정" onclick="updateUserIntro(${data.userCode})">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-6 d-grid">
+                <input type="button" class="btn btn-secondary" value="SMS 전송">
+            </div>
+            <div class="col-6 d-grid">
+                <input type="button" class="btn btn-secondary" value="상세정보" onclick="showModal(${data.userCode})">
+            </div>
+        </div>`;
+
+        userInfo.insertAdjacentHTML("afterbegin", str);
+    })
+    //fetch 통신 실패 시 실행 영역
+    .catch(err=>{
+        alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+        console.log(err);
+    });
+    
 }

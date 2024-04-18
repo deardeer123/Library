@@ -323,7 +323,6 @@ function showModal(userCode) {
             </colgroup>
             <tr>
                 <input type="hidden" name="userCode" value="${data.userCode}" id="getUserCode">
-                <input type="hidden" name="cardNum" value="${data.cardNum}">
                 <td class="table-light">번호</td>
                 <td><span id="detailCardNum">${data.cardNum}</span>
                     <button class="btn btn-primary" onclick="reGrant(${data.userCode})">카드번호 재부여</button>
@@ -331,10 +330,10 @@ function showModal(userCode) {
                 <td class="table-light">직급</td>
                 <td>
                     <select name="isAdmin" class="form-select">`
-                    if(data.isAdmin == 'USER'){
+                    if(data.isAdmin == '이용자'){
                     str += `<option value="N" selected>이용자</option>
                         <option value="Y">관리자</option>`
-                    }else{
+                    }else if(data.isAdmin == '관리자'){
                     str += `<option value="N">이용자</option>
                         <option value="Y" selected>관리자</option>`
                     }
@@ -411,7 +410,7 @@ function showModal(userCode) {
             <tr>
                 <td class="table-light">비고</td>`
             if (data.userIntro == null) {
-                str += `<td colspan="3" name="userIntro"></td>`
+                str += `<td colspan="3" name="userIntro"><textarea id="detailUserIntro" name="userIntro" class="form-control"></textarea></td>`
             } else {
                 str += `<td colspan="3"><textarea id="detailUserIntro" name="userIntro" class="form-control">${data.userIntro}</textarea></td>`
             }
@@ -426,7 +425,7 @@ function showModal(userCode) {
             </tr>
             <tr>
                 <td class="table-light">예약</td>
-                <td colspan="3"></td>
+                <td colspan="3" ></td>
             </tr>
             <tr>
                 <td class="table-light">연체</td>

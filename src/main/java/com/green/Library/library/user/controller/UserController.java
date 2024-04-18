@@ -107,30 +107,29 @@ public class UserController {
     }
 
     // 모달 상세정보 수정 업데이트
-    @ResponseBody
-    @RequestMapping("/updateUserDetailFetch")
-    public MemberVO userDetailUpdate(@RequestBody MemberVO memberVO){
+//    @ResponseBody
+    @PostMapping("/updateUserDetailFetch")
+    public MemberVO userDetailUpdate(MemberVO memberVO) {
+
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
         userService.userDetailUpdate(memberVO);
 
         MemberVO userInfo = new MemberVO();
 
         userInfo.setUserCode(memberVO.getUserCode());
+        userInfo.setIsAdmin(memberVO.getIsAdmin());
         userInfo.setCardNum(memberVO.getCardNum());
         userInfo.setUserName(memberVO.getUserName());
         userInfo.setUserTel(memberVO.getUserTel());
         userInfo.setUserIntro(memberVO.getUserIntro());
+        userInfo.setBorrowCnt(memberVO.getBorrowCnt());
+        userInfo.setOverdueCnt(memberVO.getOverdueCnt());
+
+        System.out.println(userInfo);
 
         return userInfo;
     }
-
-//    @PostMapping("/updateUserDetail")
-//    public String updateUserDetail(MemberVO memberVO){
-//
-//        userService.userDetailUpdate(memberVO);
-//
-//        return "redirect:/bookAdmin/selectBorrowInfoFetch";
-//    }
 
     //연체자 관리
     @GetMapping("/delinquent")

@@ -27,8 +27,8 @@ public class MemberVO {
     private String userIntro;
     private String cardStatus;
     private String recentDate;
-    private int borrowCnt;
-    private int overdueCnt;
+    private int borrowCnt;//
+    private int overdueCnt;//
     private ApplyVO applyVO;
     private List<BookBNRVO> bookBorrowList;
 }

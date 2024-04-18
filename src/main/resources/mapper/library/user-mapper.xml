@@ -10,7 +10,6 @@
             , USER_CODE
             , USER_ID
             , CARD_NUM
-            , IS_ADMIN
             , CASE
                 WHEN IS_ADMIN = 'Y' THEN '관리자'
                 ELSE '이용자'
