@@ -56,64 +56,17 @@ public class MemberController {
 
     @GetMapping("/login")
     public String goLogin(Model model){
-        //드가기전 메뉴 정보좀 들고옴
-        //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","login");
 
         System.out.println("로그인");
         return "content/homePage/member/login";
     }
 
-//    //로그인
-//    @PostMapping("/loginForm")
-//    public String login(HttpSession session, MemberVO memberVO, Model model){
-//        //드가기전 메뉴 정보좀 들고옴
-//        //제대로 들고가는지 확인
-//        System.out.println(webMenuService.selectWebMenuList("web"));
-//        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-//
-//        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-//        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-//        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-//        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-//        webMenuService.selectWebMenuList("member");
-//        System.out.println(webMenuService.selectWebMenuList("member"));
-//        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
-//
-//
-//        MemberVO loginInfo = memberService.login(memberVO);
-//
-//        if(loginInfo != null){
-//            session.setAttribute("loginInfo",loginInfo);
-//            return "redirect:/home";
-//        }
-//        return "content/homepage/member/login_result";
-//    }
 
 
     @GetMapping("/findIdOrPW")
     public String goHome(Model model){
-        //드가기전 메뉴 정보좀 들고옴
-        //제대로 들고가는지 확인
-        System.out.println(webMenuService.selectWebMenuList("web"));
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-
-        //만약에 세션으로 회원정보가 있을 경우에는 헤더 부분에 다르게 표현할 경우가 있음
-        //로그인을 했으면 로그인, 회원가입, 아이디/비밀번호 찾기가 보일 필요가 없음
-        //조건문으로 세션값(로그인했다 안했다)이 있다 없다 확인해서 있는 경우에는 딴거 표시하고
-        //없는 경우에는 아래의 서비스를 통해서 메뉴(로그인, 회원가입 , 아이디/비밀번호 이 표시되도록 해야함)
-        webMenuService.selectWebMenuList("member");
-        System.out.println(webMenuService.selectWebMenuList("member"));
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+        model.addAttribute("page","findIdOrPW");
 
         System.out.println("아이디/비밀번호 찾기");
         return "content/homePage/member/findIdOrPW";
@@ -128,6 +81,7 @@ public class MemberController {
     //회원 신청란
     @RequestMapping("/applyApp")
     public String apply(HttpSession session, ApplyVO applyVO , @RequestParam(name = "boardNum") int boardNum){
+
         applyVO.setUserCode((Integer) session.getAttribute("userCode"));
         System.out.println(session.getAttribute("userCode"));
         memberService.apply(applyVO);
@@ -135,9 +89,15 @@ public class MemberController {
     }
 
 
-    //마이페이지
+    //마이페이지 이동
     @GetMapping("/goMyPage")
-    public String goMyPage(){
+    public String goMyPage(Model model,HttpSession session,MemberVO memberVO){
+        model.addAttribute("page","join");
+
+        memberVO.setUserCode((Integer)session.getAttribute("userCode"));
+        System.out.println(memberVO);
+        model.addAttribute("memberVO",memberVO);
+        memberService.myPageUserInfo(memberVO.getUserCode());
         return "/content/homePage/member/myPage";
     }
 

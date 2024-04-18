@@ -159,6 +159,20 @@
         WHERE BOARD_NUM = #{boardNum}
     </update>
 
+    <select id="myPageUserInfo" resultMap="users">
+        SELECT
+        USER_CODE
+        ,USER_NAME
+        ,USER_PW
+        ,USER_TEL
+        ,USER_ADDR
+        ,POST_CODE
+        ,ADDR_DETAIL
+        ,EMAIL
+        FROM BOARD
+        WHERE USER_CODE = #{userCode}
+    </select>
+
 
 </mapper>
 

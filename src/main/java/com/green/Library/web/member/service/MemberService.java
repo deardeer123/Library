@@ -29,5 +29,8 @@ public interface MemberService {
     //userCode로 코드, 아이디, 이름, 전화번호 얻는 메소드
     MemberVO selectMemberInfoToUserCode(int userCode);
 
+    //myPage
+    MemberVO myPageUserInfo(int userCode);
+
 }
 
