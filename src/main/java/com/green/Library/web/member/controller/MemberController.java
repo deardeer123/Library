@@ -92,13 +92,22 @@ public class MemberController {
     //마이페이지 이동
     @GetMapping("/goMyPage")
     public String goMyPage(Model model,HttpSession session,MemberVO memberVO){
+
+
         model.addAttribute("page","join");
 
-        memberVO.setUserCode((Integer)session.getAttribute("userCode"));
-        System.out.println(memberVO);
-        model.addAttribute("memberVO",memberVO);
-        memberService.myPageUserInfo(memberVO.getUserCode());
-        return "/content/homePage/member/myPage";
+        MemberVO member = memberService.myPageUserInfo((Integer) session.getAttribute("userCode"));
+
+        member.setEmail(member.getEmail().substring(0, member.getEmail().indexOf("@")));
+        model.addAttribute("member",member);
+        return "content/homePage/member/myPage";
+    }
+
+    @PostMapping("/updateUserInfo")
+    public String updateUserInfo(MemberVO memberVO){
+        memberVO.setEmail(memberVO.getEmail().replace(",", ""));
+        memberService.updateUserInfo(memberVO);
+        return "redirect:/goMyPage";
     }
 
 

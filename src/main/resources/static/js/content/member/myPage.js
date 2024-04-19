@@ -15,11 +15,20 @@ const check = () => {
         check_td.style="color: forestgreen;"
       }
       else{
-        str += '비밀번호를 다시 확인해주시길 바랍니다'; 
+        str += '다시 확인해주시길 바랍니다'; 
         check_td.insertAdjacentHTML("afterbegin",str)
-        check_td.style = '';
+        check_td.style = "color: red;";
       }
     }
   
+}
 
+
+const cf = () => {
+  let pw1 = document.querySelector('#pw1').value;
+  let pw2 = document.querySelector('#pw2').value;
+
+  if(pw1 == '' && pw2 == ''){
+    confirm('')
+  }
 }

@@ -11,94 +11,104 @@
   <!-- html 코드 작성 -->
   <div class="row mt-3">
     <div class="col">
-      <h4>정보변경</h4>
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bookmarks"
+          viewBox="0 0 16 16">
+          <path
+            d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v10.566l3.723-2.482a.5.5 0 0 1 .554 0L11 14.566V4a1 1 0 0 0-1-1z" />
+          <path d="M4.268 1H12a1 1 0 0 1 1 1v11.768l.223.148A.5.5 0 0 0 14 13.5V2a2 2 0 0 0-2-2H6a2 2 0 0 0-1.732 1" />
+        </svg>
+      </span>
+      <span class="title-head align-middle">
+        <h2>정보변경</h2>
+      </span>
     </div>
   </div>
-  <div class="row justify-content-center text-center">
-    <div class="col-10">
-      <table class="table align-middle">
-        <colgroup>
-          <col width="20%">
-          <col width="*">
-          <col width="20%">
-        </colgroup>
-        <tbody>
-          <tr>
-            <td>이름</td>
-            <td>
-              <input type="text" class="form-control" th:value="${userName}">
-            </td>
-            <td>
-              <button class="btn btn-primary" onclick="">수정</button>
-            </td>
-          </tr>
-          <tr>
-            <td>비밀번호</td>
-            <td>
-              <input type="password" id="pw1" class="form-control" onchange="check()">
-            </td>
-            <td class="check-td" style="color: forestgreen;">
-            </td>
-          </tr>
-          <tr>
-            <td>비밀번호 확인</td>
-            <td>
-              <input type="password" id="pw2" class="form-control" oninput="check()">
-            </td>
-            <td class="btn-td">
-              <button class="btn btn-primary" onclick="">수정</button>
-            </td>
-          </tr>
-          <tr>
-            <td>휴대폰 번호</td>
-            <td>
-              <input type="text" class="form-control" oninput="oninputPhone(this)" maxlength="14" name="userTel">
-            </td>
-            <td>
-              <button class="btn btn-primary" onclick="">수정</button>
-            </td>
-          </tr>
-          <tr>
-            <td rowspan="2">주소</td>
-            <td colspan="3" class="input-group">
-              <input type="text" name="postCode" id="postCode" placeholder="우편번호" style="width: 40%;"
-                class="form-control">
-              <input type="button" onclick="post()" value="주소 찾기" style="width: 90px;" class="btn btn-secondary">
-            </td>
-            <td>
-              <button class="btn btn-primary" onclick="">수정</button>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="3">
-              <input type="text" name="userAddr" id="userAddr" placeholder="주소" class="form-control"
-                style="width: 50%; display: inline-block; margin: 0;">
+  <div class="row mt-3 justify-content-center text-center">
+    <div class="box-div col-8">
+      <form action="/updateUserInfo" method="post">
+        <table class="table align-middle">
+          <colgroup>
+            <col width="20%">
+            <col width="*">
+          </colgroup>
+          <tbody>
+            <tr>
+              <td>이름</td>
+              <td>
+                <input type="text" class="form-control" th:value="${member.userName}" style="width: 60%;" disabled>
+              </td>
+            </tr>
+            <tr>
+              <td>아이디</td>
+              <td>
+                <input type="text" class="form-control" th:value="${member.userId}" style="width: 60%;" disabled>
+
+              </td>
+            </tr>
+            <tr>
+              <td>변경할 비밀번호</td>
+              <td>
+                <input type="password" id="pw1" name="userPw" class="form-control" onchange="check()" style="width: 60%;">
+                <span class="check-td"></span>
+              </td>
+
+            </tr>
+            <tr>
+              <td>비밀번호 재확인</td>
+              <td>
+                <input type="password" id="pw2" class="form-control" onchange="check()" style="width: 60%;">
+              </td>
+            </tr>
+            <tr>
+              <td>휴대폰 번호</td>
+              <td>
+                <input type="text" class="form-control" oninput="oninputPhone(this)" maxlength="14" name="userTel"
+                  th:value="${member.userTel}" style="width: 60%;">
+              </td>
+
+            </tr>
+            <tr>
+              <td rowspan="2">주소</td>
+              <td colspan="3" class="input-group" style="width: 50%;">
+                <input type="text" name="postCode" id="postCode" placeholder="우편번호" class="form-control"
+                  th:value="${member.postCode}">
+                <input type="button" onclick="post()" value="주소 찾기" style="width: 90px;" class="btn btn-secondary">
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-start">
+                <input type="text" name="userAddr" id="userAddr" placeholder="주소" class="form-control"
+                  style="width: 49%; display: inline-block; margin: 0;" th:value="${member.userAddr}">
                 <input type="text" name="addrDetail" id="sample6_detailAddress" placeholder="상세주소" class="form-control"
-                style="width: 49%; display: inline-block; margin: 0;">
-            </td>
-            
-          </tr>
-          <tr>
-            <td>이메일</td>
-            <td>
-              <div class="row align-middle">
-                <div class="col-6 ">
-                  <input type="text" name="email" class="form-control">
+                  style="width: 49%; display: inline-block; margin: 0;" th:value="${member.addrDetail}">
+              </td>
+            </tr>
+            <tr>
+              <td>이메일</td>
+              <td>
+                <div class="row align-middle">
+                  <div class="col-6 ">
+                    <input type="text" name="email" class="form-control" th:value="${member.email}">
+                  </div>
+                  <div class="col-1 mt-1 al">@</div>
+                  <div class="col-5"><select name="email" class="form-select">
+                      <option value="@naver.com">naver.com</option>
+                      <option value="@gmail.com">gmail.com</option>
+                      <option value="@daum.net">daum.net</option>
+                    </select></div>
                 </div>
-                <div class="col-1 mt-1 al">@</div>
-                <div class="col-5"><select name="email" class="form-select">
-                    <option value="@ naver.com">naver.com</option>
-                    <option value="@ gmail.com">gmail.com</option>
-                    <option value="@ daum.net">daum.net</option>
-                  </select></div>
-              </div>
-            </td>
-            <td>
-              <button class="btn btn-primary" onclick="">수정</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col">
+            <input type="hidden" name="userCode" th:value="${member.userCode}">
+            <input type="submit" class="btn btn-success" value="정보변경" onclick="cf()">
+          </div>
+        </div>
+      </form>
     </div>
 
   </div>

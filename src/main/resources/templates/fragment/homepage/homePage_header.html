@@ -78,7 +78,7 @@
                                         </span>
                                         <span>[[${#authentication.name}]]님</span>
                                         <span onclick="logout()">로그아웃</span>
-                                        <span onclick="location.href='/goMyPage'">마이페이지</span>
+                                        <span th:onclick="myPage([[${session.userCode}]])">마이페이지</span>
                                     </th:block>
                                 </span>
                             </div>

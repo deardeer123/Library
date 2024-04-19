@@ -32,5 +32,7 @@ public interface MemberService {
     //myPage
     MemberVO myPageUserInfo(int userCode);
 
+    //회원 정보 변경
+    void updateUserInfo(MemberVO memberVO);
 }
 
