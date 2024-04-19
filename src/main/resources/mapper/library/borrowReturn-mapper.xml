@@ -72,6 +72,13 @@
         WHERE USER_CODE = #{userCode}
     </update>
 
+    <!-- 이용자 카드번호 조회 -->
+    <select id="selectCardNum" resultMap="int">
+        SELECT
+            CARD_NUM
+        FROM USERS
+        WHERE USER_CODE = #{userCode}
+    </select>
 
 <!-- ///////////////////// 대출 ///////////////////////// -->
 

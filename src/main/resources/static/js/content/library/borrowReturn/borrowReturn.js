@@ -45,7 +45,7 @@ function selectMemberInfo() {
         //fetch 통신 후 실행 영역
         .then((data) => {//data -> controller에서 리턴되는 데이터!
 
-            console.log(data);
+            // console.log(data);
 
             if (data.userCode == 0) {
                 alert('회원번호 혹은 책번호가 정확하지 않습니다.\n다시 입력하세요.');
@@ -323,7 +323,6 @@ function showModal(userCode) {
             </colgroup>
             <tr>
                 <input type="hidden" name="userCode" value="${data.userCode}" id="getUserCode">
-                <input type="hidden" name="cardNum" value="${data.cardNum}">
                 <td class="table-light">번호</td>
                 <td><span id="detailCardNum">${data.cardNum}</span>
                     <button class="btn btn-primary" onclick="reGrant(${data.userCode})">카드번호 재부여</button>
@@ -331,10 +330,10 @@ function showModal(userCode) {
                 <td class="table-light">직급</td>
                 <td>
                     <select name="isAdmin" class="form-select">`
-                    if(data.isAdmin == 'USER'){
+                    if(data.isAdmin == '이용자'){
                     str += `<option value="N" selected>이용자</option>
                         <option value="Y">관리자</option>`
-                    }else{
+                    }else if(data.isAdmin == '관리자'){
                     str += `<option value="N">이용자</option>
                         <option value="Y" selected>관리자</option>`
                     }
@@ -411,7 +410,7 @@ function showModal(userCode) {
             <tr>
                 <td class="table-light">비고</td>`
             if (data.userIntro == null) {
-                str += `<td colspan="3" name="userIntro"></td>`
+                str += `<td colspan="3" name="userIntro"><textarea id="detailUserIntro" name="userIntro" class="form-control"></textarea></td>`
             } else {
                 str += `<td colspan="3"><textarea id="detailUserIntro" name="userIntro" class="form-control">${data.userIntro}</textarea></td>`
             }
@@ -422,19 +421,19 @@ function showModal(userCode) {
             </tr>
             <tr>
                 <td class="table-light">대출</td>
-                <td colspan="3">${data.borrowCnt}건</td>
+                <td colspan="3" id="borrowCnt">${data.borrowCnt}</td>
             </tr>
             <tr>
                 <td class="table-light">예약</td>
-                <td colspan="3"></td>
+                <td colspan="3" ></td>
             </tr>
             <tr>
                 <td class="table-light">연체</td>
-                <td colspan="3">${data.overdueCnt}건</td>
+                <td colspan="3" id="overdueCnt">${data.overdueCnt}</td>
             </tr>
             <tr>
                 <td class="table-light">최근 대출일</td>
-                <td colspan="3">${data.recentDate}</td>
+                <td colspan="3" id="recentDate">${data.recentDate}</td>
             </tr>
         </table>
         `
@@ -501,7 +500,27 @@ function exReturnDate(){
 
 // 카드번호 재부여
 
-const reGrant = (userCode) => {
+const reGrant = () => {
+
+    // 그림 그릴 모달 태그 선택
+    const modalBody = document.querySelector('.modal-body');
+
+    const userCode = document.querySelector('#getUserCode').value;
+    const cardNum = document.querySelector('#detailCardNum').innerHTML;
+    const userId = document.querySelector('#detailUserId').value;
+    const userName = document.querySelector('#detailUserName').value;
+    const isAdmin = document.querySelector('select[name="isAdmin"]').value;
+    const cardStatus = document.querySelector('select[name="cardStatus"]').value;
+    const gender = document.querySelector('select[name="gender"]').value;
+    const email = document.querySelector('input[name="email"]').value;
+    const userTel = document.querySelector('input[name="userTel"]').value;
+    const postCode = document.querySelector('input[name="postCode"]').value;
+    const userAddr = document.querySelector('input[name="userAddr"]').value;
+    const addrDetail = document.querySelector('input[name="addrDetail"]').value;
+    const userIntro = document.querySelector('#detailUserIntro').value;
+    const borrowCnt = document.querySelector('#borrowCnt').innerHTML;
+    const overdueCnt = document.querySelector('#overdueCnt').innerHTML;
+    const recentDate = document.querySelector('#recentDate').innerHTML;
 
     fetch('/bookAdmin/updateCardNumFetch', { //요청경로
         method: 'POST',
@@ -512,7 +531,8 @@ const reGrant = (userCode) => {
         //컨트롤러로 전달할 데이터
         body: new URLSearchParams({
             // 데이터명 : 데이터값
-            "userCodeList": chkTags
+            "userCode" : userCode,
+            "cardNum" : cardNum
         })
     })
         .then((response) => {
@@ -526,7 +546,137 @@ const reGrant = (userCode) => {
         })
         //fetch 통신 후 실행 영역
         .then((data) => {//data -> controller에서 리턴되는 데이터!
+            alert(data);
             alert('변경 되었습니다.');
+
+            modalBody.innerHTML = '';
+
+            let str = '';
+            str += `
+        <table class="table table-bordered">
+            <colgroup>
+                <col width="">
+                <col width="">
+                <col width="">
+                <col width="">
+            </colgroup>
+            <tr>
+                <input type="hidden" name="userCode" value="${userCode}" id="getUserCode">
+                <td class="table-light">번호</td>
+                <td><span id="detailCardNum">${data.cardNum}</span>
+                    <button class="btn btn-primary" onclick="reGrant(${userCode})">카드번호 재부여</button>
+                </td>
+                <td class="table-light">직급</td>
+                <td>
+                    <select name="isAdmin" class="form-select">`
+                    if(isAdmin == '이용자'){
+                    str += `<option value="N" selected>이용자</option>
+                        <option value="Y">관리자</option>`
+                    }else if(isAdmin == '관리자'){
+                    str += `<option value="N">이용자</option>
+                        <option value="Y" selected>관리자</option>`
+                    }
+                    str += `</select>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-light">이름</td>
+                <td><input type="text" name="userName" class="form-control" id="detailUserName" value="${userName}"></td>
+                <td class="table-light">카드상태</td>
+                <td>
+                    <select name="cardStatus" class="form-select">`
+                    if(cardStatus == '사용중'){
+                    str += `<option value="사용중" selected>사용중</option>
+                        <option value="분실">분실</option>`
+                    }else{
+                    str += `<option value="사용중">사용중</option>
+                        <option value="분실" selected>분실</option>`
+                    }
+                    str += `</select>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-light">아이디</td>
+                <td><input type="text" name="userId" value="${userId}" id="detailUserId" class="form-control"></td>
+                <td class="table-light">성별</td>
+                <td>
+                    <select name="gender" class="form-select">`
+                    if(gender == '사용중'){
+                        str += `<option value="남자" selected>남자</option>
+                            <option value="여자">여자</option>`
+                        }else{
+                        str += `<option value="남자">남자</option>
+                            <option value="여자" selected>여자</option>`
+                        }
+                        str += `</select>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-light">이메일</td>
+                <td><input type="text" value="${email}" name="email" class="form-control"></td>
+                <td class="table-light">이메일 수신 여부</td>
+                <td>
+                    <select class="form-select">
+                        <option>수신함</option>
+                        <option>수신안함</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-light">전화번호</td>
+                <td><input type="text" value="${userTel}" name="userTel" class="form-control"></td>
+                <td class="table-light">SMS 수신여부</td>
+                <td>
+                    <select class="form-select">
+                        <option>수신함</option>
+                        <option>수신안함</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td rowspan="2" class="table-light">주소</td>
+                <td colspan="3">
+                    <input type="text" name="postCode" class="form-control" value="${postCode}" id="postCode" style="width: 200px;" readonly>
+                    <input type="button" onclick="searchAddress()" value="주소 찾기" style="width: 90px;"class="btn btn-secondary">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <input type="text" value="${userAddr}" name="userAddr" class="form-control" id="address" readonly>
+                    <input type="text" value="${addrDetail}" name="addrDetail" class="form-control">
+                </td>
+            </tr>
+            <tr>
+                <td class="table-light">비고</td>`
+            if (userIntro == null) {
+                str += `<td colspan="3" name="userIntro"><textarea id="detailUserIntro" name="userIntro" class="form-control"></textarea></td>`
+            } else {
+                str += `<td colspan="3"><textarea id="detailUserIntro" name="userIntro" class="form-control">${userIntro}</textarea></td>`
+            }
+
+            str += `</tr>
+            <tr>
+                <td class="table-active" colspan="4" text-align>이용조회</td>
+            </tr>
+            <tr>
+                <td class="table-light">대출</td>
+                <td colspan="3" id="borrowCnt">${borrowCnt}</td>
+            </tr>
+            <tr>
+                <td class="table-light">예약</td>
+                <td colspan="3" ></td>
+            </tr>
+            <tr>
+                <td class="table-light">연체</td>
+                <td colspan="3" id="overdueCnt">${overdueCnt}</td>
+            </tr>
+            <tr>
+                <td class="table-light">최근 대출일</td>
+                <td colspan="3" id="recentDate">${recentDate}</td>
+            </tr>
+        </table>
+        `
+            modalBody.insertAdjacentHTML('afterbegin', str);
 
         })
         //fetch 통신 실패 시 실행 영역
@@ -588,8 +738,6 @@ const updateUserDetail = () => {
     //fetch 통신 후 실행 영역
     .then((data) => {//data -> controller에서 리턴되는 데이터!
         alert('수정 되었습니다.');
-
-        console.log(data);
         
         userInfo.innerHTML = '';
         str = '';

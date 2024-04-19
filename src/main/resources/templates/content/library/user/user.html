@@ -135,11 +135,11 @@
                                             <td rowspan="2" th:onclick="showModal([[${memberInfo.userCode}]])">
                                                 [[${memberInfo.userName}]]([[${memberInfo.userId}]]) [[${memberInfo.cardNum}]]
                                             </td>
-                                            <td th:if="${memberInfo.isAdmin == 'Y'}">
+                                            <td th:if="${memberInfo.isAdmin == '관리자'}">
                                                 <input type="hidden" value="Y">
                                                 관리자
                                             </td>
-                                            <td th:unless="${memberInfo.isAdmin == 'Y'}">
+                                            <td th:unless="${memberInfo.isAdmin == '관리자'}">
                                                 <input type="hidden" value="N">
                                                 이용자
                                             </td>
@@ -168,7 +168,6 @@
                 </div>
 
 
-
                 <!-- 모달 -->
                 <div class="modal fade" id="user-detail-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
@@ -184,14 +183,13 @@
                                 <div class="row">
                                     <div class="col">
                                         <button class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                        <button class="btn btn-primary" data-bs-dismiss="modal">저장</button>
+                                        <button class="btn btn-primary" onclick="updateUserDetail()" data-bs-dismiss="modal">저장</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
 
 
                 <div class="row">
