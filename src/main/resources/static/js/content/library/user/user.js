@@ -78,7 +78,7 @@ function showModal(userCode) {
                 <td><input type="text" name="userId" value="${data.userId}" id="detailUserId" class="form-control"></td>
                 <td class="table-light">성별</td>
                 <td>
-                    <select name="gender" class="form-select">`
+                    <select name="detailGender" class="form-select">`
                     if(data.gender == '사용중'){
                         str += `<option value="남자" selected>남자</option>
                             <option value="여자">여자</option>`
@@ -102,7 +102,7 @@ function showModal(userCode) {
             </tr>
             <tr>
                 <td class="table-light">전화번호</td>
-                <td><input type="text" value="${data.userTel}" name="userTel" class="form-control"></td>
+                <td><input type="text" value="${data.userTel}" name="detailUserTel" class="form-control"></td>
                 <td class="table-light">SMS 수신여부</td>
                 <td>
                     <select class="form-select">
@@ -191,108 +191,70 @@ function searchAddress(){
 
 // 이용자 정보 업데이트
 
-// function updateUserDetail (){
+function updateUserDetail (){
     
-//     alert(111);
-//     // 업데이트 할 모달 정보 선택
-//     const cardNum = document.querySelector('#detailCardNum').innerHTML;
-//     const userId = document.querySelector('#detailUserId').value;
-//     const userName = document.querySelector('#detailUserName').value;
-//     const userCode = document.querySelector('#getUserCode').value;
-//     const isAdmin = document.querySelector('select[name="isAdmin"]').value;
-//     const cardStatus = document.querySelector('select[name="cardStatus"]').value;
-//     const gender = document.querySelector('select[name="gender"]').value;
-//     const email = document.querySelector('input[name="email"]').value;
-//     const userTel = document.querySelector('input[name="userTel"]').value;
-//     const postCode = document.querySelector('input[name="postCode"]').value;
-//     const userAddr = document.querySelector('input[name="userAddr"]').value;
-//     const addrDetail = document.querySelector('input[name="addrDetail"]').value;
-//     const userIntro = document.querySelector('#detailUserIntro').value;
-//     const borrowCnt = document.querySelector('#borrowCnt').innerHTML;
-//     const overdueCnt = document.querySelector('#overdueCnt').innerHTML;
+    // 업데이트 할 모달 정보 선택
+    const cardNum = document.querySelector('#detailCardNum').innerHTML;
+    const userId = document.querySelector('#detailUserId').value;
+    const userName = document.querySelector('#detailUserName').value;
+    const userCode = document.querySelector('#getUserCode').value;
+    const isAdmin = document.querySelector('select[name="isAdmin"]').value;
+    const cardStatus = document.querySelector('select[name="cardStatus"]').value;
+    const gender = document.querySelector('select[name="detailGender"]').value;
+    const email = document.querySelector('input[name="email"]').value;
+    const userTel = document.querySelector('input[name="detailUserTel"]').value;
+    const postCode = document.querySelector('input[name="postCode"]').value;
+    const userAddr = document.querySelector('input[name="userAddr"]').value;
+    const addrDetail = document.querySelector('input[name="addrDetail"]').value;
+    const userIntro = document.querySelector('#detailUserIntro').value;
+    const borrowCnt = document.querySelector('#borrowCnt').innerHTML;
+    const overdueCnt = document.querySelector('#overdueCnt').innerHTML;
 
-//     // 이용자 관리 페이지에 바뀐 거 다시 그려주기
-//     const tbody = document.querySelectorAll('tbody');
+    const test_data = {
+        // 데이터명 : 데이터값
+        userCode : userCode
+        , isAdmin : isAdmin
+        , cardStatus : cardStatus
+        , gender : gender
+        , email : email
+        , userTel : userTel
+        , postCode : postCode
+        , userAddr : userAddr
+        , addrDetail : addrDetail
+        , userIntro : userIntro
+        , cardNum : cardNum
+        , userId : userId
+        , userName : userName
+        , borrowCnt : borrowCnt
+        , overdueCnt : overdueCnt
+    };
 
+    console.log(test_data);
 
-//     const test_data = {
-//         // 데이터명 : 데이터값
-//         userCode : userCode
-//         , isAdmin : isAdmin
-//         , cardStatus : cardStatus
-//         , gender : gender
-//         , email : email
-//         , userTel : userTel
-//         , postCode : postCode
-//         , userAddr : userAddr
-//         , addrDetail : addrDetail
-//         , userIntro : userIntro
-//         , cardNum : cardNum
-//         , userId : userId
-//         , userName : userName
-//         , borrowCnt : borrowCnt
-//         , overdueCnt : overdueCnt
-//     };
+    fetch('/bookAdmin/updateUserDetailFetch', { //요청경로
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+        },
+        //컨트롤러로 전달할 데이터
+        body: JSON.stringify(test_data)
+    })
+    .then((response) => {
+        return response.json(); //나머지 경우에 사용
+    })
+    //fetch 통신 후 실행 영역
+    .then((data) => {//data -> controller에서 리턴되는 데이터!
+        alert('수정 되었습니다.');
 
-//     console.log(test_data);
+        window.location.href = "/bookAdmin/user"; 
 
-//     fetch('/bookAdmin/updateUserDetailFetch', { //요청경로
-//         method: 'POST',
-//         cache: 'no-cache',
-//         headers: {
-//             'Content-Type': 'application/json; charset=UTF-8'
-//         },
-//         //컨트롤러로 전달할 데이터
-//         body: JSON.stringify(test_data)
-//     })
-//     .then((response) => {
-//         return response.json(); //나머지 경우에 사용
-//     })
-//     //fetch 통신 후 실행 영역
-//     .then((data) => {//data -> controller에서 리턴되는 데이터!
-//         alert('수정 되었습니다.');
-        
-//         tbody.innerHTML = '';
-//         str = '';
+    })
 
-//         data.forEach((memberInfo, idx)=> {
-//             str += `
-//             <tr>
-//                 <td rowspan="2"><input type="checkbox" class="form-check-input one"></td>
-//                 <td rowspan="2" th:onclick="showModal([[${memberInfo.userCode}]])">
-//                     [[${memberInfo.userName}]]([[${memberInfo.userId}]]) [[${memberInfo.cardNum}]]
-//                 </td>
-//                 <td th:if="${memberInfo.isAdmin == 'Y'}">
-//                     <input type="hidden" value="Y">
-//                     관리자
-//                 </td>
-//                 <td th:unless="${memberInfo.isAdmin == 'Y'}">
-//                     <input type="hidden" value="N">
-//                     이용자
-//                 </td>
-//                 <td>
-//                     [[${memberInfo.cardStatus}]]
-//                 </td>
-//                 <td>
-//                     [[${memberInfo.userTel}]]
-//                 </td>
-//             </tr>
-//             <tr>
-//                 <td>[[${memberInfo.borrowCnt}]]</td>
-//                 <td>[[${memberInfo.overdueCnt}]]</td>
-//                 <td>[[${memberInfo.userIntro}]]</td>
-//             </tr>
-//             `
-//         })
-
-        
-
-//         tbody.insertAdjacentHTML("afterbegin", str);
-//     })
-//     //fetch 통신 실패 시 실행 영역
-//     .catch(err=>{
-//         alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
-//         console.log(err);
-//     });
+    //fetch 통신 실패 시 실행 영역
+    .catch(err=>{
+        alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+        console.log(err);
+    });
     
-// }
+}
