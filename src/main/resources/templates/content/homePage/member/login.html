@@ -1,43 +1,66 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
-    <link rel="stylesheet" href="/">
+    <link rel="stylesheet" href="/css/content/homePage/myPage.css">
 </th:block>
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    <div class="row">
+    <div class="row mt-3">
         <div class="col">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-key"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8m4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5" />
+                    <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                </svg>
+            </span>
+            <span class="title-head align-middle">
+                <h2>로그인 </h2>
+            </span>
+
+        </div>
+    </div>
+    <div class="row mt-3 justify-content-center ">
+        <div class="cf-box-div col-8 ">
             <form action="/loginForm" method="post">
-                <table>
-                    <thead>
-                        <h3>로그인</h3>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>아이디</td>
-                            <td><input type="text" name="userId"></td>
-                        </tr>
-                        <tr>
-                            <td>비밀번호</td>
-                            <td><input type="password" name="userPw"></td>
-                        </tr>
-                        <tr>
-                            <td><input type="submit" value="로그인"></td>
-                        </tr>
-                    </tbody>
+                <table class="cf-table table align-middle text-center">
+                    <colgroup>
+                        <col width="50%">
+                        <col width="*">
+                    </colgroup>
+                    <tr class="id-tr">
+                        <td >아이디</td>
+                        <td class="id-td">
+                            <input type="text" class="id form-control" name="userId">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>패스워드</td>
+                        <td class="id-td">
+                            <input type="password" class="pw form-control" name="userPw">
+                        </td>
+                    </tr>
                 </table>
+                <div class="row ">
+                    <div class="col mt-3 text-center">
+                        <input type="submit" value="확인" class="btn btn-secondary">
+                    </div>
+                </div>
             </form>
         </div>
     </div>
+
+
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <script src="/"></script>
+    <script src="/js/content/member/login.js"></script>
 </th:block>
+
 </html>

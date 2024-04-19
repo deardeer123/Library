@@ -77,7 +77,7 @@ public class LibraryHomeController {
         String time = "12:00:00";
         //날짜 형식 맞춰주기:lㅏㅈ!
         calendarVO.setStart(calendarVO.getStart() + " "+time);
-        System.out.println(calendarVO);
+        //
 
         libraryHomeService.insertCalendar(calendarVO);
 
@@ -86,7 +86,7 @@ public class LibraryHomeController {
 
     @PostMapping("/calendarDelete")
     public String calendarDelete(CalendarVO calendarVO){
-        System.out.println(calendarVO);
+        //
         libraryHomeService.deleteCalendar(calendarVO);
         return "redirect:/test2";
     }
