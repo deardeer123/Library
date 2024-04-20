@@ -452,7 +452,7 @@ CREATE TABLE APPLY(
 ALTER TABLE APPLY ADD COLUMN BOARD_NUM INT REFERENCES board(board_NUM);
 ALTER TABLE APPLY ADD COLUMN APPLY_STATUS VARCHAR(10);
 ALTER TABLE APPLY ADD COLUMN CONFIRM VARCHAR(2) DEFAULT 'N';
-ALTER TABLE APPLY CHANGE APPLY_STATUS APPLY_STATUS VARCHAR(10) DEFAULT '신청대기';
+ALTER TABLE APPLY CHANGE APPLY_STATUS VARCHAR(10) DEFAULT '신청대기';
 
 SELECT * FROM apply;
 
@@ -591,7 +591,7 @@ SELECT
         WHERE A.USER_CODE = 10;
 SELECT * FROM apply;
 
-
+SELECT * FROM board;
 SELECT
 	COUNT(*)
 FROM apply
@@ -664,4 +664,18 @@ SELECT
         
 SELECT * from 
 board
+<<<<<<< HEAD
 WHERE board_type=28;
+=======
+WHERE board_type=28;
+
+SELECT * from electric_accidents_burn_range;
+
+SELECT * FROM factors_causing_electric_accidents;
+
+SELECT * FROM board
+WHERE  = 7;
+
+INNER JOIN board_plus
+ON board.board_num = board_plus.BOARD_NUM;
+>>>>>>> dev

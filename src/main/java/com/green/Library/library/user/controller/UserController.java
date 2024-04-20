@@ -1,10 +1,12 @@
 package com.green.Library.library.user.controller;
 
+import com.green.Library.library.borrowReturn.service.BorrowReturnService;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.user.service.UserService;
 import com.green.Library.library.user.vo.SearchUserVO;
 import com.green.Library.web.member.vo.MemberVO;
 import jakarta.annotation.Resource;
+import org.apache.ibatis.javassist.expr.Instanceof;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,8 @@ public class UserController {
     LibraryMenuService libraryMenuService;
     @Resource(name = "userService")
     private UserService userService;
+    @Resource(name = "borrowReturnService")
+    BorrowReturnService borrowReturnService;
 
     //-----------이용자------------------
     //이용자 관리
@@ -97,21 +101,61 @@ public class UserController {
     // 이용자 cardNum update
     @ResponseBody
     @PostMapping("/updateCardNumFetch")
-    public String updateCardNum(@RequestParam(name = "userCodeList") List<Integer> userCodeList){
+    public String updateCardNum(@RequestParam(name = "userCodeList", required = false) List<Integer> userCodeList,
+                                @RequestParam(name = "userCode", required = false, defaultValue = "0")String userCode,
+                                @RequestParam(name = "cardNum", required = false, defaultValue = "0")String cardNum){
 
-        userCodeList.forEach(s -> userService.updateCardNum(new MemberVO().builder()
+        if(userCodeList != null){
+            userCodeList.forEach(s -> userService.updateCardNum(new MemberVO().builder()
                     .userCode(s)
                     .build()));
 
-        return "a";
+            return "a";
+
+        } else {
+            System.out.println("(((((((((((((((((((((((((((((((((((((" + userCode);
+
+            MemberVO reGrant = new MemberVO();
+
+            userService.updateCardNum(reGrant);
+
+//            cardNum = borrowReturnService.selectCardNum(Integer.parseInt(userCode));
+
+            System.out.println("))))))))))))))))))))))))))))))))))))" + cardNum);
+
+            return cardNum;
+        }
     }
 
     // 모달 상세정보 수정 업데이트
     @ResponseBody
-    @PostMapping("/updateUserDetailFetch")
-    public void userDetailUpdate(@RequestBody MemberVO memberVO){
+    @RequestMapping("/updateUserDetailFetch")
+    public MemberVO userDetailUpdate(@RequestBody MemberVO memberVO) {
+
+<<<<<<< HEAD
+        userService.userDetailUpdate(memberVO);
+=======
+        System.out.println(memberVO);
+
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
         userService.userDetailUpdate(memberVO);
+
+        MemberVO userInfo = new MemberVO();
+
+        userInfo.setUserCode(memberVO.getUserCode());
+        userInfo.setIsAdmin(memberVO.getIsAdmin());
+        userInfo.setCardNum(memberVO.getCardNum());
+        userInfo.setUserName(memberVO.getUserName());
+        userInfo.setUserTel(memberVO.getUserTel());
+        userInfo.setUserIntro(memberVO.getUserIntro());
+        userInfo.setBorrowCnt(memberVO.getBorrowCnt());
+        userInfo.setOverdueCnt(memberVO.getOverdueCnt());
+
+        System.out.println(userInfo);
+
+        return userInfo;
+>>>>>>> dev
     }
 
     //연체자 관리

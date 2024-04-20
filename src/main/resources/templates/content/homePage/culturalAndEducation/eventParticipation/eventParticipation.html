@@ -40,8 +40,8 @@
                         <td sec:authorize="hasRole('ROLE_Y')">
                             <input type="checkbox" id="allChk" onclick="allchk()">전체선택
                         </td>
-                        <td>프로그램명</td>
                         <td>강사명</td>
+                        <td>프로그램명</td>
                         <td>대상</td>
                         <td>운영기간</td>
                         <td>신청기간</td>
@@ -54,11 +54,12 @@
                         <td sec:authorize="hasRole('ROLE_Y')">
                             <input th:value="${board.boardNum}" type="checkbox" class="chk">
                         </td>
+                        
+                        <td>[[${board.PlusVO.teacher}]]</td>
                         <td>
                             <span th:onclick="|location.href='@{/goDetailParticipation(boardNum=${board.boardNum})}'|"
                                 style="cursor: pointer; font-weight: bold;">[[${board.boardTitle}]]</span>
                         </td>
-                        <td>[[${board.PlusVO.teacher}]]</td>
                         <td>[[${board.PlusVO.target}]]</td>
                         <td>[[${board.PlusVO.openDate}]] ~ [[${board.PlusVO.closeDate}]]</td>
                         <td>[[${board.PlusVO.toDate}]] ~ [[${board.PlusVO.fromDate}]]</td>

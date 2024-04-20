@@ -71,21 +71,24 @@ public class LibraryHomeController {
     }
 
     @PostMapping("/calendarAdd")
-    public String calendarAdd(CalendarVO calendarVO, @RequestParam(name = "time")String time){
-        //날짜 형식 맞춰주기
+    public String calendarAdd(CalendarVO calendarVO, @RequestParam(name="start")String start){
+        //날짜가 안넘어가서 그냥 start라는 변수로 넘겨줌
+        calendarVO.setStart(start);
+        String time = "12:00:00";
+        //날짜 형식 맞춰주기:lㅏㅈ!
         calendarVO.setStart(calendarVO.getStart() + " "+time);
-        System.out.println(calendarVO);
+        //
 
         libraryHomeService.insertCalendar(calendarVO);
 
-        return "redirect:/bookAdmin/home";
+        return "redirect:/test2";
     }
 
     @PostMapping("/calendarDelete")
     public String calendarDelete(CalendarVO calendarVO){
-        System.out.println(calendarVO);
+        //
         libraryHomeService.deleteCalendar(calendarVO);
-        return "redirect:/bookAdmin/home";
+        return "redirect:/test2";
     }
 
 

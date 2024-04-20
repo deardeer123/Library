@@ -92,12 +92,13 @@
             <div sec:authorize="hasRole('ROLE_Y')" class="d-md-flex justify-content-end">
                 <input type="button" class="btn btn-primary btn-sm" style="margin-right: 5px;" th:onclick="|location.href='@{/goEventUpdatePage(boardNum=${board.boardNum})}'|"
                     value="게시물 수정">
-                <input type="button" class="btn btn-primary btn-sm" th:onclick="deleteEventBoard([[${board.boardNum}]])" value="게시물 삭제">
+                <input type="button" class="btn btn-primary btn-sm" th:onclick="deleteAppBoard([[${board.boardNum}]],[[${board.PlusVO.openDate}]],[[${board.boardTitle}]])" value="게시물 삭제">
             </div>
             <div>
                 <input class="btn btn-success btn-lg" type="button" value="목록"
                     onclick="location.href='/applicationForClasses'">
             </div>
+            
         </div>
     </div>
 
@@ -137,6 +138,6 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴 때 같이 실행되는 js -->
-    <!-- <script src="/"></script> -->
+    <script src="/js/content/culture/culture.js"></script>
 </th:block>
 </html>

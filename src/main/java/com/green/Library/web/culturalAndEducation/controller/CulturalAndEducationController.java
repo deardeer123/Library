@@ -1,5 +1,7 @@
 package com.green.Library.web.culturalAndEducation.controller;
 
+import com.green.Library.library.libraryhome.service.LibraryHomeService;
+import com.green.Library.library.libraryhome.vo.CalendarVO;
 import com.green.Library.util.BoardUploadUtil;
 import com.green.Library.util.ScheduleService;
 import com.green.Library.web.board.service.BoardService;
@@ -21,7 +23,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.xml.transform.Source;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +39,8 @@ public class CulturalAndEducationController {
     private BoardServiceImpl boardService;
     @Resource(name = "memberService")
     private MemberServiceImpl memberService;
+    @Resource(name = "libraryHomeService")
+    private LibraryHomeService libraryHomeService;
 
     @Autowired
     private ScheduleService scheduleService;
@@ -49,6 +56,7 @@ public class CulturalAndEducationController {
         model.addAttribute("page","libraryEvent");
         //boardType을 searchVO로 보내줘야함
         searchVO.setBoardType(webMenuService.selectIndexNum("libraryEvent").get("SIDE_MENU_NUM"));
+
 
         //전체 게시글 수
         int totalCulBoardCnt = boardService.countBoard(searchVO.getBoardType());
@@ -87,10 +95,10 @@ public class CulturalAndEducationController {
     public String cultureInsertBoard(Model model,
                                      HttpSession session,
                                      BoardVO boardVO,
+
                                      @RequestParam(name = "mainFile") MultipartFile mainFile,
                                      @RequestParam(name = "subFile") MultipartFile[] subFile){
         model.addAttribute("page","libraryEvent");
-
 
         //boardNo의 max값
         int maxBoardNum = boardService.isNullBoardNo();
@@ -110,6 +118,7 @@ public class CulturalAndEducationController {
 
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+session.getAttribute("userCode"));
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
+
         boardService.insertCulBoard(boardVO);
 
 
@@ -137,6 +146,7 @@ public class CulturalAndEducationController {
     //문화 게시판 삭제
     @GetMapping("/cuLDeleteBoard")
     public String deleteBoard(BoardVO boardVO){
+
         boardService.deleteBoard(boardVO.getBoardNum());
         return "redirect:/libraryEvent";
     }
@@ -233,10 +243,20 @@ public class CulturalAndEducationController {
         boardVO.setPlusVO(plusVO);
         boardVO.setFileList(fileList);
         boardVO.setBoardNum(maxBoardNum);
+        //날짜가 안넘어가서 그냥 start라는 변수로 넘겨줌
+        CalendarVO calendarVO = new CalendarVO();
 
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        calendarVO.setStart(boardVO.getPlusVO().getOpenDate());
+        calendarVO.setTitle(boardVO.getBoardTitle());
+        calendarVO.setColor("red");
+        String time = "12:00:00";
+        //날짜 형식 맞춰주기
+        calendarVO.setStart(calendarVO.getStart() + " "+time);
 
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
         System.out.println(boardVO);
+        libraryHomeService.insertCalendar(calendarVO);
         boardService.insertParticipation(boardVO);
         return "redirect:/eventParticipation";
 
@@ -250,7 +270,7 @@ public class CulturalAndEducationController {
                                         ApplyVO applyVO,
                                         HttpSession session){
         model.addAttribute("page","eventParticipation");
-
+        model.addAttribute("check", boardService.applyCheck(applyVO));
         boardVO.setBoardNum(boardNum);
 //        int userCode = Optional.ofNullable((Integer) session.getAttribute("userCode")).orElse(0);
 //        applyVO.setUserCode(userCode);
@@ -289,10 +309,25 @@ public class CulturalAndEducationController {
 
 
     //게시글 삭제
-    @GetMapping("/goEventDelete")
-    public String goEventDelete(@RequestParam(name = "boardNum") int boardNum){
+    @PostMapping("/goEventDelete")
+    @ResponseBody
+    public void goEventDelete(@RequestParam(name = "boardNum") int boardNum,
+                              @RequestParam(name = "openDate") String openDate,
+                              @RequestParam(name = "boardTitle") String boardTitle){
+        //날짜가 안넘어가서 그냥 start라는 변수로 넘겨줌
+        CalendarVO calendarVO = new CalendarVO();
+
+        LocalDate date = LocalDate.now(); //오늘 날짜 LocalDate 객체 생성
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = date.format(dateTimeFormatter); //LocalDate 객체를 String 객체로 바꿈
+        calendarVO.setStart(openDate);
+        calendarVO.setTitle(boardTitle);
+        calendarVO.setColor("red");
+        String time = "12:00:00";
+        //날짜 형식 맞춰주기
+        calendarVO.setStart(calendarVO.getStart() + " "+time);
+        libraryHomeService.deleteCalendar(calendarVO);
         boardService.eventBoardDelete(boardNum);
-        return "redirect:/eventParticipation";
     }
 
     //게시글 선택 삭제
@@ -331,12 +366,14 @@ public class CulturalAndEducationController {
         return "content/homePage/culturalAndEducation/movie/movie";
     }
 
+    //영화 등록 페이지 이동
     @GetMapping("/goInsertMoviePage")
     public String goInsertMoviePage(Model model){
         model.addAttribute("page","movie");
         return "content/homePage/culturalAndEducation/movie/movieInsertPage";
     }
 
+    //영화 등록
     @PostMapping("/insertMovie")
     public String insertMovie(BoardVO boardVO,
                               @RequestParam(name = "files") MultipartFile[] files,
@@ -360,11 +397,22 @@ public class CulturalAndEducationController {
 
         System.out.println(movieVO);
         System.out.println(boardVO);
+        //날짜가 안넘어가서 그냥 start라는 변수로 넘겨줌
+        CalendarVO calendarVO = new CalendarVO();
 
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        calendarVO.setStart(boardVO.getMovieVO().getMovieDay());
+        calendarVO.setTitle(boardVO.getMovieVO().getMovieName());
+        calendarVO.setColor("blue");
+        String time = "12:00:00";
+        //날짜 형식 맞춰주기
+        calendarVO.setStart(calendarVO.getStart() + " "+time);
+        libraryHomeService.insertCalendar(calendarVO);
         boardService.insertMovie(boardVO);
         return "redirect:/movie";
     }
 
+    //영화 상세보기 페이지
     @GetMapping("/goDetailMoviePage")
     public String goDetailMoviePage(Model model,@RequestParam(name = "boardNum") int boardNum){
         model.addAttribute("page","movie");
@@ -373,6 +421,7 @@ public class CulturalAndEducationController {
         return "content/homePage/culturalAndEducation/movie/movieDetailPage";
     }
 
+    //영화 수정 페이지 이동
     @GetMapping("/goUpdateMoviePage")
     public String goUpdateMoviePage(Model model,
                                     @RequestParam(name = "boardNum") int boardNum){
@@ -382,6 +431,7 @@ public class CulturalAndEducationController {
         return "content/homePage/culturalAndEducation/movie/movieUpdatePage";
     }
 
+    //영화 수정
     @PostMapping("/updateMovie")
     public String updateMovie(BoardVO boardVO,
                               MovieVO movieVO,
@@ -407,10 +457,25 @@ public class CulturalAndEducationController {
         return "redirect:/movie";
     }
 
-    @GetMapping("/deleteMovie")
-    public String deleteMovie(@RequestParam(name = "boardNum") int boardNum){
-        boardService.movieDelete(boardNum);
-        return "redirect:/movie";
+    //영화 삭제
+    @PostMapping("/deleteMovie")
+    @ResponseBody
+    public void deleteMovie(BoardVO boardVO,MovieVO movieVO){
+        //날짜가 안넘어가서 그냥 start라는 변수로 넘겨줌
+        boardVO.setMovieVO(movieVO);
+        CalendarVO calendarVO = new CalendarVO();
+
+        LocalDate date = LocalDate.now(); //오늘 날짜 LocalDate 객체 생성
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = date.format(dateTimeFormatter); //LocalDate 객체를 String 객체로 바꿈
+        calendarVO.setStart(boardVO.getMovieVO().getMovieDay());
+        calendarVO.setTitle(boardVO.getMovieVO().getMovieName());
+        calendarVO.setColor("blue");
+        String time = "12:00:00";
+        //날짜 형식 맞춰주기
+        calendarVO.setStart(calendarVO.getStart() + " "+time);
+        libraryHomeService.deleteCalendar(calendarVO);
+        boardService.movieDelete(boardVO.getBoardNum());
     }
 
 
@@ -446,6 +511,7 @@ public class CulturalAndEducationController {
         return "content/homePage/culturalAndEducation/courseGuide/courseGuide";
     }
 
+    //상세보기 페이지
     @GetMapping("/guideDetailBoard")
     public String guideDetailBoard(Model model, BoardVO boardVO, @RequestParam(name = "boardNum") int boardNum){
         model.addAttribute("page","courseGuide");
@@ -478,7 +544,18 @@ public class CulturalAndEducationController {
                                    BoardVO boardVO,
                                    @RequestParam(name = "subFile") MultipartFile[] subFile){
         model.addAttribute("page","courseGuide");
+//날짜가 안넘어가서 그냥 start라는 변수로 넘겨줌
+        CalendarVO calendarVO = new CalendarVO();
 
+        LocalDate date = LocalDate.now(); //오늘 날짜 LocalDate 객체 생성
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = date.format(dateTimeFormatter); //LocalDate 객체를 String 객체로 바꿈
+        calendarVO.setStart(boardVO.getBoardDate());
+        calendarVO.setTitle(boardVO.getBoardTitle());
+        calendarVO.setColor("green");
+        String time = "12:00:00";
+        //날짜 형식 맞춰주기
+        calendarVO.setStart(calendarVO.getStart() + " "+time);
 
         //boardNo의 max값
         int maxBoardNum = boardService.isNullBoardNo();
@@ -494,6 +571,7 @@ public class CulturalAndEducationController {
 
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+session.getAttribute("userCode"));
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
+        libraryHomeService.insertCalendar(calendarVO);
         boardService.insertCulBoard(boardVO);
         return "redirect:/courseGuide";
     }
@@ -501,8 +579,34 @@ public class CulturalAndEducationController {
     //게시판 선택 삭제
     @PostMapping("/GuideDelete")
     public String GuideDeletes(BoardVO boardVO){
+
         boardService.selectDeletes(boardVO);
         return "redirect:/courseGuide";
+    }
+
+    @PostMapping("/deleteGuide")
+    @ResponseBody
+    public void deleteGuide(BoardVO boardVO){
+        //날짜가 안넘어가서 그냥 start라는 변수로 넘겨줌
+        CalendarVO calendarVO = new CalendarVO();
+
+        LocalDate date = LocalDate.now(); //오늘 날짜 LocalDate 객체 생성
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = date.format(dateTimeFormatter); //LocalDate 객체를 String 객체로 바꿈
+
+
+        System.out.println(boardVO.getBoardTitle());
+        System.out.println(boardVO.getBoardDate());
+
+
+        calendarVO.setStart(boardVO.getBoardDate());
+        calendarVO.setTitle(boardVO.getBoardTitle());
+        calendarVO.setColor("green");
+        String time = "12:00:00";
+        //날짜 형식 맞춰주기
+        calendarVO.setStart(calendarVO.getStart() + " "+time);
+        libraryHomeService.deleteCalendar(calendarVO);
+        boardService.deleteBoard(boardVO.getBoardNum());
     }
 
 
@@ -557,7 +661,6 @@ public class CulturalAndEducationController {
                             Model model){
         model.addAttribute("page","applicationForClasses");
 
-
         //boardNo의 max값
         int maxBoardNum = boardService.isNullBoardNo();
 
@@ -573,10 +676,46 @@ public class CulturalAndEducationController {
         boardVO.setFileList(fileList);
         boardVO.setBoardNum(maxBoardNum);
 
+        //날짜가 안넘어가서 그냥 start라는 변수로 넘겨줌
+        CalendarVO calendarVO = new CalendarVO();
+
+        LocalDate date = LocalDate.now(); //오늘 날짜 LocalDate 객체 생성
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = date.format(dateTimeFormatter); //LocalDate 객체를 String 객체로 바꿈
+        calendarVO.setStart(boardVO.getPlusVO().getOpenDate());
+        calendarVO.setTitle(boardVO.getBoardTitle());
+        calendarVO.setColor("green");
+        String time = "12:00:00";
+        //날짜 형식 맞춰주기
+        calendarVO.setStart(calendarVO.getStart() + " "+time);
+
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
         System.out.println(boardVO);
+        libraryHomeService.insertCalendar(calendarVO);
         boardService.insertParticipation(boardVO);
         return "redirect:/applicationForClasses";
+    }
+
+    //수강신청 게시판 삭제
+    @PostMapping("/deleteAppBoard")
+    @ResponseBody
+    public void deleteAppBoard(BoardVO boardVO, PlusVO plusVO){
+
+        boardVO.setPlusVO(plusVO);
+        //날짜가 안넘어가서 그냥 start라는 변수로 넘겨줌
+        CalendarVO calendarVO = new CalendarVO();
+
+        LocalDate date = LocalDate.now(); //오늘 날짜 LocalDate 객체 생성
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = date.format(dateTimeFormatter); //LocalDate 객체를 String 객체로 바꿈
+        calendarVO.setStart(boardVO.getPlusVO().getOpenDate());
+        calendarVO.setTitle(boardVO.getBoardTitle());
+        calendarVO.setColor("green");
+        String time = "12:00:00";
+        //날짜 형식 맞춰주기
+        calendarVO.setStart(calendarVO.getStart() + " "+time);
+        libraryHomeService.deleteCalendar(calendarVO);
+        boardService.eventBoardDelete(boardVO.getBoardNum());
     }
 
     //신청 기록 페이지
@@ -626,6 +765,19 @@ public class CulturalAndEducationController {
     //다중 삭제
     @GetMapping("/goAppDelete")
     public String goAppDelete(BoardVO boardVO){
+        //날짜가 안넘어가서 그냥 start라는 변수로 넘겨줌
+        CalendarVO calendarVO = new CalendarVO();
+
+        LocalDate date = LocalDate.now(); //오늘 날짜 LocalDate 객체 생성
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = date.format(dateTimeFormatter); //LocalDate 객체를 String 객체로 바꿈
+        calendarVO.setStart(today);
+        calendarVO.setTitle(boardVO.getBoardTitle());
+        calendarVO.setColor("blue");
+        String time = "12:00:00";
+        //날짜 형식 맞춰주기
+        calendarVO.setStart(calendarVO.getStart() + " "+time);
+        libraryHomeService.deleteCalendar(calendarVO);
         boardService.selectDeletes(boardVO);
         return "redirect:/applicationForClasses";
     }

@@ -9,72 +9,177 @@
 </th:block>
 
 <th:block layout:fragment="contentFragment">
+    
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <!-- datepicker css파일 -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <!-- html 코드 작성 -->
     <div class="row ">
-        
+        <div class="col-12">
+            <h3>게시글 등록</h3>
+        </div>
         <div class="col">
             <form action="/appInsert" method="post" enctype="multipart/form-data">
-                <table class="align-middle">
-                    <thead>
-                        <tr>
-                            <td>
-                                프로그램명
+                <table class="table table-bordered align-middle text-center">
+                    <colgroup>
+                        <col width="25%">
+                        <col width="25%">
+                        <col width="25%">
+                        <col width="25%">
+                    </colgroup>
+                    <tbody>
+                        <tr>                            
+                            <td>프로그램명</td>
+                            <td colspan="3">
+                                <input type="text" class="form-control" name="boardTitle" placeholder="제목을 작성해주세요">
                             </td>
-                            <td><input type="text" name="boardTitle"></td>
-                            <td>강사명</td>
-                            <td><input type="text" name="teacher"></td>
                         </tr>
                         <tr>
-                            <td>운영기간</td>
+                            <td>강사</td>
+                            <td><input type="taxt" class="form-control" name="teacher"></td>
+                            <td>인원</td>
                             <td>
-                                <input type="date" name="openDate">
-                                <input type="date" name="closeDate">
-                            </td>
-                            <td>신청기간</td>
-                            <td>
-                                <input type="date" name="toDate">
-                                <input type="date" name="fromDate">
+                                <div>
+                                    <input type="number" class="form-control"
+                                        style="width: 80px; display: inline-block;" name="personnel" value="0" min="0"
+                                        max="0"> /
+                                    <input type="number" class="form-control"
+                                        style="width: 80px; display: inline-block;" name="maximumPerson" min="0"
+                                        max="99">
+                                </div>
                             </td>
                         </tr>
                         <tr>
                             <td>대상</td>
-                            <td><input type="text" name="target"></td>
-                            <td>정원</td>
-                            <td>
-                                <input type="number" name="personnel" value="0" min="0" max="0"> /
-                                <input type="number" name="maximumPerson" min="0" max="99">
+                            <td colspan="3"><input type="text" name="target" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td>운영기간</td>
+                            <td colspan="3">
+                                <div class="input-daterange input-group datepicker" >
+                                    <input type="text" class="form-control" placeholder="strat"
+                                        aria-label="Username" name="openDate" id="openDate" onchange="setDate(this)">
+                                    <span class="input-group-text">-</span>
+                                    <input type="text" class="form-control datepicker" placeholder="end"
+                                        aria-label="Server" name="closeDate" onchange="setDate2(this)">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>신청기간</td>
+                            <td colspan="3">
+                                <div class="input-daterange input-group datepicker" id="datepicker2">
+                                    <input type="text" class="form-control" name="toDate" >
+                                    <span class="input-group-text">-</span>
+                                    <input type="text" class="form-control" name="fromDate">
+                                </div>
                             </td>
                         </tr>
                         <tr>
                             <td>상태</td>
-                            <td>
-                                <input type="radio" value="진행예정" name="eventStatus" checked> 진행예정
-                                <input type="radio" value="진행중" name="eventStatus"> 진행중
+                            <td colspan="3">
+                                <input type="radio" value="진행예정" name="eventStatus" class="form-check-input" checked>
+                                진행예정
                             </td>
                         </tr>
-                    </thead>
-                    <tbody>
                         <tr>
                             <td colspan="4">
-                                <textarea name="content" cols="100" rows="20"></textarea>
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Leave a comment here"
+                                        style="height: 600px"></textarea>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <input type="file" style="margin-bottom: 5px; width: 300px;" class="form-control"
+                                    name="files">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input type="file" name="files">
+                                <input type="submit" class="btn btn-primary btn-sm" value="등록하기">
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div><input type="submit" value="등록하기"></div>
-                            </td>
-                        </tr>
-                        <input type="hidden" name="boardType" value="28">
                     </tbody>
+                        <input type="hidden" name="boardType" value="28">
                 </table>
             </form>
         </div>
     </div>
+
+
+
+
+
+
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <!-- datepicker 자바스크립트 -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"> </script>
+    <!-- datepicker 한글 사용하기 위한 자바스크립트 -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.ko.min.js"
+        integrity="sha512-L4qpL1ZotXZLLe8Oo0ZyHrj/SweV7CieswUODAAPN/tnqN3PA1P+4qPu5vIryNor6HQ5o22NujIcAZIfyVXwbQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        let start_date
+        let end_date
+        function setDate(tag){
+
+            start_date=tag.value
+            console.log(start_date)
+            $('#datepicker2').datepicker('update',start_date,end_date);
+
+        }
+        function setDate2(tag){
+            end_date=tag.value
+            console.log(end_date)
+            $('#datepicker2').datepicker('update',start_date,end_date);
+        }
+        
+
+
+        
+            const openDate = document.querySelector('#openDate').value
+            $('.datepicker').datepicker({
+            autoclose: false, //사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
+            language: 'ko', //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
+            endDate: openDate
+        });
+        
+        
+
+
+        $('#datepicker2').datepicker({
+            format: "yyyy-mm-dd",
+            startDate: start_date,
+            endDate: end_date,
+            autoclose: true, //사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
+            language: 'ko' //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
+        })
+
+        $('#datepicker2').datepicker('update',);
+
+
+        let date = new Date()
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+        const day = ('0' + date.getDate()).slice(-2);
+        const dateStr = year + '-' + month + '-' + day;
+        console.log(dateStr)
+        $('#datepicker3').datepicker({
+            format: "yyyy-mm-dd",
+            startDate: dateStr, //오늘 날짜 
+            autoclose: true, //사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
+            language: 'ko' //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
+        });
+    </script>
 </th:block>
 
 <th:block layout:fragment="content_js">
