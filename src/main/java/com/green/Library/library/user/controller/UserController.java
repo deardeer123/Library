@@ -111,7 +111,7 @@ public class UserController {
     @PostMapping("/updateUserDetailFetch")
     public void userDetailUpdate(@RequestBody MemberVO memberVO){
 
-//        userService.userDetailUpdate(info -> memberVO);
+        userService.userDetailUpdate(memberVO);
     }
 
     //연체자 관리

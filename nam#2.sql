@@ -665,7 +665,3 @@ SELECT
 SELECT * from 
 board
 WHERE board_type=28;
-
-SELECT * from electric_accidents_burn_range;
-
-SELECT * FROM factors_causing_electric_accidents;
