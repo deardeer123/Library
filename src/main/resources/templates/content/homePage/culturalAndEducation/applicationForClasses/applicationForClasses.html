@@ -12,7 +12,7 @@
     <div class="row mt-4">
         <div>
             <p><span style="font-weight: bold;">참가신청 :</span> 로그인 → ‘신청’ 버튼이 활성화되어 있는 날짜 중 희망 날짜 선택 후<br>
-               신청 → 신청 양식 작성 → 행사 신청 후 ‘승인완료’ 처리 여부를 반드시 확인하시길 바랍니다.
+                신청 → 신청 양식 작성 → 행사 신청 후 ‘승인완료’ 처리 여부를 반드시 확인하시길 바랍니다.
         </div>
         <div>
             <form action="/applicationForClasses" method="post">
@@ -23,7 +23,8 @@
                             </option>
                             <option value="TEACHER" th:selected="${searchVO.searchType == 'TEACHER'}">강사명</option>
                         </select>
-                        <input type="search" class="form-control" style="width: 670px; display: inline-block;" name="searchValue" th:value="${searchVO.searchValue}">
+                        <input type="search" class="form-control" style="width: 670px; display: inline-block;"
+                            name="searchValue" th:value="${searchVO.searchValue}">
                         <input type="submit" class="btn btn-primary" style="margin-bottom: 3px;" value="검색">
                     </td>
                 </tr>
@@ -37,8 +38,8 @@
                         <td sec:authorize="hasRole('ROLE_Y')">
                             <input type="checkbox" id="allChk" onclick="allchk()">전체선택
                         </td>
-                        <td>프로그램명</td>
                         <td>강사명</td>
+                        <td>프로그램명</td>
                         <td>대상</td>
                         <td>운영기간</td>
                         <td>신청기간</td>
@@ -51,11 +52,11 @@
                         <td sec:authorize="hasRole('ROLE_Y')">
                             <input th:value="${board.boardNum}" type="checkbox" class="chk">
                         </td>
+                        <td>[[${board.PlusVO.teacher}]]</td>
                         <td>
                             <span th:onclick="|location.href='@{/goAppDetailPage(boardNum=${board.boardNum})}'|"
                                 style="cursor: pointer; font-weight: bold;">[[${board.boardTitle}]]</span>
-                            </td>
-                        <td>[[${board.PlusVO.teacher}]]</td>
+                        </td>
                         <td>[[${board.PlusVO.target}]]</td>
                         <td>[[${board.PlusVO.openDate}]] ~ [[${board.PlusVO.closeDate}]]</td>
                         <td>[[${board.PlusVO.toDate}]] ~ [[${board.PlusVO.fromDate}]]</td>
@@ -74,23 +75,26 @@
             </table>
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                  <li class="page-item" th:if="${searchVO.prev}">
-                    <a class="page-link" aria-label="이전" th:href="@{/applicationForClasses(nowPage=${searchVO.beginPage - 1})}">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-                  <li class="page-item" th:each=" i : ${#numbers.sequence(searchVO.beginPage, searchVO.endPage)}">
-                    <a class="page-link" th:href="@{/applicationForClasses(nowPage=${i})}">[[${i}]]</a>
-                  </li>
-                  <li class="page-item" th:if="${searchVO.next}">
-                    <a class="page-link"  aria-label="다음" th:href="@{/applicationForClasses(nowPage=${searchVO.endPage + 1})}">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
+                    <li class="page-item" th:if="${searchVO.prev}">
+                        <a class="page-link" aria-label="이전"
+                            th:href="@{/applicationForClasses(nowPage=${searchVO.beginPage - 1})}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:each=" i : ${#numbers.sequence(searchVO.beginPage, searchVO.endPage)}">
+                        <a class="page-link" th:href="@{/applicationForClasses(nowPage=${i})}">[[${i}]]</a>
+                    </li>
+                    <li class="page-item" th:if="${searchVO.next}">
+                        <a class="page-link" aria-label="다음"
+                            th:href="@{/applicationForClasses(nowPage=${searchVO.endPage + 1})}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
                 </ul>
-              </nav>
+            </nav>
             <div sec:authorize="hasRole('ROLE_Y')">
-                <input type="button" class="btn btn-primary btn-sm" value="게시글 작성" onclick="location.href='/goAppInsertPage'">
+                <input type="button" class="btn btn-primary btn-sm" value="게시글 작성"
+                    onclick="location.href='/goAppInsertPage'">
                 <input type="button" class="btn btn-primary btn-sm" value="게시글 삭제" onclick="goAppDeletes()">
             </div>
         </div>

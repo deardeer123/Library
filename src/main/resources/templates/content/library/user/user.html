@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col">
 
-                <form action="/bookAdmin/letUserSearch" method="post">
+                <form action="/bookAdmin/user" method="post">
                     <div class="row mb-5">
                         <div class="col">
                             
@@ -135,8 +135,13 @@
                                             <td rowspan="2" th:onclick="showModal([[${memberInfo.userCode}]])">
                                                 [[${memberInfo.userName}]]([[${memberInfo.userId}]]) [[${memberInfo.cardNum}]]
                                             </td>
-                                            <td>
-                                                [[${memberInfo.isAdmin}]]
+                                            <td th:if="${memberInfo.isAdmin == '관리자'}">
+                                                <input type="hidden" value="Y">
+                                                관리자
+                                            </td>
+                                            <td th:unless="${memberInfo.isAdmin == '관리자'}">
+                                                <input type="hidden" value="N">
+                                                이용자
                                             </td>
                                             <td>
                                                 [[${memberInfo.cardStatus}]]
@@ -160,9 +165,7 @@
 
                 <div class="col d-grid gap-2 d-md-flex justify-content-md-end">
                     <button class="btn btn-primary">SMS 전송</button>
-                    <button class="btn btn-primary">이용자 병합</button>
                 </div>
-
 
 
                 <!-- 모달 -->
@@ -180,14 +183,13 @@
                                 <div class="row">
                                     <div class="col">
                                         <button class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                        <button class="btn btn-primary">저장</button>
+                                        <button class="btn btn-primary" onclick="updateUserDetail()" data-bs-dismiss="modal">저장</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
 
 
                 <div class="row">

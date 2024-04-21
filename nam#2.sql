@@ -591,7 +591,7 @@ SELECT
         WHERE A.USER_CODE = 10;
 SELECT * FROM apply;
 
-
+SELECT * FROM board;
 SELECT
 	COUNT(*)
 FROM apply
@@ -664,8 +664,18 @@ SELECT
         
 SELECT * from 
 board
+<<<<<<< HEAD
+WHERE board_type=28;
+=======
 WHERE board_type=28;
 
 SELECT * from electric_accidents_burn_range;
 
 SELECT * FROM factors_causing_electric_accidents;
+
+SELECT * FROM board
+WHERE  = 7;
+
+INNER JOIN board_plus
+ON board.board_num = board_plus.BOARD_NUM;
+>>>>>>> dev
