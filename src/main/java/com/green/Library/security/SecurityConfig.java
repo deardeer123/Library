@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,8 +26,18 @@ public class SecurityConfig {
     @Resource(name = "memberService")
     private MemberService memberService;
 
+    //로그인 실패시 어떤 클래스를 실행 시킬 수 있게 LoginFailHandler 스프링빈을 주입 객체를 주입?
+    LoginFailHandler loginFailHandler;
+
+    @Autowired
+    public SecurityConfig(LoginFailHandler loginFailHandler){
+        this.loginFailHandler = loginFailHandler;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception{
+
+
         security.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         c -> {
@@ -53,7 +64,7 @@ public class SecurityConfig {
                                             response.sendRedirect("/home");
                                         }
                                     })
-                                    .failureHandler(loginFailHandler)
+                                    .failureHandler(loginFailHandler) //로그인 실패 시 실행시킬 클래스의 객체?
                                     .usernameParameter("userId")
                                     .passwordParameter("userPw");
                                     //.defaultSuccessUrl("/home");
