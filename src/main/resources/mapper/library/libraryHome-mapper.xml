@@ -37,10 +37,9 @@
     </insert>
 <!--캘린더 삭제-->
     <delete id="deleteCalendar">
-        delete from
-            calendar
-        where
-            CALENDAR_TITLE = #{title}
+        DELETE FROM calendar
+        WHERE calendar_title = #{title}
+
     </delete>
 </mapper>
 

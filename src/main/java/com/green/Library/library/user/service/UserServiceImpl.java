@@ -26,9 +26,16 @@ public class UserServiceImpl implements UserService{
         sqlSession.update("userMenuMapper.updateCardNum", memberVO);
     }
 
+    // 유저 상세정보 모달
     @Override
     public MemberVO showUserDetail(int userCode) {
         return sqlSession.selectOne("userMenuMapper.userSearch", userCode);
+    }
+
+    // 모달창 유저 상세정보 업데이터
+    @Override
+    public int userDetailUpdate(MemberVO memberVO) {
+        return sqlSession.update("userMenuMapper.userDetailUpdate", memberVO);
     }
 
 

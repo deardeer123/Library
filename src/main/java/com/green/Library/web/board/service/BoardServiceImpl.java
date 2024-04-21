@@ -58,7 +58,9 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional(rollbackFor = ExportException.class)
     public void deleteBoard(int boardNum) {
+        sqlSession.delete("boardMapper.eventFileDelete",boardNum);
         sqlSession.delete("boardMapper.deleteBoard",boardNum);
     }
 

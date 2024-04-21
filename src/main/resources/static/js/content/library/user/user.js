@@ -1,7 +1,7 @@
 // 모달 태그 선택
 const user_detail_modal = new bootstrap.Modal('#user-detail-modal');
 
-function showModal(userCode){
+function showModal(userCode) {
 
     // 그림 그릴 모달 태그 선택
     const modalBody = document.querySelector('.modal-body');
@@ -14,24 +14,23 @@ function showModal(userCode){
         },
         //컨트롤러로 전달할 데이터
         body: JSON.stringify({
-           // 데이터명 : 데이터값
-           userCode : String(userCode),
-           userDetail : String(true)
+            // 데이터명 : 데이터값
+            userCode: String(userCode),
+            userDetail: String(true)
         })
     })
-    .then((response) => {
-        return response.json(); //나머지 경우에 사용
-    })
-    //fetch 통신 후 실행 영역
-    .then((data) => {//data -> controller에서 리턴되는 데이터!
-        
-        console.log(data);
+        .then((response) => {
+            return response.json(); //나머지 경우에 사용
+        })
+        //fetch 통신 후 실행 영역
+        .then((data) => {//data -> controller에서 리턴되는 데이터!
+            
+            console.log(data);
 
-        modalBody.innerHTML = '';
+            modalBody.innerHTML = '';
 
-        let str = '';
-
-        str += `
+            let str = '';
+            str += `
         <table class="table table-bordered">
             <colgroup>
                 <col width="">
@@ -40,43 +39,59 @@ function showModal(userCode){
                 <col width="">
             </colgroup>
             <tr>
+                <input type="hidden" name="userCode" value="${data.userCode}" id="getUserCode">
                 <td class="table-light">번호</td>
-                <td>${data.cardNum} 
-                    <button class="btn btn-primary">카드번호 재부여</button>
+                <td><span id="detailCardNum">${data.cardNum}</span>
+                    <button class="btn btn-primary" onclick="reGrant(${data.userCode})">카드번호 재부여</button>
                 </td>
                 <td class="table-light">직급</td>
                 <td>
-                    <select name="isAdmin" class="form-select">
-                        <option value="USER">이용자</option>
-                        <option value="ADMIN">관리자</option>
-                    </select>
+                    <select name="isAdmin" class="form-select">`
+                    if(data.isAdmin == '이용자'){
+                    str += `<option value="N" selected>이용자</option>
+                        <option value="Y">관리자</option>`
+                    }else if(data.isAdmin == '관리자'){
+                    str += `<option value="N">이용자</option>
+                        <option value="Y" selected>관리자</option>`
+                    }
+                    str += `</select>
                 </td>
             </tr>
             <tr>
                 <td class="table-light">이름</td>
-                <td>${data.userName}</td>
+                <td><input type="text" name="userName" class="form-control" id="detailUserName" value="${data.userName}"></td>
                 <td class="table-light">카드상태</td>
                 <td>
-                    <select name="cardStatus" class="form-select">
-                        <option value="사용중">사용중</option>
-                        <option value="분실">분실</option>
-                    </select>
+                    <select name="cardStatus" class="form-select">`
+                    if(data.cardStatus == '사용중'){
+                    str += `<option value="사용중" selected>사용중</option>
+                        <option value="분실">분실</option>`
+                    }else{
+                    str += `<option value="사용중">사용중</option>
+                        <option value="분실" selected>분실</option>`
+                    }
+                    str += `</select>
                 </td>
             </tr>
             <tr>
                 <td class="table-light">아이디</td>
-                <td>${data.userId}</td>
+                <td><input type="text" name="userId" value="${data.userId}" id="detailUserId" class="form-control"></td>
                 <td class="table-light">성별</td>
                 <td>
-                    <select name="gender" class="form-select">
-                        <option value="남성">남성</option>
-                        <option value="여성">여성</option>
-                    </select>
+                    <select name="detailGender" class="form-select">`
+                    if(data.gender == '사용중'){
+                        str += `<option value="남자" selected>남자</option>
+                            <option value="여자">여자</option>`
+                        }else{
+                        str += `<option value="남자">남자</option>
+                            <option value="여자" selected>여자</option>`
+                        }
+                        str += `</select>
                 </td>
             </tr>
             <tr>
                 <td class="table-light">이메일</td>
-                <td>${data.email}</td>
+                <td><input type="text" value="${data.email}" name="email" class="form-control"></td>
                 <td class="table-light">이메일 수신 여부</td>
                 <td>
                     <select class="form-select">
@@ -87,7 +102,7 @@ function showModal(userCode){
             </tr>
             <tr>
                 <td class="table-light">전화번호</td>
-                <td>${data.userTel}</td>
+                <td><input type="text" value="${data.userTel}" name="detailUserTel" class="form-control"></td>
                 <td class="table-light">SMS 수신여부</td>
                 <td>
                     <select class="form-select">
@@ -99,31 +114,31 @@ function showModal(userCode){
             <tr>
                 <td rowspan="2" class="table-light">주소</td>
                 <td colspan="3">
-                    <input type="text" name="postCode" class="form-control" placeholder="${data.postCode}" id="postCode" readonly>
+                    <input type="text" name="postCode" class="form-control" value="${data.postCode}" id="postCode" style="width: 200px;" readonly>
                     <input type="button" onclick="searchAddress()" value="주소 찾기" style="width: 90px;"class="btn btn-secondary">
                 </td>
             </tr>
             <tr>
                 <td colspan="3">
-                    <input type="text" placeholder="${data.userAddr}" name="userAddr" class="form-control" id="address" readonly>
-                    <input type="text" placeholder="${data.addrDetail}" name="addrDetail" class="form-control">
+                    <input type="text" value="${data.userAddr}" name="userAddr" class="form-control" id="address" readonly>
+                    <input type="text" value="${data.addrDetail}" name="addrDetail" class="form-control">
                 </td>
             </tr>
             <tr>
                 <td class="table-light">비고</td>`
-                if(data.userIntro == null){
-                    str += `<td colspan="3"></td>`
-                } else{
-                    str += `<td colspan="3">${data.userIntro}</td>`
-                }
-                
+            if (data.userIntro == null) {
+                str += `<td colspan="3" name="userIntro"><textarea id="detailUserIntro" name="userIntro" class="form-control"></textarea></td>`
+            } else {
+                str += `<td colspan="3"><textarea id="detailUserIntro" name="userIntro" class="form-control">${data.userIntro}</textarea></td>`
+            }
+
             str += `</tr>
             <tr>
                 <td class="table-active" colspan="4" text-align>이용조회</td>
             </tr>
             <tr>
                 <td class="table-light">대출</td>
-                <td colspan="3">${data.borrowCnt}건</td>
+                <td colspan="3" id="borrowCnt">${data.borrowCnt}</td>
             </tr>
             <tr>
                 <td class="table-light">예약</td>
@@ -131,23 +146,23 @@ function showModal(userCode){
             </tr>
             <tr>
                 <td class="table-light">연체</td>
-                <td colspan="3">${data.overdueCnt}건</td>
+                <td colspan="3" id="overdueCnt">${data.overdueCnt}</td>
             </tr>
             <tr>
                 <td class="table-light">최근 대출일</td>
-                <td colspan="3">${data.recentDate}</td>
+                <td colspan="3" id="recentDate">${data.recentDate}</td>
             </tr>
         </table>
         `
-        modalBody.insertAdjacentHTML('afterbegin', str);
+            modalBody.insertAdjacentHTML('afterbegin', str);
 
-        user_detail_modal.show();
-    })
-    //fetch 통신 실패 시 실행 영역
-    .catch(err=>{
-        alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
-        console.log(err);
-    });    
+            user_detail_modal.show();
+        })
+        //fetch 통신 실패 시 실행 영역
+        .catch(err => {
+            alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+            console.log(err);
+        });
 }
 
 document.querySelector('#all').addEventListener('change', checkAll);
@@ -172,4 +187,74 @@ function searchAddress(){
 
         }
     }).open();
+}
+
+// 이용자 정보 업데이트
+
+function updateUserDetail (){
+    
+    // 업데이트 할 모달 정보 선택
+    const cardNum = document.querySelector('#detailCardNum').innerHTML;
+    const userId = document.querySelector('#detailUserId').value;
+    const userName = document.querySelector('#detailUserName').value;
+    const userCode = document.querySelector('#getUserCode').value;
+    const isAdmin = document.querySelector('select[name="isAdmin"]').value;
+    const cardStatus = document.querySelector('select[name="cardStatus"]').value;
+    const gender = document.querySelector('select[name="detailGender"]').value;
+    const email = document.querySelector('input[name="email"]').value;
+    const userTel = document.querySelector('input[name="detailUserTel"]').value;
+    const postCode = document.querySelector('input[name="postCode"]').value;
+    const userAddr = document.querySelector('input[name="userAddr"]').value;
+    const addrDetail = document.querySelector('input[name="addrDetail"]').value;
+    const userIntro = document.querySelector('#detailUserIntro').value;
+    const borrowCnt = document.querySelector('#borrowCnt').innerHTML;
+    const overdueCnt = document.querySelector('#overdueCnt').innerHTML;
+
+    const test_data = {
+        // 데이터명 : 데이터값
+        userCode : userCode
+        , isAdmin : isAdmin
+        , cardStatus : cardStatus
+        , gender : gender
+        , email : email
+        , userTel : userTel
+        , postCode : postCode
+        , userAddr : userAddr
+        , addrDetail : addrDetail
+        , userIntro : userIntro
+        , cardNum : cardNum
+        , userId : userId
+        , userName : userName
+        , borrowCnt : borrowCnt
+        , overdueCnt : overdueCnt
+    };
+
+    console.log(test_data);
+
+    fetch('/bookAdmin/updateUserDetailFetch', { //요청경로
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+        },
+        //컨트롤러로 전달할 데이터
+        body: JSON.stringify(test_data)
+    })
+    .then((response) => {
+        return response.json(); //나머지 경우에 사용
+    })
+    //fetch 통신 후 실행 영역
+    .then((data) => {//data -> controller에서 리턴되는 데이터!
+        alert('수정 되었습니다.');
+
+        window.location.href = "/bookAdmin/user"; 
+
+    })
+
+    //fetch 통신 실패 시 실행 영역
+    .catch(err=>{
+        alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+        console.log(err);
+    });
+    
 }

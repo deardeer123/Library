@@ -51,7 +51,7 @@
             <div sec:authorize="hasRole('ROLE_Y')" class="d-md-flex justify-content-end">
                 <input type="button" style="margin-right: 5px;" class="btn btn-primary btn-sm" value="게시글 수정"
                     th:onclick="|location.href='@{/culUpdate(boardNum=${board.boardNum})}'|">
-                <input type="button" class="btn btn-primary btn-sm" value="게시글 삭제" th:onclick="">
+                <input type="button" class="btn btn-primary btn-sm" value="게시글 삭제" th:onclick="deleteGuide([[${board.boardNum}]],[[${board.boardDate}]], [[${board.boardTitle}]])">
             </div>
             <div>
                 <input class="btn btn-success btn-lg" type="button" value="목록" onclick="location.href='/courseGuide'">
@@ -63,6 +63,6 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴 때 같이 실행되는 js -->
-    <!-- <script src="/"></script> -->
+    <script src="/js/content/culture/culture.js"></script>
 </th:block>
 </html>

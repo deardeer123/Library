@@ -51,7 +51,6 @@ public class SecurityConfig {
                                     .successHandler(new AuthenticationSuccessHandler() {
                                         @Override
                                         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                                            System.out.println("@@@@@@@@@@@");
                                             HttpSession session = request.getSession();
 
                                             MemberVO loginInfo = memberService.login(authentication.getName());
@@ -59,6 +58,7 @@ public class SecurityConfig {
                                             session.setAttribute("userCode", loginInfo.getUserCode());
                                             session.setAttribute("userName", loginInfo.getUserName());
                                             session.setAttribute("userId", loginInfo.getUserId());
+
 
 
                                             response.sendRedirect("/home");
