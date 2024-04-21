@@ -1072,7 +1072,8 @@ SELECT * FROM book_info;
         ON find_book_view.BOOK_CODE = book_info.BOOK_CODE
         ORDER by book_info.BOOK_BORROW_CNT desc
         LIMIT 37; 	
-  	
+
+-- 많이 빌린책 조회
 SELECT
  book_title,
  book_writer,
@@ -1082,7 +1083,90 @@ SELECT
  ORDER by book_info.BOOK_BORROW_CNT desc
 LIMIT 36;
  
- 
+-- 날짜 변경(새로들어온 책를 위한 쿼리문임)
+UPDATE book_info
+SET book_regdate = DATE_add(book_regdate, INTERVAL 70 DAY)
+WHERE book_info_num = 198;
+
+SELECT * FROM book_info;
+
+-- 책상세정보번호 구하기
+select book_info_num
+   from book_info;
+
+
 SELECT *
-FROM book INNER JOIN book_info
-ON book.BOOK_CODE = book_info.BOOK_CODE;
+ FROM find_book_view
+ WHERE DATE_FORMAT(find_book_view.BOOK_REGDATE, '%Y-%m-%d') >= '2023-09-26';
+ 
+ 
+ 
+ 
+SELECT DATE_FORMAT('2020-12-08 13:01:00', '%Y-%m-%d');
+
+SELECT
+        find_book_view.BOOK_CODE,
+        BOOK_TITLE,
+        BOOK_WRITER,
+        BOOK_PUB,
+        BOOK_YEAR,
+        book_info.BOOK_BORROW_AVAILABLE,
+        book_info.book_intro,
+        book_info.BOOK_INFO_ATTACHED_FILE_NAME,
+        BOOK_CATE_NAME,
+        BOOK_MID_CATE_NAME,
+        book_info.BOOK_REGDATE
+        FROM find_book_view INNER JOIN book_info
+        ON find_book_view.BOOK_CODE = book_info.BOOK_CODE
+      
+        ORDER by book_info.BOOK_REGDATE desc
+        LIMIT 10 OFFSET 10;
+
+select count(*)
+        from find_book_view
+        where
+        1 = 1
+   
+            and DATE_FORMAT(find_book_view.BOOK_REGDATE, '%Y-%m-%d') >= 0;
+            
+            
+SELECT
+            find_book_view.BOOK_CODE,
+            BOOK_TITLE,
+            BOOK_WRITER,
+            BOOK_PUB,
+            BOOK_YEAR,
+            book_info.BOOK_BORROW_AVAILABLE,
+            book_info.book_intro,
+            book_info.BOOK_INFO_ATTACHED_FILE_NAME,
+            BOOK_CATE_NAME,
+            BOOK_MID_CATE_NAME,
+            book_info.BOOK_REGDATE
+        FROM find_book_view INNER JOIN book_info
+        ON find_book_view.BOOK_CODE = book_info.BOOK_CODE
+
+            WHERE DATE_FORMAT(find_book_view.BOOK_REGDATE, '%Y-%m-%d') >= '2022-04-03'
+            AND book_cate_name = '철학'
+            AND book_mid_cate_name = '서양철학'
+            AND book_info.BOOK_BORROW_AVAILABLE = 'Y'
+
+        ORDER by book_info.BOOK_REGDATE DESC
+        LIMIT 10 OFFSET 0;
+
+CREATE TABLE BOOK_RECOMMENDATION(
+	ID BIGINT PRIMARY KEY AUTO_INCREMENT ,
+	BOOK_CODE VARCHAR(20) ,
+	USER_TYPE VARCHAR(15));
+
+
+INSERT INTO BOOK_RECOMMENDATION
+VALUES
+ (1,'asd','a'),
+ (2,'asfsaf','b'),
+ (3,'asfasf','c');
+
+DELETE FROM book_recommendation
+WHERE user_type IN ('a', 'b','c');
+      
+SELECT * FROM book_recommendationt
+

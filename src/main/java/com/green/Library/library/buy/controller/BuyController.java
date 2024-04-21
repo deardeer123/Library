@@ -11,6 +11,9 @@ import com.green.Library.libraryBook.vo.LibraryBookInfoVO;
 import com.green.Library.libraryBook.vo.LibraryBookVO;
 import com.green.Library.util.ConstantVariable;
 import com.green.Library.util.UploadUtil;
+import com.green.Library.web.board.vo.BoardVO;
+import com.green.Library.web.findBook.service.FindBookService;
+import com.green.Library.web.findBook.vo.FindBookVO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 
@@ -42,16 +46,43 @@ public class BuyController {
     @Resource(name ="regAndViewService")
     private RegAndViewService regAndViewService;
 
+    @Resource(name = "findBookService")
+    private FindBookService findBookService;
+
 
     //----------구입------------
     //희망 자료
     @GetMapping("/wishBook")
-    public String goWishBook(Model model){
+    public String goWishBook(Model model, BookSearchVO bookSearchVO){
         //인터셉터로 넘겨줄 page
         model.addAttribute("page", "wishBook");
-        //상대방이 원하는 책을 등록하는것
+        //그냉 원하는책 안넣고 책 추천하기 화면 만들거임 ㅅㄱ
 
-        System.out.println("희망 자료 이동");
+        //페이징
+        System.out.println(bookSearchVO.getNowPage());
+        bookSearchVO.setNowPage(bookSearchVO.getNowPage());
+
+        //전체 게시물 갯수 설정
+        int totalDataCnt = findBookService.selectFindBookCnt(bookSearchVO);
+        System.out.println(totalDataCnt);
+        bookSearchVO.setTotalDataCnt(totalDataCnt);
+
+        //페이지 정보 세팅
+        bookSearchVO.setPageInfo();
+
+        //계속 이상하게 나오길래 넣은 코드입니다.
+        if(totalDataCnt == 0){
+            bookSearchVO.setEndPage(1);
+        }
+        //카테고리 정보가 필요한 거 같음
+        Optional<List<LibraryBookCategoryVO>> catelist = Optional.ofNullable(libraryBookService.selectCateList());
+        model.addAttribute("cateList", catelist.get());
+
+
+        //책들 정보 던져주기
+        List<FindBookVO> bookList = findBookService.findBookList(bookSearchVO);
+        model.addAttribute("bookList", bookList );
+
         return "content/library/buy/wishBook";
     }
     //삭제 자료

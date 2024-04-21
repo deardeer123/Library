@@ -62,6 +62,12 @@
         <result column="BOOK_CODE" property="bookCode" />
     </resultMap>
 
+    <resultMap id='BookRecommendation' type="com.green.Library.libraryBook.vo.BookRecommendationVO">
+        <id column="ID" property="id" />
+        <result column="BOOK_CODE" property="bookCode"/>
+        <result column="USER_TYPE" property="userType"/>
+    </resultMap>
+
 
 
 
@@ -99,9 +105,41 @@
         BOOK_CATEGORY.BOOK_CATE_CODE = #{bookCateCode}
     </select>
 
+<!--    책 추천등록하기-->
+    <insert id="insertBookRecommendation">
+        INSERT INTO BOOK_RECOMMENDATION(
+        BOOK_CODE ,
+        USER_TYPE
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                #{item.bookCode},
+                #{item.userType}
+            )
+        </foreach>
+
+    </insert>
+
+<!--    추천된 책 찾기-->
+    <select id="selectBookRecommendation" resultMap="BookRecommendation">
+        select *
+        from BOOK_RECOMMENDATION
+        where 1 = 1
+        <if test='userType != null and userType.equals("")'>
+            USER_TYPE = #{userType}
+        </if>
+    </select>
+<!-- 추천된 책 추천 취소하기-->
+    <delete id="deleteBookRecommendation">
+        delete from BOOK_RECOMMENDATION
+        WHERE BOOK_CODE in (
+        <foreach collection="list" item="item" separator=",">
+            #{item.bookCode}
+        </foreach>
+
+    </delete>
 
 </mapper>
-
 
 
 

@@ -53,6 +53,7 @@ public class SecurityConfig {
                                             response.sendRedirect("/home");
                                         }
                                     })
+                                    .failureHandler(loginFailHandler)
                                     .usernameParameter("userId")
                                     .passwordParameter("userPw");
                                     //.defaultSuccessUrl("/home");
