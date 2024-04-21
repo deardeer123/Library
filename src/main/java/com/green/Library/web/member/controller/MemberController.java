@@ -55,8 +55,10 @@ public class MemberController {
     }
 
     @GetMapping("/login")
-    public String goLogin(Model model){
+    public String goLogin(Model model, @RequestParam(name="errMsg", defaultValue = "", required = false)String errMsg){
         model.addAttribute("page","login");
+        //로그인 실패시 보낼 문자열
+        model.addAttribute("errMsg", errMsg);
 
         System.out.println("로그인");
         return "content/homePage/member/login";

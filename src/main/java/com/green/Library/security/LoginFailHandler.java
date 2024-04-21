@@ -48,7 +48,7 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
         errMsg = URLEncoder.encode(errMsg, "UTF-8");
 
         //이동할 페이지를 설정
-        response.sendRedirect();
+        response.sendRedirect("/login?errMsg="+errMsg);
     }
 
 
