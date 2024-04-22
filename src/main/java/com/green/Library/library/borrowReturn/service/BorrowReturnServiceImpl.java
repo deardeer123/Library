@@ -24,18 +24,6 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
         return sqlSession.selectOne("bnrMapper.selectBorrowInfo", memberVO);
     }
 
-    // 이용자 소개 업데이트
-    @Override
-    public void updateUserIntro(MemberVO memberVO) {
-        sqlSession.update("bnrMapper.updateUserIntro", memberVO);
-    }
-
-    // 이용자 카드번호 업데이트
-    @Override
-    public int selectCardNum(int userCode) {
-        return sqlSession.selectOne("bnrMapper.selectCardNum", userCode);
-    }
-
     ////////////////////// 대출 ////////////////////////
 
     // 대출 시 BOOK_BNR INSERT + BOOK_INFO UPDATE

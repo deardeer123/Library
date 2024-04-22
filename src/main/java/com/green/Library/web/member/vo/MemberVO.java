@@ -22,7 +22,7 @@ public class MemberVO {
     private String gender;
     private String email;
     private String isAdmin;
-    private int cardNum;
+    private Integer cardNum;
     private String publishDate;
     private String userIntro;
     private String cardStatus;
