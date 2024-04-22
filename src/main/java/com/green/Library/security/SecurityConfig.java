@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.SecurityFilterChain;
@@ -73,6 +75,20 @@ public class SecurityConfig {
         return security.build();
     }
 
+    //정적인 자원은 security가 인증 및 인가 관리에서 제외하도록 설정
+    //정적인 파일 : .js, .css , 이미지
+    //resources 폴더 밑에 있는 모든 파일들
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return web->web.ignoring().requestMatchers(
+                new AntPathRequestMatcher("/upload/**"),
+                new AntPathRequestMatcher("/css/**"),
+                new AntPathRequestMatcher("/js/**"),
+                new AntPathRequestMatcher("/favicon.ico"),
+                new AntPathRequestMatcher("/datepicker/**"),
+                new AntPathRequestMatcher("/ckeditor5/**")
+        );
+    }
 
 
 

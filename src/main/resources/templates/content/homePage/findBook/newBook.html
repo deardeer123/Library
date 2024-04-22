@@ -28,7 +28,7 @@
         <div class="col">
             <!-- 날짜 검색하는 창 -->
             <form action="/newBook" method="post">
-                <div class="row text-center justify-content-center mt-2 mb-3 border border-success-subtle">
+                <div class="row text-center justify-content-center mt-2 mb-3 ms-1 border border-success-subtle rounded-2">
                     <div class="col-1 mt-4">카테고리</div>
                     <div class="col-2">
                         <select class="form-select" th:onchange="cateChk(this,[[${cateList}]])" name="bookCateName">

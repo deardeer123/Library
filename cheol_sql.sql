@@ -194,6 +194,31 @@ INSERT INTO side_menu(
 	-- 회원 탈퇴
 	('회원 탈퇴' , 'memberWithdrawal' , 1 ,15);
 	
+	SELECT
+        header_menu.MENU_TYPE,
+        side_menu.SIDE_MENU_INDEX ,
+        header_menu.MENU_INDEX ,
+        side_menu.SIDE_MENU_NUM,
+        side_menu.MENU_NUM
+        FROM
+        side_menu INNER JOIN header_menu
+        ON side_menu.MENU_NUM = header_menu.MENU_NUM
+        WHERE side_menu.side_menu_page = 'memberInfoChange';
+        
+   SELECT
+        header_menu.MENU_NUM ,
+        MENU_NAME ,
+        MENU_INDEX ,
+        MENU_TYPE,
+        SIDE_MENU_NAME ,
+        SIDE_MENU_PAGE ,
+        SIDE_MENU_INDEX ,
+        SIDE_MENU.SIDE_MENU_NUM
+        FROM
+        header_menu INNER JOIN side_menu
+        ON header_menu.MENU_NUM = side_menu.MENU_NUM
+        WHERE header_menu.MENU_TYPE = 'myPage';
+	
 
 SELECT
         header_menu.MENU_NUM ,

@@ -1,5 +1,6 @@
 package com.green.Library.interceptor;
 
+import com.green.Library.library.libraryMenu.vo.LibraryHeaderMenuVO;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import com.green.Library.web.webMenu.vo.WebHeaderMenuVO;
 import jakarta.annotation.Resource;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 
 public class WebInterceptor implements HandlerInterceptor {
@@ -36,16 +38,12 @@ public class WebInterceptor implements HandlerInterceptor {
             Integer selectedMenuIndex = (Integer) optionalMap.map(s-> s.get("MENU_INDEX")).orElse(0);
             Integer selectedSideMenuIndex = (Integer) optionalMap.map(s-> s.get("SIDE_MENU_INDEX")).orElse(0);
             String selectedMenuType = (String) optionalMap.map(s->s.get("MENU_TYPE")).orElse(""); //마이페이지 떄문에 추가함
-            System.out.println("selectedMenuType = " + selectedMenuType);
-
-            System.out.println(selectedMenuIndex);
-            System.out.println(selectedSideMenuIndex);
+            Integer selectedMenuNum = (Integer) optionalMap.map(s->s.get("MENU_NUM")).orElse(0); //마이페이지 때문에 추가
 
             //컨트롤러에서 model를 사용하여 html로 데이터를 넘겨주는거 처럼 modelAndView 써서 보내준다
             modelAndView.addObject("selectedMenuIndex", selectedMenuIndex);
             modelAndView.addObject("selectedSideMenuIndex", selectedSideMenuIndex);
-
-
+            modelAndView.addObject("selectedMenuNum", selectedMenuNum);
 
             //인터셉터 더 만들기 귀찮아서 만듬
             if(selectedMenuType.equals("member")){
@@ -55,8 +53,6 @@ public class WebInterceptor implements HandlerInterceptor {
             } else {
                 modelAndView.addObject("menuList2", null);
             }
-
-
 
             //메뉴, 상단 네비게이션 정보 던져주기
             modelAndView.addObject("menuList", webMenuService.selectWebMenuList("web"));

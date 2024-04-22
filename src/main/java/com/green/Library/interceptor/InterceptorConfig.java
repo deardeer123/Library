@@ -23,16 +23,19 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/**Fetch")
                 .excludePathPatterns("/bookAdmin/**");
 
+        //로그인 관련
+        registry.addInterceptor(getLoginInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns("/**Fetch")
+                .excludePathPatterns("/bookAdmin/**");
+
         //도서관 홈페이지 입터셉터
         registry.addInterceptor(getBookAdminInterceptor())
                    .addPathPatterns("/bookAdmin/**")
                     .excludePathPatterns("/bookAdmin/**Fetch");
 
 //                .addPathPatterns("/bookAdmin/workingBook");
-        registry.addInterceptor(getLoginInterceptor())
-                .addPathPatterns("/**")
-                .excludePathPatterns("/**Fetch")
-                .excludePathPatterns("/bookAdmin/**");
+
 
     }
 

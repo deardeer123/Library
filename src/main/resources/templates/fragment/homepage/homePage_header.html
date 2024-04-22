@@ -126,7 +126,7 @@
 
                 <div class="col-10 bg-success-subtle">
                     <!-- 선택한 메뉴의 이름 -->
-                    <th:block th:if="${selectedMenuIndex != null and menuList2 == null}">
+                    <th:block th:if="${selectedMenuIndex != null and menuList2 == null and menuList3 == null} ">
 
                         <th:block th:each="e:${menuList}" th:if="${e.menuIndex == selectedMenuIndex}">
                             <th:block th:each="e1:${e.webSideMenuVOList}"
@@ -153,6 +153,29 @@
 
                     <th:block th:if="${selectedMenuIndex != null and menuList2 != null}">
                         <th:block th:each="e:${menuList2}" th:if="${e.menuIndex == selectedMenuIndex}">
+                            <th:block th:each="e1:${e.webSideMenuVOList}"
+                                th:if="${e1.sideMenuIndex == selectedSideMenuIndex}">
+
+                                <div class="row">
+                                    <div class="col">
+                                        <!-- 선택한 사이드 메뉴의 이름 -->
+                                        <h1>[[${e1.sideMenuName}]]</h1>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <!-- 메뉴 > 사이드 메뉴  -->
+                                        <h3>📖 [[${e.menuName}]] > [[${e1.sideMenuName}]] </h3>
+                                    </div>
+                                </div>
+
+                            </th:block>
+                        </th:block>
+                    </th:block>
+
+                    <th:block th:if="${selectedMenuIndex != null and menuList3 != null}">
+                        <th:block th:each="e:${menuList3}" th:if="${e.menuIndex == selectedMenuIndex}">
                             <th:block th:each="e1:${e.webSideMenuVOList}"
                                 th:if="${e1.sideMenuIndex == selectedSideMenuIndex}">
 

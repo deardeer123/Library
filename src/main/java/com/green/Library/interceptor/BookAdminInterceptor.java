@@ -20,9 +20,6 @@ public class BookAdminInterceptor implements HandlerInterceptor {
         //책 관리 페이지 메뉴를 던져주는 작업을 할것
 
         System.out.println("책관리홈페이지 인터셉터");
-        System.out.println("책관리홈페이지 인터셉터");
-        System.out.println("책관리홈페이지 인터셉터");
-        System.out.println("책관리홈페이지 인터셉터");
         //컨트롤러이 html로 보낼려는 page 정보를 pageName에 저장한다.
         Optional<ModelAndView> modelAndViewOptional = Optional.ofNullable(modelAndView);
         String pageName = modelAndViewOptional.map(s->s.getModel()).map(s->s.get("page")).map(s->s.toString()).orElse("notUseMenu");
@@ -35,9 +32,6 @@ public class BookAdminInterceptor implements HandlerInterceptor {
             //메뉴의 인덱스, 사이드메뉴의 인덱스
             int selectedMenuIndex = optionalMap.map(s-> s.get("MENU_INDEX")).orElse(0);
             int selectedSideMenuIndex = optionalMap.map(s-> s.get("SIDE_MENU_INDEX")).orElse(0);
-
-            System.out.println(selectedMenuIndex);
-            System.out.println(selectedSideMenuIndex);
 
             //컨트롤러에서 model를 사용하여 html로 데이터를 넘겨주는거 처럼 modelAndView 써서 보내준다
             modelAndView.addObject("selectedMenuIndex", selectedMenuIndex);
