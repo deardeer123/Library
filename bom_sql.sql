@@ -94,3 +94,6 @@ INSERT INTO users(
 	, '1234@gmail.com'
 	, 'Y'
 );
+
+-- 24.04.22 cardNum integer로 자로형 변환
+-- 24.04.22 CARD_NUM 수정 UNIQUE 부여

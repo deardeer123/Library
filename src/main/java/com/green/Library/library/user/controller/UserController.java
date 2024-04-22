@@ -41,7 +41,7 @@ public class UserController {
         List<MemberVO> filterIsCardNum = new ArrayList<>();
 
         membersInfo.forEach(m -> {
-            if(m.getCardNum() != 0){
+            if(m.getCardNum() != null){
                 filterIsCardNum.add(m);
             }
         });
@@ -84,7 +84,7 @@ public class UserController {
 
         // cardNum이 0과 같은 이용자들을 필터 변수에 추가
         membersInfo.forEach(m -> {
-            if(m.getCardNum() == 0){
+            if(m.getCardNum() == null){
                 filterNoCardNum.add(m);
             }
         });
@@ -101,29 +101,42 @@ public class UserController {
     // 이용자 cardNum update
     @ResponseBody
     @PostMapping("/updateCardNumFetch")
-    public String updateCardNum(@RequestParam(name = "userCodeList", required = false) List<Integer> userCodeList,
-                                @RequestParam(name = "userCode", required = false, defaultValue = "0")String userCode,
-                                @RequestParam(name = "cardNum", required = false, defaultValue = "0")String cardNum){
+    public int updateCardNum(@RequestParam(name = "userCodeList", required = false) List<Integer> userCodeList,
+                             @RequestParam(name = "cardNum", required = false, defaultValue = "0")String cardNum){
 
+        // cardNum 전체부여
         if(userCodeList != null){
             userCodeList.forEach(s -> userService.updateCardNum(new MemberVO().builder()
                     .userCode(s)
                     .build()));
 
-            return "a";
+            return 1;
 
-        } else {
-            System.out.println("(((((((((((((((((((((((((((((((((((((" + userCode);
+        // cardNum 업데이트
+        } else if(!cardNum.equals("0")){
+            System.out.println("카드번호" + cardNum);
+
+            int thisCardNum = Integer.parseInt(cardNum);
+
+            System.out.println("!!!!!!!!!!!!!!" + thisCardNum + "!!!!!!!!!!!!!!!");
 
             MemberVO reGrant = new MemberVO();
 
+            reGrant.setUserCode(borrowReturnService.selectUserCode(thisCardNum));
+
             userService.updateCardNum(reGrant);
 
-//            cardNum = borrowReturnService.selectCardNum(Integer.parseInt(userCode));
+            int reCardNum = userService.selectCardNum(reGrant.getUserCode());
 
-            System.out.println("))))))))))))))))))))))))))))))))))))" + cardNum);
+            reGrant.setCardNum(reCardNum);
 
-            return cardNum;
+            System.out.println("reGrant" + reGrant);
+
+            return reGrant.getCardNum();
+
+        // 아무것도 아닌 경우
+        } else {
+            return 0;
         }
     }
 

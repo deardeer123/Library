@@ -4,6 +4,7 @@ import com.green.Library.library.borrowReturn.service.BorrowReturnService;
 import com.green.Library.library.borrowReturn.vo.BookBNRVO;
 import com.green.Library.library.borrowReturn.vo.SearchBookReservationVO;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
+import com.green.Library.library.user.service.UserService;
 import com.green.Library.web.member.vo.MemberVO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,8 @@ public class BorrowReturnController {
     LibraryMenuService libraryMenuService;
     @Resource(name = "borrowReturnService")
     BorrowReturnService borrowReturnService;
+    @Resource(name = "userService")
+    UserService userService;
 
 
     //---------------대출반납----------------------------------------
@@ -129,7 +132,7 @@ public class BorrowReturnController {
     @PostMapping("/updateUserIntroFetch")
     public void updateUserIntro(@RequestBody MemberVO memberVO){
 
-        borrowReturnService.updateUserIntro(memberVO);
+        userService.updateUserIntro(memberVO);
 
     }
 
@@ -157,23 +160,13 @@ public class BorrowReturnController {
 
     //예약 정보 관리
     @GetMapping("/reservationInfo")
-    public String goReservationInfo(Model model){
+    public String goReservationInfo(Model model, SearchBookReservationVO searchBookReservationVO){
         //이동하기전 메뉴리스트 가져가기
-        model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
-
-
-        System.out.println("예약 정보 관리 이동");
-        return "content/library/borrowReturn/reservationInfo";
-    }
-
-    //예약 정보 조건 조회
-    @RequestMapping("/selectReservationInfo")
-    public String selectRInfo(Model model, SearchBookReservationVO searchBookReservationVO){
-
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
         model.addAttribute("reserveInfo", borrowReturnService.selectReserve(searchBookReservationVO));
 
+        System.out.println("예약 정보 관리 이동");
         return "content/library/borrowReturn/reservationInfo";
     }
 

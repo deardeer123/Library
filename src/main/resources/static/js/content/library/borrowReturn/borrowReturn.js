@@ -17,8 +17,8 @@ function selectMemberInfo() {
     const reserve_list_tbody = document.querySelector('.reserve-list-table tbody');
 
     // 들어오는 데이터 관리
-    const renderCnt = document.querySelector('#renderCnt');
-    const returnCnt = document.querySelector('#returnCnt');
+    const renderCnt = document.querySelector('#render-cnt').innerHTML;
+    const returnCnt = document.querySelector('#return-cnt').innerHTML;
     const inputValue = document.querySelector('#inputData').value;
     const selectedCardNum = document.querySelector('input[name="selectedCardNum"]').value
     const borrowDate = document.querySelector('#borrow-date').value;
@@ -224,12 +224,15 @@ function selectMemberInfo() {
 
                     });
 
-                    cnt1 += `
-                            <b>대출(${renCnt}/5)</b>
-                        `;
-                    cnt2 += `
-                            <b>반납(${retCnt})</b>
-                        `;
+                    alert(retCnt);
+
+                    cnt1 += `<b>대출(${renCnt}/5)</b>`;
+
+                    if(retCnt === 0){
+                        cnt2 += `<b>반납(0)</b>`;
+                    } else {
+                        cnt2 += `<b>반납(${retCnt})</b>`;
+                    }
 
                     renderCnt.insertAdjacentHTML("afterbegin", cnt1);
                     returnCnt.insertAdjacentHTML("afterbegin", cnt2);
@@ -432,11 +435,14 @@ function showModal(userCode) {
                 <td colspan="3" id="overdueCnt">${data.overdueCnt}</td>
             </tr>
             <tr>
-                <td class="table-light">최근 대출일</td>
-                <td colspan="3" id="recentDate">${data.recentDate}</td>
-            </tr>
-        </table>
-        `
+                <td class="table-light">최근 대출일</td>`
+            if(data.recentDate == null){
+            str += `<td colspan="3" id="recentDate"></td>`
+            } else{
+            str += `<td colspan="3" id="recentDate">${data.recentDate}</td>`
+            }
+            str += `</tr>
+        </table>`
             modalBody.insertAdjacentHTML('afterbegin', str);
 
             user_detail_modal.show();
@@ -531,7 +537,6 @@ const reGrant = () => {
         //컨트롤러로 전달할 데이터
         body: new URLSearchParams({
             // 데이터명 : 데이터값
-            "userCode" : userCode,
             "cardNum" : cardNum
         })
     })
@@ -546,8 +551,8 @@ const reGrant = () => {
         })
         //fetch 통신 후 실행 영역
         .then((data) => {//data -> controller에서 리턴되는 데이터!
-            alert(data);
             alert('변경 되었습니다.');
+
 
             modalBody.innerHTML = '';
 
@@ -563,7 +568,7 @@ const reGrant = () => {
             <tr>
                 <input type="hidden" name="userCode" value="${userCode}" id="getUserCode">
                 <td class="table-light">번호</td>
-                <td><span id="detailCardNum">${data.cardNum}</span>
+                <td><span id="detailCardNum">${data}</span>
                     <button class="btn btn-primary" onclick="reGrant(${userCode})">카드번호 재부여</button>
                 </td>
                 <td class="table-light">직급</td>
@@ -671,11 +676,14 @@ const reGrant = () => {
                 <td colspan="3" id="overdueCnt">${overdueCnt}</td>
             </tr>
             <tr>
-                <td class="table-light">최근 대출일</td>
-                <td colspan="3" id="recentDate">${recentDate}</td>
-            </tr>
-        </table>
-        `
+                <td class="table-light">최근 대출일</td>`
+            if(recentDate == null){
+            str += `<td colspan="3" id="recentDate"></td>`
+            } else{
+            str += `<td colspan="3" id="recentDate">${recentDate}</td>`
+            }
+            str += `</tr>
+        </table>`
             modalBody.insertAdjacentHTML('afterbegin', str);
 
         })

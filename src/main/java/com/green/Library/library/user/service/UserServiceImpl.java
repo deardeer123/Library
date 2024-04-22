@@ -1,7 +1,6 @@
 package com.green.Library.library.user.service;
 
 import com.green.Library.library.user.vo.SearchUserVO;
-import com.green.Library.library.user.vo.UserVO;
 import com.green.Library.web.member.vo.MemberVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,8 @@ public class UserServiceImpl implements UserService{
 
     // 카드번호 부여
     @Override
-    public void updateCardNum(MemberVO memberVO) {
-        sqlSession.update("userMenuMapper.updateCardNum", memberVO);
+    public int updateCardNum(MemberVO memberVO) {
+        return sqlSession.update("userMenuMapper.updateCardNum", memberVO);
     }
 
     // 유저 상세정보 모달
@@ -38,5 +37,15 @@ public class UserServiceImpl implements UserService{
         return sqlSession.update("userMenuMapper.userDetailUpdate", memberVO);
     }
 
+    // 이용자 소개 업데이트
+    @Override
+    public void updateUserIntro(MemberVO memberVO) {
+        sqlSession.update("userMenuMapper.updateUserIntro", memberVO);
+    }
+
+    @Override
+    public int selectCardNum(int userCode) {
+        return sqlSession.selectOne("userMenuMapper.selectCardNum", userCode);
+    }
 
 }

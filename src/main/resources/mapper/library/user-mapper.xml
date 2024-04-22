@@ -102,6 +102,22 @@
         WHERE USER_CODE = #{userCode}
     </update>
 
+    <!-- 이용자 소개 변경 -->
+    <update id="updateUserIntro">
+        UPDATE USERS
+        SET
+        USER_INTRO = #{userIntro}
+        WHERE USER_CODE = #{userCode}
+    </update>
+
+    <!-- 이용자 카드번호 조회 -->
+    <select id="selectCardNum" resultType="int">
+        SELECT
+        CARD_NUM
+        FROM USERS
+        WHERE USER_CODE = #{userCode}
+    </select>
+
 </mapper>
 
 
