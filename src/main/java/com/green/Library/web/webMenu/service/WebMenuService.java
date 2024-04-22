@@ -10,5 +10,5 @@ public interface WebMenuService {
     List<WebHeaderMenuVO> selectWebMenuList(String menuType);
 
     //대충 페이지 이름 넘겨주면 해당하는 인덱스 번호 주는 메소드
-    Map<String, Integer> selectIndexNum(String page);
+    Map<String, Object> selectIndexNum(String page);
 }

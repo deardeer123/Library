@@ -73,7 +73,7 @@
     </update>
 
     <!-- 이용자 카드번호 조회 -->
-    <select id="selectCardNum" resultMap="int">
+    <select id="selectCardNum" resultType="int">
         SELECT
             CARD_NUM
         FROM USERS

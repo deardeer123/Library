@@ -23,7 +23,7 @@
 
     <th:block>
         <!-- 사이드 메뉴 인덱스를 넘겨받았을 경우 -->
-        <th:block th:if="${selectedMenuIndex != null}">
+        <th:block th:if="${selectedMenuIndex != null and menuList2 == null and menuList3 == null}">
             <th:block th:each="e:${menuList}" th:if="${e.menuIndex == selectedMenuIndex}">
                 <div class="row">
                     <div class="col bg-success-subtle">
@@ -34,19 +34,64 @@
 
                     <th:block th:each="e1:${e.webSideMenuVOList}">
 
-                        <li class="list-group-item" 
-                        th:classappend="${e1.sideMenuIndex == selectedSideMenuIndex ? 'active' : ''}"
-                        th:onclick="goPage([[${e1.sideMenuPage}]] , [[${e1.sideMenuNum}]])"
-                        >
+                        <li class="list-group-item"
+                            th:classappend="${e1.sideMenuIndex == selectedSideMenuIndex ? 'active' : ''}"
+                            th:onclick="goPage([[${e1.sideMenuPage}]] , [[${e1.sideMenuNum}]])">
                             [[${e1.sideMenuName}]]
                         </li>
-                    
+
                     </th:block>
                 </ul>
             </th:block>
-
         </th:block>
 
+        <!-- 사이드 메뉴 인덱스를 넘겨받았을 경우 그리고 munuList(로그인, 회원가입, 아이디비밀번호 찾기 정보를 받았을 경우)-->
+        <th:block th:if="${selectedMenuIndex != null and menuList2 != null }">
+            <th:block th:each="e:${menuList2}" th:if="${e.menuIndex == selectedMenuIndex}">
+                <div class="row">
+                    <div class="col bg-success-subtle">
+                        <h2>[[${e.menuName}]]</h2>
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush">
+
+                    <th:block th:each="e1:${e.webSideMenuVOList}">
+
+                        <li class="list-group-item"
+                            th:classappend="${e1.sideMenuIndex == selectedSideMenuIndex ? 'active' : ''}"
+                            th:onclick="goPage([[${e1.sideMenuPage}]] , [[${e1.sideMenuNum}]])">
+                            [[${e1.sideMenuName}]]
+                        </li>
+
+                    </th:block>
+                </ul>
+            </th:block>
+        </th:block>
+
+        <!-- 마이페이지 사이드 -->
+        <th:blcok th:if="${selectedMenuIndex != null and menuList3 != null}">
+            <th:blcok th:each="e, state:${menuList3}">
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="${'#flush-collapseOne-'+state.count}" aria-expanded="false" aria-controls="flush-collapseOne">
+                                [[${e.menuName}]]
+                            </button>
+                        </h2>
+
+                        <div th:id="${'flush-collapseOne-'+state.count}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                <th:blcok th:each="e1:${e.webSideMenuVOList}">
+                                    <div>[[${e1.sideMenuName}]]</div>
+                                </th:blcok>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </th:blcok>
+        </th:blcok>
     </th:block>
 
     <script>

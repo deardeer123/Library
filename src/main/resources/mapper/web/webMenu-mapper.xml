@@ -44,6 +44,7 @@
 <!--    페이지의 이름으로 부터 header_menu의 인덱스 번호와 side_menu의 인덱스 번호 구하기-->
     <select id="selectIndexNum" resultType="map">
         SELECT
+        header_menu.MENU_TYPE,
         side_menu.SIDE_MENU_INDEX ,
         header_menu.MENU_INDEX ,
         side_menu.SIDE_MENU_NUM

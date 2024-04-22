@@ -91,12 +91,19 @@ public class MemberController {
     }
 
 
+    //회원 정보 변경
+    @GetMapping("memberInfoChange")
+    public String memberInfoChange(Model model){
+
+        return "redirect:/goMyPage";
+    }
+
     //마이페이지 이동
     @GetMapping("/goMyPage")
     public String goMyPage(Model model,HttpSession session,MemberVO memberVO){
 
-
-        model.addAttribute("page","join");
+        //회원 정보 변경 메뉴
+        model.addAttribute("page","memberInfoChange");
 
         MemberVO member = memberService.myPageUserInfo((Integer) session.getAttribute("userCode"));
 
@@ -112,7 +119,39 @@ public class MemberController {
         return "redirect:/goMyPage";
     }
 
+    @GetMapping("passwdChange")
+    public String passwdChange(Model model){
+        //비빌번호 변경
+        model.addAttribute("page","passwdChange");
 
+        return "content/homePage/member/passwdChange";
+    }
 
+    @GetMapping("applyList")
+    public String applyList(Model model){
+        //신청 목록
+        model.addAttribute("page","applyList");
+        return "content/homePage/member/applyList";
+    }
 
+    @GetMapping("bookLoanReturn")
+    public String bookLoanReturn(Model model){
+        //도서 대출 반납 목록
+        model.addAttribute("page", "bookLoanReturn");
+        return "content/homePage/member/bookLoanReturn";
+    }
+
+    @GetMapping("myBookingList")
+    public String myBookingList(Model model){
+        //내 (도서)예약 목록
+        model.addAttribute("page", "myBookingList");
+        return "content/homePage/member/myBookingList";
+    }
+
+    @GetMapping("memberWithdrawal")
+    public String memberWithdrawal(Model model){
+        //회원 탈퇴
+        model.addAttribute("page", "memberWithdrawal");
+        return "content/homePage/member/memberWithdrawal";
+    }
 }

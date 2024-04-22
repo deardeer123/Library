@@ -63,6 +63,17 @@ INSERT INTO HEADER_MENU(
 	MENU_NAME , MENU_PAGE , MENU_INDEX , MENU_TYPE)
 	VALUES
 	('회원', 'member', 1 , 'member');
+	
+-- 마이페이지 사이드 부분 메뉴는 그대로 두고 사이드에서 유저 관련된 메뉴들 보이게 작업할 것 근데 이걸 헤더 쪽에서 해결해야하나?
+
+INSERT INTO header_menu(
+	MENU_NAME , MENU_PAGE , MENU_INDEX , MENU_TYPE)
+	VALUES
+	('내프로필', 'myProfile', 1 , 'myPage') ,
+	('내행사신청', 'myEvent', 2 , 'myPage') ,
+	('내서재' , 'myBook', 3, 'myPage') ,
+	('회원탈퇴' , 'memberWithdrawal', 4 , 'myPage');
+
 
 SELECT * FROM header_menu;
 SELECT * FROM side_menu;
@@ -163,6 +174,41 @@ INSERT INTO side_menu(
 	('회원가입', 'join', 2 , 11),
 	('아이디/비밀번호 찾기', 'findIdOrPW', 3, 11);
 	
+SELECT * FROM header_menu;	
+	
+-- 마이페이지 사이드 쪽
+INSERT INTO side_menu(
+	SIDE_MENU_NAME ,
+	SIDE_MENU_PAGE ,
+	SIDE_MENU_INDEX ,
+	MENU_NUM )
+	VALUES
+	-- 내 프로필
+	('회원정보 변경' , 'memberInfoChange', 1 , 12),
+	('비밀번호 변경' , 'passwdChange' , 2 , 12),
+	-- 내 행사 신청
+	('신청 목록' , 'applyList', 1, 13) ,
+	-- 내 서재
+	('도서대출반납 목록', 'bookLoanReturn', 1 , 14) ,
+	('내 예약 목록', 'myBookingList' , 2 , 14 ),
+	-- 회원 탈퇴
+	('회원 탈퇴' , 'memberWithdrawal' , 1 ,15);
+	
+
+SELECT
+        header_menu.MENU_NUM ,
+        MENU_NAME ,
+        MENU_INDEX ,
+        MENU_TYPE,
+        SIDE_MENU_NAME ,
+        SIDE_MENU_PAGE ,
+        SIDE_MENU_INDEX ,
+        SIDE_MENU.SIDE_MENU_NUM
+        FROM
+        header_menu INNER JOIN side_menu
+        ON header_menu.MENU_NUM = side_menu.MENU_NUM
+        WHERE header_menu.MENU_TYPE = 'myPage';
+	
 -- 메뉴들 찾기 위한 쿼리문
 SELECT 
 	header_menu.MENU_NUM ,
@@ -177,7 +223,7 @@ FROM
 	header_menu INNER JOIN side_menu
 	ON header_menu.MENU_NUM = side_menu.MENU_NUM 
 WHERE
-	header_menu.MENU_TYPE = 'library';
+	header_menu.MENU_TYPE = 'member';
 	
 SELECT 
 	header_menu.MENU_NUM ,
@@ -194,6 +240,22 @@ FROM
 WHERE
 	header_menu.MENU_TYPE = 'web' AND header_menu.MENU_NUM = 10;
 	
+	
+
+SELECT
+        header_menu.MENU_NUM ,
+        MENU_NAME ,
+        MENU_INDEX ,
+        MENU_TYPE,
+        SIDE_MENU_NAME ,
+        SIDE_MENU_PAGE ,
+        SIDE_MENU_INDEX ,
+        SIDE_MENU.SIDE_MENU_NUM
+        FROM
+        header_menu INNER JOIN side_menu
+        ON header_menu.MENU_NUM = side_menu.MENU_NUM
+        WHERE header_menu.MENU_TYPE = 'member';	
+
 SELECT 
 	header_menu.MENU_NUM ,
 	MENU_NAME ,

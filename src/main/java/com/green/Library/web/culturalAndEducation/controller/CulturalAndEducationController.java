@@ -55,7 +55,7 @@ public class CulturalAndEducationController {
         //인터셉터에 notice라는 정보를 넘겨줌
         model.addAttribute("page","libraryEvent");
         //boardType을 searchVO로 보내줘야함
-        searchVO.setBoardType(webMenuService.selectIndexNum("libraryEvent").get("SIDE_MENU_NUM"));
+        searchVO.setBoardType((int)webMenuService.selectIndexNum("libraryEvent").get("SIDE_MENU_NUM"));
 
 
         //전체 게시글 수
