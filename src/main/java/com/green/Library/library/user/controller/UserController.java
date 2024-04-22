@@ -132,9 +132,8 @@ public class UserController {
     @RequestMapping("/updateUserDetailFetch")
     public MemberVO userDetailUpdate(@RequestBody MemberVO memberVO) {
 
-<<<<<<< HEAD
         userService.userDetailUpdate(memberVO);
-=======
+
         System.out.println(memberVO);
 
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
@@ -155,7 +154,6 @@ public class UserController {
         System.out.println(userInfo);
 
         return userInfo;
->>>>>>> dev
     }
 
     //연체자 관리
