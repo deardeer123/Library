@@ -630,7 +630,7 @@
 
                     for (let e of data.libraryBookVOList) {
                         let str = `
-                            <tr onclick='goChange(${e.bookCode})'>
+                            <tr onclick='goModal(${e.bookCode})'>
                                 <td>${e.bookCode}</td>
                                 <td>${e.bookTitle}</td>
                                 <td>${e.bookWriter}</td>
@@ -719,7 +719,7 @@
 
                     for (let e of data.libraryBookVOList) {
                         let str = `
-                            <tr onclick='goChange("${e.bookCode}")'>
+                            <tr onclick='goModal("${e.bookCode}")'>
                                 <td>${e.bookCode}</td>
                                 <td>${e.bookTitle}</td>
                                 <td>${e.bookWriter}</td>

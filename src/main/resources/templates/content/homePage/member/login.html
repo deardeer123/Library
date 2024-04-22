@@ -50,6 +50,12 @@
                     <div class="col mt-3 text-center">
                         <input type="submit" value="확인" class="btn btn-secondary">
                     </div>
+                    <div>
+                        <!-- 로그인 성공 여부를 나타내는 공간 -->
+                        <th:block th:if='${!errMsg.equals("")}'>
+                            <span style="color: red;">[[${errMsg}]]</span>
+                        </th:block>
+                    </div>
                 </div>
             </form>
         </div>

@@ -20,7 +20,7 @@ public class WebMenuServiceImpl implements WebMenuService{
 
     //대충 페이지 이름 넘겨주면 해당하는 인덱스 번호 주는 메소드
     @Override
-    public Map<String, Integer> selectIndexNum(String page) {
+    public Map<String, Object> selectIndexNum(String page) {
         return sqlSession.selectOne("webMenuMapper.selectIndexNum",page);
     }
 }

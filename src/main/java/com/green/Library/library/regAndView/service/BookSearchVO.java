@@ -11,5 +11,9 @@ import lombok.ToString;
 public class BookSearchVO extends PageVO{
     private String searchType;
     private String searchValue;
+    private String searchDate;
+    private String bookCateName;
+    private String bookMidCateName;
+    private String bookBorrowAvailable;
 
 }

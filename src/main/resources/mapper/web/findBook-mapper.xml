@@ -24,17 +24,35 @@
         <if test='searchValue != null and !searchValue.equals("")'>
             AND ${searchType} LIKE CONCAT('%',#{searchValue},'%')
         </if>
+        <if test='bookBorrowAvailable != null and !bookBorrowAvailable.equals("ALL")'>
+            and find_book_view.book_borrow_available = #{bookBorrowAvailable}
+        </if>
+        <if test='bookCateName != null and !bookCateName.equals("noCate")'>
+            and book_cate_name = #{bookCateName}
+        </if>
+        <if test='bookMidCateName != null and !bookMidCateName.equals("noMidCate")'>
+            and book_mid_cate_name = #{bookMidCateName}
+        </if>
         LIMIT ${displayDataCnt} offset ${(displayDataCnt) * (nowPage - 1)}
     </select>
 
     <!--    책 갯수-->
     <select id="selectFindBookCnt" resultType="int">
         select count(*)
-        from book
+        from find_book_view
         where
         1 = 1
         <if test='searchValue != null and !searchValue.equals("")'>
             and ${searchType} LIKE CONCAT('%',#{searchValue},'%')
+        </if>
+        <if test='bookBorrowAvailable != null and !bookBorrowAvailable.equals("ALL")'>
+            and find_book_view.book_borrow_available = #{bookBorrowAvailable}
+        </if>
+        <if test='bookCateName != null and !bookCateName.equals("noCate")'>
+            and book_cate_name = #{bookCateName}
+        </if>
+        <if test='bookMidCateName != null and !bookMidCateName.equals("noMidCate")'>
+            and book_mid_cate_name = #{bookMidCateName}
         </if>
     </select>
 
@@ -42,6 +60,93 @@
         SELECT *
         FROM find_book_view
         WHERE book_code = #{bookCode}
+    </select>
+
+<!--    대출많은책 10권찾기-->
+    <select id="manyRentBook" resultMap="findBook">
+        SELECT
+        find_book_view.BOOK_CODE,
+        BOOK_TITLE,
+        BOOK_WRITER,
+        BOOK_PUB,
+        BOOK_YEAR,
+        book_info.BOOK_BORROW_AVAILABLE,
+        book_info.book_intro,
+        book_info.BOOK_INFO_ATTACHED_FILE_NAME,
+        BOOK_CATE_NAME,
+        BOOK_MID_CATE_NAME,
+        book_info.BOOK_REGDATE
+        FROM find_book_view INNER JOIN book_info
+        ON find_book_view.BOOK_CODE = book_info.BOOK_CODE
+        ORDER by book_info.BOOK_BORROW_CNT desc
+        LIMIT 37;
+    </select>
+
+
+<!--    새로 들러온 책 리스트-->
+    <select id="selectNewBookList" resultMap="findBook">
+        SELECT
+            find_book_view.BOOK_CODE,
+            BOOK_TITLE,
+            BOOK_WRITER,
+            BOOK_PUB,
+            BOOK_YEAR,
+            book_info.BOOK_BORROW_AVAILABLE,
+            book_info.book_intro,
+            book_info.BOOK_INFO_ATTACHED_FILE_NAME,
+            BOOK_CATE_NAME,
+            BOOK_MID_CATE_NAME,
+            book_info.BOOK_REGDATE
+        FROM find_book_view INNER JOIN book_info
+        ON find_book_view.BOOK_CODE = book_info.BOOK_CODE
+        where 1 = 1
+        <if test='searchDate != null and !searchDate.equals("")'>
+            and DATE_FORMAT(find_book_view.BOOK_REGDATE, '%Y-%m-%d') >= #{searchDate}
+        </if>
+        <if test='bookBorrowAvailable != null and !bookBorrowAvailable.equals("ALL")'>
+            and find_book_view.book_borrow_available = #{bookBorrowAvailable}
+        </if>
+        <if test='bookCateName != null and !bookCateName.equals("noCate")'>
+            and book_cate_name = #{bookCateName}
+        </if>
+        <if test='bookMidCateName != null and !bookMidCateName.equals("noMidCate")'>
+            and book_mid_cate_name = #{bookMidCateName}
+        </if>
+        ORDER by book_info.BOOK_REGDATE desc
+        LIMIT ${displayDataCnt} offset ${(displayDataCnt) * (nowPage - 1)}
+    </select>
+
+    <!--    새로 들어온 책 갯수-->
+    <select id="selectNewBookCnt" resultType="int">
+        select count(*)
+        from find_book_view
+        where
+        1 = 1
+        <if test='searchDate != null and !searchDate.equals("")'>
+            and DATE_FORMAT(find_book_view.BOOK_REGDATE, '%Y-%m-%d') >= #{searchDate}
+        </if>
+        <if test='bookBorrowAvailable != null and !bookBorrowAvailable.equals("ALL")'>
+            and find_book_view.book_borrow_available = #{bookBorrowAvailable}
+        </if>
+        <if test='bookCateName != null and !bookCateName.equals("noCate")'>
+            and book_cate_name = #{bookCateName}
+        </if>
+        <if test='bookMidCateName != null and !bookMidCateName.equals("noMidCate")'>
+            and book_mid_cate_name = #{bookMidCateName}
+        </if>
+    </select>
+
+
+<!--    프로시저 쓸줄 몰라써 쓰는 update문입니다 쓰지마십쇼-->
+    <update id="changeRegDate">
+        UPDATE book_info
+        SET BOOK_REGDATE = DATE_SUB(BOOK_REGDATE, INTERVAL #{bookInfoNum} DAY)
+        WHERE book_info_num = #{bookInfoNum}
+    </update>
+    <!--    프로시저 쓸줄 몰라써 쓰는 update문입니다 쓰지마십쇼2-->
+    <select id="changeRegDate2" resultType="int">
+        select book_info_num
+        from book_info
     </select>
 
 </mapper>

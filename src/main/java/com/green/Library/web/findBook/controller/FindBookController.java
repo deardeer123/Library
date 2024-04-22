@@ -1,13 +1,22 @@
 package com.green.Library.web.findBook.controller;
 
 import com.green.Library.library.regAndView.service.BookSearchVO;
+import com.green.Library.libraryBook.service.LibraryBookService;
+import com.green.Library.libraryBook.vo.LibraryBookCategoryVO;
 import com.green.Library.web.findBook.service.FindBookService;
 import com.green.Library.web.findBook.vo.FindBookVO;
+import com.green.Library.web.findBook.vo.SearchDateVO;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
@@ -19,6 +28,13 @@ public class FindBookController {
     FindBookService findBookService;
 
     private final int selectedMenuIndex = 1;
+
+    LibraryBookService libraryBookService;
+
+    @Autowired
+    public FindBookController(LibraryBookService libraryBookService){
+        this.libraryBookService = libraryBookService;
+    }
 
 
     @RequestMapping("/findFullBook")
@@ -43,6 +59,9 @@ public class FindBookController {
         if(totalDataCnt == 0){
             bookSearchVO.setEndPage(1);
         }
+        //카테고리 정보가 필요한 거 같음
+        Optional<List<LibraryBookCategoryVO>> catelist = Optional.ofNullable(libraryBookService.selectCateList());
+        model.addAttribute("cateList", catelist.get());
 
         //책 리스트 보내기
         model.addAttribute("bookList", findBookService.findBookList(bookSearchVO));
@@ -64,71 +83,67 @@ public class FindBookController {
     }
 
 //    ------------------------------------------------------------------------------------------------
-    @GetMapping("/newBook")
-    public String goNewBook(Model model){
-
-        //헤더 메뉴
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        //로그인 네비게이션
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
-        //선택한 메뉴의 인덱스 번호 보내주기
-        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
-        //선택한 사이드 메뉴의 인덱스 번호 보내주기
-        int selectedSideMenuIndex = 2;
-        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
+    @RequestMapping("/newBook")
+    public String goNewBook(Model model, SearchDateVO searchDateVO){
+        //인터셉터에 newBook 정보를 넘겨줌
+        model.addAttribute("page","newBook");
 
 
-        System.out.println("새로 들어온 책");
+        //페이징
+        searchDateVO.setNowPage(searchDateVO.getNowPage());
+
+        //전체 게시물 갯수 설정
+        int newBookCnt = findBookService.selectNewBookCnt(searchDateVO);
+        searchDateVO.setTotalDataCnt(newBookCnt);
+
+        //페이지 정보 세팅
+        searchDateVO.setPageInfo();
+
+        //계속 이상하게 나오길래 넣은 코드입니다.
+        if(newBookCnt == 0){
+            searchDateVO.setEndPage(1);
+        }
+
+        //새로들어온 책 -> 등록날짜가 제일 최신인 책들!!
+        List<FindBookVO> newBookList = findBookService.selectNewBookList(searchDateVO);
+        model.addAttribute("newBookList", newBookList);
+
+        //카테고리 정보가 필요한 거 같음
+        Optional<List<LibraryBookCategoryVO>> catelist = Optional.ofNullable(libraryBookService.selectCateList());
+        model.addAttribute("cateList", catelist.get());
+
         return "content/homePage/findBook/newBook";
     }
     @GetMapping("/recommendedBook")
     public String goRecommendedBook(Model model){
-        //헤더 메뉴
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        //로그인 네비게이션
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
-        //선택한 메뉴의 인덱스 번호 보내주기
-        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
-        //선택한 사이드 메뉴의 인덱스 번호 보내주기
-        int selectedSideMenuIndex = 3;
-        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
-
+        //인터셉터에 recommendedBook 정보를 넘겨줌
+        model.addAttribute("page","recommendedBook");
 
 
 
         System.out.println("추천도서");
         return "content/homePage/findBook/recommendedBook";
     }
+    
+    //대출이 많은책
     @GetMapping("/manyBorrowedBook")
     public String goManyBorrowedBook(Model model){
-        //헤더 메뉴
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        //로그인 네비게이션
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
-        //선택한 메뉴의 인덱스 번호 보내주기
-        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
-        //선택한 사이드 메뉴의 인덱스 번호 보내주기
-        int selectedSideMenuIndex = 4;
-        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
+        //인터셉터에 newBook 정보를 넘겨줌
+        model.addAttribute("page","manyBorrowedBook");
+        //대출이 많은책 10권 보내주기
+        model.addAttribute("bookList", findBookService.manyRentBook());
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date now = new Date();
+        System.out.println(sdf.format(now));
+        model.addAttribute("date", sdf.format(now) );
 
-
-        System.out.println("대출이 많은책");
         return "content/homePage/findBook/manyBorrowedBook";
     }
     @GetMapping("/hopeBookApplication")
     public String goHopeBookApplication(Model model){
-        //헤더 메뉴
-        model.addAttribute("menuList",webMenuService.selectWebMenuList("web"));
-        //로그인 네비게이션
-        model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
-        //선택한 메뉴의 인덱스 번호 보내주기
-        model.addAttribute("selectedMenuIndex", selectedMenuIndex);
-        //선택한 사이드 메뉴의 인덱스 번호 보내주기
-        int selectedSideMenuIndex = 5;
-        model.addAttribute("selectedSideMenuIndex", selectedSideMenuIndex);
-
-
+        //인터셉터에 hopeBookApplication 정보를 넘겨줌
+        model.addAttribute("page","hopeBookApplication");
 
         System.out.println("희망도서신청");
         return "content/homePage/findBook/hopeBookApplication";

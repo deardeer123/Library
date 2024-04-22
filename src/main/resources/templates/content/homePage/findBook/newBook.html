@@ -8,59 +8,235 @@
 </th:block>
 
 <th:block layout:fragment="contentFragment">
+    <style>
+        .table-condensed {
+            width: 300px;
+            height: 250px;
+            font-size: 1.5em;
+        }
+
+        .date-text {
+            /* padding-top: 0.5em; */
+            font-size: 1.2em;
+        }
+    </style>
+    <!-- datepicker css파일 -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <!-- html 코드 작성 -->
     <div class="row">
         <div class="col">
-            <!-- 새로 들어온책  -->
-            <div class="row">
-                <div class="col">
-
-                    <!-- 상세페이지로 들어오면 그거에 해당하는 헤더도 필요한거 같음 -->
-                    <div class="row mb-3">
-                        <div class="col">
-                            <h4>📖신착자료</h4>
-                        </div>
+            <!-- 날짜 검색하는 창 -->
+            <form action="/newBook" method="post">
+                <div class="row text-center justify-content-center mt-2 mb-3 border border-success-subtle">
+                    <div class="col-1 mt-4">카테고리</div>
+                    <div class="col-2">
+                        <select class="form-select" th:onchange="cateChk(this,[[${cateList}]])" name="bookCateName">
+                            <option  value="noCate" checked>대분류</option>
+                            <th:block th:each="e : ${cateList}">
+                                <option th:value="${e.bookCateName}" th:selected="${e.bookCateName == searchDateVO.bookCateName}">[[${e.bookCateName}]]</option>
+                            </th:block>
+                        </select>
+                    
+                        <select class="form-select" id="cate-tag" name="bookMidCateName">
+                            <option value="noMidCate">중분류</option>
+                            <th:block th:if='${searchDateVO.bookMidCateName != null and searchDateVO.bookMidCateName != "noMidCate"}'>
+                                <th:block th:each="e:${cateList}">
+                                    <th:block th:if="${e.bookCateName == searchDateVO.bookCateName}" th:each="e1:${e.libraryBookMidCategoryVOList}">
+                                        <option th:selected="${e1.bookMidCateName == searchDateVO.bookMidCateName}" th:value="${e1.bookMidCateName}">[[${e1.bookMidCateName}]]</option>
+                                    </th:block>
+                                </th:block>
+                            </th:block>
+                        </select>
+                        
+                    </div>
+                    <div class="col-auto mt-4">대출여부</div>
+                    <div class="col-auto">
+                        <select class="form-select mt-3" name="bookBorrowAvailable">
+                            <option value="ALL">전체보기</option>
+                            <option value="Y" th:selected='${searchDateVO.bookBorrowAvailable=="Y"}'>대출가능</option>
+                            <option value="N" th:selected='${searchDateVO.bookBorrowAvailable=="N"}'>대출불가</option>
+                        </select>
+                    </div>
+                    <div class="col-auto date-text mt-4">
+                        날짜
+                    </div>
+                    <div class="col-auto mt-3">
+                        <input type="text" class="form-control" id="myInput" name="searchDate" th:value="${searchDateVO.searchDate}">
                     </div>
 
-                    <!-- 책 검색 -->
-                    <div class="row">
-                        <div class="col"> 
-                            <!-- 대분류 -->
-                            <select>
-                                <option selected>대분류</option>
-                            </select>
-                        </div>
+                    <div class="col-auto date-text mt-3">
+                        일에 등록된 책
+                    </div>
 
-                        <!-- 중분류 -->
-                        <div class="col">
-                            <select>
-                                <option selected>중분류</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <!-- 검색 -->
-                            <input type="date">
-                        </div>
-                            
+                    <div class="col-auto mt-3">
+                        <input type="submit" class="btn" value="찾기" style="background-color: cadetblue;">
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col">
-                    <!-- 검색된 책 정보 나오는곳 -->
+                <div class="row">
+                    <div class="col">
+                        <!-- 검색된 책 보여주기 -->
+                        <div class="row">
+                            <div class="col">
+                                <!-- 책 상세 정보들 넣어주기 -->
 
 
+                                <th:block th:each="e:${newBookList}">
+                                    <div class="row mt-2 border-bottom border-success-subtle">
+                                        <div class="col-4 text-center text-align-center">
+                                            <!-- 책 사진 들어가는곳  -->
+
+                                            <img class="rounded float-end"
+                                                th:src="@{/upload/} + ${e.bookInfoAttachedFileName}"
+                                                style="height: 27vh; width: 55%;" alt="">
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="row mt-5">
+                                                <!-- 북 코드 -->
+                                                <div class="col-auto">코드 :</div>
+                                                <div class="col-auto">[[${e.bookCode}]]</div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <!-- 제목 -->
+                                                <div class="col-auto">제목 :</div>
+                                                <div class="col-auto">[[${e.bookTitle}]]
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <!-- 저자 -->
+                                                <div class="col-auto">저자 :</div>
+                                                <div class="col-auto">[[${e.bookWriter}]]</div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <!-- 출판사 -->
+                                                <div class="col-auto">출판사 :</div>
+                                                <div class="col-auto">[[${e.bookPub}]]</div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <!-- 현재 이 책을 빌릴 수 있는지 확인 -->
+                                                <div class="col-auto">대출 여부 :</div>
+                                                <div class="col-auto">
+                                                    <th:block th:if="${e.bookBorrowAvailable == 'Y'}">
+                                                        <div class="d-inline p-2 text-bg-primary">대출가능</div>
+                                                    </th:block>
+
+                                                    <th:block th:if="${e.bookBorrowAvailable == 'N'}">
+                                                        <div class="d-inline p-2 text-bg-dark">대출불가</div>
+                                                    </th:block>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <!-- 카테고리 -->
+                                                <div class="col-auto">카테고리 :</div>
+                                                <div class="col-auto">[[${e.bookCateName}]] ></div>
+                                                <div class="col-auto">[[${e.bookMidCateName}]]</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th:block>
+
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+
+                <!-- 페이징 -->
+                <div class="row mt-3">
+                    <div class="col">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center" id="paging-tag">
+                                <th:block>
+                                    <li class="page-item disabled">
+                                        <a class="page-link">Previous</a>
+                                        <!-- classappend 추가해야함 -->
+                                    </li>
+                                </th:block>
+
+                                <th:block
+                                    th:each="e: ${#numbers.sequence(searchDateVO.beginPage,searchDateVO.endPage)}">
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            th:href="@{/newBook(nowPage=${e}
+                                            ,searchDate=${searchDateVO.searchDate}
+                                            ,bookCateName=${searchDateVO.bookCateName}
+                                            ,bookMidCateName=${searchDateVO.bookMidCateName}
+                                            ,bookBorrowAvailable=${searchDateVO.bookBorrowAvailable})}">[[${e}]]</a>
+                                    </li>
+                                </th:block>
+
+                                <th:block>
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">Next</a>
+                                        <!-- classappend 추가해야함 -->
+                                    </li>
+                                </th:block>
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+            </form>
 
         </div>
     </div>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <!-- datepicker 자바스크립트 -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"> </script>
+    <!-- datepicker 한글 사용하기 위한 자바스크립트 -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.ko.min.js"
+        integrity="sha512-L4qpL1ZotXZLLe8Oo0ZyHrj/SweV7CieswUODAAPN/tnqN3PA1P+4qPu5vIryNor6HQ5o22NujIcAZIfyVXwbQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $('#myInput').datepicker({
+            autoclose: true, //사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
+            language: 'ko' //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
+        });
+
+
+        function cateChk(tag,cateList){
+            let cateName = tag.value
+            let midCateTag = document.querySelector("#cate-tag");
+            let str = '<option value="noMidCate" checked>중분류</option>';
+            console.log(midCateTag)
+            console.log(cateName)
+            console.log(cateList)
+            midCateTag.innerHTML=''
+            if(cateName != 'noCate'){
+                for(let i of cateList){
+                    console.log(i)
+                    if(i.bookCateName == cateName){
+                        for(let j of i.libraryBookMidCategoryVOList){
+                            str += `<option value=${j.bookMidCateName}>${j.bookMidCateName}</option>`
+                        }
+                    }
+                }
+            }else{
+                midCateTag.innerHTML=''
+            }
+            console.log(str)
+            midCateTag.insertAdjacentHTML('afterbegin',str)
+        }
+    </script>
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <script src="/"></script>
+    <!-- <script src="/"></script> -->
 </th:block>
 
 </html>

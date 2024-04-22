@@ -63,6 +63,17 @@ INSERT INTO HEADER_MENU(
 	MENU_NAME , MENU_PAGE , MENU_INDEX , MENU_TYPE)
 	VALUES
 	('회원', 'member', 1 , 'member');
+	
+-- 마이페이지 사이드 부분 메뉴는 그대로 두고 사이드에서 유저 관련된 메뉴들 보이게 작업할 것 근데 이걸 헤더 쪽에서 해결해야하나?
+
+INSERT INTO header_menu(
+	MENU_NAME , MENU_PAGE , MENU_INDEX , MENU_TYPE)
+	VALUES
+	('내프로필', 'myProfile', 1 , 'myPage') ,
+	('내행사신청', 'myEvent', 2 , 'myPage') ,
+	('내서재' , 'myBook', 3, 'myPage') ,
+	('회원탈퇴' , 'memberWithdrawal', 4 , 'myPage');
+
 
 SELECT * FROM header_menu;
 SELECT * FROM side_menu;
@@ -163,6 +174,41 @@ INSERT INTO side_menu(
 	('회원가입', 'join', 2 , 11),
 	('아이디/비밀번호 찾기', 'findIdOrPW', 3, 11);
 	
+SELECT * FROM header_menu;	
+	
+-- 마이페이지 사이드 쪽
+INSERT INTO side_menu(
+	SIDE_MENU_NAME ,
+	SIDE_MENU_PAGE ,
+	SIDE_MENU_INDEX ,
+	MENU_NUM )
+	VALUES
+	-- 내 프로필
+	('회원정보 변경' , 'memberInfoChange', 1 , 12),
+	('비밀번호 변경' , 'passwdChange' , 2 , 12),
+	-- 내 행사 신청
+	('신청 목록' , 'applyList', 1, 13) ,
+	-- 내 서재
+	('도서대출반납 목록', 'bookLoanReturn', 1 , 14) ,
+	('내 예약 목록', 'myBookingList' , 2 , 14 ),
+	-- 회원 탈퇴
+	('회원 탈퇴' , 'memberWithdrawal' , 1 ,15);
+	
+
+SELECT
+        header_menu.MENU_NUM ,
+        MENU_NAME ,
+        MENU_INDEX ,
+        MENU_TYPE,
+        SIDE_MENU_NAME ,
+        SIDE_MENU_PAGE ,
+        SIDE_MENU_INDEX ,
+        SIDE_MENU.SIDE_MENU_NUM
+        FROM
+        header_menu INNER JOIN side_menu
+        ON header_menu.MENU_NUM = side_menu.MENU_NUM
+        WHERE header_menu.MENU_TYPE = 'myPage';
+	
 -- 메뉴들 찾기 위한 쿼리문
 SELECT 
 	header_menu.MENU_NUM ,
@@ -177,7 +223,7 @@ FROM
 	header_menu INNER JOIN side_menu
 	ON header_menu.MENU_NUM = side_menu.MENU_NUM 
 WHERE
-	header_menu.MENU_TYPE = 'library';
+	header_menu.MENU_TYPE = 'member';
 	
 SELECT 
 	header_menu.MENU_NUM ,
@@ -194,6 +240,22 @@ FROM
 WHERE
 	header_menu.MENU_TYPE = 'web' AND header_menu.MENU_NUM = 10;
 	
+	
+
+SELECT
+        header_menu.MENU_NUM ,
+        MENU_NAME ,
+        MENU_INDEX ,
+        MENU_TYPE,
+        SIDE_MENU_NAME ,
+        SIDE_MENU_PAGE ,
+        SIDE_MENU_INDEX ,
+        SIDE_MENU.SIDE_MENU_NUM
+        FROM
+        header_menu INNER JOIN side_menu
+        ON header_menu.MENU_NUM = side_menu.MENU_NUM
+        WHERE header_menu.MENU_TYPE = 'member';	
+
 SELECT 
 	header_menu.MENU_NUM ,
 	MENU_NAME ,
@@ -1052,6 +1114,121 @@ SELECT
                 FROM
                         electric_accidents_by_day;
             	
-            	
-            	
-SELECT VERSION();calendar
+SELECT * FROM find_book_view;
+
+SELECT * FROM book_info;
+  	
+  SELECT
+        find_book_view.BOOK_CODE,
+        BOOK_TITLE,
+        BOOK_WRITER,
+        BOOK_PUB,
+        BOOK_YEAR,
+        book_info.BOOK_BORROW_AVAILABLE,
+        book_info.book_intro,
+        book_info.BOOK_INFO_ATTACHED_FILE_NAME,
+        BOOK_CATE_NAME,
+        BOOK_MID_CATE_NAME,
+        book_info.BOOK_REGDATE
+        FROM find_book_view INNER JOIN book_info
+        ON find_book_view.BOOK_CODE = book_info.BOOK_CODE
+        ORDER by book_info.BOOK_BORROW_CNT desc
+        LIMIT 37; 	
+
+-- 많이 빌린책 조회
+SELECT
+ book_title,
+ book_writer,
+ BOOK_BORROW_CNT
+ FROM book INNER JOIN book_info
+ ON book.BOOK_CODE = book_info.BOOK_CODE
+ ORDER by book_info.BOOK_BORROW_CNT desc
+LIMIT 36;
+ 
+-- 날짜 변경(새로들어온 책를 위한 쿼리문임)
+UPDATE book_info
+SET book_regdate = DATE_add(book_regdate, INTERVAL 70 DAY)
+WHERE book_info_num = 198;
+
+SELECT * FROM book_info;
+
+-- 책상세정보번호 구하기
+select book_info_num
+   from book_info;
+
+
+SELECT *
+ FROM find_book_view
+ WHERE DATE_FORMAT(find_book_view.BOOK_REGDATE, '%Y-%m-%d') >= '2023-09-26';
+ 
+ 
+ 
+ 
+SELECT DATE_FORMAT('2020-12-08 13:01:00', '%Y-%m-%d');
+
+SELECT
+        find_book_view.BOOK_CODE,
+        BOOK_TITLE,
+        BOOK_WRITER,
+        BOOK_PUB,
+        BOOK_YEAR,
+        book_info.BOOK_BORROW_AVAILABLE,
+        book_info.book_intro,
+        book_info.BOOK_INFO_ATTACHED_FILE_NAME,
+        BOOK_CATE_NAME,
+        BOOK_MID_CATE_NAME,
+        book_info.BOOK_REGDATE
+        FROM find_book_view INNER JOIN book_info
+        ON find_book_view.BOOK_CODE = book_info.BOOK_CODE
+      
+        ORDER by book_info.BOOK_REGDATE desc
+        LIMIT 10 OFFSET 10;
+
+select count(*)
+        from find_book_view
+        where
+        1 = 1
+   
+            and DATE_FORMAT(find_book_view.BOOK_REGDATE, '%Y-%m-%d') >= 0;
+            
+            
+SELECT
+            find_book_view.BOOK_CODE,
+            BOOK_TITLE,
+            BOOK_WRITER,
+            BOOK_PUB,
+            BOOK_YEAR,
+            book_info.BOOK_BORROW_AVAILABLE,
+            book_info.book_intro,
+            book_info.BOOK_INFO_ATTACHED_FILE_NAME,
+            BOOK_CATE_NAME,
+            BOOK_MID_CATE_NAME,
+            book_info.BOOK_REGDATE
+        FROM find_book_view INNER JOIN book_info
+        ON find_book_view.BOOK_CODE = book_info.BOOK_CODE
+
+            WHERE DATE_FORMAT(find_book_view.BOOK_REGDATE, '%Y-%m-%d') >= '2022-04-03'
+            AND book_cate_name = '철학'
+            AND book_mid_cate_name = '서양철학'
+            AND book_info.BOOK_BORROW_AVAILABLE = 'Y'
+
+        ORDER by book_info.BOOK_REGDATE DESC
+        LIMIT 10 OFFSET 0;
+
+CREATE TABLE BOOK_RECOMMENDATION(
+	ID BIGINT PRIMARY KEY AUTO_INCREMENT ,
+	BOOK_CODE VARCHAR(20) ,
+	USER_TYPE VARCHAR(15));
+
+
+INSERT INTO BOOK_RECOMMENDATION
+VALUES
+ (1,'asd','a'),
+ (2,'asfsaf','b'),
+ (3,'asfasf','c');
+
+DELETE FROM book_recommendation
+WHERE user_type IN ('a', 'b','c');
+      
+SELECT * FROM book_recommendationt
+

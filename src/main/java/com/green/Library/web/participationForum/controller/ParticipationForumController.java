@@ -51,7 +51,7 @@ public class ParticipationForumController {
         //인터셉터에 notice라는 정보를 넘겨줌
         model.addAttribute("page","notice");
         //boardType을 searchVO로 보내줘야함
-        searchVO.setBoardType(webMenuService.selectIndexNum("notice").get("SIDE_MENU_NUM"));
+        searchVO.setBoardType((int)webMenuService.selectIndexNum("notice").get("SIDE_MENU_NUM"));
 
         //총 게시판 갯수
         int boardCnt = participationForumService.partiCountBoard(searchVO);
@@ -217,7 +217,7 @@ public class ParticipationForumController {
         //인터셉터한테 ansAndAnswer 보내주기
         model.addAttribute("page", "askAndAnswer");
         //boardType을 searchVO로 보내줘야함
-        searchVO.setBoardType(webMenuService.selectIndexNum("askAndAnswer").get("SIDE_MENU_NUM"));
+        searchVO.setBoardType((int)webMenuService.selectIndexNum("askAndAnswer").get("SIDE_MENU_NUM"));
 
         System.out.println("묻고답하기");
         //총 게시판 갯수
@@ -260,7 +260,7 @@ public class ParticipationForumController {
         //인터셉터한테 ansAndAnswer 보내주기
         model.addAttribute("page", "askAndAnswer");
         //boardType을 searchVO로 보내줘야함
-        searchVO.setBoardType(webMenuService.selectIndexNum("askAndAnswer").get("SIDE_MENU_NUM"));
+        searchVO.setBoardType((int)webMenuService.selectIndexNum("askAndAnswer").get("SIDE_MENU_NUM"));
 
         //userCode로 이름, 전화번호, 아이디, 코드 얻기
         //근데 만약에 로그인을 하지 않고 글쓰기를 할려는 경우를 막아야함

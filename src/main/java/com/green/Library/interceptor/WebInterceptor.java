@@ -30,11 +30,13 @@ public class WebInterceptor implements HandlerInterceptor {
         //메뉴를 쓰는 경우
         if(!pageName.equals("notUseMenu")){
             //pageName를 menuservice의 쿼리를 실행하는 메소드 매개변수로 넘겨줘서 헤더 메뉴의 인덱스 번호랑 사이드 번호를 가져온다.그리고 Map에 저장
-            Optional<Map<String, Integer>> optionalMap =Optional.ofNullable(webMenuService.selectIndexNum(pageName));
+            Optional<Map<String, Object>> optionalMap =Optional.ofNullable(webMenuService.selectIndexNum(pageName));
 
             //메뉴의 인덱스, 사이드메뉴의 인덱스
-            int selectedMenuIndex = optionalMap.map(s-> s.get("MENU_INDEX")).orElse(0);
-            int selectedSideMenuIndex = optionalMap.map(s-> s.get("SIDE_MENU_INDEX")).orElse(0);
+            Integer selectedMenuIndex = (Integer) optionalMap.map(s-> s.get("MENU_INDEX")).orElse(0);
+            Integer selectedSideMenuIndex = (Integer) optionalMap.map(s-> s.get("SIDE_MENU_INDEX")).orElse(0);
+            String selectedMenuType = (String) optionalMap.map(s->s.get("MENU_TYPE")).orElse(""); //마이페이지 떄문에 추가함
+            System.out.println("selectedMenuType = " + selectedMenuType);
 
             System.out.println(selectedMenuIndex);
             System.out.println(selectedSideMenuIndex);
@@ -42,6 +44,19 @@ public class WebInterceptor implements HandlerInterceptor {
             //컨트롤러에서 model를 사용하여 html로 데이터를 넘겨주는거 처럼 modelAndView 써서 보내준다
             modelAndView.addObject("selectedMenuIndex", selectedMenuIndex);
             modelAndView.addObject("selectedSideMenuIndex", selectedSideMenuIndex);
+
+
+
+            //인터셉터 더 만들기 귀찮아서 만듬
+            if(selectedMenuType.equals("member")){
+                modelAndView.addObject("menuList2", webMenuService.selectWebMenuList("member"));
+            }else if(selectedMenuType.equals("myPage")){
+                modelAndView.addObject("menuList3", webMenuService.selectWebMenuList("myPage"));
+            } else {
+                modelAndView.addObject("menuList2", null);
+            }
+
+
 
             //메뉴, 상단 네비게이션 정보 던져주기
             modelAndView.addObject("menuList", webMenuService.selectWebMenuList("web"));
