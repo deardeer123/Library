@@ -10,17 +10,12 @@ import java.util.List;
 public interface BorrowReturnService {
 
     ////////////////////이용자 정보 조회/////////////////////
+
     // 이용자의 대출정보 조회
     MemberVO selectBorrowInfo(MemberVO memberVO);
 
-    ///////////////////이용자 정보 변경/////////////////////
-    // 조회 된 이용자의 이용자 정보 변경
-    void updateUserIntro(MemberVO memberVO);
-
-    // 조회 된 이용자의 카드번호 수정
-    int selectCardNum(int userCode);
-
     //////////////////////대출 기능////////////////////////
+
     // 대출 시 book_borrow의 exReturnDate 업데이트
     void insertBorrow(BookBNRVO bookBNRVO);
 
@@ -31,6 +26,7 @@ public interface BorrowReturnService {
     int selectUserCode(int cardNum);
 
     ////////////////////반납 기능///////////////////////
+
     // 책 이용 상태 조회
     boolean selectBookAvailable(String bookCode);
 
@@ -38,6 +34,7 @@ public interface BorrowReturnService {
     void updateReturnInfo(BookBNRVO bookBNRVO);
 
     ///////////////////예약 기능////////////////////////
+
     // 예약 조회
     List<BookReservationVO> selectReserve(SearchBookReservationVO searchBookReservationVO);
 
