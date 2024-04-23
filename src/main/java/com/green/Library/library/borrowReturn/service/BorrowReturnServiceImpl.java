@@ -2,7 +2,7 @@ package com.green.Library.library.borrowReturn.service;
 
 import com.green.Library.library.borrowReturn.vo.BookBNRVO;
 import com.green.Library.library.borrowReturn.vo.BookReservationVO;
-import com.green.Library.library.borrowReturn.vo.SearchBookReservationVO;
+import com.green.Library.library.user.vo.SearchUserVO;
 import com.green.Library.web.member.vo.MemberVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +65,8 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
     }
 
     @Override
-    public List<BookReservationVO> selectReserve(SearchBookReservationVO searchBookReservationVO) {
-        return sqlSession.selectList("bnrMapper.selectReserve", searchBookReservationVO);
+    public List<BookReservationVO> selectReserve(SearchUserVO searchUserVO) {
+        return sqlSession.selectList("bnrMapper.selectReserve", searchUserVO);
     }
 
 

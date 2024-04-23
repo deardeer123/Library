@@ -574,7 +574,7 @@ const reGrant = () => {
                 <td class="table-light">직급</td>
                 <td>
                     <select name="isAdmin" class="form-select">`
-                    if(isAdmin == '이용자'){
+                    if(isAdmin == 'N'){
                     str += `<option value="N" selected>이용자</option>
                         <option value="Y">관리자</option>`
                     }else {

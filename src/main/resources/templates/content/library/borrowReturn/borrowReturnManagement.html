@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/library/library_detail_layout}" >
+    layout:decorate="~{fragment/library/library_layout}" >
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
@@ -10,7 +10,84 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    대출 반납 관리
+    <div class="row mb-5">
+        <div class="col">
+            <form action="/bookAdmin/" method="post">
+                <div class="row mb-1">
+                    <div class="col-1">
+                        이름
+                    </div>
+                    <div class="col-3">
+                        <input type="text" name="userName1" class="form-control">
+                    </div>
+                    <div class="col-1">
+                        서명
+                    </div>
+                    <div class="col-3">
+                        <input type="text" name="searchBookTitle" class="form-control">
+                    </div>
+                    <div class="col-1">
+                        카드번호
+                    </div>
+                    <div class="col-3">
+                        <input type="text" name="cardNum1" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-1">
+                        등록번호
+                    </div>
+                    <div class="col">
+                        <input type="text" name="bookCode1" class="form-control">
+                    </div>
+                    <div class="col-1">
+                        ~
+                    </div>
+                    <div class="col">
+                        <input type="text" name="bookCode2" class="form-control">
+                    </div>
+                    <div class="col-1">
+                        대출일
+                    </div>
+                    <div class="col">
+                        <input type="date" name="borrowDate1" class="form-control">
+                    </div>
+                    <div class="col">
+                        <input type="date" name="borrowDate2" class="form-control">
+                    </div>
+                    <div class="col-1">
+                        반납일
+                    </div>
+                    <div class="col">
+                        <input type="date" name="returnDate1" class="form-control">
+                    </div>
+                    <div class="col">
+                        <input type="date" name="returnDate2" class="form-control">
+                    </div>
+                </div>
+                <div class="row text-lg-end mt-1">
+                    <div class="col">
+                        <input type="button" class="btn btn-secondary" value="초기화" onclick="location.href='/bookAdmin/borrowReturnManagement'">
+                        <input type="submit" class="btn btn-primary" value="검색">
+                    </div>
+                </div>
+            </form>
+            <!-- 검색 결과 -->
+            <div class="row">
+                <div class="col">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <td></td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </th:block>
 
 <th:block layout:fragment="content_js">
