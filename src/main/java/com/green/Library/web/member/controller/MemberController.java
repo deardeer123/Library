@@ -1,5 +1,6 @@
 package com.green.Library.web.member.controller;
 
+import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.member.service.MemberServiceImpl;
 import com.green.Library.web.member.vo.ApplyVO;
 import com.green.Library.web.member.vo.MemberVO;
@@ -128,11 +129,15 @@ public class MemberController {
     }
 
     @GetMapping("applyList")
-    public String applyList(Model model){
-        //신청 목록
+    public String applyList(Model model, BoardVO boardVO, HttpSession session){
         model.addAttribute("page","applyList");
+        //신청 목록
+        boardVO.setUserCode((Integer) session.getAttribute("userCode"));
+        model.addAttribute("userBoardList",memberService.applyUserBoardList(boardVO));
+        System.out.println("USER BOARD LIST !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+memberService.applyUserBoardList(boardVO));
         return "content/homePage/member/applyList";
     }
+
 
     @GetMapping("bookLoanReturn")
     public String bookLoanReturn(Model model){
@@ -154,4 +159,6 @@ public class MemberController {
         model.addAttribute("page", "memberWithdrawal");
         return "content/homePage/member/memberWithdrawal";
     }
+
+
 }

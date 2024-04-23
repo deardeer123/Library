@@ -5,12 +5,34 @@
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
-    <link rel="stylesheet" href="/">
+    <link rel="stylesheet" href="/css/content/homePage/passwdChange.css">
 </th:block>
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
     비빌번호 변경
+    <div class="row justify-content-center">
+        <div class="box-div col-8 text-center" style="border: 1px solid black;">
+            <div class="row">
+                <div class="col-6 align-middle" style="border: 1px solid red;">
+                    <div class="pw-div">기존 비밀번호</div>
+                    <div class="pw-div">변경할 비밀번호</div>
+                    <div class="pw-div">비밀번호 비밀번호</div>
+                </div>
+                <div class="col-6 text-center" style="border: 1px solid yellow;">
+                    <span class="input-span">
+                        <input type="text" class="input-span form-control">
+                    </span>
+                    <span class="input-span">
+                        <input type="text" class="input-span form-control">
+                    </span>
+                    <span class="input-span">
+                        <input type="text" class="input-span form-control">
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
 </th:block>
 
 <th:block layout:fragment="content_js">

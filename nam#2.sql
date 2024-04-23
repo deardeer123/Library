@@ -664,9 +664,7 @@ SELECT
         
 SELECT * from 
 board
-<<<<<<< HEAD
 WHERE board_type=28;
-=======
 WHERE board_type=28;
 
 SELECT * from electric_accidents_burn_range;
@@ -678,4 +676,4 @@ WHERE  = 7;
 
 INNER JOIN board_plus
 ON board.board_num = board_plus.BOARD_NUM;
->>>>>>> dev
+
