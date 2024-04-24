@@ -1,7 +1,7 @@
 
 .box-div{
   border: 1px solid darkgreen;
-  border-radius: 3%;
+  border-radius: 15px;
   padding: 10px;
   box-shadow: 5px 5px gray;
 }

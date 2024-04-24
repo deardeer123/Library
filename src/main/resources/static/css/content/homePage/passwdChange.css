@@ -2,10 +2,25 @@
   /* display: inline-block; */
 /* } */ 
 
-.input-span{
-  display: inline-block;
-
-}
 .box-div{
-  height: 300px;
+  height: 280px;
+  border-radius: 15px;
+  border: 1px solid darkgreen;
+  box-shadow: 5px 5px gray;
+}
+table{
+  border: none;
+  margin-top: 20px;
+  height: 150px;
+}
+
+.title-head{
+  font-size: 30px;
+  display: inline-block;
+  font-weight: bolder;
+  margin-left: 3px;
+  margin-bottom: 0px;
+}
+.title-head > h2{
+  margin: 0;
 }

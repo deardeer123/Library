@@ -34,5 +34,7 @@ public interface MemberService {
 
     //회원 정보 변경
     void updateUserInfo(MemberVO memberVO);
+
+    void updateUserPw(MemberVO memberVO);
 }
 

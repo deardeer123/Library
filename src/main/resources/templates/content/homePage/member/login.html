@@ -12,11 +12,9 @@
     <div class="row mt-3">
         <div class="col">
             <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-key"
-                    viewBox="0 0 16 16">
-                    <path
-                        d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8m4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5" />
-                    <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                    class="bi bi-person-fill" viewBox="0 0 16 16">
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
                 </svg>
             </span>
             <span class="title-head align-middle">
@@ -45,16 +43,22 @@
                             <input type="password" class="pw form-control" name="userPw">
                         </td>
                     </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div>
+                                <!-- 로그인 성공 여부를 나타내는 공간 -->
+                                <th:block th:if='${!errMsg.equals("")}'>
+                                    <span style="color: red;" class="text-center">
+                                        [[${errMsg}]]
+                                    </span>
+                                </th:block>
+                            </div>
+                        </td>
+                    </tr>
                 </table>
                 <div class="row ">
                     <div class="col mt-3 text-center">
                         <input type="submit" value="확인" class="btn btn-secondary">
-                    </div>
-                    <div>
-                        <!-- 로그인 성공 여부를 나타내는 공간 -->
-                        <th:block th:if='${!errMsg.equals("")}'>
-                            <span style="color: red;">[[${errMsg}]]</span>
-                        </th:block>
                     </div>
                 </div>
             </form>

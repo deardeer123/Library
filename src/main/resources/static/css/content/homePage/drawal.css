@@ -1,0 +1,15 @@
+.title-head{
+  font-size: 30px;
+  display: inline-block;
+  font-weight: bolder;
+  margin-left: 3px;
+  margin-bottom: 0px;
+}
+.title-head > h2{
+  margin: 0;
+}
+
+.main-box{
+  border: 1px solid darkgreen;
+  border-radius: 15px;
+}

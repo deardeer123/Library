@@ -177,12 +177,17 @@
     <update id="updateUserInfo">
         UPDATE USERS
         SET
-            USER_PW = #{userPw}
-            ,USER_TEL = #{userTel}
+            USER_TEL = #{userTel}
             ,USER_ADDR = #{userAddr}
             ,POST_CODE = #{postCode}
             ,ADDR_DETAIL = #{addrDetail}
             ,EMAIL = #{email}
+        WHERE USER_CODE = #{userCode}
+    </update>
+    <update id="updateUserPw">
+        UPDATE USERS
+        SET
+        USER_PW = #{userPw}
         WHERE USER_CODE = #{userCode}
     </update>
 

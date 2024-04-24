@@ -671,8 +671,7 @@ SELECT * from electric_accidents_burn_range;
 
 SELECT * FROM factors_causing_electric_accidents;
 
-SELECT * FROM board
-WHERE  = 7;
+SELECT * FROM apply;
 
 INNER JOIN board_plus
 ON board.board_num = board_plus.BOARD_NUM;

@@ -630,8 +630,6 @@ public class CulturalAndEducationController {
 
         int userCode = Optional.ofNullable((Integer) session.getAttribute("userCode")).orElse(0);
         applyVO.setUserCode(userCode);
-        model.addAttribute("applyUser", memberService.selectApplyUser(applyVO.getUserCode()) );
-        model.addAttribute("apply",boardService.applyBoardList());
         List<ApplyVO> applyList = memberService.applyList();
         List<BoardVO> boardList =  boardService.selectPlusList(searchVO);
         model.addAttribute("boardList",boardList);
