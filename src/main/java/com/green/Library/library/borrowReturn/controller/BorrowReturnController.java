@@ -2,6 +2,7 @@ package com.green.Library.library.borrowReturn.controller;
 
 import com.green.Library.library.borrowReturn.service.BorrowReturnService;
 import com.green.Library.library.borrowReturn.vo.BookBNRVO;
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.user.service.UserService;
 import com.green.Library.library.user.vo.SearchUserVO;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -159,15 +161,19 @@ public class BorrowReturnController {
     }
 
     //예약 정보 관리
-    @GetMapping("/reservationInfo")
+    @RequestMapping("/reservationInfo")
     public String goReservationInfo(Model model, SearchUserVO searchUserVO){
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
-        model.addAttribute("reserveInfo", borrowReturnService.selectReserve(searchUserVO));
+        List<BookReservationVO> reserveInfo = borrowReturnService.selectReserve(searchUserVO);
+
+        model.addAttribute("reserveInfo", reserveInfo);
 
         System.out.println("예약 정보 관리 이동");
+
         return "content/library/borrowReturn/reservationInfo";
+
     }
 
     //출력 이력 관리

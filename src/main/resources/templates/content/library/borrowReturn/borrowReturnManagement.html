@@ -10,84 +10,176 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    <div class="row mb-5">
-        <div class="col">
-            <form action="/bookAdmin/" method="post">
-                <div class="row mb-1">
-                    <div class="col-1">
-                        이름
-                    </div>
-                    <div class="col-3">
-                        <input type="text" name="userName1" class="form-control">
-                    </div>
-                    <div class="col-1">
-                        서명
-                    </div>
-                    <div class="col-3">
-                        <input type="text" name="searchBookTitle" class="form-control">
-                    </div>
-                    <div class="col-1">
-                        카드번호
-                    </div>
-                    <div class="col-3">
-                        <input type="text" name="cardNum1" class="form-control">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-1">
-                        등록번호
-                    </div>
-                    <div class="col">
-                        <input type="text" name="bookCode1" class="form-control">
-                    </div>
-                    <div class="col-1">
-                        ~
-                    </div>
-                    <div class="col">
-                        <input type="text" name="bookCode2" class="form-control">
-                    </div>
-                    <div class="col-1">
-                        대출일
-                    </div>
-                    <div class="col">
-                        <input type="date" name="borrowDate1" class="form-control">
-                    </div>
-                    <div class="col">
-                        <input type="date" name="borrowDate2" class="form-control">
-                    </div>
-                    <div class="col-1">
-                        반납일
-                    </div>
-                    <div class="col">
-                        <input type="date" name="returnDate1" class="form-control">
-                    </div>
-                    <div class="col">
-                        <input type="date" name="returnDate2" class="form-control">
-                    </div>
-                </div>
-                <div class="row text-lg-end mt-1">
-                    <div class="col">
-                        <input type="button" class="btn btn-secondary" value="초기화" onclick="location.href='/bookAdmin/borrowReturnManagement'">
-                        <input type="submit" class="btn btn-primary" value="검색">
-                    </div>
-                </div>
-            </form>
-            <!-- 검색 결과 -->
-            <div class="row">
-                <div class="col">
-                    <table class="table table-hover table-striped">
-                        <thead>
-                            <tr>
-                                <td></td>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
 
+                <form action="/bookAdmin/reservationInfo" method="post">
+                    <div class="row">
+                        <div class="col">
+            
+                            <div class="row mb-1">
+                                <div class="col-1">
+                                    카드번호
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" name="userName1" class="form-control">
+                                </div>
+                                <div class="col-1">
+                                    이름
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" name="searchBookTitle" class="form-control">
+                                </div>
+                                <div class="col-1">
+                                    연락처
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" name="cardNum1">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1">
+                                    등록번호
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" name="bookCode1">
+                                </div>
+                                <div class="col-1">
+                                    ~
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" name="bookCode2">
+                                </div>
+                                <div class="col-1">
+                                    서명
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" name="searchBookTitle">
+                                </div>
+                                <div class="col-1">
+                                    대출일
+                                </div>
+                                <div class="col">
+                                    <input type="date" class="form-control" name="reserveDate1">
+                                </div>
+                                <div class="col">
+                                    <input type="date" class="form-control" name="reserveDate2">
+                                </div>
+                                <div class="col-1">
+                                    반납예정일
+                                </div>
+                                <div class="col">
+                                    <input type="date" class="form-control" name="reserveCancel1">
+                                </div>
+                                <div class="col-1">
+                                    반납일
+                                </div>
+                                <div class="col">
+                                    <input type="date" class="form-control" name="reserveCancel1">
+                                </div>
+                                <div class="col">
+                                    <input type="date" class="form-control" name="reserveCancel2">
+                                </div>
+                            </div>
+                            <div class="row text-lg-end">
+                                <div class="col">
+                                    <input type="text" style="width: 80px;" class="btn btn-secondary" value="초기화" onclick="location.href='/bookAdmin/'">
+                                    <input type="submit" class="btn btn-primary" value="검색">
+                                </div>
+                            </div>
+            
+                        </div>
+                    </div>
+                </form>
+
+                    <div class="row text-end">
+                        <div class="col">
+                            예약 책수 : 총 0건 / 예약 이용자수 : 총 0명 0 / 0 페이지
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <table class="table table-bordered text-center">
+                                <thead class="thead table-light">
+                                    <tr>
+                                        <td>
+                                            카드번호
+                                        </td>
+                                        <td>
+                                            이름
+                                        </td>
+                                        <td>
+                                            연락처
+                                        </td>
+                                        <td>
+                                            등록번호
+                                        </td>
+                                        <td>
+                                            서명
+                                        </td>
+                                        <td>
+                                            청구기호
+                                        </td>
+                                        <td>
+                                            대출일
+                                        </td>
+                                        <td>
+                                            반납예정일
+                                        </td>
+                                        <td>
+                                            반납일
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody class="tbody">
+                                    <th:block th:if="${#lists.isEmpty(reserveInfo)}">
+                                        <tr>
+                                            <td colspan="12">
+                                                목록이 없습니다.
+                                            </td>
+                                        </tr>
+                                    </th:block>
+                                    <th:block th:unless="${#lists.isEmpty(reserveInfo)}">
+                                        <tr th:each="rInfo : ${reserveInfo}">
+                                            <td>
+                                                [[${rInfo.memberVO.cardNum}]]
+                                            </td>
+                                            <td>
+                                                [[${rInfo.memberVO.userName}]]
+                                            </td>
+                                            <td>
+                                                [[${rInfo.memberVO.userTel}]]
+                                            </td>
+                                            <td>
+                                                [[${rInfo.bookCode}]]
+                                            </td>
+                                            <td>
+                                                [[${rInfo.libraryBookVO.bookTitle}]]
+                                            </td>
+                                            <td>
+                                                [[${rInfo.libraryBookInfoVO.bookCateCode}]][[${rInfo.libraryBookInfoVO.bookMidCateCode}]]
+                                            </td>
+                                            <td>
+                                                [[${rInfo.reserveDate}]]
+                                            </td>
+                                            <td>
+                                                [[${rInfo.reserveCancel}]]
+                                            </td>
+                                            <td>
+                                                [[${rInfo.reserveCnt}]]
+                                            </td>
+                                        </tr>
+                                    </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+            </div>
         </div>
     </div>
-
 </th:block>
 
 <th:block layout:fragment="content_js">
