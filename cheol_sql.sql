@@ -113,7 +113,7 @@ INSERT INTO SIDE_MENU(
 	('이용자 승인', 'userApproval', 2 , 2) ,
 	('연체자 관리', 'delinquent', 3 , 2) ,
 	-- 구입
-	('희망 자료' , 'wishBook' , 1 , 3 ) ,
+	('추천 자료' , 'recommendedBook' , 1 , 3 ) ,
 	('삭제 자료' , 'deleteBook', 2 , 3 ) ,
 	('구입 자료' , 'buyBook', 3 , 3 ) ,
 	('기증 자료' , 'donatedBook', 4 , 3 ) ,
@@ -123,7 +123,26 @@ INSERT INTO SIDE_MENU(
 	('마크 반입', 'markImport', 3, 4  ),
 	-- 통계
 	('통계' , 'statistics', 1, 5 );
+
+SELECT * FROM header_menu;
 SELECT * FROM side_menu;
+
+UPDATE side_menu
+SET 
+SIDE_MENU_NAME = '추천 자료' ,
+SIDE_MENU_PAGE = 'recommendedData'
+WHERE
+side_menu_num = 9;
+
+SELECT
+		SIDE_MENU_NAME, 
+        side_menu.SIDE_MENU_INDEX ,
+        header_menu.MENU_INDEX ,
+        side_menu.SIDE_MENU_NUM
+        FROM
+        side_menu INNER JOIN header_menu
+        ON side_menu.MENU_NUM = header_menu.MENU_NUM
+        WHERE side_menu.side_menu_page = 'recommendedBook';
 	
 -- 사이드 메뉴 (웹)
 INSERT INTO side_menu(
@@ -677,7 +696,9 @@ SELECT
    book_info.BOOK_INFO_ATTACHED_FILE_NAME ,
    book_category.BOOK_CATE_NAME ,
    book_mid_category.BOOK_MID_CATE_NAME,
-   book_info.BOOK_REGDATE
+   book_info.BOOK_REGDATE,
+   book_recommendation.ID ,
+   book_recommendation.USER_TYPE
 FROM
    book INNER JOIN book_info
    ON book.BOOK_CODE = book_info.BOOK_CODE
@@ -685,13 +706,19 @@ FROM
    ON book_info.BOOK_CATE_CODE = book_category.BOOK_CATE_CODE
    INNER JOIN book_mid_category
    ON book_info.BOOK_MID_CATE_CODE = book_mid_category.BOOK_MID_CATE_CODE
+   LEFT OUTER JOIN book_recommendation
+   ON book.BOOK_CODE = book_recommendation.BOOK_CODE
 WHERE
    1 = 1 
 ORDER BY book_code;
 
-SELECT * FROM find_book_view
-WHERE book_code = 'GR0000000001'
-LIMIT 20 OFFSET 0;
+DROP VIEW find_book_view;
+
+SELECT * FROM book_recommendation;
+
+SELECT * 
+FROM find_book_view INNER JOIN book_recommendation
+ON find_book_view.BOOK_CODE = book_recommendation.BOOK_CODE;
 
 SELECT
 	book_cate_name ,
@@ -1242,8 +1269,9 @@ SELECT
 
 CREATE TABLE BOOK_RECOMMENDATION(
 	ID BIGINT PRIMARY KEY AUTO_INCREMENT ,
-	BOOK_CODE VARCHAR(20) ,
-	USER_TYPE VARCHAR(15));
+	BOOK_CODE VARCHAR(20) NOT NULL REFERENCES book(BOOK_CODE) ,
+	USER_TYPE VARCHAR(15)
+	);
 
 
 INSERT INTO BOOK_RECOMMENDATION
@@ -1255,5 +1283,13 @@ VALUES
 DELETE FROM book_recommendation
 WHERE user_type IN ('a', 'b','c');
       
-SELECT * FROM book_recommendationt
+SELECT * FROM book_recommendation;
+
+SELECT *
+FROM find_book_view
+where 1 = 1
+AND USER_TYPE IS not NULL
+AND USER_TYPE != '';
+
+
 

@@ -5,10 +5,7 @@ import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.regAndView.service.BookSearchVO;
 import com.green.Library.library.regAndView.service.RegAndViewService;
 import com.green.Library.libraryBook.service.LibraryBookService;
-import com.green.Library.libraryBook.vo.LibraryBookBreakageVO;
-import com.green.Library.libraryBook.vo.LibraryBookCategoryVO;
-import com.green.Library.libraryBook.vo.LibraryBookInfoVO;
-import com.green.Library.libraryBook.vo.LibraryBookVO;
+import com.green.Library.libraryBook.vo.*;
 import com.green.Library.util.ConstantVariable;
 import com.green.Library.util.UploadUtil;
 import com.green.Library.web.board.vo.BoardVO;
@@ -52,11 +49,12 @@ public class BuyController {
 
     //----------구입------------
     //희망 자료
-    @GetMapping("/wishBook")
-    public String goWishBook(Model model, BookSearchVO bookSearchVO){
+    @RequestMapping("/recommendedData")
+    public String goRecommendedBook(Model model, BookSearchVO bookSearchVO){
         //인터셉터로 넘겨줄 page
-        model.addAttribute("page", "wishBook");
+        model.addAttribute("page", "recommendedData");
         //그냉 원하는책 안넣고 책 추천하기 화면 만들거임 ㅅㄱ
+
 
         //페이징
         System.out.println(bookSearchVO.getNowPage());
@@ -78,13 +76,48 @@ public class BuyController {
         Optional<List<LibraryBookCategoryVO>> catelist = Optional.ofNullable(libraryBookService.selectCateList());
         model.addAttribute("cateList", catelist.get());
 
-
         //책들 정보 던져주기
-        List<FindBookVO> bookList = findBookService.findBookList(bookSearchVO);
+        List<FindBookVO> bookList = libraryBookService.selectBookRecommendation(bookSearchVO.getUserType()).get();
         model.addAttribute("bookList", bookList );
 
-        return "content/library/buy/wishBook";
+        System.out.println(bookSearchVO.getUserType());
+        System.out.println(bookSearchVO.getUserType());
+        System.out.println(bookSearchVO.getUserType());
+        System.out.println(bookSearchVO.getUserType());
+        System.out.println(bookSearchVO.getUserType());
+        System.out.println(bookSearchVO.getUserType());
+        System.out.println(bookSearchVO.getUserType());
+        System.out.println(bookSearchVO.getUserType());
+        System.out.println(bookSearchVO.getUserType());
+        System.out.println(bookSearchVO.getUserType());
+        System.out.println(bookSearchVO.getUserType());
+        System.out.println(bookSearchVO.getUserType());
+        System.out.println(bookSearchVO.getUserType());
+
+
+
+
+        return "content/library/buy/recommendedData";
     }
+    //체크한 책 추천 연령대 쪽으로 보내주기
+    @GetMapping("/addRecommendedBook")
+    public String addRecommendedBook(BookRecommendationVO bookRecommendationVO){
+        System.out.println(bookRecommendationVO);
+        System.out.println(bookRecommendationVO);
+        System.out.println(bookRecommendationVO);
+        System.out.println(bookRecommendationVO);
+        System.out.println(bookRecommendationVO);
+        System.out.println(bookRecommendationVO);
+        System.out.println(bookRecommendationVO);
+        System.out.println(bookRecommendationVO);
+        System.out.println(bookRecommendationVO);
+
+        //추천정보가 없는 경우에는 바로 insert하면 되지만, 정보가 있는 경우에는 update를 해야함..
+        libraryBookService.insertBookRecommendation(bookRecommendationVO);
+
+        return "redirect:/bookAdmin/recommendedData";
+    }
+
     //삭제 자료
     @GetMapping("/deleteBook")
     public String goDeleteBook(Model model , BookSearchVO bookSearchVO){

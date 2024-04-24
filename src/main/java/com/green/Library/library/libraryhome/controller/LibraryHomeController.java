@@ -37,7 +37,7 @@ public class LibraryHomeController {
 
 //    캘린더 정보 불러오기
     @ResponseBody
-    @PostMapping("/calendarData")
+    @PostMapping("/calendarDataFetch")
     public List<Map<String, String>> calendarList(){
         List<CalendarVO> calendarVOList = libraryHomeService.selectCalendarList();
         List<Map<String, String>> mapList = new ArrayList<>();

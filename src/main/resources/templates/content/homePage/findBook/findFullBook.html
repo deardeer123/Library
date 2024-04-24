@@ -31,7 +31,7 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <!-- 책 사진 들어가는곳  -->
-                                            <img src="/upload/book_character_smile.png" width="261px" height="383px"
+                                            <img src="/upload/book_character_smile.png" width="80%" height="383px"
                                                 alt="">
                                         </div>
 
@@ -217,7 +217,7 @@
 
                                 <div class="text-center">
                                     <img th:src="@{/upload/} + ${e.bookInfoAttachedFileName}" class="rounded" alt="..."
-                                        width="261px" height="383px">
+                                        width="95%" style="height: 40vh;">
                                 </div>
                                 <!-- 배경색 투명하게 하고 글자색은 하얀색 그리고 일단 none 처리 -->
                                 <div class="bookInfo"
@@ -278,7 +278,7 @@
 
                             <th:block>
                                 <li class="page-item disabled">
-                                    <a class="page-link" href="#">Next</a>
+                                    <!-- <a class="page-link" href="javascript:return">Next</a> -->
                                     <!-- classappend 추가해야함 -->
                                 </li>
                             </th:block>
@@ -314,7 +314,7 @@
             let book_modal = new bootstrap.Modal('#book-modal');
 
             // ------------------- 첫번째 방식 ---------------//
-            fetch('/findBookDetail', { //요청경로
+            fetch('/findBookDetailFetch', { //요청경로
                 method: 'POST',
                 cache: 'no-cache',
                 headers: {
@@ -458,7 +458,7 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <script src="/"></script>
+    <!-- <script src="/"></script> -->
 </th:block>
 
 </html>

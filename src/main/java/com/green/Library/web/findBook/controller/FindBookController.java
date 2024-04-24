@@ -75,7 +75,7 @@ public class FindBookController {
     
     //책 하나 정보 얻기
     @ResponseBody
-    @PostMapping("/findBookDetail")
+    @PostMapping("/findBookDetailFetch")
     public FindBookVO findBookDetail(@RequestParam(name = "bookCode") String bookCode){
         FindBookVO findBookVO = findBookService.findBookOne(bookCode);
         System.out.println(findBookVO);
@@ -115,10 +115,12 @@ public class FindBookController {
         return "content/homePage/findBook/newBook";
     }
     @GetMapping("/recommendedBook")
-    public String goRecommendedBook(Model model){
+    public String goRecommendedBook(Model model, @RequestParam(name ="userType",defaultValue = "", required = false)String userType){
         //인터셉터에 recommendedBook 정보를 넘겨줌
         model.addAttribute("page","recommendedBook");
 
+        Optional<List<FindBookVO>> recommendedBookList = findBookService.recommendedBookList(userType);
+        model.addAttribute("bookList", recommendedBookList.get());
 
 
         System.out.println("추천도서");
