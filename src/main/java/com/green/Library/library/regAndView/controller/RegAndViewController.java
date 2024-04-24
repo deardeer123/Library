@@ -5,10 +5,7 @@ import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.regAndView.service.BookSearchVO;
 import com.green.Library.library.regAndView.service.RegAndViewService;
 import com.green.Library.libraryBook.service.LibraryBookService;
-import com.green.Library.libraryBook.vo.LibraryBookCategoryVO;
-import com.green.Library.libraryBook.vo.LibraryBookInfoVO;
-import com.green.Library.libraryBook.vo.LibraryBookMidCategoryVO;
-import com.green.Library.libraryBook.vo.LibraryBookVO;
+import com.green.Library.libraryBook.vo.*;
 import com.green.Library.util.UploadUtil;
 import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.webMenu.service.WebMenuService;
@@ -20,10 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/bookAdmin")
@@ -226,9 +220,13 @@ public class RegAndViewController {
     public Map<String,Object> bookInfo(@RequestParam(name="bookCode")String bookCode) {
 
         Map<String, Object> bookInfo = new HashMap<>();
+        //책 정보
         MemberVO memberVO = regAndViewService.bookDetailInfo(bookCode);
-        
+        //카테고리 정보
         LibraryBookCategoryVO libraryBookCategoryVO = regAndViewService.selectCateNameOne(bookCode);
+        //추천된 책 정보
+        Optional<String> userType = libraryBookService.selectBookRecommendationUserType(bookCode);
+        bookInfo.put("userType",userType.orElse(""));
         bookInfo.put("memberVO",memberVO);
         bookInfo.put("libraryBookCategoryVO",libraryBookCategoryVO);
         return bookInfo;

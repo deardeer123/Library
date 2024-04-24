@@ -4,7 +4,7 @@
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
-    <link rel="stylesheet" href="/">
+    <!-- <link rel="stylesheet" href="/"> -->
 </th:block>
 
 <th:block layout:fragment="contentFragment">
@@ -178,7 +178,7 @@
             let book_modal = new bootstrap.Modal('#book-modal');
 
             // ------------------- 첫번째 방식 ---------------//
-            fetch('/findBookDetail', { //요청경로
+            fetch('/findBookDetailFetch', { //요청경로
                 method: 'POST',
                 cache: 'no-cache',
                 headers: {
@@ -298,7 +298,7 @@
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <script src="/"></script>
+    <!-- <script src="/"></script> -->
 </th:block>
 
 </html>

@@ -5,6 +5,7 @@ import com.green.Library.web.findBook.vo.FindBookVO;
 import com.green.Library.web.findBook.vo.SearchDateVO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FindBookService {
 //    책 검색
@@ -16,6 +17,9 @@ public interface FindBookService {
     int selectFindBookCnt(BookSearchVO bookSearchVO);
     //대출 많이한책 10권 찾기
     List<FindBookVO> manyRentBook ();
+
+    //추천도서 책 불러오기
+    Optional<List<FindBookVO>> recommendedBookList(String userType);
 
     //새로들어온책 검색
     List<FindBookVO> selectNewBookList(SearchDateVO searchDateVO);

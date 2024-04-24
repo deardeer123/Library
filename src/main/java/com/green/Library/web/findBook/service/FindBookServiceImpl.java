@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("findBookService")
 public class FindBookServiceImpl implements FindBookService{
@@ -33,6 +34,12 @@ public class FindBookServiceImpl implements FindBookService{
     @Override
     public List<FindBookVO> manyRentBook() {
         return sqlSession.selectList("findBookMapper.manyRentBook");
+    }
+
+    //추천책 목록 
+    @Override
+    public Optional<List<FindBookVO>> recommendedBookList(String userType) {
+        return Optional.ofNullable(sqlSession.selectList("recommendedBookList", userType));
     }
 
     //새로 들러온 책

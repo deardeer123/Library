@@ -15,6 +15,6 @@ public class BookSearchVO extends PageVO{
     private String bookCateName;
     private String bookMidCateName;
     private String bookBorrowAvailable;
-    private String recommendedType;
+    private String userType;
 
 }

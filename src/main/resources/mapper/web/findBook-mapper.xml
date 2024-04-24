@@ -15,6 +15,8 @@
         <result column="BOOK_CATE_NAME" property="bookCateName" />
         <result column="BOOK_MID_CATE_NAME" property="bookMidCateName" />
         <result column="BOOK_REGDATE" property="bookRegDate" />
+        <result column="ID" property="id" />
+        <result column="USER_TYPE" property="userType" />
     </resultMap>
 <!--    책 검색-->
     <select id="findBookList" resultMap="findBook">
@@ -133,6 +135,20 @@
         </if>
         <if test='bookMidCateName != null and !bookMidCateName.equals("noMidCate")'>
             and book_mid_cate_name = #{bookMidCateName}
+        </if>
+    </select>
+
+<!--    추천한책 목록 불러오기-->
+    <select id="recommendedBookList" resultMap="findBookMapper.findBook">
+        select *
+        from find_book_view
+        where 1 = 1
+        <if test='userType != null and !userType.equals("") and !userType.equals("all")'>
+            and USER_TYPE = #{userType}
+        </if>
+        <if test='userType.equals("all") or userType == null or userType.equals("")'>
+            AND USER_TYPE IS not NULL
+            AND USER_TYPE != ''
         </if>
     </select>
 

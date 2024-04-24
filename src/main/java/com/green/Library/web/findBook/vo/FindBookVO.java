@@ -22,4 +22,6 @@ public class FindBookVO {
     private String bookCateName;
     private String bookMidCateName;
     private String bookRegDate;
+    private long id;
+    private String userType;
 }

@@ -11,6 +11,7 @@
         <result column="BOOK_PUB" property="bookPub" />
         <result column="BOOK_YEAR" property="bookYear" />
         <association property="libraryBookInfoVO" resultMap="LibraryBookInfo" />
+        <association property="bookRecommendationVO" resultMap="BookRecommendation" />
     </resultMap>
 
     <resultMap id="LibraryCate" type="com.green.Library.libraryBook.vo.LibraryBookCategoryVO" >
@@ -111,33 +112,60 @@
         BOOK_CODE ,
         USER_TYPE
         ) VALUES
-        <foreach collection="list" item="item" separator=",">
             (
-                #{item.bookCode},
-                #{item.userType}
+                #{bookCode},
+                #{userType}
             )
-        </foreach>
-
     </insert>
 
-<!--    추천된 책 찾기-->
-    <select id="selectBookRecommendation" resultMap="BookRecommendation">
+<!--    책 추천 변경 및 취소하기-->
+    <update id="updateBookRecommendation">
+        UPDATE BOOK_RECOMMENDATION
+        SET
+            USER_TYPE= #{userType}
+        WHERE
+            BOOK_CODE = #{bookCode}
+    </update>
+
+<!--    책 추천 변경 및 취소 하기 전 이미 등록되어 있는지 확인 하는 sql-->
+    <select id="chkBookRecommendation" resultType="boolean">
+        select
+            case
+                when count(*) = 0 then false
+                else true
+            end
+        from
+            book_recommendation
+        where
+            book_code = #{bookCode}
+    </select>
+
+<!--    추천된 책 여러개 찾기-->
+<!--    만약에 들어온 userType이 all 인경우는 다 검색해야함.,-->
+    <select id="selectBookRecommendation" resultMap="findBookMapper.findBook">
         select *
-        from BOOK_RECOMMENDATION
+        from find_book_view
         where 1 = 1
-        <if test='userType != null and userType.equals("")'>
-            USER_TYPE = #{userType}
+        <if test='userType != null and !userType.equals("not") and !userType.equals("all")'>
+            and USER_TYPE = #{userType}
+        </if>
+        <if test='userType.equals("all")'>
+            AND USER_TYPE IS not NULL
+            AND USER_TYPE != ''
         </if>
     </select>
-<!-- 추천된 책 추천 취소하기-->
-    <delete id="deleteBookRecommendation">
-        delete from BOOK_RECOMMENDATION
-        WHERE BOOK_CODE in (
-        <foreach collection="list" item="item" separator=",">
-            #{item.bookCode}
-        </foreach>
 
-    </delete>
+<!--    북코드를 통해서 userType만 찾기-->
+    <select id="selectBookRecommendationUserType" resultType="String">
+        select
+            user_type
+        from
+            book_recommendation
+        where
+            book_code = #{bookCode}
+    </select>
+
+
 
 </mapper>
 
