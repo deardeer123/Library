@@ -1,20 +1,87 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
 <th:block layout:fragment="content_css">
+<<<<<<< HEAD
+    <!-- html 파일이 열릴 때 같이 실행되는 css -->
+=======
     <!-- html 파일이 열릴때 같이 실행되는 css -->
+>>>>>>> 82d19e0a99c1bee1729df6444f311b8ef8f8f65d
     <!-- <link rel="stylesheet" href="/"> -->
 </th:block>
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    신청목록
+
+    <div class="row mt-4">
+        <div class="col mt-3">
+            <table class="align-middle table text-center ">
+                <thead>
+                    <tr>
+                        <td>이름</td>
+                        <td>제목</td>
+                        <td>행사 시작 날짜</td>
+                        <td>행사 마감 날짜</td>
+                        <td>신청기간</td>
+                        <td>정원</td>
+                        <td>신청 날짜</td>
+                        <td>상태</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="board : ${userBoardList}" class="tr-list">
+                        <th:block th:unless="${#lists.size(userBoardList) == 0}">
+                            <td>[[${board.MemberVO.userName}]]</td>
+                            <td>[[${board.boardTitle}]]</td>
+                            <td>[[${board.PlusVO.openDate}]]</td>
+                            <td>[[${board.PlusVO.closeDate}]]</td>
+                            <th:block th:if="${board.PlusVO.toDate}">
+                                <td style="font-weight: bold;">[[${board.PlusVO.toDate}]] ~ [[${board.PlusVO.fromDate}]]
+                                </td>
+                            </th:block>
+                            <td>[[${board.PlusVO.personnel}]] / [[${board.PlusVO.maximumPerson}]]</td>
+                            <td style="font-weight: bold;  color: cornflowerblue;">[[${board.ApplyVO.applyDate}]]</td>
+                            <td>
+                                <span th:style="${board.ApplyVO.applyStatus == '승인완료'} ? 'color:blue' : ''">
+                                    [[${board.ApplyVO.applyStatus}]]
+                                </span>
+                            </td>
+                            <td th:if="${board.ApplyVO.applyStatus == '신청대기'}">
+                                <input type="button" class="btn" value="신청 취소"
+                                    th:onclick="deleteApply([[${board.boardNum}]])">
+                            </td>
+                            <td th:unless="${board.ApplyVO.applyStatus == '신청대기'}">
+                                <th:block th:if="${board.ApplyVO.confirm == 'N'}">
+                                    <input type="button" class="btn btn-primary" value="확인"
+                                        th:onclick="|location.href='@{/confirm(boardNum=${board.boardNum})}'|">
+                                </th:block>
+                            </td>
+                        </th:block>
+                    </tr>
+                    <th:block th:if="${#lists.size(userBoardList) == 0}">
+                        <tr>
+                            <td colspan="9" style="font-weight: bold;">
+                                조회된 신청 행사가 없습니다.
+                            </td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </th:block>
 
 <th:block layout:fragment="content_js">
+<<<<<<< HEAD
+    <!-- html 파일이 열릴 때 같이 실행되는 js -->
+    <script src="/js/content/culture/culture.js"></script>
+=======
     <!-- html 파일이 열릴때 같이 실행되는 js -->
     <!-- <script src="/"></script> -->
+>>>>>>> 82d19e0a99c1bee1729df6444f311b8ef8f8f65d
 </th:block>
+
 </html>

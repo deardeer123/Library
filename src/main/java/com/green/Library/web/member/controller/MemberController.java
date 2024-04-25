@@ -1,5 +1,6 @@
 package com.green.Library.web.member.controller;
 
+import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.member.service.MemberServiceImpl;
 import com.green.Library.web.member.vo.ApplyVO;
 import com.green.Library.web.member.vo.MemberVO;
@@ -120,19 +121,35 @@ public class MemberController {
     }
 
     @GetMapping("passwdChange")
-    public String passwdChange(Model model){
+    public String passwdChange(Model model,HttpSession session){
         //비빌번호 변경
         model.addAttribute("page","passwdChange");
-
+        MemberVO member = memberService.myPageUserInfo((Integer) session.getAttribute("userCode"));
+        model.addAttribute("member",member);
+        System.out.println(member);
         return "content/homePage/member/passwdChange";
     }
 
+    @ResponseBody
+    @PostMapping("/changePw")
+    public void changePw(@RequestParam(name = "userPw") String userPw,
+                         @RequestParam(name = "userCode") int userCode,
+                         MemberVO memberVO){
+        memberVO.setUserCode(userCode);
+        memberVO.setUserPw(userPw);
+        memberService.updateUserPw(memberVO);
+    }
+
     @GetMapping("applyList")
-    public String applyList(Model model){
-        //신청 목록
+    public String applyList(Model model, BoardVO boardVO, HttpSession session){
         model.addAttribute("page","applyList");
+        //신청 목록
+        boardVO.setUserCode((Integer) session.getAttribute("userCode"));
+        model.addAttribute("userBoardList",memberService.applyUserBoardList(boardVO));
+        System.out.println(memberService.applyUserBoardList(boardVO));
         return "content/homePage/member/applyList";
     }
+
 
     @GetMapping("bookLoanReturn")
     public String bookLoanReturn(Model model){
@@ -149,9 +166,12 @@ public class MemberController {
     }
 
     @GetMapping("memberWithdrawal")
-    public String memberWithdrawal(Model model){
+    public String memberWithdrawal(Model model,HttpSession session){
         //회원 탈퇴
+
         model.addAttribute("page", "memberWithdrawal");
         return "content/homePage/member/memberWithdrawal";
     }
+
+
 }

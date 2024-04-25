@@ -1,20 +1,90 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
+<<<<<<< HEAD
+    <link rel="stylesheet" href="/css/content/homePage/passwdChange.css">
+=======
     <!-- <link rel="stylesheet" href="/"> -->
+>>>>>>> 82d19e0a99c1bee1729df6444f311b8ef8f8f65d
 </th:block>
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    비빌번호 변경
+    <div class="row mt-3">
+        <div class="col">
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                    class="bi bi-bookmarks" viewBox="0 0 16 16">
+                    <path
+                        d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v10.566l3.723-2.482a.5.5 0 0 1 .554 0L11 14.566V4a1 1 0 0 0-1-1z" />
+                    <path
+                        d="M4.268 1H12a1 1 0 0 1 1 1v11.768l.223.148A.5.5 0 0 0 14 13.5V2a2 2 0 0 0-2-2H6a2 2 0 0 0-1.732 1" />
+                </svg>
+            </span>
+            <span class="title-head align-middle">
+                <h2>비밀번호 변경</h2>
+            </span>
+        </div>
+    </div>
+    <div class="row mt-3 justify-content-center">
+        <div class="box-div col-8 text-center" style="border: 1px solid black;">
+            <table class="table align-middle">
+                <colgroup>
+                    <col width="20%">
+                    <col width="50%">
+                    <col width="30%">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>
+                            기존 비밀번호
+                        </td>
+                        <td>
+                            <input type="password" id="pw" class="input-span form-control"
+                                th:onchange="pwCF([[${member.userPw}]])">
+                        </td>
+                        <td id="pw-cf1"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            변경할 비밀번호
+                        </td>
+                        <td>
+                            <input type="password" id="newPw1" class="input-span form-control">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            비밀번호 재확인
+                        </td>
+                        <td>
+                            <input type="password" id="newPw2" class="input-span form-control">
+                        </td>
+                        <td id="pw-cf2"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col mt-2">
+                    <input type="submit" class="btn btn-success" value="변경"
+                        th:onclick="pwCF2([[${member.userPw}]], [[${member.userCode}]])">
+                </div>
+            </div>
+        </div>
+    </div>
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
+<<<<<<< HEAD
+    <script src="/js/content/member/myPage.js"></script>
+=======
     <!-- <script src="/"></script> -->
+>>>>>>> 82d19e0a99c1bee1729df6444f311b8ef8f8f65d
 </th:block>
+
 </html>

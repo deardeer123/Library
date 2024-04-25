@@ -665,17 +665,21 @@ SELECT
 SELECT * from 
 board
 <<<<<<< HEAD
-WHERE board_type=28;
 =======
+
+>>>>>>> 82d19e0a99c1bee1729df6444f311b8ef8f8f65d
+WHERE board_type=28;
 WHERE board_type=28;
 
 SELECT * from electric_accidents_burn_range;
 
 SELECT * FROM factors_causing_electric_accidents;
 
-SELECT * FROM board
-WHERE  = 7;
+SELECT * FROM apply;
 
 INNER JOIN board_plus
 ON board.board_num = board_plus.BOARD_NUM;
->>>>>>> dev
+<<<<<<< HEAD
+
+=======
+>>>>>>> 82d19e0a99c1bee1729df6444f311b8ef8f8f65d

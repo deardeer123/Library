@@ -159,12 +159,12 @@ function showModal(userCode) {
                 <td class="table-light">성별</td>
                 <td>
                     <select name="detailGender" class="form-select">`
-                    if(data.gender == '사용중'){
-                        str += `<option value="남자" selected>남자</option>
-                            <option value="여자">여자</option>`
+                    if(data.gender == '남성'){
+                        str += `<option value="남성" selected>남성</option>
+                            <option value="여성">여성</option>`
                         }else{
-                        str += `<option value="남자">남자</option>
-                            <option value="여자" selected>여자</option>`
+                        str += `<option value="남성">남성</option>
+                            <option value="여성" selected>여성</option>`
                         }
                         str += `</select>
                 </td>
