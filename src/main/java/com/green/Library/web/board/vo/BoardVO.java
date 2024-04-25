@@ -30,3 +30,4 @@ public class BoardVO {
     //묻고 답하기
     private AskAndAnswerBoardVO askAndAnswerBoardVO;
 }
+

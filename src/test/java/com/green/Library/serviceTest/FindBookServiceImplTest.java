@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Optional;
+
 @SpringBootTest
 public class FindBookServiceImplTest {
     @Resource(name="findBookService")
@@ -22,9 +24,12 @@ public class FindBookServiceImplTest {
     @Test
     public void 새로들어온책리스트_확인(){
         SearchDateVO searchDateVO = new SearchDateVO();
-        List<FindBookVO> findBookVOList = findBookService.selectNewBookList(searchDateVO);
+//        Optional<List<FindBookVO>> findBookVOList = findBookService.recommendedBookList("asdasd");
+        FindBookVO f1 = findBookService.findBookOne("asvx");
+        Optional<FindBookVO> o1 = Optional.ofNullable(f1);
 
-        System.out.println(findBookVOList);
+
+//        System.out.println(findBookVOList.get());
     }
 
 

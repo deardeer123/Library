@@ -69,14 +69,10 @@
                                     <col width="*">
                                 </colgroup>
                                 <tbody>
-                                    <tr>
-                                        <td>2024-03-08</td>
-                                        <td>그린 도서관 공지사항123</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2024-03-08</td>
-                                        <td>그린 도서관 공지사항345</td>
-                                    </tr>
+                                    <th:block th:each="e:${noticeList}" th:onclick="goNotice([[${e.boardNum}]])">
+                                        <td>[[${e.boardDate}]]</td>
+                                        <td>[[${e.boardTitle}]]</td>
+                                    </th:block>
                                     <tr>
                                         <td>2024-03-08</td>
                                         <td>그린 도서관 공지사항789</td>
@@ -251,7 +247,7 @@
         function calendarData() {
             // ------------------- 첫번째 방식 ---------------//
             //달력 정보 불러오는 컨트롤러 주소는 아래에 있숨
-            fetch('/bookAdmin/calendarDataFetch', { //요청경로
+            fetch('/calendarData2Fetch', { //요청경로
                 method: 'POST',
                 cache: 'no-cache',
                 headers: {

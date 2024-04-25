@@ -1285,11 +1285,14 @@ WHERE user_type IN ('a', 'b','c');
       
 SELECT * FROM book_recommendation;
 
-SELECT *
-FROM find_book_view
-where 1 = 1
-AND USER_TYPE IS not NULL
-AND USER_TYPE != '';
-
-
-
+SELECT * FROM board;
+-- 공지사항 상위 3개 찾기
+SELECT 
+	board.board_num,
+	board.BOARD_TITLE,
+	DATE_FORMAT(board.BOARD_DATE , '%Y - %m -%d') as board_date
+from
+	board
+WHERE board_type = 29
+ORDER BY board_num DESC
+LIMIT 3;

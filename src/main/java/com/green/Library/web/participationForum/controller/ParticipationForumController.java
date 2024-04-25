@@ -140,7 +140,7 @@ public class ParticipationForumController {
     }
     //공지사항 글 상세조회
     @GetMapping("/noticeDetail")
-    public String noticeDetail(@RequestParam(name = "boardNum") int boardNum, Model model){
+    public String noticeDetail(@RequestParam(name = "boardNum") int boardNum, Model model, HttpSession session){
         //인터셉터한테 넘겨줄 page 정보
         model.addAttribute("page","notice");
 
@@ -149,13 +149,23 @@ public class ParticipationForumController {
 
         //상세보기 할 게시판 찾기
         BoardVO boardVO = participationForumService.noticeDetail(boardNum);
-        //유저정보 뺴오기 위한 userCode
+        //글쓴 유저정보 뺴오기 위한 userCode
         int userCode = boardVO.getUserCode();
         MemberVO memberVO = memberService.selectMemberInfoToUserCode(userCode);
 
+        //접속한 사람의 MemberVO
+//        MemberVO memberVO1 = memberService.selectMemberInfoToUserCode(Optional.ofNullable((Integer)session.getAttribute("userCode")).get());
+        MemberVO memberVO1 =Optional.ofNullable(memberService.selectMemberInfoToUserCode(
+                        Optional.ofNullable((Integer)session.getAttribute("userCode")).orElse(0)))
+                        .orElse(new MemberVO().builder()
+                                .isAdmin("N")
+                                .build());
+
+
         //자료 던져주기
+//        model.addAttribute("memberVO1", memberVO1);
         model.addAttribute("boardVO", boardVO);
-        model.addAttribute("memberVO", memberVO);
+        model.addAttribute("memberVO", memberVO1);
 
         return "content/homePage/forum/noticeDetail";
     }
