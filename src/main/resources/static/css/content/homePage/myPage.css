@@ -1,7 +1,7 @@
 
 .box-div{
   border: 1px solid darkgreen;
-  border-radius: 3%;
+  border-radius: 15px;
   padding: 10px;
   box-shadow: 5px 5px gray;
 }
@@ -18,27 +18,67 @@
   margin: 0;
 }
 
-.cf-table{
+.cf-table {
+  border: 2px solid rgb(190, 191, 196);
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 35px;
+  border-radius: 10px;
+  border-style: hidden;
+  height: 180px;
+  box-shadow: 0 0 0 1px #ccc;
+
+}
+
+
+.cf-table td{
+  padding-top: 5px;
+  padding-right: 40px;
+  border-bottom: none;
+}
+.cf-table tr{
+  width: 100%;
+  padding-right: 20px;
+}
+
+.cf-box-div{
+  border: 1px solid rgb(190, 191, 196);
+  border-radius: 30px;
+  padding: 10px;
+  height: 300px;
+  box-shadow: 5px 5px gray;
+}
+/* .cf-table{
   border: 1px solid rgb(190, 191, 196);
   width: 80%;
   margin-left: auto;
   margin-right: auto;
-}
+  border-collapse: collapse;
+} */
 
-.cf-table > tbody{
-  height: 150px;
-  box-shadow: 1px 1px 5px;
-  border-bottom: 1px solid #ffffff;
-  border-top: 1px solid #ffffff;
 
-}
-.id-tr > td{
-  border-bottom: none;
+/* .cf-table > tbody{
+  height: 150px; */
+  /* box-shadow:  1px 1px 5px gray; */
+  /* border-bottom: 1px solid #ffffff; */
+  /* border-top: 1px solid #ffffff; */
+  /* border: 1px solid rgb(190, 191, 196);
+  border-radius: 20px; */
+
+/* } */
+
+/* .id-tr > td{
+  border: none;
   margin-top: 10px;
 }
 
 .id-td > input{
   width: 70%;
+}
+
+.id-td {
+  border-bottom: none;
 }
 
 .cf-table > tr{
@@ -51,8 +91,8 @@
   border-radius: 30px;
   padding: 10px;
   height: 300px;
-
+  box-shadow: 5px 5px gray;
 }
 .table{
   margin-top: 50px;
-}
+} */

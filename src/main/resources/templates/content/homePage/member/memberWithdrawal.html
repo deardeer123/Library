@@ -1,20 +1,63 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
+<<<<<<< HEAD
+    <link rel="stylesheet" href="/css/content/homePage/drawal.css">
+=======
     <!-- <link rel="stylesheet" href="/"> -->
+>>>>>>> 82d19e0a99c1bee1729df6444f311b8ef8f8f65d
 </th:block>
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    회원 탈퇴
+    <div class="row mt-3">
+        <div class="title-box col">
+            <span>
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                        class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                    </svg>
+                </span>
+            </span>
+            <span class="title-head align-middle">
+                <h2>회원탈퇴</h2>
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-box col">
+            
+        </div>
+    </div>
+    <div class="row mt-3 justify-content-center">
+        <div class="main-box col-10">
+            <table class="table text-center align-middle">
+                <tbody>
+                    <tr>
+                        <td>아이디</td>
+                        <td>
+                            <input type="text" class="form-control">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>비밀번호</td>
+                        <td>
+                            <input type="password" class="form-control">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
     <!-- <script src="/"></script> -->
 </th:block>
+
 </html>

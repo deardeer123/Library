@@ -630,8 +630,6 @@ public class CulturalAndEducationController {
 
         int userCode = Optional.ofNullable((Integer) session.getAttribute("userCode")).orElse(0);
         applyVO.setUserCode(userCode);
-        model.addAttribute("applyUser", memberService.selectApplyUser(applyVO.getUserCode()) );
-        model.addAttribute("apply",boardService.applyBoardList());
         List<ApplyVO> applyList = memberService.applyList();
         List<BoardVO> boardList =  boardService.selectPlusList(searchVO);
         model.addAttribute("boardList",boardList);
@@ -721,7 +719,7 @@ public class CulturalAndEducationController {
     //신청 기록 페이지
     @GetMapping("/goApplyListPage")
     public String goApplyListPage(Model model, BoardVO boardVO, HttpSession session, MemberVO memberVO, ApplyVO applyVO){
-        model.addAttribute("page","applicationForClasses");
+        model.addAttribute("page","applyList");
 
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
         System.out.println("@@@@@@@@@@@@@@@@@" + boardService.applyBoardList());
@@ -737,17 +735,6 @@ public class CulturalAndEducationController {
         return "redirect:/goApplyListPage";
     }
 
-
-
-    //회원 신청 기록 페이지
-    @GetMapping("/goApplyUserListPage")
-    public String goApplyUserListPage(Model model,BoardVO boardVO,HttpSession session){
-        model.addAttribute("page","applicationForClasses");
-
-        boardVO.setUserCode((Integer) session.getAttribute("userCode"));
-        model.addAttribute("userBoardList",memberService.applyUserBoardList(boardVO));
-        return "content/homePage/culturalAndEducation/applicationForClasses/goApplyUserListPage";
-    }
 
     //신청 취소
     @RequestMapping("/deleteApply")

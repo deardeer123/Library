@@ -108,13 +108,13 @@
     <select id="selectApplyUser" resultMap="apply">
         SELECT
             A.APPLY_DATE
-            ,A.apply_STATUS
-        FROM apply AS A
-        INNER JOIN users AS U
+            ,A.APPLY_STATUS
+        FROM APPLY AS A
+        INNER JOIN USERS AS U
         ON A.USER_CODE = U.USER_CODE
         WHERE A.USER_CODE = #{userCode}
         AND CONFIRM = 'N'
-        AND apply_Status='승인완료'
+        AND APPLY_STATUS ='승인완료'
     </select>
 
     <select id="applyUserBoardList" resultMap="boardMapper.board">
@@ -170,19 +170,24 @@
             ,POST_CODE
             ,ADDR_DETAIL
             ,EMAIL
-        FROM users
+        FROM USERS
         WHERE USER_CODE = #{userCode}
     </select>
 
     <update id="updateUserInfo">
         UPDATE USERS
         SET
-            USER_PW = #{userPw}
-            ,USER_TEL = #{userTel}
+            USER_TEL = #{userTel}
             ,USER_ADDR = #{userAddr}
             ,POST_CODE = #{postCode}
             ,ADDR_DETAIL = #{addrDetail}
             ,EMAIL = #{email}
+        WHERE USER_CODE = #{userCode}
+    </update>
+    <update id="updateUserPw">
+        UPDATE USERS
+        SET
+        USER_PW = #{userPw}
         WHERE USER_CODE = #{userCode}
     </update>
 

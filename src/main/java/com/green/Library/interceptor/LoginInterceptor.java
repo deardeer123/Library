@@ -28,7 +28,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 //        //계속 modelAndView가 null 오류떠서 적은 코드
         ModelAndView modelAndView1 = Optional.ofNullable(modelAndView).orElse(new ModelAndView());
 //        //유저
-
         //session에서 userCode 가져오는 코드
         Optional<HttpSession> optionalHttpSession = Optional.ofNullable(request.getSession());
 
