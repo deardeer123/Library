@@ -1,5 +1,6 @@
 package com.green.Library.web.findBook.service;
 
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.library.regAndView.service.BookSearchVO;
 import com.green.Library.web.findBook.vo.FindBookVO;
 import com.green.Library.web.findBook.vo.SearchDateVO;
@@ -64,6 +65,10 @@ public class FindBookServiceImpl implements FindBookService{
         return sqlSession.selectList("findBookMapper.changeRegDate2");
     }
 
+    @Override
+    public void bookReservationFetch(BookReservationVO bookReservationVO) {
+        sqlSession.insert("findBookMapper.bookReservationFetch", bookReservationVO);
+    }
 
 
 }
