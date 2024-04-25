@@ -40,7 +40,7 @@ public class FindBookController {
 
 
     @RequestMapping("/findFullBook")
-    public String goFindFullBook(Model model, BookSearchVO bookSearchVO, BookReservationVO bookReservationVO , HttpSession session){
+    public String goFindFullBook(Model model, BookSearchVO bookSearchVO, BookReservationVO bookReservationVO, HttpSession session){
         //인터셉터에 notice라는 정보를 넘겨줌
         model.addAttribute("page","findFullBook");
 
