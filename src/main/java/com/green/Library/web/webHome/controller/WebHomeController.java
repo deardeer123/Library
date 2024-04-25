@@ -5,6 +5,7 @@ import com.green.Library.web.board.service.BoardServiceImpl;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.member.service.MemberServiceImpl;
 import com.green.Library.web.member.vo.MemberVO;
+import com.green.Library.web.participationForum.service.ParticipationForumService;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +24,8 @@ public class WebHomeController {
     MemberServiceImpl memberService;
     @Resource(name = "boardService")
     BoardServiceImpl boardService;
+    @Resource(name="ParticipationForumService")
+    ParticipationForumService participationForumService;
 
     @GetMapping("/home")
     public String goHome(Model model ,
@@ -34,6 +37,9 @@ public class WebHomeController {
 
         //로그인 네비게이션 정보.
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
+
+        //공지사항 3개
+        model.addAttribute("noticeList", participationForumService.selectNotice3());
 
         //신청한 행사 알림
 
