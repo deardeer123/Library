@@ -28,7 +28,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
 //                .addPathPatterns("/home","/bookAdmin/**")
                 .addPathPatterns("/**")
                 .excludePathPatterns("/js/**", "/css/**", "/ckeditor5/**", "/datepicker/**" , "/upload/**")
-        .excludePathPatterns("/**/**fetch");
+        .excludePathPatterns("/**/**Fetch");
 
 
         //도서관 홈페이지 입터셉터
