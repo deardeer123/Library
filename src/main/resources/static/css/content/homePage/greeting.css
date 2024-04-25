@@ -8,16 +8,16 @@
   content: "";
   width: 4px;
   height: 18px;
-  background: orange;
+  background: coral;
   transform: rotate(45deg);
 }
 
-p{
-  font-size: 22px;
+.hi{
+  font-size: 26px;
+  font-weight: 500;
 }
 
 p > span{
-  font-weight: bold;
   color: darkgreen ;
   margin-left: 8px;
 }
