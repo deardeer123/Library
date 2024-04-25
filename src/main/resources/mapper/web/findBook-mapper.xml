@@ -165,6 +165,24 @@
         from book_info
     </select>
 
+    <!-- 책 예약 -->
+    <insert id="bookReservationFetch">
+        INSERT INTO BOOK_RESERVATION (
+            USER_CODE
+            , BOOK_CODE
+            , RESERVE_DATE
+            , RESERVE_CANCEL
+            , RESERVE_STATUS
+            , RESERVE_CNT
+        ) VALUES (
+            #{userCode}
+            , #{bookCode}
+            , NOW()
+            , DATE_ADD(NOW(), INTERVAL +3 DAY)
+            , RESERVE_CNT + 1
+        )
+    </insert>
+
 </mapper>
 
 

@@ -1,5 +1,6 @@
 package com.green.Library.web.findBook.service;
 
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.library.regAndView.service.BookSearchVO;
 import com.green.Library.web.findBook.vo.FindBookVO;
 import com.green.Library.web.findBook.vo.SearchDateVO;
@@ -31,4 +32,7 @@ public interface FindBookService {
 
     //프로시저 쓸 줄 몰라서 사용한 거 입니다. 쓰지마세요
     List<Integer> changeRegDate2();
+
+    // 도서 예약
+    void bookReservationFetch(BookReservationVO bookReservationVO);
 }
