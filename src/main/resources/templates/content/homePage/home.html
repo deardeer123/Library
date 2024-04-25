@@ -69,14 +69,10 @@
                                     <col width="*">
                                 </colgroup>
                                 <tbody>
-                                    <tr>
-                                        <td>2024-03-08</td>
-                                        <td>그린 도서관 공지사항123</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2024-03-08</td>
-                                        <td>그린 도서관 공지사항345</td>
-                                    </tr>
+                                    <th:block th:each="e:${noticeList}">
+                                        <td>[[${e.boardDate}]]</td>
+                                        <td>[[${e.boardTitle}]]</td>
+                                    </th:block>
                                     <tr>
                                         <td>2024-03-08</td>
                                         <td>그린 도서관 공지사항789</td>

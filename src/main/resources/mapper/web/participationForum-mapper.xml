@@ -43,6 +43,19 @@
 
     </insert>
 
+    <select id="selectNotice3" resultMap="boardMapper.board">
+        SELECT
+            board.board_num,
+            board.BOARD_TITLE,
+            DATE_FORMAT(board.BOARD_DATE , '%Y - %m -%d') as board_date
+        from
+            board
+        WHERE
+            board_type = 29
+        ORDER BY board_num DESC
+        LIMIT 3;
+    </select>
+
     <!-- 공지사항 조회-->
     <select id="selectNotice" resultMap="boardMapper.board">
         SELECT
