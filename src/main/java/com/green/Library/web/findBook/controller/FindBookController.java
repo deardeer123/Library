@@ -1,5 +1,6 @@
 package com.green.Library.web.findBook.controller;
 
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.library.regAndView.service.BookSearchVO;
 import com.green.Library.libraryBook.service.LibraryBookService;
 import com.green.Library.libraryBook.vo.LibraryBookCategoryVO;
@@ -8,6 +9,7 @@ import com.green.Library.web.findBook.vo.FindBookVO;
 import com.green.Library.web.findBook.vo.SearchDateVO;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,10 +40,9 @@ public class FindBookController {
 
 
     @RequestMapping("/findFullBook")
-    public String goFindFullBook(Model model, BookSearchVO bookSearchVO){
+    public String goFindFullBook(Model model, BookSearchVO bookSearchVO, BookReservationVO bookReservationVO , HttpSession session){
         //인터셉터에 notice라는 정보를 넘겨줌
         model.addAttribute("page","findFullBook");
-
 
         //페이징
         System.out.println(bookSearchVO.getNowPage());
@@ -66,8 +67,11 @@ public class FindBookController {
         //책 리스트 보내기
         model.addAttribute("bookList", findBookService.findBookList(bookSearchVO));
 
-
         System.out.println("전체자료찾기");
+
+        // 도서 상세보기에서 예약 시 넘겨줄 userCode
+//        bookReservationVO.setUserCode((Integer) session.getAttribute("userCode"));
+//        model.addAttribute("userCode", bookReservationVO.getUserCode());
 
         return "content/homePage/findBook/findFullBook";
     }
@@ -81,6 +85,23 @@ public class FindBookController {
         System.out.println(findBookVO);
         return findBookVO;
     }
+
+    // 예약 하기
+//    @PostMapping("/bookReservationFetch")
+//    public String bookReservationFetch(@RequestParam(name = "bookCode")String bookCode,
+//                                        @RequestParam(name = "userCode")int userCode,
+//                                        BookReservationVO bookReservationVO){
+//
+//        bookReservationVO.setUserCode(userCode);
+//
+//
+//        if(userCode != 0){
+//            findBookService.bookReservationFetch(bookReservationVO);
+//            return "get";
+//        } else {
+//            return "fail";
+//        }
+//    }
 
 //    ------------------------------------------------------------------------------------------------
     @RequestMapping("/newBook")

@@ -101,7 +101,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                             <!-- 예약하기 버튼 -->
-                            <button type="button" class="btn btn-primary">예약하기 </button>
+                            <button type="button" class="btn btn-primary" >예약하기 </button>
                         </div>
                     </div>
                 </div>
@@ -357,7 +357,7 @@
                                             <div class="row mt-5">
                                                 <!-- 북 코드 -->
                                                 <div class="col-2">코드 :</div>
-                                                <div class="col">${data.bookCode}</div>
+                                                <div class="col" id="book-code">${data.bookCode}</div>
                                             </div>
 
                                             <div class="row mt-2">
@@ -452,6 +452,8 @@
             console.log(str)
             midCateTag.insertAdjacentHTML('afterbegin', str)
         }
+
+        
 
     </script>
 </th:block>
