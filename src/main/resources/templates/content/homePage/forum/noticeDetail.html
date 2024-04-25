@@ -63,8 +63,8 @@
           <div class="row">
             <div class="col-8"></div>
             <div class="col-1">
-              <!-- 수정하기 글쓴이 혹은 관리자만 볼 수 있어야함-->
-              <th:block th:if="${(boardVO.userCode == session.userCode) or (memberVO.isAdmin == 'Y')}">
+              <!-- 수정하기 글쓴이 혹은 관리자만 볼 수 있어야함 근데 공지사항은 -->
+              <th:block th:if="${memberVO.isAdmin == 'Y'}">
                 <input type="button" class="btn btn-primary" value="수정하기"
                   th:onclick="modifyNoticeBoard([[${boardVO.boardNum}]])">
               </th:block>
@@ -72,7 +72,7 @@
 
             <div class="col-1 ">
               <!-- 삭제하기 글쓴이 혹은 관리자만 볼 수 있어야 함-->
-              <th:block th:if="${(boardVO.userCode == session.userCode) or (memberVO.isAdmin == 'Y')}">
+              <th:block th:if="${memberVO.isAdmin == 'Y'}">
                 <input type="button" class="btn btn-danger" th:onclick="goDeleteNoticeBoard([[${boardVO.boardNum}]])"
                   value="삭제하기">
               </th:block>
