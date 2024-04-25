@@ -130,7 +130,7 @@
 
                             <th:block>
                                 <li class="page-item disabled">
-                                    <a class="page-link" href="#">Next</a>
+                                    <!-- <a class="page-link" href="#">Next</a> -->
                                     <!-- classappend 추가해야함 -->
                                 </li>
                             </th:block>
@@ -243,10 +243,10 @@
                     // 다음 버튼 누를수 있고 못누르게 하는건 if문으로 할것
                     str1 = str1 + `
                         <li class="page-item disabled">
-                            <a class="page-link" href="#">Next</a>
+                        
                         </li>
                     `
-
+                    // <a class="page-link" href="#">Next</a>
                     paging_tag.insertAdjacentHTML("beforeend", str1);
 
 
@@ -334,10 +334,10 @@
                     // 다음 버튼 누를수 있고 못누르게 하는건 if문으로 할것
                     str1 = str1 + `
                         <li class="page-item disabled">
-                            <a class="page-link" href="#">Next</a>
+                          
                         </li>
                     `
-
+                    // <a class="page-link" href="#">Next</a>
                     paging_tag.insertAdjacentHTML("beforeend", str1);
 
 

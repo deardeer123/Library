@@ -25,9 +25,11 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
         //로그인 관련
         registry.addInterceptor(getLoginInterceptor())
+//                .addPathPatterns("/home","/bookAdmin/**")
                 .addPathPatterns("/**")
-                .excludePathPatterns("/**Fetch")
-                .excludePathPatterns("/bookAdmin/**");
+                .excludePathPatterns("/js/**", "/css/**", "/ckeditor5/**", "/datepicker/**" , "/upload/**")
+        .excludePathPatterns("/**/**fetch");
+
 
         //도서관 홈페이지 입터셉터
         registry.addInterceptor(getBookAdminInterceptor())

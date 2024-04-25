@@ -2,17 +2,18 @@ package com.green.Library.library.borrowReturn.controller;
 
 import com.green.Library.library.borrowReturn.service.BorrowReturnService;
 import com.green.Library.library.borrowReturn.vo.BookBNRVO;
-import com.green.Library.library.borrowReturn.vo.SearchBookReservationVO;
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.user.service.UserService;
+import com.green.Library.library.user.vo.SearchUserVO;
 import com.green.Library.web.member.vo.MemberVO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/bookAdmin")
@@ -154,20 +155,25 @@ public class BorrowReturnController {
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
 
+
         System.out.println("대출 반납 관리 이동");
         return "content/library/borrowReturn/borrowReturnManagement";
     }
 
     //예약 정보 관리
-    @GetMapping("/reservationInfo")
-    public String goReservationInfo(Model model, SearchBookReservationVO searchBookReservationVO){
+    @RequestMapping("/reservationInfo")
+    public String goReservationInfo(Model model, SearchUserVO searchUserVO){
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
-        model.addAttribute("reserveInfo", borrowReturnService.selectReserve(searchBookReservationVO));
+        List<BookReservationVO> reserveInfo = borrowReturnService.selectReserve(searchUserVO);
+
+        model.addAttribute("reserveInfo", reserveInfo);
 
         System.out.println("예약 정보 관리 이동");
+
         return "content/library/borrowReturn/reservationInfo";
+
     }
 
     //출력 이력 관리

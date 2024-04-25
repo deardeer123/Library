@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.swing.*;
+
 @Setter
 @Getter
 @ToString
@@ -18,4 +20,17 @@ public class SearchUserVO extends PageVO {
     private String userTel;
     private String gender;
     private String orderStandard;
+    private String searchBookTitle;
+    private String bookCode1;
+    private String bookCode2;
+    private String reserveDate1;
+    private String reserveDate2;
+    private String reserveCancel1;
+    private String reserveCancel2;
+    private String borrowDate1;
+    private String borrowDate2;
+    private String exReturnDate;
+    private String returnDate1;
+    private String returnDate2;
+
 }

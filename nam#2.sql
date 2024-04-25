@@ -664,6 +664,10 @@ SELECT
         
 SELECT * from 
 board
+<<<<<<< HEAD
+=======
+
+>>>>>>> 82d19e0a99c1bee1729df6444f311b8ef8f8f65d
 WHERE board_type=28;
 WHERE board_type=28;
 
@@ -675,4 +679,7 @@ SELECT * FROM apply;
 
 INNER JOIN board_plus
 ON board.board_num = board_plus.BOARD_NUM;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 82d19e0a99c1bee1729df6444f311b8ef8f8f65d

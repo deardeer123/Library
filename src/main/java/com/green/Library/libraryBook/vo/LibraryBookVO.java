@@ -15,4 +15,5 @@ public class LibraryBookVO {
     private String bookPub;
     private String bookYear;
     private LibraryBookInfoVO libraryBookInfoVO;
+    private BookRecommendationVO bookRecommendationVO;
 }

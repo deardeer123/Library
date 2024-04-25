@@ -4,7 +4,7 @@
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
-    <link rel="stylesheet" href="/">
+    <!-- <link rel="stylesheet" href="/"> -->
 </th:block>
 
 <th:block layout:fragment="contentFragment">
@@ -213,7 +213,7 @@
 
         function calendarData() {
             // ------------------- 첫번째 방식 ---------------//
-            fetch('/bookAdmin/calendarData', { //요청경로
+            fetch('/bookAdmin/calendarDataFetch', { //요청경로
                 method: 'POST',
                 cache: 'no-cache',
                 headers: {

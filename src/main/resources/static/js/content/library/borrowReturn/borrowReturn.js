@@ -45,7 +45,7 @@ function selectMemberInfo() {
         //fetch 통신 후 실행 영역
         .then((data) => {//data -> controller에서 리턴되는 데이터!
 
-            // console.log(data);
+            console.log(data);
 
             if (data.userCode == 0) {
                 alert('회원번호 혹은 책번호가 정확하지 않습니다.\n다시 입력하세요.');
@@ -365,12 +365,12 @@ function showModal(userCode) {
                 <td class="table-light">성별</td>
                 <td>
                     <select name="gender" class="form-select">`
-                    if(data.gender == '사용중'){
-                        str += `<option value="남자" selected>남자</option>
-                            <option value="여자">여자</option>`
+                    if(data.gender == '남성'){
+                        str += `<option value="남성" selected>남성</option>
+                            <option value="여성">여성</option>`
                         }else{
-                        str += `<option value="남자">남자</option>
-                            <option value="여자" selected>여자</option>`
+                        str += `<option value="남성">남성</option>
+                            <option value="여성" selected>여성</option>`
                         }
                         str += `</select>
                 </td>
@@ -574,10 +574,10 @@ const reGrant = () => {
                 <td class="table-light">직급</td>
                 <td>
                     <select name="isAdmin" class="form-select">`
-                    if(isAdmin == '이용자'){
+                    if(isAdmin == 'N'){
                     str += `<option value="N" selected>이용자</option>
                         <option value="Y">관리자</option>`
-                    }else if(isAdmin == '관리자'){
+                    }else {
                     str += `<option value="N">이용자</option>
                         <option value="Y" selected>관리자</option>`
                     }
@@ -606,12 +606,12 @@ const reGrant = () => {
                 <td class="table-light">성별</td>
                 <td>
                     <select name="gender" class="form-select">`
-                    if(gender == '사용중'){
-                        str += `<option value="남자" selected>남자</option>
-                            <option value="여자">여자</option>`
+                    if(gender == '남성'){
+                        str += `<option value="남성" selected>남성</option>
+                            <option value="여성">여성</option>`
                         }else{
-                        str += `<option value="남자">남자</option>
-                            <option value="여자" selected>여자</option>`
+                        str += `<option value="남성">남성</option>
+                            <option value="여성" selected>여성</option>`
                         }
                         str += `</select>
                 </td>

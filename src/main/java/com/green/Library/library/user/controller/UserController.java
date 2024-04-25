@@ -31,6 +31,8 @@ public class UserController {
     //이용자 관리
     @RequestMapping("/user")
     public String goUser(Model model, SearchUserVO searchUserVO){
+        System.out.println(searchUserVO);
+
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
