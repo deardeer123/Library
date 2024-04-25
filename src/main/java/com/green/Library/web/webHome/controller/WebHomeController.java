@@ -1,5 +1,7 @@
 package com.green.Library.web.webHome.controller;
 
+import com.green.Library.library.libraryhome.service.LibraryHomeService;
+import com.green.Library.library.libraryhome.vo.CalendarVO;
 import com.green.Library.library.regAndView.service.BookSearchVO;
 import com.green.Library.web.board.service.BoardServiceImpl;
 import com.green.Library.web.board.vo.BoardVO;
@@ -12,7 +14,11 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.*;
 
 @Controller
 @RequestMapping("/")
@@ -26,6 +32,8 @@ public class WebHomeController {
     BoardServiceImpl boardService;
     @Resource(name="ParticipationForumService")
     ParticipationForumService participationForumService;
+    @Resource(name="libraryHomeService")
+    LibraryHomeService libraryHomeService;
 
     @GetMapping("/home")
     public String goHome(Model model ,
@@ -72,4 +80,37 @@ public class WebHomeController {
         return "content/homePage/test2";
     }
 
+    @ResponseBody
+    @PostMapping("/calendarData2Fetch")
+    public List<Map<String, String>> calendarList(){
+        List<CalendarVO> calendarVOList = libraryHomeService.selectCalendarList();
+        List<Map<String, String>> mapList = new ArrayList<>();
+
+//        이동시킬 url이 없으면 없애줘야함 그래야지 클릭이 안됨
+//        불러들린 캘린더이벤트 반복시킴g
+        calendarVOList.forEach(s->{
+//            url이 널값인가 체크 널값이면 빈 문자열로 변환
+            String nullChk = Optional.ofNullable(s).map(s1->s1.getUrl()).orElse("");
+            if(nullChk.equals("")){
+                //새로운 map 생성한뒤 maplist에 넣어주기
+                Map<String, String> map1 = new HashMap<>();
+                map1.put("title",Optional.ofNullable(s).map(s2->s2.getTitle()).orElse(""));
+                map1.put("start",Optional.ofNullable(s).map(s2->s2.getStart()).orElse(""));
+                map1.put("color",Optional.ofNullable(s).map(s2->s2.getColor()).orElse(""));
+                mapList.add(map1);
+            }else{
+                //새로운 map 생성한뒤 maplist에 넣어주기
+                Map<String, String> map1 = new HashMap<>();
+                map1.put("title",Optional.ofNullable(s).map(s2->s2.getTitle()).orElse(""));
+                map1.put("start",Optional.ofNullable(s).map(s2->s2.getStart()).orElse(""));
+                map1.put("color",Optional.ofNullable(s).map(s2->s2.getColor()).orElse(""));
+                map1.put("url",Optional.ofNullable(s).map(s2->s2.getUrl()).orElse(""));
+                mapList.add(map1);
+            }
+        });
+        //확인
+        //System.out.println(mapList);
+
+        return mapList;
+    }
 }
