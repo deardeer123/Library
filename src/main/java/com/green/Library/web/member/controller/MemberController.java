@@ -131,7 +131,7 @@ public class MemberController {
     }
 
     @ResponseBody
-    @PostMapping("/changePw")
+    @PostMapping("/changePwFetch")
     public void changePw(@RequestParam(name = "userPw") String userPw,
                          @RequestParam(name = "userCode") int userCode,
                          MemberVO memberVO){

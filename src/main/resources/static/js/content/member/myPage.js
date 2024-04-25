@@ -79,7 +79,7 @@ const pwCF2 = (userPw,userCode) => {
     document.querySelector('#newPw1').focus();
     return;
   }
-  fetch('/changePw', { //요청경로
+  fetch('/changePwFetch', { //요청경로
     method: 'POST',
     cache: 'no-cache',
     headers: {

@@ -1,5 +1,6 @@
 .text-div{
   margin-top: 70px;
+  font-size: 18px;
 }
 
 .text-div .hi:before {
@@ -7,8 +8,16 @@
   content: "";
   width: 4px;
   height: 18px;
-  background: darkgreen;
+  background: coral;
   transform: rotate(45deg);
 }
 
+.hi{
+  font-size: 26px;
+  font-weight: 500;
+}
 
+p > span{
+  color: darkgreen ;
+  margin-left: 8px;
+}
