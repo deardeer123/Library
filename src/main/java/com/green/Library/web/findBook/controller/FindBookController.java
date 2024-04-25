@@ -71,7 +71,6 @@ public class FindBookController {
 
         // 도서 상세보기에서 예약 시 넘겨줄 userCode
 //        bookReservationVO.setUserCode((Integer) session.getAttribute("userCode"));
-//        model.addAttribute("userCode", bookReservationVO.getUserCode());
 
         return "content/homePage/findBook/findFullBook";
     }
@@ -87,21 +86,21 @@ public class FindBookController {
     }
 
     // 예약 하기
-//    @PostMapping("/bookReservationFetch")
-//    public String bookReservationFetch(@RequestParam(name = "bookCode")String bookCode,
-//                                        @RequestParam(name = "userCode")int userCode,
-//                                        BookReservationVO bookReservationVO){
-//
-//        bookReservationVO.setUserCode(userCode);
-//
-//
-//        if(userCode != 0){
-//            findBookService.bookReservationFetch(bookReservationVO);
-//            return "get";
-//        } else {
-//            return "fail";
-//        }
-//    }
+    @PostMapping("/bookReservationFetch")
+    public String bookReservationFetch(@RequestParam(name = "bookCode")String bookCode,
+                                        @RequestParam(name = "userCode")int userCode,
+                                        BookReservationVO bookReservationVO){
+
+        bookReservationVO.setUserCode(userCode);
+
+
+        if(userCode != 0){
+            findBookService.bookReservationFetch(bookReservationVO);
+            return "get";
+        } else {
+            return "fail";
+        }
+    }
 
 //    ------------------------------------------------------------------------------------------------
     @RequestMapping("/newBook")
