@@ -1,7 +1,14 @@
-
-h4 > span{
-  display: inline-block;
-  color: chocolate;
-  font-weight: bold;
+.text-div{
+  margin-top: 70px;
 }
+
+.text-div .hi:before {
+  display: block;
+  content: "";
+  width: 4px;
+  height: 18px;
+  background: darkgreen;
+  transform: rotate(45deg);
+}
+
 
