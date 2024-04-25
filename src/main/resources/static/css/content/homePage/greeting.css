@@ -1,6 +1,7 @@
 .text-div{
-  margin-top: 70px;
+  padding: 10px;
   font-size: 18px;
+  
 }
 
 .text-div .hi:before {
@@ -20,4 +21,11 @@
 p > span{
   color: darkgreen ;
   margin-left: 8px;
+}
+
+.greet-box{
+  border-bottom: 2px solid darkgreen;
+  border-top: 2px solid darkgreen;
+  padding: 15px;
+  margin: 5px;
 }
