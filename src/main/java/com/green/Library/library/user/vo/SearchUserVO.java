@@ -29,6 +29,7 @@ public class SearchUserVO extends PageVO {
     private String reserveCancel2;
     private String borrowDate1;
     private String borrowDate2;
+    private String exReturnDate;
     private String returnDate1;
     private String returnDate2;
 
