@@ -159,10 +159,14 @@ public class MemberController {
     }
 
     @GetMapping("myBookingList")
-    public String myBookingList(Model model){
+    public String myBookingList(Model model,
+                                @RequestParam(name = "userCode", required = false, defaultValue = "0") int userCode){
         //내 (도서)예약 목록
         model.addAttribute("page", "myBookingList");
-        return "content/homePage/member/myBookingList";
+
+        System.out.println(userCode);
+
+        return "content/homePage/member/myBookingList?userCode=" + userCode;
     }
 
     @GetMapping("memberWithdrawal")

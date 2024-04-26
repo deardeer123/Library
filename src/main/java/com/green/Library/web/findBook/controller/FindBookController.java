@@ -83,20 +83,20 @@ public class FindBookController {
     }
 
     // 예약 하기
-    @PostMapping("/bookReservationFetch")
+    @ResponseBody
+    @RequestMapping("/bookReservationFetch")
     public String bookReservationFetch(@RequestParam(name = "bookCode")String bookCode,
                                         HttpSession session,
-                                        BookReservationVO bookReservationVO){
+                                        BookReservationVO bookReservationVO) {
 
-        System.out.println("@@@@@@@@@@@@@@@@@@@@!!!!!!!!!!!!!!!!!!!!!" + session.getAttribute("userCode"));
+        bookReservationVO.setUserCode((Integer) session.getAttribute("userCode"));
+        bookReservationVO.setBookCode(bookCode);
 
+        if (!session.getAttribute("userCode").equals("") && !findBookService.selectDuplication(bookReservationVO)) {
 
-
-        if(!session.getAttribute("userCode").equals("")){
-            bookReservationVO.setUserCode((Integer) session.getAttribute("userCode"));
-            bookReservationVO.setBookCode(bookCode);
             findBookService.bookReservationFetch(bookReservationVO);
             return "get";
+            // 리턴 부분이 문제
         } else {
             return "fail";
         }

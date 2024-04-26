@@ -70,5 +70,13 @@ public class FindBookServiceImpl implements FindBookService{
         sqlSession.insert("findBookMapper.bookReservationFetch", bookReservationVO);
     }
 
+    @Override
+    public boolean selectDuplication(BookReservationVO bookReservationVO) {
+
+        int cnt = sqlSession.selectOne("findBookMapper.selectDuplication", bookReservationVO);
+
+        return cnt > 1 ? true : false;
+    }
+
 
 }
