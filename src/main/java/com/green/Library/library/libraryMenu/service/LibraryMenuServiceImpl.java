@@ -11,7 +11,7 @@ import java.util.Map;
 @Service("menuService")
 public class LibraryMenuServiceImpl implements LibraryMenuService {
     @Autowired
-    SqlSessionTemplate sqlSession;
+    private SqlSessionTemplate sqlSession;
     @Override
     public List<LibraryHeaderMenuVO> selectLibraryMenuList() {
         //메뉴 불러오기

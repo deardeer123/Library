@@ -1296,3 +1296,8 @@ from
 WHERE board_type = 29
 ORDER BY board_num DESC
 LIMIT 3;
+
+ select *
+        from find_book_view
+   ORDER BY BOOK_REGDATE DESC
+   LIMIT 6;

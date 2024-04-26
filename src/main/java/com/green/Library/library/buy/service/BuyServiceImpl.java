@@ -14,7 +14,7 @@ import java.util.List;
 @Service("buyService")
 public class BuyServiceImpl implements BuyService{
     @Autowired
-    SqlSessionTemplate sqlSession;
+    private SqlSessionTemplate sqlSession;
 
     //책 등록하기
     //책 등록하기전에 책 먼저부터 등록한다음
