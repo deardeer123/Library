@@ -179,9 +179,25 @@
             , #{bookCode}
             , NOW()
             , DATE_ADD(NOW(), INTERVAL +3 DAY)
+            , '대기중'
             , RESERVE_CNT + 1
         )
     </insert>
+
+    <!-- 중복 예약 방지 -->
+    <select id="selectDuplication" resultType="int">
+        SELECT COUNT(*)
+        FROM BOOK_RESERVATION
+        WHERE USER_CODE = #{userCode}
+        AND BOOK_CODE = #{bookCode}
+    </select>
+
+<!--    <select id="selectMyReservation" resultMap="bnrMapper.bookReserve">-->
+<!--        SELECT USER_CODE-->
+<!--            , BOOK_CODE-->
+<!--            , RESERVE_DATE-->
+<!--            , -->
+<!--    </select>-->
 
 </mapper>
 

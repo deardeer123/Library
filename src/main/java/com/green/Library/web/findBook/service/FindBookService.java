@@ -35,4 +35,7 @@ public interface FindBookService {
 
     // 도서 예약
     void bookReservationFetch(BookReservationVO bookReservationVO);
+
+    // 예약 시 중복 등록 방지
+    boolean selectDuplication(BookReservationVO bookReservationVO);
 }
