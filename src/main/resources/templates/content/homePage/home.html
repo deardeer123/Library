@@ -10,6 +10,9 @@
 <th:block layout:fragment="contentFragment">
     <style>
         /* calendar.html */
+        .cursor-td{
+            cursor: pointer;
+        }
 
         .fc-col-header-cell-cushion,
         .fc-daygrid-day-number {
@@ -18,16 +21,17 @@
 
         .fc .fc-toolbar.fc-header-toolbar {
             text-decoration: underline;
-            color:white;
+            color: white;
             background-color: #8BC3A9;
             padding-top: 0.3em;
             padding-bottom: 0.2em;
             padding-left: 1em;
             margin-bottom: auto;
         }
-        .fc-dayGridMonth-view{
+
+        .fc-dayGridMonth-view {
             border: 1px solid #8BC3A9;
-           
+
         }
 
         .fc-scrollgrid-sync-inner>.fc-col-header-cell-cushion,
@@ -52,13 +56,13 @@
     <!-- html 코드 작성 -->
     <div class="row">
         <div class="col">
-
             <div class="row">
-                <div class="col bg-success text-white bg-opacity-25" >
+                <div class="col text-white bg-opacity-25" style="position: relative;" >
+                    <img src="/upload/159159.gif" style="width: 100%; height: 200px;">
                     <!-- 책검색기능 -->
-                    <div class="row mt-4 mb-5 ms-3" style="height: 12vh;">
-                        <div class="col">
-                            <div class="row " style="margin-top: 4vh;">
+                    <!-- <div class="row mt-4 mb-5 ms-3" style="height: 12vh;">
+                        <div class="col"> -->
+                            <div class="row " style="margin-top: 4vh; position: absolute; top: 20%; left: 10%; z-index: 1; width: 70%;">
                                 <div class="col-3"></div>
                                 <div class="col-2">
                                     <!-- 카테고리 -->
@@ -75,12 +79,13 @@
                                 </div>
                                 <div class="col-4">
                                     <!-- 검색 -->
-                                    <input type="text" class="form-control" name="searchValue" id="search-value" style="height: 5vh;"
-                                        th:value="${bookSearchVO.searchValue}">
+                                    <input type="text" class="form-control" name="searchValue" id="search-value"
+                                        style="height: 5vh;" th:value="${bookSearchVO.searchValue}">
                                 </div>
                                 <div class="col-1">
                                     <!-- 검색 버튼 -->
-                                    <input type="submit" class="btn text-white" value="검색" style="background-color: #4F9D79; height: 5vh;">
+                                    <input type="submit" class="btn text-white" value="검색"
+                                        style="background-color: #4F9D79; height: 5vh;">
                                 </div>
 
                                 <!-- <div class="col-4"
@@ -88,8 +93,8 @@
                                     <div>책 읽는 당신을 위한 그린 도서관📖</div>
                                 </div> -->
                             </div>
-                        </div>
-                    </div>
+                        <!-- </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -110,9 +115,9 @@
                                 </colgroup>
                                 <tbody class="">
                                     <th:block th:each="e:${noticeList}">
-                                        <tr th:onclick="goNotice([[${e.boardNum}]])">
+                                        <tr>
                                             <td>[[${e.boardDate}]]</td>
-                                            <td>[[${e.boardTitle}]]</td>
+                                            <td class="cursor-td" th:onclick="goNotice([[${e.boardNum}]])">[[${e.boardTitle}]]</td>
                                         </tr>
                                     </th:block>
                                 </tbody>
@@ -137,18 +142,12 @@
                                             <col width="*">
                                         </colgroup>
                                         <tbody>
-                                            <tr>
-                                                <td>2024-03-08</td>
-                                                <td>그린 도서관 행사123</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2024-03-08</td>
-                                                <td>그린 도서관 행사345</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2024-03-08</td>
-                                                <td>그린 도서관 행사789</td>
-                                            </tr>
+                                            <th:block th:each="event : ${eventList}">
+                                                <tr>
+                                                    <td>[[${event.boardDate}]]</td>
+                                                    <td class="cursor-td" th:onclick="goEvent([[${event.boardNum}]])">[[${event.boardTitle}]]</td>
+                                                </tr>
+                                            </th:block>
                                         </tbody>
                                     </table>
                                 </div>
@@ -222,8 +221,10 @@
                     <!-- 행사 -->
                     <div class="row mt-1 mb-2">
                         <div class="col-1"></div>
-                        <div class="col" style="">
-                            <div class="fs-3 text-white" style="background-color: #8BC3A9; text-decoration : underline;"><span class="ms-2">행사정보</span></div>
+                        <div class="col">
+                            <div class="fs-3 text-white"
+                                style="background-color: #8BC3A9; text-decoration : underline;"><span
+                                    class="ms-2">행사정보</span></div>
                             <div class="">
                                 <div id="carouselExampleIndicators" class="carousel slide">
                                     <div class="carousel-indicators">
@@ -279,6 +280,10 @@
 
         function goNotice(boardNum) {
             location.href = `/goNotice?boardNum=${boardNum}`
+        }
+
+        function goEvent(boardNum) {
+            location.href = `/goDetailParticipation?boardNum=${boardNum}`
         }
 
         function bookList(type) {

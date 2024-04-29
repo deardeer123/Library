@@ -1,7 +1,31 @@
-
-h4 > span{
-  display: inline-block;
-  color: chocolate;
-  font-weight: bold;
+.text-div{
+  padding: 10px;
+  font-size: 18px;
+  
 }
 
+.text-div .hi:before {
+  display: block;
+  content: "";
+  width: 4px;
+  height: 18px;
+  background: coral;
+  transform: rotate(45deg);
+}
+
+.hi{
+  font-size: 26px;
+  font-weight: 500;
+}
+
+p > span{
+  color: darkgreen ;
+  margin-left: 8px;
+}
+
+.greet-box{
+  border-bottom: 2px solid darkgreen;
+  border-top: 2px solid darkgreen;
+  padding: 15px;
+  margin: 5px;
+}

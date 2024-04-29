@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -34,6 +35,13 @@ public class SecurityConfig {
     @Autowired
     public SecurityConfig(LoginFailHandler loginFailHandler){
         this.loginFailHandler = loginFailHandler;
+    }
+
+//    암호화에 사용하는 객체 생성
+    @Bean
+    public BCryptPasswordEncoder getEncoder(){
+
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -70,6 +78,16 @@ public class SecurityConfig {
                                     .usernameParameter("userId")
                                     .passwordParameter("userPw");
                                     //.defaultSuccessUrl("/home");
+                        }
+                )
+                .logout(
+                        logOut ->{
+                            //해당 url 요청이 들어오면 시큐리티가 로그아웃 진행
+                            logOut.logoutUrl("/logout")
+                                    //로그아웃 성공 시 이동할 url
+                                    .logoutSuccessUrl("/login")
+                                    //로그아웃 성공 시 세션 데이터 삭제
+                                    .invalidateHttpSession(true);
                         }
                 );
         return security.build();
