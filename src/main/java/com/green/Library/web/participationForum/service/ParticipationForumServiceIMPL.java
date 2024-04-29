@@ -39,6 +39,11 @@ public class ParticipationForumServiceIMPL implements ParticipationForumService{
         sqlSession.update("participationForumMapper.boardCntUp",boardNum);
     }
 
+    @Override
+    public List<BoardVO> selectNotice3() {
+        return sqlSession.selectList("participationForumMapper.selectNotice3");
+    }
+
     //공지사항조회
     @Override
     public List<BoardVO> selectNotice(SearchVO searchVO) {

@@ -17,6 +17,8 @@ ParticipationForumService {
 
     //조회수 증가
     void boardCntUp(int boardNum);
+    //공지사항 3개 조회
+    List<BoardVO> selectNotice3 ();
 
     //공지사항 조회
     List<BoardVO> selectNotice (SearchVO searchVO);

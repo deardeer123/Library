@@ -21,7 +21,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         User user = (User) User.builder()
                 .username(loginInfo.getUserId())
-                .password("{noop}"+loginInfo.getUserPw())
+                .password(loginInfo.getUserPw())
                 .roles(loginInfo.getIsAdmin())
                 .build();
         return user;

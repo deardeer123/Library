@@ -7,12 +7,17 @@ import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.naming.Name;
+import java.beans.Encoder;
+import java.util.Map;
 
 @Controller
 //@RequestMapping("/member")
@@ -23,6 +28,9 @@ public class MemberController {
 
     @Resource(name ="webMenuService")
     WebMenuService webMenuService;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     //테스트 한다고 잠깐 주석처리 했어요 ㅈㅅ
 //    //홈페이지 창
@@ -38,7 +46,9 @@ public class MemberController {
         //문자열 치환
         memberVO.setUserTel(memberVO.getUserTel().replace(",","-"));
         memberVO.setEmail(memberVO.getEmail().replace(",",""));
-
+        //비밀번호 암호화
+        String memberPw = encoder.encode(memberVO.getUserPw());
+        memberVO.setUserPw(memberPw);
         memberService.insertMember(memberVO);
         return "redirect:/login";
     }
@@ -73,6 +83,20 @@ public class MemberController {
 
         System.out.println("아이디/비밀번호 찾기");
         return "content/homePage/member/findIdOrPW";
+    }
+
+    @PostMapping("/findPw")
+    public String findPw(MemberVO memberVO){
+        //임시 비밀번호 생성
+        String randomPw = memberService.createRandomPw();
+
+        //암호화
+        String encodedPw = encoder.encode(randomPw);
+        //vo에 담고
+        memberVO.setUserPw(encodedPw);
+        //암호화된 임시비밀번호를 업데이트
+        memberService.updateUserPw(memberVO);
+        return "";
     }
 
 
@@ -121,7 +145,8 @@ public class MemberController {
     }
 
     @GetMapping("passwdChange")
-    public String passwdChange(Model model,HttpSession session){
+    public String passwdChange(Model model, HttpSession session)    {
+
         //비빌번호 변경
         model.addAttribute("page","passwdChange");
         MemberVO member = memberService.myPageUserInfo((Integer) session.getAttribute("userCode"));
@@ -130,14 +155,35 @@ public class MemberController {
         return "content/homePage/member/passwdChange";
     }
 
+//    @PostMapping("newPw")
+//    public String newPw(@RequestParam Map<String, Object> paramMap,
+//                        @ModelAttribute("loginInfo") MemberVO loginInfo,
+//                        RedirectAttributes ra){
+//    // 로그인 되어있는 유저코드를 paramMap에 추가
+//        paramMap.put("userCode", loginInfo.getUserCode());
+//
+//        //비밀번호 변경 서비스
+////        int result = memberService.updateUserPw(loginInfo);
+//
+//        String message = null;
+//        String path = null;
+//
+//        if (){
+//
+//        }
+//    }
+
     @ResponseBody
-    @PostMapping("/changePw")
+    @PostMapping("/changePwFetch")
     public void changePw(@RequestParam(name = "userPw") String userPw,
                          @RequestParam(name = "userCode") int userCode,
+                         @RequestParam(name = "newPw") String newPw,
                          MemberVO memberVO){
+
+        memberVO.setUserPw(encoder.encode(newPw));
         memberVO.setUserCode(userCode);
-        memberVO.setUserPw(userPw);
         memberService.updateUserPw(memberVO);
+
     }
 
     @GetMapping("applyList")
