@@ -36,5 +36,7 @@ public interface MemberService {
     void updateUserInfo(MemberVO memberVO);
 
     void updateUserPw(MemberVO memberVO);
+
+
 }
 

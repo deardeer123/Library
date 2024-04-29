@@ -75,5 +75,7 @@ public interface BoardService {
     void updateFile(UploadVO uploadVO);
 
     void movieDelete(int boardNum);
+
+    List<BoardVO> selectEvent3();
 }
 

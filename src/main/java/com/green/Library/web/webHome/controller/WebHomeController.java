@@ -50,6 +50,9 @@ public class WebHomeController {
         model.addAttribute("memberMenuList",webMenuService.selectWebMenuList("member"));
         //공지사항 3개
         model.addAttribute("noticeList", participationForumService.selectNotice3());
+        //행사 3개
+        model.addAttribute("eventList",boardService.selectEvent3());
+
         //처음엔 추천도서 3개
         switch (type){
             case "recommend":
@@ -63,7 +66,6 @@ public class WebHomeController {
             default:
                 model.addAttribute("bookList", webHomeService.manyBorrowBookList6());
                 model.addAttribute("type", "대출이 많은책");
-
 
         }
 
