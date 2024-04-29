@@ -82,7 +82,8 @@
                                     <ul class="dropdown-menu">
                                         <th:block th:each="e1:${e.webSideMenuVOList}">
                                             <li>
-                                                <a class="dropdown-item"
+                                                <a class="dropdown-item "
+                                                style="--bs-dropdown-link-active-bg:#0A3622"
                                                     th:onclick="goPage([[${e1.sideMenuPage}]], [[${e1.sideMenuNum}]])">[[${e1.sideMenuName}]]</a>
                                             </li>
                                         </th:block>
