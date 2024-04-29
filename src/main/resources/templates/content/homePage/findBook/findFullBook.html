@@ -481,15 +481,20 @@
             //fetch 통신 후 실행 영역
             .then((data) => {//data -> controller에서 리턴되는 데이터!
 
-                console.log(`${session.userCode}`);
+                // console.log(`${session.userCode}`);
 
                 if(data === 'get'){
-                    const result = confirm('예약 되었습니다. \n 예약 내역으로 가시겠습니까?');
+                    const result = confirm('예약 되었습니다.\n 예약 내역으로 가시겠습니까?');
                     if(result){
                         window.location.href = `/myBookingList?userCode=${session.userCode}`;
                     }
-                }else{
-                    const result = confirm('이미 예약 하셨습니다. \n 예약 내역으로 가시겠습니까?');
+                }else if(data === 'next'){
+                    const result = confirm('예약 되었습니다.\n 예약 내역으로 가시겠습니까?');
+                    if(result){
+                        window.location.href = `/myBookingList?userCode=${session.userCode}`;
+                    }
+                }else if(data === 'fail'){
+                    const result = confirm('이미 예약 하셨습니다.\n 예약 내역으로 가시겠습니까?');
                     if(result){
                         window.location.href = `/myBookingList?userCode=${session.userCode}`;
                     }

@@ -51,6 +51,7 @@
         , BOOK_INFO_ATTACHED_FILE_NAME
         , RESERVE_CODE
         , RESERVE_DATE
+        , RESERVE_CANCEL
         FROM USERS U
         LEFT JOIN BOOK_BNR AS BBR
         ON U.USER_CODE = BBR.USER_CODE
@@ -62,9 +63,8 @@
         ON BBR.BOOK_CODE = BI.BOOK_CODE
         WHERE U.CARD_NUM = #{cardNum}
         ORDER BY BORROW_DATE DESC
-        WHERE 1 = 1
 <!--        <if test="">-->
-<!--          여기서부터 대출반납 내역 조건 조회 쿼리 -->
+<!--          여기서부터 마이페이지에 쓸 대출반납 내역 조건 조회 쿼리 -->
 <!--        </if>-->
     </select>
 
@@ -170,7 +170,7 @@
 <!-- //////////////////////// 예약 //////////////////////////// -->
 
     <!-- 예약내역 확인 -->
-    <select id="selectReserve" resultMap="bnrMapper.bookReserve">
+    <select id="selectReservationList" resultMap="bookReserve">
         SELECT RESERVE_CODE
         , RESERVE_STATUS
         , CARD_NUM
@@ -182,7 +182,6 @@
         , BOOK_TITLE
         , RESERVE_DATE
         , RESERVE_CANCEL
-        , RESERVE_CNT
         FROM BOOK_RESERVATION AS BR
         LEFT JOIN USERS AS U
         ON BR.USER_CODE = U.USER_CODE
@@ -226,6 +225,38 @@
             AND RESERVE_CANCEL BETWEEN #{cancelReserveDate1} AND #{cancelReserveDate2}
         </if>
     </select>
+
+    <!-- 반납 된 후 해당 책이 예약이 있는지 확인 -->
+    <select id="selectChkReservation" resultMap="bookReserve">
+        SELECT RESERVE_CODE
+            , USER_CODE
+        FROM BOOK_RESERVATION
+        WHERE BOOK_CODE = #{bookCode}
+    </select>
+
+    <!-- 반납 후 해당 책이 예약 내역이 있을 경우 예약 진행 -->
+    <update id="updateHasReservation">
+        UPDATE BOOK_RESERVATION
+            SET
+                RESERVE_CANCEL = DATE_ADD(NOW(), INTERVAL +3 DAY)
+        WHERE USER_CODE = #{userCode}
+    </update>
+
+    <!-- 이용자가 예약 한 책을 기한 내에 대출 하러 왔을 경우(해당 이용자가 예약 한 게 맞는지 확인) -->
+    <select id="selectGetReservation" resultMap="bookReserve">
+        SELECT RESERVE_CODE
+        FROM BOOK_RESERVATION
+        WHERE BOOK_CODE = #{bookCode}
+        AND USER_CODE = #{userCode}
+    </select>
+
+    <!-- 이용자가 예약 한 책을 기한 내에 대출 하러 왔을 경우(예약 내역에 보여줄 상태 변경) -->
+    <update id="updateGetBorrow">
+        UPDATE BOOK_RESERVATION
+            SET
+                RESERVE_STATUS = '대출완료'
+        WHERE USER_CODE = #{userCode}
+    </update>
 
 
 <!-- ////////////////////////////////////////////////////// -->

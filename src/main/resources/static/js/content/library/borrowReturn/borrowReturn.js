@@ -17,8 +17,8 @@ function selectMemberInfo() {
     const reserve_list_tbody = document.querySelector('.reserve-list-table tbody');
 
     // 들어오는 데이터 관리
-    const renderCnt = document.querySelector('#render-cnt').innerHTML;
-    const returnCnt = document.querySelector('#return-cnt').innerHTML;
+    const renderCnt = document.querySelector('#render-cnt');
+    const returnCnt = document.querySelector('#return-cnt');
     const inputValue = document.querySelector('#inputData').value;
     const selectedCardNum = document.querySelector('input[name="selectedCardNum"]').value
     const borrowDate = document.querySelector('#borrow-date').value;
@@ -55,45 +55,43 @@ function selectMemberInfo() {
             //selectedCardNum 값을 이전에 입력한 값으로 저장
             //조회가 됐으면 조회된 데이터, 아니면 0이 들어감
 
-            document.querySelector('input[name="selectedCardNum"]').value = data.cardNum;
+            document.querySelector('input[name="selectedCardNum"]').value = data.userInfo.cardNum;
 
             userInfo.innerHTML = '';
 
             let str1 = '';
 
             //조회한 데이터가 있을 때만 다시 그림
-            if (data.cardNum != 0) {
+            if (data.userInfo.cardNum != 0) {
 
                 str1 = `
                 <div class="row">
                     <div class="col">
-                        카드번호 : ${data.cardNum}
+                        카드번호 : ${data.userInfo.cardNum}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        이름 : ${data.userName}
+                        이름 : ${data.userInfo.userName}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        전화번호 : ${data.userTel}
+                        전화번호 : ${data.userInfo.userTel}
                     </div>
                 </div>
                 <div class="row mt-1">
                     <div class="col-8">
-                        <textarea id="userIntro" name="userIntro" class="form-control" rows="1" style="resize:none;">`
-                    
-                
-                        if (data.userIntro == null) {
-                    str1 += ``
-                } else {
-                    str1 += `${data.userIntro}`
-                }
+                        <textarea id="userIntro" name="userIntro" class="form-control" rows="1" style="resize:none;">`;
+                        if (data.userInfo.userIntro == null) {
+                            str1 += ``;
+                        } else {
+                            str1 += `${data.userIntro}`;
+                        }
                 str1 += `</textarea>
                     </div>
                     <div class="col-4 d-grid">
-                        <input type="button" class="btn btn-secondary" value="메모수정" onclick="updateUserIntro(${data.userCode})">
+                        <input type="button" class="btn btn-secondary" value="메모수정" onclick="updateUserIntro(${data.userInfo.userCode})">
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -101,7 +99,7 @@ function selectMemberInfo() {
                         <input type="button" class="btn btn-secondary" value="SMS 전송">
                     </div>
                     <div class="col-6 d-grid">
-                        <input type="button" class="btn btn-secondary" value="상세정보" onclick="showModal(${data.userCode})">
+                        <input type="button" class="btn btn-secondary" value="상세정보" onclick="showModal(${data.userInfo.userCode})">
                     </div>
                 </div>`;
 
@@ -124,10 +122,10 @@ function selectMemberInfo() {
 
                 ////////////////////////////////////////////////////
 
-                const data_cnt = data.bookBorrowList.length;
+                const data_cnt = data.userInfo.bookBorrowList.length;
 
                 //대출 및 반납, 예약 내역이 없을 경우
-                if (data_cnt == 1 && data.bookBorrowList[0].bookCode == null) {
+                if (data_cnt == 1 && data.userInfo.bookBorrowList[0].bookCode == null) {
                     str2 += `
                     <td colspan="7">
                         대출 내역이 없습니다.
@@ -155,7 +153,7 @@ function selectMemberInfo() {
                     let renCnt = 0;
                     let retCnt = 0;
 
-                    data.bookBorrowList.forEach((bookBorrowInfo, idx) => {
+                    data.userInfo.bookBorrowList.forEach((bookBorrowInfo, idx) => {
                         if (bookBorrowInfo.returnYN == 'N') {
                             renCnt = renCnt + 1;
 
@@ -224,14 +222,16 @@ function selectMemberInfo() {
 
                     });
 
-                    alert(retCnt);
-
                     cnt1 += `<b>대출(${renCnt}/5)</b>`;
 
-                    if(retCnt === 0){
+                    if(retCnt == 0){
                         cnt2 += `<b>반납(0)</b>`;
-                    } else {
+                    } else if(retCnt > 0){
                         cnt2 += `<b>반납(${retCnt})</b>`;
+                    }
+
+                    if(data.isReserved){
+                        alert('해당 도서는 예약 내역이 있습니다.\n카운터에 보관해주세요.');
                     }
 
                     renderCnt.insertAdjacentHTML("afterbegin", cnt1);

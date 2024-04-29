@@ -4,6 +4,7 @@ import com.green.Library.library.borrowReturn.vo.BookBNRVO;
 import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.library.user.vo.SearchUserVO;
 import com.green.Library.web.member.vo.MemberVO;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,5 +37,17 @@ public interface BorrowReturnService {
     ///////////////////예약 기능////////////////////////
 
     // 예약 조회
-    List<BookReservationVO> selectReserve(SearchUserVO searchUserVO);
+    List<BookReservationVO> selectReservationList(SearchUserVO searchUserVO);
+
+    // 반납 된 책의 예약 체크
+    List<BookReservationVO> selectChkReservation(String bookCode);
+
+    // 반납 된 책의 예약이 있을 경우 예약 날짜 update
+    void updateHasReservation(int userCode);
+
+    // 이용자가 해당 도서를 예약 한 게 맞는지 확인
+    boolean selectGetReservation(BookReservationVO bookReservationVO);
+
+    // 예약 한 이용자가 기한 내에 책을 대출하러 왔을 경우 + 대출 시 BOOK_BNR INSERT + BOOK_INFO UPDATE
+    void updateGetBorrow(BookBNRVO bookBNRVO);
 }

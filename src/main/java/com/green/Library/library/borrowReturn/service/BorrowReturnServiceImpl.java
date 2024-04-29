@@ -64,9 +64,39 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
         sqlSession.update("bnrMapper.updateReturnBookInfo", bookBNRVO.getBookCode());
     }
 
+    /////////////////////// 예약 /////////////////////////
+
+    // 예약 리스트 조회
     @Override
-    public List<BookReservationVO> selectReserve(SearchUserVO searchUserVO) {
+    public List<BookReservationVO> selectReservationList(SearchUserVO searchUserVO) {
         return sqlSession.selectList("bnrMapper.selectReserve", searchUserVO);
+    }
+
+    // 책이 반납 될 때 해당 책이 예약 내역이 있는 지 확인
+    @Override
+    public List<BookReservationVO> selectChkReservation(String bookCode) {
+        return sqlSession.selectList("bnrMapper.selectChkReservation", bookCode);
+    }
+
+    // 대출 중인 책이 반납 된 뒤 예약 내역이 있을 시 예약 진행
+    @Override
+    public void updateHasReservation(int userCode) {
+        sqlSession.update("bnrMapper.updateHasReservation", userCode);
+    }
+
+    @Override
+    public boolean selectGetReservation(BookReservationVO bookReservationVO) {
+        return sqlSession.selectOne("bnrMapper.selectGetReservation", bookReservationVO);
+    }
+
+    // 예약 한 이용자가 기한 내에 책을 대출하러 왔을 경우 / 예약 status update + 대출 시 BOOK_BNR INSERT + BOOK_INFO UPDATE
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateGetBorrow(BookBNRVO bookBNRVO) {
+        sqlSession.insert("bnrMapper.insertBorrow", bookBNRVO);
+        sqlSession.update("bnrMapper.updateBookInfo", bookBNRVO.getBookCode());
+        sqlSession.update("bnrMapper.updateGetBorrow", bookBNRVO.getUserCode());
+
     }
 
 
