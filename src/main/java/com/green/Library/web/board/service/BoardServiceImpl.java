@@ -165,6 +165,11 @@ public class BoardServiceImpl implements BoardService {
         sqlSession.delete("boardMapper.eventBoardDelete",boardNum);
     }
 
+    @Override
+    public List<BoardVO> selectEvent3() {
+        return sqlSession.selectList("boardMapper.selectEvent3");
+    }
+
 
 }
 

@@ -540,6 +540,20 @@
         WHERE BOARD_NUM = #{boardNum}
     </delete>
 
+    <select id="selectEvent3" resultMap="board">
+        SELECT
+            board.board_num,
+            board.BOARD_TITLE,
+            DATE_FORMAT(board.BOARD_DATE , '%Y - %m -%d') as board_date
+        FROM BOARD
+        INNER JOIN BOARD_PLUS
+        ON BOARD.BOARD_NUM = BOARD_PLUS.BOARD_NUM
+        WHERE
+        BOARD_TYPE = 25
+        AND EVENT_STATUS = '진행예정'
+        ORDER BY board_num DESC
+        LIMIT 3;
+    </select>
 
 
 
