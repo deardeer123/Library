@@ -1,0 +1,22 @@
+.row-box{
+  padding: 10px;
+}
+
+.join-box{
+  border: 1px solid rgb(190, 191, 196);
+  border-radius: 30px;
+  padding: 10px;
+  box-shadow: 5px 5px gray;
+}
+
+.title-head{
+  font-size: 30px;
+  display: inline-block;
+  font-weight: bolder;
+  margin-left: 3px;
+  margin-bottom: 0px;
+}
+
+.title-head > h2{
+  margin: 0;
+}
