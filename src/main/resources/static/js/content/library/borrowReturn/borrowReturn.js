@@ -19,6 +19,7 @@ function selectMemberInfo() {
     // 들어오는 데이터 관리
     const renderCnt = document.querySelector('#render-cnt');
     const returnCnt = document.querySelector('#return-cnt');
+    const reserveCnt = document.querySelector('#reserve-cnt');
     const inputValue = document.querySelector('#inputData').value;
     const selectedCardNum = document.querySelector('input[name="selectedCardNum"]').value
     const borrowDate = document.querySelector('#borrow-date').value;
@@ -47,7 +48,7 @@ function selectMemberInfo() {
 
             console.log(data);
 
-            if (data.userCode == 0) {
+            if (data.userInfo.userCode == 0) {
                 alert('회원번호 혹은 책번호가 정확하지 않습니다.\n다시 입력하세요.');
                 return;
             }
@@ -86,7 +87,7 @@ function selectMemberInfo() {
                         if (data.userInfo.userIntro == null) {
                             str1 += ``;
                         } else {
-                            str1 += `${data.userIntro}`;
+                            str1 += `${data.userInfo.userIntro}`;
                         }
                 str1 += `</textarea>
                     </div>
@@ -111,14 +112,16 @@ function selectMemberInfo() {
                 return_list_tbody.innerHTML = '';
                 reserve_list_tbody.innerHTML = '';
                 
+                renderCnt.innerHTML = '';
                 returnCnt.innerHTML = '';
-
+                reserveCnt.innerHTML = '';
 
                 let str2 = '';
                 let str3 = '';
                 let str4 = '';
                 let cnt1 = '';
                 let cnt2 = '';
+                let cnt3 = '';
 
                 ////////////////////////////////////////////////////
 
@@ -126,6 +129,13 @@ function selectMemberInfo() {
 
                 //대출 및 반납, 예약 내역이 없을 경우
                 if (data_cnt == 1 && data.userInfo.bookBorrowList[0].bookCode == null) {
+
+                    cnt1 += `<b>대출(0/5)</b>`;
+
+                    cnt2 += `<b>반납(0)</b>`;
+
+                    cnt3 += `<b>예약 (예약 가능 건수 : 5)</b>`;
+
                     str2 += `
                     <td colspan="7">
                         대출 내역이 없습니다.
@@ -141,6 +151,9 @@ function selectMemberInfo() {
                         예약 내역이 없습니다.
                     </td>`;
 
+                    renderCnt.insertAdjacentHTML("afterbegin", cnt1);
+                    returnCnt.insertAdjacentHTML("afterbegin", cnt2);
+                    reserveCnt.insertAdjacentHTML("afterbegin", cnt3);
                     borrow_list_tbody.insertAdjacentHTML("afterbegin", str2);
                     return_list_tbody.insertAdjacentHTML("afterbegin", str3);
                     reserve_list_tbody.insertAdjacentHTML("afterbegin", str4);
@@ -148,8 +161,6 @@ function selectMemberInfo() {
                 }
                 else {
 
-                    renderCnt.innerHTML = '';
-                    returnCnt.innerHTML = '';
                     let renCnt = 0;
                     let retCnt = 0;
 
@@ -222,17 +233,13 @@ function selectMemberInfo() {
 
                     });
 
-                    cnt1 += `<b>대출(${renCnt}/5)</b>`;
-
-                    if(retCnt == 0){
-                        cnt2 += `<b>반납(0)</b>`;
-                    } else if(retCnt > 0){
-                        cnt2 += `<b>반납(${retCnt})</b>`;
-                    }
-
                     if(data.isReserved){
                         alert('해당 도서는 예약 내역이 있습니다.\n카운터에 보관해주세요.');
                     }
+                    
+                    cnt1 += `<b>대출(${renCnt}/5)</b>`;
+                    cnt2 += `<b>반납(${retCnt})</b>`;
+                    
 
                     renderCnt.insertAdjacentHTML("afterbegin", cnt1);
                     returnCnt.insertAdjacentHTML("afterbegin", cnt2);

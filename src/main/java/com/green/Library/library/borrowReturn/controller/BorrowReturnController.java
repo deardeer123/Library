@@ -116,6 +116,8 @@ public class BorrowReturnController {
                 bookBNRVO.setBorrowDate(inputData.get("borrowDate"));
                 borrowReturnService.updateGetBorrow(bookBNRVO);
 
+                System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" + bookBNRVO.getUserCode());
+
                 //다시 대출자의 모든 대출 내역을 조회
                 MemberVO vo = new MemberVO();
                 vo.setCardNum(cardNum);

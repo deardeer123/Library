@@ -94,8 +94,8 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
     @Transactional(rollbackFor = Exception.class)
     public void updateGetBorrow(BookBNRVO bookBNRVO) {
         sqlSession.insert("bnrMapper.insertBorrow", bookBNRVO);
-        sqlSession.update("bnrMapper.updateBookInfo", bookBNRVO.getBookCode());
-        sqlSession.update("bnrMapper.updateGetBorrow", bookBNRVO.getUserCode());
+        sqlSession.update("bnrMapper.updateGetBorrow", bookBNRVO);
+        sqlSession.update("bnrMapper.updateBookInfo", bookBNRVO);
 
     }
 

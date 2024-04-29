@@ -256,6 +256,7 @@
             SET
                 RESERVE_STATUS = '대출완료'
         WHERE USER_CODE = #{userCode}
+        AND BOOK_CODE = #{bookCode}
     </update>
 
 
