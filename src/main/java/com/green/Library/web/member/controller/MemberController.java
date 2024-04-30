@@ -155,23 +155,6 @@ public class MemberController {
         return "content/homePage/member/passwdChange";
     }
 
-//    @PostMapping("newPw")
-//    public String newPw(@RequestParam Map<String, Object> paramMap,
-//                        @ModelAttribute("loginInfo") MemberVO loginInfo,
-//                        RedirectAttributes ra){
-//    // 로그인 되어있는 유저코드를 paramMap에 추가
-//        paramMap.put("userCode", loginInfo.getUserCode());
-//
-//        //비밀번호 변경 서비스
-////        int result = memberService.updateUserPw(loginInfo);
-//
-//        String message = null;
-//        String path = null;
-//
-//        if (){
-//
-//        }
-//    }
 
     @ResponseBody
     @PostMapping("/changePwFetch")
