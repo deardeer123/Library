@@ -21,8 +21,10 @@ import java.util.Map;
 public class BorrowReturnController {
     @Resource(name = "menuService")
     LibraryMenuService libraryMenuService;
+
     @Resource(name = "borrowReturnService")
     BorrowReturnService borrowReturnService;
+
     @Resource(name = "userService")
     UserService userService;
 
@@ -90,6 +92,9 @@ public class BorrowReturnController {
 
             //가져온 책번호가 유효성 책인지 검사
             //책코드가 유효한 데이터라면
+            System.out.println("1 = "+borrowReturnService.isCorrectBookCode(bookCode));
+            System.out.println("2 = "+borrowReturnService.selectBookAvailable(bookCode));
+            System.out.println("3 = "+borrowReturnService.selectGetReservation(bookReservationVO));
             if (borrowReturnService.isCorrectBookCode(bookCode) && borrowReturnService.selectBookAvailable(bookCode)) {
 
                 //대출 내역을 insert
@@ -108,7 +113,7 @@ public class BorrowReturnController {
                 return returnData;
 
             // 예약 내역 대출 진행
-            } else if (borrowReturnService.isCorrectBookCode(bookCode) && borrowReturnService.selectBookAvailable(bookCode) && borrowReturnService.selectGetReservation(bookReservationVO)) {
+            } else if (borrowReturnService.isCorrectBookCode(bookCode) && borrowReturnService.selectBookAvailable(bookCode) && !borrowReturnService.selectGetReservation(bookReservationVO).isEmpty()) {
 
                 //대출 내역을 insert
                 bookBNRVO.setBookCode(bookCode);
@@ -140,7 +145,9 @@ public class BorrowReturnController {
                 // 반납 된 책이 예약 내역이 있을 경우 예약 진행
                 if (!borrowReturnService.selectChkReservation(bookCode).isEmpty()) {
 
-                    borrowReturnService.updateHasReservation(borrowReturnService.selectChkReservation(bookCode).get(0).getUserCode());
+                    bookReservationVO.setBookCode(bookCode);
+                    bookReservationVO.setUserCode(userCode);
+                    borrowReturnService.updateHasReservation(bookReservationVO);
 
                     returnData.put("isReserved", true);
                 }

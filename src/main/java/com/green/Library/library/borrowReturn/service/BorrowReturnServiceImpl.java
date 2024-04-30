@@ -80,13 +80,13 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
 
     // 대출 중인 책이 반납 된 뒤 예약 내역이 있을 시 예약 진행
     @Override
-    public void updateHasReservation(int userCode) {
-        sqlSession.update("bnrMapper.updateHasReservation", userCode);
+    public void updateHasReservation(BookReservationVO bookReservationVO) {
+        sqlSession.update("bnrMapper.updateHasReservation", bookReservationVO);
     }
 
     @Override
-    public boolean selectGetReservation(BookReservationVO bookReservationVO) {
-        return sqlSession.selectOne("bnrMapper.selectGetReservation", bookReservationVO);
+    public List<BookReservationVO> selectGetReservation(BookReservationVO bookReservationVO) {
+        return sqlSession.selectList("bnrMapper.selectGetReservation", bookReservationVO);
     }
 
     // 예약 한 이용자가 기한 내에 책을 대출하러 왔을 경우 / 예약 status update + 대출 시 BOOK_BNR INSERT + BOOK_INFO UPDATE

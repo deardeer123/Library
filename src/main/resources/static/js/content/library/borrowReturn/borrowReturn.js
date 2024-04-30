@@ -48,13 +48,16 @@ function selectMemberInfo() {
 
             console.log(data);
 
+            // const userCode = data.userInfo.userCode;
+            console.log(data.userInfo.userCode);
+
             if (data.userInfo.userCode == 0) {
-                alert('회원번호 혹은 책번호가 정확하지 않습니다.\n다시 입력하세요.');
+                alert('회원번호 혹은 책번호가 일치하지 않습니다.\n다시 입력하세요.');
                 return;
             }
 
-            //selectedCardNum 값을 이전에 입력한 값으로 저장
-            //조회가 됐으면 조회된 데이터, 아니면 0이 들어감
+            // selectedCardNum 값을 이전에 입력한 값으로 저장
+            // 조회가 됐으면 조회된 데이터, 아니면 0이 들어감
 
             document.querySelector('input[name="selectedCardNum"]').value = data.userInfo.cardNum;
 
@@ -62,7 +65,7 @@ function selectMemberInfo() {
 
             let str1 = '';
 
-            //조회한 데이터가 있을 때만 다시 그림
+            // 조회한 데이터가 있을 때만 다시 그림
             if (data.userInfo.cardNum != 0) {
 
                 str1 = `

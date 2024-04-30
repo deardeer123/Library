@@ -239,7 +239,7 @@
         UPDATE BOOK_RESERVATION
             SET
                 RESERVE_CANCEL = DATE_ADD(NOW(), INTERVAL +3 DAY)
-        WHERE USER_CODE = #{userCode}
+        WHERE BOOK_CODE = #{bookCode}
     </update>
 
     <!-- 이용자가 예약 한 책을 기한 내에 대출 하러 왔을 경우(해당 이용자가 예약 한 게 맞는지 확인) -->
