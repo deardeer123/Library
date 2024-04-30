@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/")
@@ -234,14 +235,28 @@ public class CulturalAndEducationController {
 
         System.out.println(plusVO);
         System.out.println(boardVO);
+
+
         // 멀티 이미지 첨부 기능
         List<UploadVO> fileList = BoardUploadUtil.subImgUploadFile(files);
-        for (UploadVO file : fileList){
-            file.setBoardNum(maxBoardNum);
+        List<UploadVO> fileList2 = new ArrayList<>();
+        if(fileList.size() == 0){
+            fileList.add(new UploadVO().builder()
+                            .AttachedFileName("")
+                            .OriginFileName("")
+                            .isMain("")
+                            .boardNum(maxBoardNum)
+                            .build());
         }
 
-        boardVO.setPlusVO(plusVO);
         boardVO.setFileList(fileList);
+
+//        for (UploadVO file : fileList){
+//            file.setBoardNum(maxBoardNum);
+//        }
+
+        boardVO.setPlusVO(plusVO);
+
         boardVO.setBoardNum(maxBoardNum);
         //날짜가 안넘어가서 그냥 start라는 변수로 넘겨줌
         CalendarVO calendarVO = new CalendarVO();
@@ -276,6 +291,17 @@ public class CulturalAndEducationController {
 //        applyVO.setUserCode(userCode);
 //        model.addAttribute("check", boardService.applyCheck(applyVO));
         BoardVO board = boardService.selectEventBoardDetail(boardVO.getBoardNum());
+        System.out.println(board.getFileList());
+        System.out.println(board.getFileList());
+        System.out.println(board.getFileList());
+        System.out.println(board.getFileList());
+        System.out.println(board.getFileList());
+        System.out.println(board.getFileList());
+        System.out.println(board.getFileList());
+        System.out.println(board.getFileList());
+        System.out.println(board.getFileList());
+        System.out.println(board.getFileList());
+
         model.addAttribute("board", board);
         System.out.println(board);
         return "content/homePage/culturalAndEducation/eventParticipation/goDetailParticipation";

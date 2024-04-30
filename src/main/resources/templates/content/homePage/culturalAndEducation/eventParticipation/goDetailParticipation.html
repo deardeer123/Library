@@ -13,7 +13,7 @@
         <div class="col-6 mt-3" style="padding: 0;">
             <table class="text-center table table-bordered table-success">
                 <colgroup>
-                    <col width="30%%">
+                    <col width="30%">
                     <col width="70%">
                 </colgroup>
                 <tbody>
@@ -57,7 +57,8 @@
                     </tr>
                     <tr sec:authorize="hasAnyRole('ROLE_N' , 'ROLE_Y') ">
                         <td colspan="2">
-                            <th:block th:if="${board.PlusVO.personnel lt board.PlusVO.maximumPerson} and ${board.PlusVO.eventStatus == '진행예정'}">
+                            <th:block
+                                th:if="${board.PlusVO.personnel lt board.PlusVO.maximumPerson} and ${board.PlusVO.eventStatus == '진행예정'}">
                                 현재 [[${board.PlusVO.maximumPerson - board.PlusVO.personnel}]]명의 인원이 신청 가능합니다
                             </th:block>
                             <th:block
@@ -74,24 +75,40 @@
             <table class="table-bordered table">
                 <tr style="height: 600px;">
                     <td colspan="4">
-                        [[${board.content}]]
+                        <pre>[[${board.content}]]</pre>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        [[${board.fileList[0].originFileName}]]
+                        <div style="color: blue;">
+                            <form method="post" action="/download" id="downloadTag">
+                                <input type="hidden" name="OriginFileName"
+                                    th:value="${board.fileList[0].OriginFileName}">
+                                <input type="hidden" name="AttachedFileName"
+                                    th:value="${board.fileList[0].AttachedFileName}">
+                                <th:block th:if="${board.fileList[0].AttachedFileName != ''}">
+                                    <img th:src="@{/upload/}+${board.fileList[0].AttachedFileName}"
+                                        style="height: 30vh;">
+                                </th:block>
+                                <div onclick="download()">[[${board.fileList[0].OriginFileName}]]</div>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             </table>
             <div sec:authorize="hasRole('ROLE_N')" class="d-grid gap-2 col-4 mx-auto">
-                <th:block th:if="${board.PlusVO.personnel lt board.PlusVO.maximumPerson} and ${board.PlusVO.eventStatus == '진행예정'} and ${check != 1}">
-                    <input class="btn btn-outline-success" type="button" th:onclick="dateView([[${board.boardNum}]])" value="신청하기">
+                <th:block
+                    th:if="${board.PlusVO.personnel lt board.PlusVO.maximumPerson} and ${board.PlusVO.eventStatus == '진행예정'} and ${check != 1}">
+                    <input class="btn btn-outline-success" type="button" th:onclick="dateView([[${board.boardNum}]])"
+                        value="신청하기">
                 </th:block>
             </div>
             <div sec:authorize="hasRole('ROLE_Y')" class="d-md-flex justify-content-end">
-                <input type="button" class="btn btn-primary btn-sm" style="margin-right: 5px;" th:onclick="|location.href='@{/goEventUpdatePage(boardNum=${board.boardNum})}'|"
-                    value="게시물 수정">
-                <input type="button" class="btn btn-primary btn-sm" th:onclick="eventDelete([[${board.boardNum}]],[[${board.PlusVO.openDate}]],[[${board.boardTitle}]])" value="게시물 삭제">
+                <input type="button" class="btn btn-primary btn-sm" style="margin-right: 5px;"
+                    th:onclick="|location.href='@{/goEventUpdatePage(boardNum=${board.boardNum})}'|" value="게시물 수정">
+                <input type="button" class="btn btn-primary btn-sm"
+                    th:onclick="eventDelete([[${board.boardNum}]],[[${board.PlusVO.openDate}]],[[${board.boardTitle}]])"
+                    value="게시물 삭제">
             </div>
             <div>
                 <input class="btn btn-success btn-lg" type="button" value="목록"
@@ -120,7 +137,7 @@
                         <div>
                             <input type="date" class="form-control" name="applyDate" id="applyDate">
                         </div>
-                        <input type="hidden" id="boardNumTag" name="boardNum" >
+                        <input type="hidden" id="boardNumTag" name="boardNum">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -137,6 +154,13 @@
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴 때 같이 실행되는 js -->
     <script src="/js/content/culture/culture.js"></script>
+    <script>
+        function download() {
+            const downloadTag = document.querySelector("#downloadTag");
+            downloadTag.submit();
+
+        }
+    </script>
 </th:block>
 
 </html>
