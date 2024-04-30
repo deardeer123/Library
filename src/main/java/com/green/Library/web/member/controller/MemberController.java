@@ -158,15 +158,26 @@ public class MemberController {
 
     @ResponseBody
     @PostMapping("/changePwFetch")
-    public void changePw(@RequestParam(name = "userPw") String userPw,
+    public String changePw(@RequestParam(name = "userPw") String userPw,
                          @RequestParam(name = "userCode") int userCode,
                          @RequestParam(name = "newPw") String newPw,
-                         MemberVO memberVO){
+                         MemberVO memberVO,HttpSession session){
 
-        memberVO.setUserPw(encoder.encode(newPw));
-        memberVO.setUserCode(userCode);
-        memberService.updateUserPw(memberVO);
+        memberService.myPageUserInfo(userCode);
 
+        System.out.println("인코더비번"+encoder.encode(userPw));
+        String memberPw = encoder.encode(memberVO.getUserPw());
+        System.out.println("유저비번"+ memberPw);
+        String str = "";
+        if(!memberPw.equals(encoder.encode(userPw))){
+            str += "비밀번호를 확인해주세요";
+        }else{
+            str += "변경 되었습니다.";
+            memberVO.setUserPw(encoder.encode(newPw));
+            memberVO.setUserCode(userCode);
+            memberService.updateUserPw(memberVO);
+        }
+        return str;
     }
 
     @GetMapping("applyList")

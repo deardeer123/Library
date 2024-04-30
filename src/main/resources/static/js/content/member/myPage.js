@@ -52,7 +52,8 @@ const pwCF2 = (userPw, userCode) => {
   // console.log(newPw1)
   // console.log(newPw2)
 
-  if ((newPw1 != newPw2) || (pw != userPw)) {
+  
+  if((newPw1 != newPw2)){
     alert('비밀번호를 확인해주세요');
     return;
   }
@@ -83,8 +84,9 @@ const pwCF2 = (userPw, userCode) => {
     })
     //fetch 통신 후 실행 영역
     .then((data) => {//data -> controller에서 리턴되는 데이터!
-      alert('비밀번호 변경이 완료되었습니다.')
-      location.href = '/logout'
+      
+      alert(`${data}`)
+      // location.href = '/logout'
     })
     //fetch 통신 실패 시 실행 영역
     .catch(err => {
