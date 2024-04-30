@@ -56,7 +56,7 @@
                         <td>정원</td>
                         <td>[[${board.PlusVO.personnel}]] / [[${board.PlusVO.maximumPerson}]]</td>
                     </tr>
-                    <tr sec:authorize="hasAnyRole('ROLE_N' , 'ROLE_Y') ">
+                    <tr>
                         <td colspan="2">
                             <th:block th:if="${board.PlusVO.personnel lt board.PlusVO.maximumPerson} and ${board.PlusVO.eventStatus == '진행예정'}">
                                 현재 [[${board.PlusVO.maximumPerson - board.PlusVO.personnel}]]명의 인원이 신청 가능합니다

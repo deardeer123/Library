@@ -1,25 +1,109 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
-    <!-- <link rel="stylesheet" href="/"> -->
+    <link rel="stylesheet" href="/css/content/homePage/find.css">
 </th:block>
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    아이디/비밀번호 찾기
-    <div class="row">
+    <div class="row mt-3">
         <div class="col">
-            
+            <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                    class="bi bi-person-exclamation" viewBox="0 0 16 16">
+                    <path
+                        d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m.256 7a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z" />
+                    <path
+                        d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a.5.5 0 0 0-.5.5v1.5a.5.5 0 0 0 1 0V11a.5.5 0 0 0-.5-.5m0 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                </svg>
+            </span>
+            <span class="title-head align-middle">
+                <h2>아이디 / 비밀번호 찾기</h2>
+            </span>
         </div>
     </div>
+    <div class="row mt-3 justify-content-center">
+        <div class="find-box col-10 text-center align-middle">
+            <div class="row mt-3">
+                <div class="col">
+                    아이디 및 비밀번호를 찾으신 후 개인정보 변경을 하시길 바랍니다.
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-6 pr-3">
+                    <div class="row">
+                        <div class="col find-id" onclick="goFindId()">
+                            <p>
+                                아이디 찾기
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-6 pl-3">
+                    <div class="row">
+                        <div class="col find-pw" onclick="goFindPw()">
+                            <p>
+                                비밀번호 찾기
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- id 모달 -->
+    <div class="modal" id="myModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/FindOfTel" method="post" id="goFindId">
+                    <div class="modal-header">
+                        <h5 class="modal-title">아이디 찾기</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                        <div>이름</div>
+                        <input type="text" class="userName form-control" name="userName" style="width: 70%;">
+                        </p>
+                        <p>
+                        <div>휴대전화번호</div>
+                        <input type="text" oninput="oninputPhone(this)" class="userTel form-control" style="width: 70%;"
+                            maxlength="14" placeholder="- 을 제외한 숫자를 입력해주세요" name="userTel">
+                        </p>
+                        <p>
+                        <div>Email</div>
+                        <input type="email" name="email" class="email form-control"
+                            style="display: inline-block; width: 45%;">
+                        @
+                        <select name="email" class="email form-select" style="display: inline-block; width: 50%;">
+                            <option value="@naver.com">naver.com</option>
+                            <option value="@gmail.com">gmail.com</option>
+                            <option value="@daum.net">daum.net</option>
+                        </select>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="">이메일 인증</button>
+                        <button type="button" class="btn btn-primary" onclick="tel()">휴대폰 인증</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
-    <!-- <script src="/"></script> -->
+    <script src="/js/content/member/find.js"></script>
 </th:block>
+
 </html>

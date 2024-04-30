@@ -1,0 +1,68 @@
+.title-head{
+  font-size: 30px;
+  display: inline-block;
+  font-weight: bolder;
+  margin-left: 3px;
+  margin-bottom: 0px;
+}
+
+.title-head > h2{
+  margin: 0;
+}
+
+.find-box{
+  border: 1px solid rgb(190, 191, 196);
+  border-radius: 30px;
+  padding: 10px;
+  height: 300px;
+  box-shadow: 5px 5px gray;
+
+}
+
+.find-box .row{
+  padding: 10px;
+}
+
+.find-id{
+  border: 1px solid rgb(190, 191, 196);
+  border-radius: 30px;
+  padding: 10px;
+  background-color: #4F9D79;
+  color: #ffffff;
+  margin-right: 10px;
+  box-shadow: 1px 1px 1px 1px rgb(190, 191, 196);
+  height: 80px;
+  cursor: pointer;
+}
+.find-pw{
+  border: 1px solid rgb(190, 191, 196);
+  border-radius: 30px;
+  padding: 10px;
+  background-color: #4F9D79;
+  color: #ffffff;
+  margin-left: 10px;
+  box-shadow: 1px 1px 1px 1px rgb(190, 191, 196);
+  height: 80px;
+  cursor: pointer;
+
+}
+
+
+p{
+  margin-top: 15px;
+  
+}
+
+/* 
+.find-box h4{
+  margin-top: 50px;
+  height: 100px;
+  width: 250px;
+  margin-left: 100px;
+  padding-top : 35px;
+  padding-bottom: 30px;
+  border: 1px solid rgb(190, 191, 196);
+  border-radius: 30px;
+  box-shadow: 3px 3px 3px 3px gray;
+  cursor: pointer;
+} */

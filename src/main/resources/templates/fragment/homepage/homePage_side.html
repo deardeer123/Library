@@ -26,15 +26,15 @@
         <th:block th:if="${selectedMenuIndex != null and menuList2 == null and menuList3 == null}">
             <th:block th:each="e:${menuList}" th:if="${e.menuIndex == selectedMenuIndex}">
                 <div class="row">
-                    <div class="col bg-success-subtle">
-                        <h2>[[${e.menuName}]]</h2>
+                    <div class="col bg-success text-white bg-opacity-75 fs-2">
+                        [[${e.menuName}]]
                     </div>
                 </div>
                 <ul class="list-group list-group-flush">
 
                     <th:block th:each="e1:${e.webSideMenuVOList}">
 
-                        <li class="list-group-item"
+                        <li class="list-group-item list-group-item-success"
                             th:classappend="${e1.sideMenuIndex == selectedSideMenuIndex ? 'active' : ''}"
                             th:onclick="goPage([[${e1.sideMenuPage}]] , [[${e1.sideMenuNum}]])">
                             [[${e1.sideMenuName}]]

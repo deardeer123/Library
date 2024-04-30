@@ -37,6 +37,6 @@ public interface MemberService {
 
     void updateUserPw(MemberVO memberVO);
 
-
+    MemberVO findUser(MemberVO memberVO);
 }
 
