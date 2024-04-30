@@ -206,18 +206,16 @@ public class MemberController {
     public String bookLoanReturn(Model model){
         //도서 대출 반납 목록
         model.addAttribute("page", "bookLoanReturn");
+
         return "content/homePage/member/bookLoanReturn";
     }
 
     @GetMapping("myBookingList")
-    public String myBookingList(Model model,
-                                @RequestParam(name = "userCode", required = false, defaultValue = "0") int userCode){
+    public String myBookingList(Model model, HttpSession session){
         //내 (도서)예약 목록
         model.addAttribute("page", "myBookingList");
 
-        System.out.println(userCode);
-
-        return "content/homePage/member/myBookingList?userCode=" + userCode;
+        return "content/homePage/member/myBookingList?" + session.getAttribute("userCode");
     }
 
     @GetMapping("memberWithdrawal")

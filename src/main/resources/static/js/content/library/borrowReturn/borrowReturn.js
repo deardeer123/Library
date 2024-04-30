@@ -17,8 +17,9 @@ function selectMemberInfo() {
     const reserve_list_tbody = document.querySelector('.reserve-list-table tbody');
 
     // 들어오는 데이터 관리
-    const renderCnt = document.querySelector('#render-cnt').innerHTML;
-    const returnCnt = document.querySelector('#return-cnt').innerHTML;
+    const renderCnt = document.querySelector('#render-cnt');
+    const returnCnt = document.querySelector('#return-cnt');
+    const reserveCnt = document.querySelector('#reserve-cnt');
     const inputValue = document.querySelector('#inputData').value;
     const selectedCardNum = document.querySelector('input[name="selectedCardNum"]').value
     const borrowDate = document.querySelector('#borrow-date').value;
@@ -47,53 +48,54 @@ function selectMemberInfo() {
 
             console.log(data);
 
-            if (data.userCode == 0) {
-                alert('회원번호 혹은 책번호가 정확하지 않습니다.\n다시 입력하세요.');
+            // const userCode = data.userInfo.userCode;
+            console.log(data.userInfo.userCode);
+
+            if (data.userInfo.userCode == 0) {
+                alert('회원번호 혹은 책번호가 일치하지 않습니다.\n다시 입력하세요.');
                 return;
             }
 
-            //selectedCardNum 값을 이전에 입력한 값으로 저장
-            //조회가 됐으면 조회된 데이터, 아니면 0이 들어감
+            // selectedCardNum 값을 이전에 입력한 값으로 저장
+            // 조회가 됐으면 조회된 데이터, 아니면 0이 들어감
 
-            document.querySelector('input[name="selectedCardNum"]').value = data.cardNum;
+            document.querySelector('input[name="selectedCardNum"]').value = data.userInfo.cardNum;
 
             userInfo.innerHTML = '';
 
             let str1 = '';
 
-            //조회한 데이터가 있을 때만 다시 그림
-            if (data.cardNum != 0) {
+            // 조회한 데이터가 있을 때만 다시 그림
+            if (data.userInfo.cardNum != 0) {
 
                 str1 = `
                 <div class="row">
                     <div class="col">
-                        카드번호 : ${data.cardNum}
+                        카드번호 : ${data.userInfo.cardNum}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        이름 : ${data.userName}
+                        이름 : ${data.userInfo.userName}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        전화번호 : ${data.userTel}
+                        전화번호 : ${data.userInfo.userTel}
                     </div>
                 </div>
                 <div class="row mt-1">
                     <div class="col-8">
-                        <textarea id="userIntro" name="userIntro" class="form-control" rows="1" style="resize:none;">`
-                    
-                
-                        if (data.userIntro == null) {
-                    str1 += ``
-                } else {
-                    str1 += `${data.userIntro}`
-                }
+                        <textarea id="userIntro" name="userIntro" class="form-control" rows="1" style="resize:none;">`;
+                        if (data.userInfo.userIntro == null) {
+                            str1 += ``;
+                        } else {
+                            str1 += `${data.userInfo.userIntro}`;
+                        }
                 str1 += `</textarea>
                     </div>
                     <div class="col-4 d-grid">
-                        <input type="button" class="btn btn-secondary" value="메모수정" onclick="updateUserIntro(${data.userCode})">
+                        <input type="button" class="btn btn-secondary" value="메모수정" onclick="updateUserIntro(${data.userInfo.userCode})">
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -101,7 +103,7 @@ function selectMemberInfo() {
                         <input type="button" class="btn btn-secondary" value="SMS 전송">
                     </div>
                     <div class="col-6 d-grid">
-                        <input type="button" class="btn btn-secondary" value="상세정보" onclick="showModal(${data.userCode})">
+                        <input type="button" class="btn btn-secondary" value="상세정보" onclick="showModal(${data.userInfo.userCode})">
                     </div>
                 </div>`;
 
@@ -113,21 +115,30 @@ function selectMemberInfo() {
                 return_list_tbody.innerHTML = '';
                 reserve_list_tbody.innerHTML = '';
                 
+                renderCnt.innerHTML = '';
                 returnCnt.innerHTML = '';
-
+                reserveCnt.innerHTML = '';
 
                 let str2 = '';
                 let str3 = '';
                 let str4 = '';
                 let cnt1 = '';
                 let cnt2 = '';
+                let cnt3 = '';
 
                 ////////////////////////////////////////////////////
 
-                const data_cnt = data.bookBorrowList.length;
+                const data_cnt = data.userInfo.bookBorrowList.length;
 
                 //대출 및 반납, 예약 내역이 없을 경우
-                if (data_cnt == 1 && data.bookBorrowList[0].bookCode == null) {
+                if (data_cnt == 1 && data.userInfo.bookBorrowList[0].bookCode == null) {
+
+                    cnt1 += `<b>대출(0/5)</b>`;
+
+                    cnt2 += `<b>반납(0)</b>`;
+
+                    cnt3 += `<b>예약 (예약 가능 건수 : 5)</b>`;
+
                     str2 += `
                     <td colspan="7">
                         대출 내역이 없습니다.
@@ -143,6 +154,9 @@ function selectMemberInfo() {
                         예약 내역이 없습니다.
                     </td>`;
 
+                    renderCnt.insertAdjacentHTML("afterbegin", cnt1);
+                    returnCnt.insertAdjacentHTML("afterbegin", cnt2);
+                    reserveCnt.insertAdjacentHTML("afterbegin", cnt3);
                     borrow_list_tbody.insertAdjacentHTML("afterbegin", str2);
                     return_list_tbody.insertAdjacentHTML("afterbegin", str3);
                     reserve_list_tbody.insertAdjacentHTML("afterbegin", str4);
@@ -150,12 +164,10 @@ function selectMemberInfo() {
                 }
                 else {
 
-                    renderCnt.innerHTML = '';
-                    returnCnt.innerHTML = '';
                     let renCnt = 0;
                     let retCnt = 0;
 
-                    data.bookBorrowList.forEach((bookBorrowInfo, idx) => {
+                    data.userInfo.bookBorrowList.forEach((bookBorrowInfo, idx) => {
                         if (bookBorrowInfo.returnYN == 'N') {
                             renCnt = renCnt + 1;
 
@@ -224,15 +236,13 @@ function selectMemberInfo() {
 
                     });
 
-                    alert(retCnt);
-
-                    cnt1 += `<b>대출(${renCnt}/5)</b>`;
-
-                    if(retCnt === 0){
-                        cnt2 += `<b>반납(0)</b>`;
-                    } else {
-                        cnt2 += `<b>반납(${retCnt})</b>`;
+                    if(data.isReserved){
+                        alert('해당 도서는 예약 내역이 있습니다.\n카운터에 보관해주세요.');
                     }
+                    
+                    cnt1 += `<b>대출(${renCnt}/5)</b>`;
+                    cnt2 += `<b>반납(${retCnt})</b>`;
+                    
 
                     renderCnt.insertAdjacentHTML("afterbegin", cnt1);
                     returnCnt.insertAdjacentHTML("afterbegin", cnt2);
