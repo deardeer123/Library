@@ -5,6 +5,7 @@ import com.green.Library.library.libraryhome.vo.CalendarVO;
 import com.green.Library.library.regAndView.service.BookSearchVO;
 import com.green.Library.web.board.service.BoardServiceImpl;
 import com.green.Library.web.board.vo.BoardVO;
+import com.green.Library.web.findBook.vo.FindBookVO;
 import com.green.Library.web.member.service.MemberServiceImpl;
 import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.participationForum.service.ParticipationForumService;
@@ -53,6 +54,8 @@ public class WebHomeController {
         //행사 3개
         model.addAttribute("eventList",boardService.selectEvent3());
 
+        webHomeService.recommendedBookList3().forEach(s-> System.out.println(s.getBookTitle()));
+
         //처음엔 추천도서 3개
         switch (type){
             case "recommend":
@@ -81,6 +84,30 @@ public class WebHomeController {
         return "content/homePage/home";
     }
 
+    @ResponseBody
+    @PostMapping("/homeBookList")
+    public Map<String,Object>homeBookList(@RequestParam(name="type") String type , Model model){
+        //처음엔 추천도서 3개
+
+        System.out.println(type);
+        Map<String , Object> map = new HashMap<>();
+        switch (type){
+            case "recommend":
+                map.put("bookList",webHomeService.recommendedBookList3() );
+                map.put("type", type);
+                return map;
+            case "new":
+                map.put("bookList", webHomeService.newBookList6());
+                map.put("type", type);
+                return map;
+            default:
+                map.put("bookList", webHomeService.manyBorrowBookList6());
+                map.put("type", type);
+                return map;
+
+        }
+
+    }
 
     @GetMapping("/test")
     public String goTest(Model model){

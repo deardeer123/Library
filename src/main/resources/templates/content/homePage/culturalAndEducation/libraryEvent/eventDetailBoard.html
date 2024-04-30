@@ -36,9 +36,17 @@
         <div class="col">
             <table class="table table-borderless text-center">
                 <thead>
-                    <tr th:each="file : ${board.fileList}">
+                    
+                    <tr th:each="file : ${board.fileList}" th:if="${file.isMain=='Y'}">
                         <td>
-                            <img th:src="@{'/upload/' + ${file.attachedFileName}}">
+                            <!-- 메인그린 -->
+                            <img th:src="@{'/upload/' + ${file.AttachedFileName}}" style="height: 35vh;">
+                        </td>
+                    </tr>
+                    <tr th:each="file : ${board.fileList}" th:if="${file.isMain=='N'}">
+                        <td>
+                            <!-- 서브그림 -->
+                            <img th:src="@{'/upload/' + ${file.AttachedFileName}}" style="height: 10vh;">
                         </td>
                     </tr>
                 </thead>
