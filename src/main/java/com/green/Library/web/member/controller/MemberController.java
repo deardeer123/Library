@@ -85,6 +85,12 @@ public class MemberController {
         return "content/homePage/member/findIdOrPW";
     }
 
+//    @PostMapping("/findId")
+//    public void findId(){
+//
+//    }
+
+
     @PostMapping("/findPw")
     public String findPw(MemberVO memberVO){
         //임시 비밀번호 생성
@@ -163,22 +169,27 @@ public class MemberController {
                          @RequestParam(name = "newPw") String newPw,
                          MemberVO memberVO,HttpSession session){
 
-        memberService.myPageUserInfo(userCode);
+        System.out.println(userCode);
+        MemberVO memberVO1 = memberService.myPageUserInfo(userCode);
 
         System.out.println("인코더비번"+encoder.encode(userPw));
-        String memberPw = encoder.encode(memberVO.getUserPw());
-        System.out.println("유저비번"+ memberPw);
+        System.out.println("userPw" + userPw);
+        System.out.println("memberVO"+memberVO1.getUserPw());
+
+        System.out.println("매치"+encoder.matches(userPw, memberVO1.getUserPw()));
         String str = "";
-        if(!memberPw.equals(encoder.encode(userPw))){
+        if(!encoder.matches(userPw, memberVO1.getUserPw())){
             str += "비밀번호를 확인해주세요";
         }else{
-            str += "변경 되었습니다.";
+            str += "비밀번호가 변경 되었습니다.";
             memberVO.setUserPw(encoder.encode(newPw));
             memberVO.setUserCode(userCode);
             memberService.updateUserPw(memberVO);
         }
         return str;
     }
+
+
 
     @GetMapping("applyList")
     public String applyList(Model model, BoardVO boardVO, HttpSession session){
@@ -212,6 +223,7 @@ public class MemberController {
         model.addAttribute("page", "memberWithdrawal");
         return "content/homePage/member/memberWithdrawal";
     }
+
 
 
 }

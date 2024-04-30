@@ -14,32 +14,44 @@
   border: 1px solid rgb(190, 191, 196);
   border-radius: 30px;
   padding: 10px;
-  height: 500px;
+  height: 300px;
   box-shadow: 5px 5px gray;
 
 }
 
-.find-box row{
+.find-box .row{
   padding: 10px;
 }
 
 .find-id{
-  margin: 0 auto;
   border: 1px solid rgb(190, 191, 196);
   border-radius: 30px;
   padding: 10px;
+  background-color: #4F9D79;
+  color: #ffffff;
+  margin-right: 10px;
+  box-shadow: 1px 1px 1px 1px rgb(190, 191, 196);
+  height: 80px;
+  cursor: pointer;
+}
+.find-pw{
+  border: 1px solid rgb(190, 191, 196);
+  border-radius: 30px;
+  padding: 10px;
+  background-color: #4F9D79;
+  color: #ffffff;
+  margin-left: 10px;
+  box-shadow: 1px 1px 1px 1px rgb(190, 191, 196);
+  height: 80px;
+  cursor: pointer;
+
 }
 
 
-.find-id input{
-  display: inline-block;
-  width: 60%;
+p{
+  margin-top: 15px;
+  
 }
-.find-pw input{
-  display: inline-block;
-  width: 60%;
-}
-
 
 /* 
 .find-box h4{

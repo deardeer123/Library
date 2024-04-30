@@ -1,6 +1,23 @@
-const findEmail = () => {
+function goFindId() {
+  const modal = new bootstrap.Modal('#myModal')
+  modal.show();
   
 }
-const findTel = () => {
 
+function tel(){
+  const find = document.querySelector('#goFindId')
+  find.submit();
+  
+}
+
+function email(){
+  const find = document.querySelector('#goFindId')
+
+  find.submit();
+}
+
+
+function goFindPw() {
+  // const modal = new bootstrap.Modal('#myModal')
+  // modal.show();
 }

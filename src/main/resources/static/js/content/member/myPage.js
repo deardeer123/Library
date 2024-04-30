@@ -86,7 +86,7 @@ const pwCF2 = (userPw, userCode) => {
     .then((data) => {//data -> controller에서 리턴되는 데이터!
       
       alert(`${data}`)
-      // location.href = '/logout'
+      location.href = '/logout'
     })
     //fetch 통신 실패 시 실행 영역
     .catch(err => {
