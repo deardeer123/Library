@@ -1,49 +1,49 @@
-// const check = () => {
-//   const cf1 = document.querySelector('#pw-cf1')
-//   const cf2 = document.querySelector('#pw-cf2')
+// 개인정보 변경 
+const changeMy = () => {
+  const userTel = document.querySelector('#userTel').value
+  const postCode = document.querySelector('#postCode').value
+  const userAddr = document.querySelector('#userAddr').value
+  const addrDetail = document.querySelector('#addrDetail').value
+  const email = document.querySelector('#email').value
+  const form = document.querySelector('#updateForm')
+
+
+  if (userTel == '' || userTel == 'null') {
+    alert('변경하실 정보를 입력해주세요')
+    document.querySelector('#userTel').focus();
+    return;
+  }
+  else if (postCode == '' || postCode == 'null') {
+    alert('변경하실 정보를 입력해주세요')
+    document.querySelector('#postCode').focus();
+    return;
+  }
+  else if (userAddr == '' || userAddr == 'null') {
+    alert('변경하실 정보를 입력해주세요')
+    document.querySelector('#userAddr').focus();
+    return;
+  }
+  else if (addrDetail == '' || addrDetail == 'null') {
+    alert('변경하실 정보를 입력해주세요')
+    document.querySelector('#addrDetail').focus();
+    return;
+  }
+  else if (email == '' || email == 'null') {
+    alert('변경하실 정보를 입력해주세요')
+    document.querySelector('#email').focus();
+    return;
+  }
+  else {
+    form.submit();
+  }
+
+}
 
 
 
 
 
-
-
-
-//   let pw1 = document.querySelector('#pw1').value;
-//   let pw2 = document.querySelector('#pw2').value;
-//   console.log(pw1)
-//   console.log(pw2)
-
-//   check_td.innerHTML = '';
-//   let str = '';
-
-//     if(pw2.length == pw1.length){
-//       if(pw2 == pw1){
-//         str += '비밀번호가 일치합니다';
-//         check_td.insertAdjacentHTML("afterbegin",str);
-//         check_td.style="color: forestgreen;"
-//       }
-//       else{
-//         str += '다시 확인해주시길 바랍니다'; 
-//         check_td.insertAdjacentHTML("afterbegin",str)
-//         check_td.style = "color: red;";
-//       }
-//     }
-
-// }
-
-
-// const cf = () => {
-//   let pw1 = document.querySelector('#pw1').value;
-//   let pw2 = document.querySelector('#pw2').value;
-
-//   if(pw1 == '' && pw2 == ''){
-//     confirm('')
-//   }
-// }
-
-
-
+// 비밀번호 변경  
 const pwCF2 = (userPw, userCode) => {
   let newPw1 = document.querySelector('#newPw1').value;
   let newPw2 = document.querySelector('#newPw2').value;
@@ -52,8 +52,9 @@ const pwCF2 = (userPw, userCode) => {
   // console.log(newPw1)
   // console.log(newPw2)
 
-  if (newPw1 != newPw2) {
-    alert('변경할 비밀번호를 확인해주세요');
+  
+  if((newPw1 != newPw2)){
+    alert('비밀번호를 확인해주세요');
     return;
   }
 
@@ -83,8 +84,9 @@ const pwCF2 = (userPw, userCode) => {
     })
     //fetch 통신 후 실행 영역
     .then((data) => {//data -> controller에서 리턴되는 데이터!
-      alert('비밀번호 변경이 완료되었습니다.')
-      location.href='/logout'
+      
+      alert(`${data}`)
+      // location.href = '/logout'
     })
     //fetch 통신 실패 시 실행 영역
     .catch(err => {

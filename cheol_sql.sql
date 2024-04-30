@@ -1301,3 +1301,5 @@ LIMIT 3;
         from find_book_view
    ORDER BY BOOK_REGDATE DESC
    LIMIT 6;
+   
+   

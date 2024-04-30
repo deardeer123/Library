@@ -1,0 +1,6 @@
+const findEmail = () => {
+  
+}
+const findTel = () => {
+
+}

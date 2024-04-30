@@ -284,6 +284,7 @@ public class CulturalAndEducationController {
                                         @RequestParam(name = "boardNum") int boardNum,
                                         ApplyVO applyVO,
                                         HttpSession session){
+        applyVO.setUserCode((Integer) session.getAttribute("userCode"));
         model.addAttribute("page","eventParticipation");
         model.addAttribute("check", boardService.applyCheck(applyVO));
         boardVO.setBoardNum(boardNum);
@@ -804,7 +805,7 @@ public class CulturalAndEducationController {
                                         ApplyVO applyVO,
                                         HttpSession session){
         model.addAttribute("page","applicationForClasses");
-
+        applyVO.setUserCode((Integer) session.getAttribute("userCode"));
         boardVO.setBoardNum(boardNum);
 
         model.addAttribute("check", boardService.applyCheck(applyVO));

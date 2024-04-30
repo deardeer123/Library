@@ -679,3 +679,5 @@ INNER JOIN board_plus
 ON board.board_num = board_plus.BOARD_NUM;
 
 SELECT * FROM users;
+
+

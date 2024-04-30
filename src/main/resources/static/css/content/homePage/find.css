@@ -1,0 +1,56 @@
+.title-head{
+  font-size: 30px;
+  display: inline-block;
+  font-weight: bolder;
+  margin-left: 3px;
+  margin-bottom: 0px;
+}
+
+.title-head > h2{
+  margin: 0;
+}
+
+.find-box{
+  border: 1px solid rgb(190, 191, 196);
+  border-radius: 30px;
+  padding: 10px;
+  height: 500px;
+  box-shadow: 5px 5px gray;
+
+}
+
+.find-box row{
+  padding: 10px;
+}
+
+.find-id{
+  margin: 0 auto;
+  border: 1px solid rgb(190, 191, 196);
+  border-radius: 30px;
+  padding: 10px;
+}
+
+
+.find-id input{
+  display: inline-block;
+  width: 60%;
+}
+.find-pw input{
+  display: inline-block;
+  width: 60%;
+}
+
+
+/* 
+.find-box h4{
+  margin-top: 50px;
+  height: 100px;
+  width: 250px;
+  margin-left: 100px;
+  padding-top : 35px;
+  padding-bottom: 30px;
+  border: 1px solid rgb(190, 191, 196);
+  border-radius: 30px;
+  box-shadow: 3px 3px 3px 3px gray;
+  cursor: pointer;
+} */
