@@ -101,7 +101,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                             <!-- 예약하기 버튼 -->
-                            <button type="button" class="btn btn-primary" th:onclick="insertR([[${session.userCode}]])">예약하기 </button>
+                            <button type="button" class="btn btn-primary" onclick="insertR()" data-bs-dismiss="modal">예약하기 </button>
                         </div>
                     </div>
                 </div>
@@ -453,10 +453,8 @@
             midCateTag.insertAdjacentHTML('afterbegin', str)
         }
 
-        const insertR = (userCode) => {
+        const insertR = () => {
             const bookCode = document.querySelector('#book-code').innerHTML;
-            console.log(bookCode)
-            console.log(userCode)
 
             fetch('/bookReservationFetch', { //요청경로
                 method: 'POST',
@@ -467,8 +465,8 @@
                 //컨트롤러로 전달할 데이터
                 body: new URLSearchParams({
                 // 데이터명 : 데이터값
-                    bookCode : bookCode,
-                    userCode : userCode
+                    bookCode : bookCode
+
                 })
             })
             .then((response) => {
@@ -483,12 +481,25 @@
             //fetch 통신 후 실행 영역
             .then((data) => {//data -> controller에서 리턴되는 데이터!
 
-                alert(data);
+                // console.log(`${session.userCode}`);
 
                 if(data === 'get'){
-                    alert('예약 되었습니다.');
+                    const result = confirm('예약 되었습니다.\n 예약 내역으로 가시겠습니까?');
+                    if(result){
+                        window.location.href = `/myBookingList?userCode=${session.userCode}`;
+                    }
+                }else if(data === 'next'){
+                    const result = confirm('예약 되었습니다.\n 예약 내역으로 가시겠습니까?');
+                    if(result){
+                        window.location.href = `/myBookingList?userCode=${session.userCode}`;
+                    }
+                }else if(data === 'fail'){
+                    const result = confirm('이미 예약 하셨습니다.\n 예약 내역으로 가시겠습니까?');
+                    if(result){
+                        window.location.href = `/myBookingList?userCode=${session.userCode}`;
+                    }
                 }
-                
+                // 시큐리티로 로그인 페이지 날리기
             })
             //fetch 통신 실패 시 실행 영역
             .catch(err=>{

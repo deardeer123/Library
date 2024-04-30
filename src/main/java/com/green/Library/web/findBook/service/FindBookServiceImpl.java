@@ -66,9 +66,25 @@ public class FindBookServiceImpl implements FindBookService{
         return sqlSession.selectList("findBookMapper.changeRegDate2");
     }
 
+    // 도서 예약1(대출 안 된 책)
     @Override
-    public void bookReservationFetch(BookReservationVO bookReservationVO) {
-        sqlSession.insert("findBookMapper.bookReservationFetch", bookReservationVO);
+    public void bookReservationFetch1(BookReservationVO bookReservationVO) {
+        sqlSession.insert("findBookMapper.bookReservationFetch1", bookReservationVO);
+    }
+
+    // 도서 예약1(대출 된 책)
+    @Override
+    public void bookReservationFetch2(BookReservationVO bookReservationVO) {
+        sqlSession.insert("findBookMapper.bookReservationFetch2", bookReservationVO);
+    }
+
+    // 중복 예약 방지
+    @Override
+    public boolean selectDuplication(BookReservationVO bookReservationVO) {
+
+        int cnt = sqlSession.selectOne("findBookMapper.selectDuplication", bookReservationVO);
+
+        return cnt > 0 ? true : false;
     }
 
 

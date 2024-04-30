@@ -1,5 +1,6 @@
 package com.green.Library.web.findBook.controller;
 
+import com.green.Library.library.borrowReturn.service.BorrowReturnService;
 import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.library.regAndView.service.BookSearchVO;
 import com.green.Library.libraryBook.service.LibraryBookService;
@@ -28,6 +29,9 @@ public class FindBookController {
 
     @Resource(name= "findBookService")
     FindBookService findBookService;
+
+    @Resource(name = "borrowReturnService")
+    BorrowReturnService borrowReturnService;
 
     private final int selectedMenuIndex = 1;
 
@@ -82,22 +86,29 @@ public class FindBookController {
         return findBookVO;
     }
 
-    // 예약 하기
-    @PostMapping("/bookReservationFetch")
-    public String bookReservationFetch(@RequestParam(name = "bookCode")String bookCode,
-                                        HttpSession session,
-                                        BookReservationVO bookReservationVO){
+    @ResponseBody
+    @RequestMapping("/bookReservationFetch")
+    public String bookReservationFetch(@RequestParam(name = "bookCode")String bookCode, HttpSession session, BookReservationVO bookReservationVO) {
 
-        System.out.println("@@@@@@@@@@@@@@@@@@@@!!!!!!!!!!!!!!!!!!!!!" + session.getAttribute("userCode"));
+        bookReservationVO.setUserCode((Integer) session.getAttribute("userCode"));
+        bookReservationVO.setBookCode(bookCode);
 
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@" + borrowReturnService.selectBookAvailable(bookCode));
 
+        if (!session.getAttribute("userCode").equals("") && !findBookService.selectDuplication(bookReservationVO) && borrowReturnService.selectBookAvailable(bookCode)) {
 
-        if(!session.getAttribute("userCode").equals("")){
-            bookReservationVO.setUserCode((Integer) session.getAttribute("userCode"));
-            bookReservationVO.setBookCode(bookCode);
-            findBookService.bookReservationFetch(bookReservationVO);
+            findBookService.bookReservationFetch1(bookReservationVO);
+
             return "get";
-        } else {
+
+        } else if(!session.getAttribute("userCode").equals("") && !findBookService.selectDuplication(bookReservationVO) && !borrowReturnService.selectBookAvailable(bookCode)){
+
+            findBookService.bookReservationFetch2(bookReservationVO);
+
+            return "next";
+
+        }else {
+
             return "fail";
         }
     }

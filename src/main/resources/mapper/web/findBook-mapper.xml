@@ -165,23 +165,52 @@
         from book_info
     </select>
 
-    <!-- 책 예약 -->
-    <insert id="bookReservationFetch">
+    <!-- 책 예약(대출 중이 아닌 책) -->
+    <insert id="bookReservationFetch1">
         INSERT INTO BOOK_RESERVATION (
             USER_CODE
             , BOOK_CODE
             , RESERVE_DATE
             , RESERVE_CANCEL
             , RESERVE_STATUS
-            , RESERVE_CNT
         ) VALUES (
             #{userCode}
             , #{bookCode}
             , NOW()
             , DATE_ADD(NOW(), INTERVAL +3 DAY)
-            , RESERVE_CNT + 1
+            , '대기중'
         )
     </insert>
+
+    <!-- 책 예약(대출 중인 책) -->
+    <insert id="bookReservationFetch2">
+        INSERT INTO BOOK_RESERVATION (
+            USER_CODE
+            , BOOK_CODE
+            , RESERVE_DATE
+            , RESERVE_STATUS
+        ) VALUES (
+            #{userCode}
+            , #{bookCode}
+            , NOW()
+            , '대기중'
+        )
+    </insert>
+
+    <!-- 중복 예약 방지 -->
+    <select id="selectDuplication" resultType="int">
+        SELECT COUNT(*)
+        FROM BOOK_RESERVATION
+        WHERE USER_CODE = #{userCode}
+        AND BOOK_CODE = #{bookCode}
+    </select>
+
+<!--    <select id="selectMyReservation" resultMap="bnrMapper.bookReserve">-->
+<!--        SELECT USER_CODE-->
+<!--            , BOOK_CODE-->
+<!--            , RESERVE_DATE-->
+<!--            , -->
+<!--    </select>-->
 
 </mapper>
 
