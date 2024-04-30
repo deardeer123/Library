@@ -1,5 +1,8 @@
 package com.green.Library.util.mail;
 
+import com.green.Library.web.member.service.MemberService;
+import com.green.Library.web.member.service.MemberServiceImpl;
+import jakarta.annotation.Resource;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -16,6 +19,10 @@ public class MailServiceImpl implements MailService{
     @Autowired
     private JavaMailSender emailSender;
 
+    //랜덤키 생성
+    @Resource(name = "memberService")
+    private MemberServiceImpl memberService;
+
     //인증번호 생성
     private String ePw;
 
@@ -28,7 +35,7 @@ public class MailServiceImpl implements MailService{
 
         message.addRecipients(MimeMessage.RecipientType.TO, to); //받는 대상
         message.setSubject("제목"); //메일 제목
-        String msg = "인증번호 : " + ePw;
+        String msg = "임시 발급 키 : " + ePw;
         message.setText(msg,"utf-8"); //내용
         //보내는 사람의 이메일 주소 및 보내는 사람 이름
         message.setFrom(new InternetAddress("rivenop@naver.com","Admin"));
@@ -39,16 +46,19 @@ public class MailServiceImpl implements MailService{
     @Override
     public String createKey() {
 
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
-        Random random = new Random();
-        String key = random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-        System.out.println("생성된 랜덤 인증코드"+ key);
+        String key = memberService.createRandomPw();
+        System.out.println("생성한 랜덤 인증 키 : " + key);
+
+//        int leftLimit = 48; // numeral '0'
+//        int rightLimit = 122; // letter 'z'
+//        int targetStringLength = 10;
+//        Random random = new Random();
+//        String key = random.ints(leftLimit, rightLimit + 1)
+//                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+//                .limit(targetStringLength)
+//                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+//                .toString();
+//        System.out.println("생성된 랜덤 인증코드"+ key);
         return key;
     }
 
@@ -60,7 +70,7 @@ public class MailServiceImpl implements MailService{
     public String sendSimpleMessage(String to) throws Exception {
 
         ePw = createKey(); // 랜덤 인증코드 생성
-        System.out.println("********생성된 랜덤 인증코드******** => " + ePw);
+        System.out.println("********생성한 랜덤 인증 키******** => " + ePw);
 
         MimeMessage message = creatMessage(to); // "to" 로 메일 발송
 
