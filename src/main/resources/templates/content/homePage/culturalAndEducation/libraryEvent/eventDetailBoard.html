@@ -36,16 +36,24 @@
         <div class="col">
             <table class="table table-borderless text-center">
                 <thead>
-                    <tr th:each="file : ${board.fileList}">
+                    
+                    <tr th:each="file : ${board.fileList}" th:if="${file.isMain=='Y'}">
                         <td>
-                            <img th:src="@{'/upload/' + ${file.attachedFileName}}">
+                            <!-- 메인그린 -->
+                            <img th:src="@{'/upload/' + ${file.AttachedFileName}}" style="height: 35vh;">
+                        </td>
+                    </tr>
+                    <tr th:each="file : ${board.fileList}" th:if="${file.isMain=='N'}">
+                        <td>
+                            <!-- 서브그림 -->
+                            <img th:src="@{'/upload/' + ${file.AttachedFileName}}" style="height: 10vh;">
                         </td>
                     </tr>
                 </thead>
                 
             </table>
             <tr>
-                <td>[[${board.content}]]</td>
+                <td><pre>[[${board.content}]]</pre></td>
             </tr>
             <div sec:authorize="hasRole('ROLE_Y')" class="d-md-flex justify-content-end">
                 <input type="button" style="margin-right: 5px;" class="btn btn-primary btn-sm" value="게시글 수정"
