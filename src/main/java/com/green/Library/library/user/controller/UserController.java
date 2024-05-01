@@ -58,18 +58,14 @@ public class UserController {
     // 이용자 관리에서 모달에 띄울 상세정보
     @ResponseBody
     @PostMapping("/showUserDetailFetch")
-    public MemberVO showUserDetail1(@RequestBody Map<String, String> userDetail){
+    public MemberVO showUserDetail(@RequestBody Map<String, String> userDetail){
 
         System.out.println("@@@@@@@@@@@@@" + userDetail);
 
         // 정수 변환
-        int code = Integer.parseInt(userDetail.get("userCode"));
+        int userCode = Integer.parseInt(userDetail.get("userCode"));
 
-        Optional<Integer> userCode = Optional.ofNullable(code);
-
-        System.out.println(userService.showUserDetail(userCode.get()));
-
-        return userCode.map( u -> userService.showUserDetail(u)).orElse(null);
+        return userService.showUserDetail(userCode);
     }
 
     //이용자 승인
@@ -147,17 +143,17 @@ public class UserController {
     @RequestMapping("/updateUserDetailFetch")
     public MemberVO userDetailUpdate(@RequestBody MemberVO memberVO) {
 
-        userService.userDetailUpdate(memberVO);
-
-        System.out.println(memberVO);
-
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
-        userService.userDetailUpdate(memberVO);
+        System.out.println("왜 유저코드가 1이냐???" + memberVO);
 
         MemberVO userInfo = new MemberVO();
 
+        System.out.println("유우저코드" + memberVO.getUserCode());
+
         userInfo.setUserCode(memberVO.getUserCode());
+        userInfo.setCardStatus(memberVO.getCardStatus());
+        userInfo.setGender(memberVO.getGender());
         userInfo.setIsAdmin(memberVO.getIsAdmin());
         userInfo.setCardNum(memberVO.getCardNum());
         userInfo.setUserName(memberVO.getUserName());
@@ -165,6 +161,8 @@ public class UserController {
         userInfo.setUserIntro(memberVO.getUserIntro());
         userInfo.setBorrowCnt(memberVO.getBorrowCnt());
         userInfo.setOverdueCnt(memberVO.getOverdueCnt());
+
+        userService.userDetailUpdate(memberVO);
 
         System.out.println(userInfo);
 
@@ -177,7 +175,6 @@ public class UserController {
     public String goDelinquent(Model model){
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
-
 
         System.out.println("연체자 관리 이동");
         return "content/library/user/delinquent";

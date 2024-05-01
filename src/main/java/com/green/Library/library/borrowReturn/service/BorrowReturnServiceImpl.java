@@ -69,7 +69,7 @@ public class BorrowReturnServiceImpl implements BorrowReturnService{
     // 예약 리스트 조회
     @Override
     public List<BookReservationVO> selectReservationList(SearchUserVO searchUserVO) {
-        return sqlSession.selectList("bnrMapper.selectReserve", searchUserVO);
+        return sqlSession.selectList("bnrMapper.selectReservationList", searchUserVO);
     }
 
     // 책이 반납 될 때 해당 책이 예약 내역이 있는 지 확인

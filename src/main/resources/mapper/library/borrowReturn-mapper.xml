@@ -23,7 +23,6 @@
         <result      column="RESERVE_CANCEL"      property="reserveCancel"/>
         <result      column="RESERVE_STATUS"      property="reserveStatus"/>
         <result      column="RESERVE_CNT"         property="reserveCnt"/>
-        <association property="memberVO"          resultMap="memberMapper.users"/>
         <association property="libraryBookVO"     resultMap="libraryBookMapper.libraryBook"/>
     </resultMap>
 
@@ -206,7 +205,7 @@
         <if test='bookCode1 != null and !bookCode1.equals("") and bookCode2 != null and !bookCode2.equals("")'>
             AND BOOK_CODE BETWEEN #{bookCode1} AND #{bookCode2}
         </if>
-        <if test='reserveDate1 != null and !reserveDate.equals("") and (reserveDate2 == null or reserveDate2.equals(""))'>
+        <if test='reserveDate1 != null and !reserveDate1.equals("") and (reserveDate2 == null or reserveDate2.equals(""))'>
             AND RESERVE_DATE BETWEEN #{reserveDate1} AND NOW()
         </if>
         <if test='reserveDate2 != null and !reserveDate2.equals("") and (reserveDate1 == null or reserveDate1.equals(""))'>
@@ -232,6 +231,7 @@
             , USER_CODE
         FROM BOOK_RESERVATION
         WHERE BOOK_CODE = #{bookCode}
+        AND RESERVE_STATUS = '대기중'
     </select>
 
     <!-- 반납 후 해당 책이 예약 내역이 있을 경우 예약 진행 -->
@@ -258,7 +258,6 @@
         WHERE USER_CODE = #{userCode}
         AND BOOK_CODE = #{bookCode}
     </update>
-
 
 <!-- ////////////////////////////////////////////////////// -->
 

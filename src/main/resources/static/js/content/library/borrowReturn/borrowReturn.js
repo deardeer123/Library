@@ -2,12 +2,12 @@
 document.querySelector('#borrow-date').value = new Date().toISOString().substring(0, 10);
 document.querySelector('#return-date').value = new Date().toISOString().substring(0, 10);
 
+// 이용자 조회
 function selectMemberInfo() {
 
     // 그림 그릴 이용자 정보 태그 선택하기(userInfo)
     const userInfo = document.querySelector('#userInfo');
     
-
     // 모든 테이블의 tbody 태그 선택
     // 1. 대출 내역 테이블 tbody
     const borrow_list_tbody = document.querySelector('.borrow-list-table tbody');
@@ -21,7 +21,7 @@ function selectMemberInfo() {
     const returnCnt = document.querySelector('#return-cnt');
     const reserveCnt = document.querySelector('#reserve-cnt');
     const inputValue = document.querySelector('#inputData').value;
-    const selectedCardNum = document.querySelector('input[name="selectedCardNum"]').value
+    const selectedCardNum = document.querySelector('#selected-card-num').value
     const borrowDate = document.querySelector('#borrow-date').value;
     const returnDate = document.querySelector('#return-date').value;
 
@@ -49,7 +49,6 @@ function selectMemberInfo() {
             console.log(data);
 
             // const userCode = data.userInfo.userCode;
-            console.log(data.userInfo.userCode);
 
             if (data.userInfo.userCode == 0) {
                 alert('회원번호 혹은 책번호가 일치하지 않습니다.\n다시 입력하세요.');
@@ -58,8 +57,7 @@ function selectMemberInfo() {
 
             // selectedCardNum 값을 이전에 입력한 값으로 저장
             // 조회가 됐으면 조회된 데이터, 아니면 0이 들어감
-
-            document.querySelector('input[name="selectedCardNum"]').value = data.userInfo.cardNum;
+            document.querySelector('#selected-card-num').value = data.userInfo.cardNum;
 
             userInfo.innerHTML = '';
 
@@ -261,6 +259,10 @@ function selectMemberInfo() {
 }
 
 
+
+
+
+
 // 유저 인트로 업데이트
 function updateUserIntro(userCode) {
     // 유저 인트로 선택
@@ -302,6 +304,11 @@ function showModal(userCode) {
     // 그림 그릴 모달 태그 선택
     const modalBody = document.querySelector('.modal-body');
 
+    const userDetail = {
+        userCode: String(userCode),
+        userDetail: String(true)
+    };
+
     fetch('/bookAdmin/showUserDetailFetch', { //요청경로
         method: 'POST',
         cache: 'no-cache',
@@ -309,11 +316,10 @@ function showModal(userCode) {
             'Content-Type': 'application/json; charset=UTF-8'
         },
         //컨트롤러로 전달할 데이터
-        body: JSON.stringify({
+        body: JSON.stringify(
             // 데이터명 : 데이터값
-            userCode: String(userCode),
-            userDetail: String(true)
-        })
+            userDetail
+        )
     })
         .then((response) => {
             return response.json(); //나머지 경우에 사용
@@ -321,7 +327,7 @@ function showModal(userCode) {
         //fetch 통신 후 실행 영역
         .then((data) => {//data -> controller에서 리턴되는 데이터!
 
-            // console.log(data);
+            console.log(data);
 
             modalBody.innerHTML = '';
 
@@ -335,7 +341,7 @@ function showModal(userCode) {
                 <col width="">
             </colgroup>
             <tr>
-                <input type="hidden" name="userCode" value="${data.userCode}" id="getUserCode">
+            <input type="hidden" name="userCode" value="${data.userCode}" id="get-user-code">
                 <td class="table-light">번호</td>
                 <td><span id="detailCardNum">${data.cardNum}</span>
                     <button class="btn btn-primary" onclick="reGrant(${data.userCode})">카드번호 재부여</button>
@@ -521,7 +527,7 @@ const reGrant = () => {
     // 그림 그릴 모달 태그 선택
     const modalBody = document.querySelector('.modal-body');
 
-    const userCode = document.querySelector('#getUserCode').value;
+    const userCode = document.querySelector('#get-user-code').value;
     const cardNum = document.querySelector('#detailCardNum').innerHTML;
     const userId = document.querySelector('#detailUserId').value;
     const userName = document.querySelector('#detailUserName').value;
@@ -576,7 +582,7 @@ const reGrant = () => {
                 <col width="">
             </colgroup>
             <tr>
-                <input type="hidden" name="userCode" value="${userCode}" id="getUserCode">
+                <input type="hidden" name="userCode" value="${userCode}" id="get-user-code">
                 <td class="table-light">번호</td>
                 <td><span id="detailCardNum">${data}</span>
                     <button class="btn btn-primary" onclick="reGrant(${userCode})">카드번호 재부여</button>
@@ -712,7 +718,7 @@ const updateUserDetail = () => {
     const cardNum = document.querySelector('#detailCardNum').innerHTML;
     const userId = document.querySelector('#detailUserId').value;
     const userName = document.querySelector('#detailUserName').value;
-    const userCode = document.querySelector('input[type="hidden"]').value;
+    const userCode = document.querySelector('#get-user-code').value;
     const isAdmin = document.querySelector('select[name="isAdmin"]').value;
     const cardStatus = document.querySelector('select[name="cardStatus"]').value;
     const gender = document.querySelector('select[name="gender"]').value;
