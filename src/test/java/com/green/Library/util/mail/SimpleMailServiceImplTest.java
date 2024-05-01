@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SimpleMailServiceImplTest {
 
     @Autowired
-    SimpleMailServiceImpl simpleMailService;
+    SimpleMailService simpleMailService;
 
     @Test
     public void 이메일전송_테스트() throws MessagingException, UnsupportedEncodingException {
