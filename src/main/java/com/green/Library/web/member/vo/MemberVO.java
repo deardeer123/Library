@@ -31,4 +31,5 @@ public class MemberVO {
     private int overdueCnt;//
     private ApplyVO applyVO;
     private List<BookBNRVO> bookBorrowList;
+    private List<BookReservationVO> bookReservationList;
 }

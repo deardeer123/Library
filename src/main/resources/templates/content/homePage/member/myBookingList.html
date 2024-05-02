@@ -10,7 +10,57 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    내 (도서)예약 목록
+
+    <div class="row mt-4">
+        <div class="col mt-3">
+            <table class="align-middle table text-center ">
+                <thead>
+                    <tr>
+                        <td>No.</td>
+                        <td>도서 표지</td>
+                        <td>서명</td>
+                        <td>작가</td>
+                        <td>예약일자</td>
+                        <td>예약 취소 일자</td>
+                        <td>예약상태</td>
+                        <td>취소신청</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="info, state : ${rInfo}" class="tr-list">
+                        <input type="hidden" name="bookCode" th:value="${info.libraryBookVO.bookCode}">
+                            <td>[[${#lists.size(rInfo) - state.index}]]</td>
+                            <td><img width="70px" th:src="@{'upload/' + ${info.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}}"></td>
+                            <td >[[${info.libraryBookVO.bookTitle}]]</td>
+                            <td>[[${info.libraryBookVO.bookWriter}]]</td>
+                            <td>[[${info.reserveDate}]]</td>
+                            <td>[[${info.reserveCancel}]]</td>
+                            <td>[[${info.reserveStatus}]]</td>
+                        <th:block th:if="${info.reserveStatus == '대기중'}">
+                            <td><button type="button" class="btn btn-success" onclick="bookSelect(this)">취소</button></td>
+                        </th:block>
+                        <th:bolck th:unless="${info.reserveStatus == '대기중'}">
+                            <td></td>
+                        </th:bolck>
+                    </tr>
+                    <th:block th:if="${#lists.size(rInfo) == 0}">
+                        <tr>
+                            <td colspan="9" style="font-weight: bold;">
+                                예약 신청이 없습니다.
+                            </td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const bookSelect = (tag) => {
+            let bookCode = tag.parentElement.parentElement.children[0].value;
+            location.href=`/cancelNow?bookCode=${bookCode}`
+        }
+    </script>
 </th:block>
 
 <th:block layout:fragment="content_js">

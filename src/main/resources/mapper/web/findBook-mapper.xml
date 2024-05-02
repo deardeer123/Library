@@ -165,6 +165,8 @@
         from book_info
     </select>
 
+    <!-- /////////////////////////////// 예약 /////////////////////////////////   -->
+
     <!-- 책 예약(대출 중이 아닌 책) -->
     <insert id="bookReservationFetch1">
         INSERT INTO BOOK_RESERVATION (
@@ -205,13 +207,7 @@
         AND BOOK_CODE = #{bookCode}
     </select>
 
-<!--    <select id="selectMyReservation" resultMap="bnrMapper.bookReserve">-->
-<!--        SELECT USER_CODE-->
-<!--            , BOOK_CODE-->
-<!--            , RESERVE_DATE-->
-<!--            , -->
-<!--    </select>-->
-
+    <!-- /////////////////////////////////////////////////////////////////////   -->
 </mapper>
 
 
