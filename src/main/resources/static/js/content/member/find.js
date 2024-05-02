@@ -4,9 +4,9 @@ function goFindId() {
 
 }
 
-function goFindPw() {
-  const modal = new bootstrap.Modal('#myModalPw')
-  modal.show();
+function goFind() {
+  const myModalPw = new bootstrap.Modal('#myModalPw')
+  myModalPw.show();
 
 }
 
