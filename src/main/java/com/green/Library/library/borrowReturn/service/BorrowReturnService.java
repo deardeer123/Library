@@ -39,6 +39,9 @@ public interface BorrowReturnService {
     // 예약 조회
     List<BookReservationVO> selectReservationList(SearchUserVO searchUserVO);
 
+    // 개인 예약내역 확인
+    List<BookReservationVO> selectOneReserveList(int userCode);
+
     // 반납 된 책의 예약 체크
     List<BookReservationVO> selectChkReservation(String bookCode);
 

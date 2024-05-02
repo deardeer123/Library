@@ -129,7 +129,7 @@ function selectMemberInfo() {
                 const data_cnt = data.userInfo.bookBorrowList.length;
 
                 //대출 및 반납, 예약 내역이 없을 경우
-                if (data_cnt == 1 && data.userInfo.bookBorrowList[0].bookCode == null) {
+                if (data_cnt == 1 && data.userInfo.bookBorrowList[0].bookCode == null && data.reserveInfo[0].reserveCode == null) {
 
                     cnt1 += `<b>대출(0/5)</b>`;
 
@@ -159,11 +159,11 @@ function selectMemberInfo() {
                     return_list_tbody.insertAdjacentHTML("afterbegin", str3);
                     reserve_list_tbody.insertAdjacentHTML("afterbegin", str4);
 
-                }
-                else {
+                } else {
 
                     let renCnt = 0;
                     let retCnt = 0;
+                    let resCnt = 0;
 
                     data.userInfo.bookBorrowList.forEach((bookBorrowInfo, idx) => {
                         if (bookBorrowInfo.returnYN == 'N') {
@@ -189,66 +189,92 @@ function selectMemberInfo() {
                             <td>
                                 ${bookBorrowInfo.exReturnDate.substring(0, 10)}
                             </td>
-                            <td>
-                                
-                            </td>
                         </tr>`;
                         }
-
-                        // else{
-                        //     if(renCnt == 6){
-                        //         alert('최대 대출 권수를 초과 하였습니다.');
-                        //      구현 하고싶은데 좀 있다가... 
-                        //     }
-                        // }
 
 
                         if (bookBorrowInfo.returnYN == 'Y') {
                             retCnt = retCnt + 1;
 
                             str3 += `
-                        <tr>
-                            <td>
-                                <img width="70px" src="/upload/${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}">
-                            </td>
-                            <td>
-                                ${bookBorrowInfo.bookCode}
-                            </td>
-                            <td>
-                                ${bookBorrowInfo.libraryBookVO.bookTitle}
-                            </td>
-                            <td>
-                                ${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookCateCode}${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookMidCateCode}
-                            </td>
-                            <td>
-                                ${bookBorrowInfo.borrowDate.substring(0, 10)}
-                            </td>
-                            <td>
-                                ${bookBorrowInfo.returnDate.substring(0, 10)}
-                            </td>
-                            <td>
-                                
-                            </td>
-                        </tr>`;
+                                    <tr>
+                                        <td>
+                                            <img width="70px" src="/upload/${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}">
+                                        </td>
+                                        <td>
+                                            ${bookBorrowInfo.bookCode}
+                                        </td>
+                                        <td>
+                                            ${bookBorrowInfo.libraryBookVO.bookTitle}
+                                        </td>
+                                        <td>
+                                            ${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookCateCode}${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookMidCateCode}
+                                        </td>
+                                        <td>
+                                            ${bookBorrowInfo.borrowDate.substring(0, 10)}
+                                        </td>
+                                        <td>
+                                            ${bookBorrowInfo.returnDate.substring(0, 10)}
+                                        </td>
+                                    </tr>`;
                         }
+                    })
 
-                    });
-
-                    if(data.isReserved){
-                        alert('해당 도서는 예약 내역이 있습니다.\n카운터에 보관해주세요.');
+                    if(data.reserveInfo != null){
+                        data.reserveInfo.forEach((reserve, idx) => {
+                            resCnt = resCnt + 1;
+                            console.log(reserve)
+    
+                            str4 += `
+                                    <tr>
+                                        <td>
+                                            <img width="70px" src="/upload/${reserve.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}">
+                                        </td>
+                                        <td>
+                                            ${reserve.bookCode}
+                                        </td>
+                                        <td>
+                                            ${reserve.libraryBookVO.bookTitle}
+                                        </td>
+                                        <td>
+                                            ${reserve.libraryBookVO.libraryBookInfoVO.bookCateCode}${reserve.libraryBookVO.libraryBookInfoVO.bookMidCateCode}
+                                        </td>
+                                        <td>
+                                            ${reserve.reserveDate.substring(0, 10)}
+                                        </td>`
+                                        if(reserve.reserveCancel){
+                                            str4 += `<td>
+                                                ${reserve.reserveCancel.substring(0, 10)}
+                                            </td>`
+                                        }else{
+                                            str4 += `<td></td>`
+                                        }
+                                        
+                                    str4 += `</tr>
+                                    `;
+                        })
                     }
-                    
+
                     cnt1 += `<b>대출(${renCnt}/5)</b>`;
                     cnt2 += `<b>반납(${retCnt})</b>`;
+                    cnt3 += `<b>예약(${resCnt}/5)</b>`;
                     
 
                     renderCnt.insertAdjacentHTML("afterbegin", cnt1);
                     returnCnt.insertAdjacentHTML("afterbegin", cnt2);
+                    reserveCnt.insertAdjacentHTML("afterbegin", cnt3);
                     borrow_list_tbody.insertAdjacentHTML("afterbegin", str2);
                     return_list_tbody.insertAdjacentHTML("afterbegin", str3);
-                }
+                    reserve_list_tbody.insertAdjacentHTML("afterbegin", str4);
+                
+                };
 
+
+                if(data.isReserved){
+                    alert('해당 도서는 예약 내역이 있습니다.\n카운터에 보관해주세요.');
+                }
             }
+
         })
 
         //fetch 통신 실패 시 실행 영역
@@ -257,10 +283,6 @@ function selectMemberInfo() {
             console.log(err);
         });
 }
-
-
-//////////////////////////대출 및 반납///////////////////////////////////
-
 
 
 // 유저 인트로 업데이트
