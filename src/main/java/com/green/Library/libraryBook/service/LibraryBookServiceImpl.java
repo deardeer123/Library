@@ -48,9 +48,9 @@ public class LibraryBookServiceImpl implements LibraryBookService{
 
     //추천책 보기
     @Override
-    public Optional<List<FindBookVO>> selectBookRecommendation(String userType) {
-
-        return Optional.ofNullable(sqlSession.selectList("libraryBookMapper.selectBookRecommendation", userType));
+    public List<FindBookVO> selectBookRecommendation(String userType) {
+        String userType1 = Optional.ofNullable(userType).orElse("not");
+        return sqlSession.selectList("libraryBookMapper.selectBookRecommendation", userType1);
     }
 
     //bookCode로 추천 타입 찾기

@@ -10,7 +10,70 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    도서관 현황
+    <div class="row">
+        <div class="col">
+            <div class="row text-center mt-2 mb-2">
+                <div class="col">
+                    <span class="fs-3 bg-success text-white bg-opacity-50 rounded-4" style="display: inline-block;">[[${date}]] 일 그린 도서관 현황 입니다.</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="fs-2 mt-3 mb-3 bg-success text-white bg-opacity-75 rounded-4" style="display: inline-block;">자료현황</div>
+                    <table class="table table-bordered border border-5">
+                        <thead>
+                            <tr>
+                                <td>총류</td>
+                                <td>철학</td>
+                                <td>종교</td>
+                                <td>사회과학</td>
+                                <td>자연과학</td>
+                                <td>기술과학</td>
+                                <td>예술</td>
+                                <td>문학</td>
+                                <td>역사</td>
+                                <td>계</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <!-- 총류 -->
+                                <td>[[${cateCountList[0].COUNT}]]</td>
+                                <!-- 철학 -->
+                                <td>[[${cateCountList[1].COUNT}]]</td>
+                                <!-- 종교 -->
+                                <td>[[${cateCountList[2].COUNT}]]</td>
+                                <!-- 사회과학 -->
+                                <td>[[${cateCountList[3].COUNT}]]</td>
+                                <!-- 자연과학 -->
+                                <td>[[${cateCountList[4].COUNT}]]</td>
+                                <!-- 기술과학 -->
+                                <td>[[${cateCountList[5].COUNT}]]</td>
+                                <!-- 예술 -->
+                                <td>[[${cateCountList[6].COUNT}]]</td>
+                                <!-- 문학 -->
+                                <td>[[${cateCountList[7].COUNT}]]</td>
+                                <!-- 역사 -->
+                                <td>[[${cateCountList[8].COUNT}]]</td>
+                                <!-- 총 갯수 -->
+                                <td>[[${totalCount}]]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div >
+                    <div class="fs-2 mt-2 mb-2 bg-success text-white bg-opacity-75 rounded-4" style="display: inline-block;">조직도</div>
+                    <div class="col text-center">
+                        <img src="/upload/그린도서관조직도및담당업무.png" width="50%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </th:block>
 
 <th:block layout:fragment="content_js">

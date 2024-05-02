@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service("webHomeService")
 public class WebHomeServiceImpl implements WebHomeService{
@@ -26,6 +27,11 @@ public class WebHomeServiceImpl implements WebHomeService{
     @Override
     public List<FindBookVO> manyBorrowBookList6() {
         return sqlSession.selectList("webHomeMapper.manyBorrowBookList6");
+    }
+
+    @Override
+    public List<Map<String,Object>> libraryEventList3() {
+        return sqlSession.selectList("webHomeMapper.libraryEventList3");
     }
 
 }

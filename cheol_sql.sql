@@ -1301,5 +1301,15 @@ LIMIT 3;
         from find_book_view
    ORDER BY BOOK_REGDATE DESC
    LIMIT 6;
+
+
+SELECT 
+	board.BOARD_NUM,
+	attached_file.ATTACHED_FILE_NAME
+FROM 
+	board INNER JOIN attached_file
+	ON board.BOARD_NUM = attached_file.BOARD_NUM
+WHERE 
+	board_type = 24 AND attached_file.IS_MAIN = 'Y';
    
    

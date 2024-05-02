@@ -166,6 +166,7 @@ public class FindBookController {
         //대출이 많은책 10권 보내주기
         model.addAttribute("bookList", findBookService.manyRentBook());
 
+        //오늘 날짜 구하기
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date now = new Date();
         System.out.println(sdf.format(now));

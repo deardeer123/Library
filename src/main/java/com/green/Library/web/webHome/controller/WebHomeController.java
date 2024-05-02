@@ -53,6 +53,10 @@ public class WebHomeController {
         model.addAttribute("noticeList", participationForumService.selectNotice3());
         //행사 3개
         model.addAttribute("eventList",boardService.selectEvent3());
+        //도서관 행사3개
+        model.addAttribute("libraryEventList", webHomeService.libraryEventList3());
+
+//        webHomeService.libraryEventList3().forEach(s-> s.get("board_num"));
 
         webHomeService.recommendedBookList3().forEach(s-> System.out.println(s.getBookTitle()));
 

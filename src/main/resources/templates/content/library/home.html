@@ -39,41 +39,21 @@
 
     <div class="row">
         <div class="col">
-
+            <div class="row">
+                <div class="col">
+                    <!-- 그림 넣을곳 -->
+                    <img src="/upload/hello.jpg" style="height: 28vh; width: 100%;">
+                </div>
+            </div>
+            <div id='calendar' style="position: absolute; left: 350px; top: 150px; width: 400px;" ></div>
             <div class="row">
                 <div class="col-3">
                     <!-- 메세지 보내기 -->
-                    <form method="post">
+                    <form method="post" action="">
                         <!-- action="/send-one" -->
-                        <div class="row mb-3">
-                            <div class="col">메세지보내기</div>
-                        </div>
-
+                        <input type="hidden" name="setFrom" value="01041505657">
                         <div class="row mb-3">
                             <div class="col">
-                                <div class="row">
-                                    <div class="col" style="font-size: 0.8em;">
-                                        발신자 번호(01011111111 이런식으로 적어야함)
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col">
-                                        <input type="text" name="setFrom" class="form-control"
-                                            placeholder="발신자 01012341234">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col" style="font-size: 0.8em;">
-                                        수신자 번호(01011111111 이런식으로 적어야함)
-                                    </div>
-                                </div>
-
                                 <div class="row">
                                     <div class="col">
                                         <input type="text" name="setTo" class="form-control"
@@ -95,7 +75,7 @@
 
                         <div class="row">
                             <div class="col">
-                                <input type="submit" class="btn btn-primary" value="제발되라">
+                                <input type="submit" class="btn btn-primary" value="문자발송">
                             </div>
                         </div>
                     </form>
@@ -103,7 +83,7 @@
 
                 <div class="col-6">
                     <!-- 달력 -->
-                    <div id='calendar'></div>
+                    <!-- <div id='calendar'></div> -->
                 </div>
 
                 <div class="col-3">
@@ -241,13 +221,19 @@
 
                     var calendarEl = document.getElementById('calendar');
                     var calendar = new FullCalendar.Calendar(calendarEl, {
-                        height: 350,
+                        height: 400,
                         initialView: 'dayGridMonth',
                         //시간표시 제거하기
                         displayEventTime: false,
                         locale: 'ko',
                         //이벤트
-                        events: eventList
+                        events: eventList,
+                        headerToolbar: {
+                            start: '',
+                            center: '',
+                            end: ''
+                        }
+
 
                     });
                     calendar.render();
