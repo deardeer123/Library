@@ -45,7 +45,7 @@
                 </div>
                 <div class="col-6 pl-3">
                     <div class="row">
-                        <div class="col find-pw" onclick="goFindPw()">
+                        <div class="col find-pw" onclick="goFind()">
                             <p>
                                 비밀번호 찾기
                             </p>
@@ -79,10 +79,56 @@
                         </p>
                         <p>
                         <div>Email</div>
-                        <input type="email" name="email" class="email form-control"
+                        <input type="email" name="email" class="email1 form-control"
                             style="display: inline-block; width: 45%;">
                         @
-                        <select name="email" class="email form-select" style="display: inline-block; width: 50%;">
+                        <select name="email" class="email2 form-select" style="display: inline-block; width: 50%;">
+                            <option value="@naver.com">naver.com</option>
+                            <option value="@gmail.com">gmail.com</option>
+                            <option value="@daum.net">daum.net</option>
+                        </select>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="email2()">이메일 인증</button>
+                        <button type="button" class="btn btn-primary" onclick="tel()">휴대폰 인증</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- pw 모달 -->
+    <div class="modal" id="myModalPw" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/" method="post" id="goFindPw">
+                    <div class="modal-header">
+                        <h5 class="modal-title">비밀번호 찾기</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                        <div>이름</div>
+                        <input type="text" class="userName form-control" name="userName" style="width: 70%;">
+                        </p>
+                        <p>
+                        <div>아이디</div>
+                        <input type="text" class="userId form-control" name="userId" style="width: 70%;">
+                        </p>
+                        <p>
+                        <div>휴대전화번호</div>
+                        <input type="text" oninput="oninputPhone(this)" class="userTel form-control" style="width: 70%;"
+                            maxlength="14" placeholder="- 을 제외한 숫자를 입력해주세요" name="userTel">
+                        </p>
+                        <p>
+                        <div>Email</div>
+                        <input type="email" name="email" class="email1 form-control"
+                            style="display: inline-block; width: 45%;">
+                        @
+                        <select name="email" class="email2 form-select" style="display: inline-block; width: 50%;">
                             <option value="@naver.com">naver.com</option>
                             <option value="@gmail.com">gmail.com</option>
                             <option value="@daum.net">daum.net</option>
@@ -91,7 +137,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" onclick="">이메일 인증</button>
-                        <button type="button" class="btn btn-primary" onclick="tel()">휴대폰 인증</button>
+                        <button type="button" class="btn btn-primary" onclick="">휴대폰 인증</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </form>
