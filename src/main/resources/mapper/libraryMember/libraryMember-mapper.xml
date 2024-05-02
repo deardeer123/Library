@@ -4,6 +4,15 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="libraryMemberMapper">
 
+<!--    <select id="">-->
+<!--        SELECT BOOK_CODE-->
+<!--            , BOOK_ATTACHED_FILE_NAME-->
+<!--            , BOOK_TITLE-->
+<!--            , BOOK_WRITER-->
+<!--            , BORROW_DATE-->
+<!--            , RETURN_DATE-->
+<!--            , (SELECT )-->
+<!--    </select>-->
 </mapper>
 
 

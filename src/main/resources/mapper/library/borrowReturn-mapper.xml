@@ -62,7 +62,7 @@
         LEFT JOIN BOOK_INFO AS BI
         ON BBR.BOOK_CODE = BI.BOOK_CODE
         WHERE U.CARD_NUM = #{cardNum}
-        ORDER BY BORROW_DATE DESC
+        ORDER BY RETURN_DATE DESC
 <!--        <if test="">-->
 <!--          여기서부터 마이페이지에 쓸 대출반납 내역 조건 조회 쿼리 -->
 <!--        </if>-->
