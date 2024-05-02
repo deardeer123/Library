@@ -17,6 +17,7 @@ public class SimpleMailServiceImpl implements SimpleMailService{
         this.emailSender = javaMailSender;
     }
 
+
     //메일보내기
     @Override
     public void SimpleMailSend(String email, String text , String subject) throws MessagingException, UnsupportedEncodingException {
@@ -36,5 +37,7 @@ public class SimpleMailServiceImpl implements SimpleMailService{
             e.printStackTrace();
             throw new IllegalArgumentException();
         }
+
+
     }
 }

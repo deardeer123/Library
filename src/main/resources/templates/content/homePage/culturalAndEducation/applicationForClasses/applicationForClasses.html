@@ -35,9 +35,7 @@
             <table class="align-middle table text-center table-hover">
                 <thead>
                     <tr>
-                        <td sec:authorize="hasRole('ROLE_Y')">
-                            <input type="checkbox" id="allChk" onclick="allchk()">전체선택
-                        </td>
+                        
                         <td>강사명</td>
                         <td>프로그램명</td>
                         <td>대상</td>
@@ -49,9 +47,7 @@
                 </thead>
                 <tbody>
                     <tr th:each="board : ${boardList}">
-                        <td sec:authorize="hasRole('ROLE_Y')">
-                            <input th:value="${board.boardNum}" type="checkbox" class="chk">
-                        </td>
+                        
                         <td>[[${board.PlusVO.teacher}]]</td>
                         <td>
                             <span th:onclick="|location.href='@{/goAppDetailPage(boardNum=${board.boardNum})}'|"
@@ -95,7 +91,6 @@
             <div sec:authorize="hasRole('ROLE_Y')">
                 <input type="button" class="btn btn-primary btn-sm" value="게시글 작성"
                     onclick="location.href='/goAppInsertPage'">
-                <input type="button" class="btn btn-primary btn-sm" value="게시글 삭제" onclick="goAppDeletes()">
             </div>
         </div>
     </div>
