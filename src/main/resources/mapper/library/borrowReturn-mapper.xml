@@ -23,6 +23,7 @@
         <result      column="RESERVE_CANCEL"      property="reserveCancel"/>
         <result      column="RESERVE_STATUS"      property="reserveStatus"/>
         <result      column="RESERVE_CNT"         property="reserveCnt"/>
+        <association property="memberVO"          resultMap="memberMapper.users"/>
         <association property="libraryBookVO"     resultMap="libraryBookMapper.libraryBook"/>
     </resultMap>
 
@@ -168,7 +169,7 @@
 
 <!-- //////////////////////// 예약 //////////////////////////// -->
 
-    <!-- 예약내역 확인 -->
+    <!-- 예약내역 조회 -->
     <select id="selectReservationList" resultMap="bookReserve">
         SELECT RESERVE_CODE
         , RESERVE_STATUS
@@ -223,6 +224,30 @@
         <if test='reserveCancel1 != null and !reserveCancel1.equals("") and reserveCancel2 != null and !reserveCancel2.equals("")'>
             AND RESERVE_CANCEL BETWEEN #{cancelReserveDate1} AND #{cancelReserveDate2}
         </if>
+    </select>
+
+    <!-- 개인 예약내역 확인 -->
+    <select id="selectOneReserveList" resultMap="bookReserve">
+        SELECT RESERVE_CODE
+            , CARD_NUM
+            , CARD_STATUS
+            , USER_TEL
+            , BR.BOOK_CODE
+            , BOOK_TITLE
+            , RESERVE_DATE
+            , RESERVE_CANCEL
+            , RESERVE_STATUS
+            , BOOK_INFO_ATTACHED_FILE_NAME
+            , BOOK_CATE_CODE
+            , BOOK_MID_CATE_CODE
+        FROM BOOK_RESERVATION BR
+        LEFT JOIN USERS U
+        ON BR.USER_CODE = U.USER_CODE
+        LEFT JOIN BOOK B
+        ON BR.BOOK_CODE = B.BOOK_CODE
+        LEFT JOIN BOOK_INFO BI
+        ON BR.BOOK_CODE = BI.BOOK_CODE
+        WHERE BR.USER_CODE = #{userCode}
     </select>
 
     <!-- 반납 된 후 해당 책이 예약이 있는지 확인 -->

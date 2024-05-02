@@ -24,7 +24,6 @@
         <result property="overdueCnt" column="OVERDUE_CNT"/>
         <association property="applyVO" resultMap="apply"/>
         <collection property="bookBorrowList" resultMap="bnrMapper.bookBNR"/>
-        <collection property="bookReservationList" resultMap="bnrMapper.bookReserve"/>
     </resultMap>
     <resultMap id="apply" type="com.green.Library.web.member.vo.ApplyVO">
         <id property="applyNum" column="APPLY_NUM"/>
