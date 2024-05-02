@@ -680,4 +680,6 @@ ON board.board_num = board_plus.BOARD_NUM;
 
 SELECT * FROM users;
 
-
+SELECT USER_PW
+FROM users
+WHERE USER_CODE = ${};

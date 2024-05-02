@@ -1,12 +1,16 @@
 package com.green.Library.web.member.controller;
 
+import com.green.Library.util.mail.SimpleMailServiceImpl;
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.member.service.MemberServiceImpl;
 import com.green.Library.web.member.vo.ApplyVO;
 import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.webMenu.service.WebMenuService;
 import jakarta.annotation.Resource;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
+import org.apache.ibatis.javassist.compiler.ast.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -17,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.naming.Name;
 import java.beans.Encoder;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 @Controller
@@ -31,6 +36,9 @@ public class MemberController {
 
     @Autowired
     private BCryptPasswordEncoder encoder;
+
+    @Autowired
+    private SimpleMailServiceImpl simpleMailService;
 
     //테스트 한다고 잠깐 주석처리 했어요 ㅈㅅ
 //    //홈페이지 창
@@ -85,25 +93,43 @@ public class MemberController {
         return "content/homePage/member/findIdOrPW";
     }
 
-//    @PostMapping("/findId")
-//    public void findId(){
-//
-//    }
+    @PostMapping("/findIdFetch")
+    @ResponseBody
+    public void findId(MemberVO memberVO) throws MessagingException, UnsupportedEncodingException {
+
+        MemberVO member = memberService.findUser(memberVO);
+        System.out.println("!@!!!!!!!!!!!!!!!!!!!!!!!!"+member.getUserId());
+        String email = memberVO.getEmail();
+        String text = "아이디 : "+member.getUserId() + "입니다 \n 개인정보유출 방지를 위해 개인정보 수정을 부탁드립니다.";
+        String subject = "그린 도서관입니다.";
+        simpleMailService.SimpleMailSend(email,text,subject);
+    }
 
 
-    @PostMapping("/findPw")
-    public String findPw(MemberVO memberVO){
+    @PostMapping("/findPwFetch")
+    @ResponseBody
+    public void findPw(MemberVO memberVO) throws MessagingException, UnsupportedEncodingException{
         //임시 비밀번호 생성
         String randomPw = memberService.createRandomPw();
+        //아이디 확인 및 업데이트를 위한 유저코드 유저코드 찾기
+        MemberVO member = memberService.findPwUser(memberVO);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+randomPw);
 
         //암호화
         String encodedPw = encoder.encode(randomPw);
         //vo에 담고
-        memberVO.setUserPw(encodedPw);
+        member.setUserPw(encodedPw);
         //암호화된 임시비밀번호를 업데이트
-        memberService.updateUserPw(memberVO);
-        return "";
+        memberService.updateUserPw(member);
+
+        //이메일 전송
+        String email = memberVO.getEmail();
+        String text = "임시 비밀번호는 " + randomPw +"입니다 \n 임시 비밀번호이니 로그인 즉시 개인정보 수정을 부탁드립니다.";
+        String subject = "그린 도서관입니다.";
+        simpleMailService.SimpleMailSend(email,text,subject);
     }
+
+
 
 
     @GetMapping("/logout")
@@ -210,13 +236,30 @@ public class MemberController {
         return "content/homePage/member/bookLoanReturn";
     }
 
-    @GetMapping("myBookingList")
+    /////////////////////////// 예약 기능 /////////////////////////////////
+    @RequestMapping("myBookingList")
     public String myBookingList(Model model, HttpSession session){
         //내 (도서)예약 목록
         model.addAttribute("page", "myBookingList");
 
-        return "content/homePage/member/myBookingList?" + session.getAttribute("userCode");
+        model.addAttribute("rInfo", memberService.selectMyReservation((Integer) session.getAttribute("userCode")));
+
+        return "content/homePage/member/myBookingList";
     }
+
+    @GetMapping("cancelNow")
+    public String cancelNow(BookReservationVO bookReservationVO, HttpSession session){
+
+        bookReservationVO.setUserCode((Integer) session.getAttribute("userCode"));
+
+        memberService.updateSelfCancel(bookReservationVO);
+
+        return "redirect:myBookingList";
+    }
+
+
+
+    ////////////////////////////////////////////////////////////////////
 
     @GetMapping("memberWithdrawal")
     public String memberWithdrawal(Model model,HttpSession session){

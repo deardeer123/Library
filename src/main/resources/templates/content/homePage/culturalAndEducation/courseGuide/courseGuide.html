@@ -30,7 +30,6 @@
             <table class="align-middle table text-center">
                 <thead>
                     <tr>
-                        <td><input type="checkbox" id="allChk" checked onclick="allchk()">전체선택</td>
                         <td>제목</td>
                         <td>작성자</td>
                         <td>등록일</td>
@@ -39,7 +38,6 @@
                 </thead>
                 <tbody>
                     <tr th:each="board : ${guideBoardList}">
-                        <td><input th:value="${board.boardNum}" type="checkbox" class="chk" checked></td>
                         <td><span th:onclick="|location.href='@{/guideDetailBoard(boardNum=${board.boardNum})}'|" style="cursor: pointer;">[[${board.boardTitle}]]</span></td>
                         <td>[[${board.MemberVO.userName}]]</td>
                         <td>[[${board.boardDate}]]</td>
@@ -66,7 +64,6 @@
               </nav>
             <div sec:authorize="hasRole('ROLE_Y')">
                 <input type="button" class="btn btn-primary btn-sm" value="게시글 작성" onclick="location.href='/goGuideInsertPage'">
-                <input type="button" class="btn btn-primary btn-sm" value="게시글 선택 삭제" onclick="goEventDeletes()">
             </div>
         </div>
     </div>

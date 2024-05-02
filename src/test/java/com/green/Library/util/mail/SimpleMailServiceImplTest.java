@@ -1,5 +1,7 @@
 package com.green.Library.util.mail;
 
+import com.green.Library.web.member.service.MemberServiceImpl;
+import jakarta.annotation.Resource;
 import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +16,28 @@ class SimpleMailServiceImplTest {
 
     @Autowired
     SimpleMailService simpleMailService;
+<<<<<<< HEAD
+=======
+
+    @Resource(name = "memberService")
+    MemberServiceImpl memberService;
+>>>>>>> 50860842deda3c9e3e12d774f9f2019d5c1733bc
 
     @Test
-    public void 이메일전송_테스트() throws MessagingException, UnsupportedEncodingException {
+    public void mail_email() throws MessagingException, UnsupportedEncodingException {
+
         String email = "adad4852@naver.com";
-        String text = "메일전송 입니다.";
-        String subject = "메일 제목";
+        String text = "hubuypoikjojhuyuhy";
+        String subject = "메일 제jiojiojuo목";
+
+        simpleMailService.SimpleMailSend(email,text,subject);
+    }
+    @Test
+    public void tel_email() throws MessagingException, UnsupportedEncodingException {
+        String pw = memberService.createRandomPw();
+        String email = "adad4852@naver.com";
+        String text = "임시 비밀번호 : "+ pw;
+        String subject = "메일 제jiojiojuo목";
 
         simpleMailService.SimpleMailSend(email,text,subject);
     }

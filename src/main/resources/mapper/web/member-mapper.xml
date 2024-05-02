@@ -196,10 +196,67 @@
         USER_ID
         ,USER_NAME
         ,USER_PW
+        ,email
         FROM USERS
         WHERE USER_TEL = #{userTel}
         AND USER_NAME = #{userName}
     </select>
+
+    <select id="findPwUser" resultMap="users">
+        SELECT
+        USER_ID
+        ,USER_NAME
+        ,USER_PW
+        ,email
+        ,user_code
+        FROM USERS
+        WHERE USER_TEL = #{userTel}
+        AND USER_NAME = #{userName}
+        AND USER_ID = #{userId}
+    </select>
+    <!-- ////////////////////////// 예약 기능 ////////////////////////////////   -->
+
+    <!-- 예약 조회 -->
+    <select id="selectMyReservation" resultMap="bnrMapper.bookReserve">
+        SELECT BR.USER_CODE
+        , BR.BOOK_CODE
+        , BOOK_INFO_ATTACHED_FILE_NAME
+        , BOOK_TITLE
+        , BOOK_WRITER
+        , RESERVE_DATE
+        , RESERVE_CANCEL
+        , RESERVE_STATUS
+        FROM BOOK_RESERVATION BR
+        LEFT JOIN BOOK B
+        ON BR.BOOK_CODE = B.BOOK_CODE
+        LEFT JOIN BOOK_INFO BI
+        ON BR.BOOK_CODE = BI.BOOK_CODE
+        WHERE USER_CODE = #{userCode}
+        ORDER BY RESERVE_DATE DESC
+    </select>
+
+    <!-- 예약 취소(본인) -->
+    <update id="updateSelfCancel">
+        UPDATE BOOK_RESERVATION
+        SET
+            RESERVE_CANCEL = NOW()
+            , RESERVE_STATUS = '취소'
+        WHERE USER_CODE = #{userCode}
+        AND BOOK_CODE = #{bookCode}
+    </update>
+
+    <!-- 예약 취소(자동) -->
+    <update id="updateAutoCancel">
+        UPDATE BOOK_RESERVATION
+        SET
+            RESERVE_CANCEL = NOW()
+            , RESERVE_STATUS = '취소'
+        WHERE BOOK_CODE = #{bookCode}
+        AND USER_CODE = #{userCode}
+        AND RESERVE_CANCEL &lt; NOW()
+    </update>
+
+    <!-- ///////////////////////////////////////////////////////////////// -->
 
 </mapper>
 

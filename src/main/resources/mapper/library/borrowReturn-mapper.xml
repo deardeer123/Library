@@ -169,7 +169,7 @@
 
 <!-- //////////////////////// 예약 //////////////////////////// -->
 
-    <!-- 예약내역 확인 -->
+    <!-- 예약내역 조회 -->
     <select id="selectReservationList" resultMap="bookReserve">
         SELECT RESERVE_CODE
         , RESERVE_STATUS
@@ -206,7 +206,7 @@
         <if test='bookCode1 != null and !bookCode1.equals("") and bookCode2 != null and !bookCode2.equals("")'>
             AND BOOK_CODE BETWEEN #{bookCode1} AND #{bookCode2}
         </if>
-        <if test='reserveDate1 != null and !reserveDate.equals("") and (reserveDate2 == null or reserveDate2.equals(""))'>
+        <if test='reserveDate1 != null and !reserveDate1.equals("") and (reserveDate2 == null or reserveDate2.equals(""))'>
             AND RESERVE_DATE BETWEEN #{reserveDate1} AND NOW()
         </if>
         <if test='reserveDate2 != null and !reserveDate2.equals("") and (reserveDate1 == null or reserveDate1.equals(""))'>
@@ -226,12 +226,37 @@
         </if>
     </select>
 
+    <!-- 개인 예약내역 확인 -->
+    <select id="selectOneReserveList" resultMap="bookReserve">
+        SELECT RESERVE_CODE
+            , CARD_NUM
+            , CARD_STATUS
+            , USER_TEL
+            , BR.BOOK_CODE
+            , BOOK_TITLE
+            , RESERVE_DATE
+            , RESERVE_CANCEL
+            , RESERVE_STATUS
+            , BOOK_INFO_ATTACHED_FILE_NAME
+            , BOOK_CATE_CODE
+            , BOOK_MID_CATE_CODE
+        FROM BOOK_RESERVATION BR
+        LEFT JOIN USERS U
+        ON BR.USER_CODE = U.USER_CODE
+        LEFT JOIN BOOK B
+        ON BR.BOOK_CODE = B.BOOK_CODE
+        LEFT JOIN BOOK_INFO BI
+        ON BR.BOOK_CODE = BI.BOOK_CODE
+        WHERE BR.USER_CODE = #{userCode}
+    </select>
+
     <!-- 반납 된 후 해당 책이 예약이 있는지 확인 -->
     <select id="selectChkReservation" resultMap="bookReserve">
         SELECT RESERVE_CODE
             , USER_CODE
         FROM BOOK_RESERVATION
         WHERE BOOK_CODE = #{bookCode}
+        AND RESERVE_STATUS = '대기중'
     </select>
 
     <!-- 반납 후 해당 책이 예약 내역이 있을 경우 예약 진행 -->
@@ -258,7 +283,6 @@
         WHERE USER_CODE = #{userCode}
         AND BOOK_CODE = #{bookCode}
     </update>
-
 
 <!-- ////////////////////////////////////////////////////// -->
 

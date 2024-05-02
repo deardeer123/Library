@@ -4,13 +4,29 @@
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
-    <!-- <link rel="stylesheet" href="/"> -->
+    <link rel="stylesheet" href="/css/content/homePage/movie.css">
 </th:block>
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
     <div class="row mt-4">
-
+        <div class="col-12 mt-4" style="text-align: center;">
+            <form action="/libraryEvent" method="post">
+                <tr>
+                    <td colspan="4">
+                        <select name="searchType" class="form-select" style="width: 200px; display: inline-block;">
+                            <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'BOARD_TITLE'}">제목
+                            </option>
+                            <option value="USER_NAME" th:selected="${searchVO.searchType == 'USER_NAME'}">작성자
+                            </option>
+                        </select>
+                        <input type="search" class="form-control" style="width: 670px; display: inline-block;"
+                            name="searchValue" th:value="${searchVO.searchValue}">
+                        <input type="submit" class="btn btn-primary" style="margin-bottom: 3px;" value="검색">
+                    </td>
+                </tr>
+            </form>
+        </div>
         <div class="col mt-4">
             <table class="align-middle table">
                 <colgroup>
@@ -19,17 +35,17 @@
                     <col width="25%">
                     <col width="25%">
                 </colgroup>
-                <th:block sec:authorize="hasRole('ROLE_Y')">
-                    <div><input type="checkbox" id="allChk" onclick="allchk()" checked>전체 선택</div>
-                </th:block>
                 <tbody>
                     <tr>
                         <td colspan="4">
                             <div class="row" style="margin: 5px;">
                                 <div class="col-4 card" th:each="board : ${boardList}" style="padding: 10px;">
+<<<<<<< HEAD
                                     <th:block sec:authorize="hasRole('ROLE_Y')">
                                         <input th:value="${board.boardNum}" type="checkbox" class="chk" checked>
                                     </th:block>
+=======
+>>>>>>> 50860842deda3c9e3e12d774f9f2019d5c1733bc
 
                                     <a th:href="@{/eventDetailBoard(boardNum=${board.boardNum})}">
                                         <th:block th:each="e:${board.fileList}" th:if="${e.isMain=='Y'}">
@@ -51,23 +67,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="col-12 mt-4" style="text-align: center;">
-                <form action="/libraryEvent" method="post">
-                    <tr>
-                        <td colspan="4">
-                            <select name="searchType" class="form-select" style="width: 200px; display: inline-block;">
-                                <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'BOARD_TITLE'}">제목
-                                </option>
-                                <option value="USER_NAME" th:selected="${searchVO.searchType == 'USER_NAME'}">작성자
-                                </option>
-                            </select>
-                            <input type="search" class="form-control" style="width: 670px; display: inline-block;"
-                                name="searchValue" th:value="${searchVO.searchValue}">
-                            <input type="submit" class="btn btn-primary" style="margin-bottom: 3px;" value="검색">
-                        </td>
-                    </tr>
-                </form>
-            </div>
+
             <!-- 페이징 -->
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
@@ -91,7 +91,6 @@
             <div sec:authorize="hasRole('ROLE_Y')">
                 <input type="button" class="btn btn-primary btn-sm" value="게시글 작성"
                     onclick="location.href='/goEventBoard'">
-                <input type="button" class="btn btn-primary btn-sm" value="게시글 삭제" th:onclick="culDeleteBoard()">
             </div>
         </div>
     </div>

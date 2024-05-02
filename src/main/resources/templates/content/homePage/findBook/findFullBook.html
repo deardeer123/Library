@@ -486,17 +486,17 @@
                 if(data === 'get'){
                     const result = confirm('예약 되었습니다.\n 예약 내역으로 가시겠습니까?');
                     if(result){
-                        window.location.href = `/myBookingList?userCode=${session.userCode}`;
+                        window.location.href = `/myBookingList`;
                     }
                 }else if(data === 'next'){
                     const result = confirm('예약 되었습니다.\n 예약 내역으로 가시겠습니까?');
                     if(result){
-                        window.location.href = `/myBookingList?userCode=${session.userCode}`;
+                        window.location.href = `/myBookingList`;
                     }
                 }else if(data === 'fail'){
                     const result = confirm('이미 예약 하셨습니다.\n 예약 내역으로 가시겠습니까?');
                     if(result){
-                        window.location.href = `/myBookingList?userCode=${session.userCode}`;
+                        window.location.href = `/myBookingList`;
                     }
                 }
                 // 시큐리티로 로그인 페이지 날리기

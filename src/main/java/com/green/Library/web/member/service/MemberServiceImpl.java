@@ -1,5 +1,6 @@
 package com.green.Library.web.member.service;
 
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.member.vo.ApplyVO;
 import com.green.Library.web.member.vo.MemberVO;
@@ -81,6 +82,11 @@ public class MemberServiceImpl implements MemberService{
         return sqlSession.selectOne("memberMapper.findUser",memberVO);
     }
 
+    @Override
+    public MemberVO findPwUser(MemberVO memberVO) {
+        return sqlSession.selectOne("memberMapper.findPwUser",memberVO);
+    }
+
     //12자리의 랜덤 비밀번호 생성
     public String createRandomPw(){
         String[] charSet = new String[]{
@@ -109,5 +115,22 @@ public class MemberServiceImpl implements MemberService{
             imsiPw += charSet[randomIndex];
         }
         return imsiPw;
+    }
+
+    ///////////////////////////////////// 예약 기능 /////////////////////////////////////////////////////
+
+    @Override
+    public List<BookReservationVO> selectMyReservation(int userCode) {
+        return sqlSession.selectList("memberMapper.selectMyReservation", userCode);
+    }
+
+    @Override
+    public void updateSelfCancel(BookReservationVO bookReservationVO) {
+        sqlSession.update("memberMapper.updateSelfCancel", bookReservationVO);
+    }
+
+    @Override
+    public void updateAutoCancel(BookReservationVO bookReservationVO) {
+        sqlSession.update("memberMapper.updateAutoCancel", bookReservationVO);
     }
 }

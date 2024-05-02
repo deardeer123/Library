@@ -82,22 +82,13 @@
                     </div>
                 </form>
 
-                    <div class="row text-end">
-                        <div class="col">
-                            예약 책수 : 총 0건 / 예약 이용자수 : 총 0명 0 / 0 페이지
-                        </div>
-                    </div>
-
-                    <div class="row">
+                    <div class="row mt-3">
                         <div class="col">
                             <table class="table table-bordered text-center">
                                 <thead class="thead table-light">
                                     <tr>
                                         <td>
                                             <input type="checkbox" class="form-check-input">
-                                        </td>
-                                        <td>
-                                            진행상태
                                         </td>
                                         <td>
                                             카드번호
@@ -118,16 +109,13 @@
                                             서명
                                         </td>
                                         <td>
-                                            청구기호
-                                        </td>
-                                        <td>
                                             예약일
                                         </td>
                                         <td>
                                             예약취소일
                                         </td>
                                         <td>
-                                            예약자수
+                                            진행상태
                                         </td>
                                     </tr>
                                 </thead>
@@ -143,9 +131,6 @@
                                         <tr th:each="rInfo : ${reserveInfo}">
                                             <td>
                                                 <input type="checkbox" class="form-check-input">
-                                            </td>
-                                            <td>
-                                                [[${rInfo.reserveStatus}]]
                                             </td>
                                             <td>
                                                 [[${rInfo.memberVO.cardNum}]]
@@ -166,16 +151,13 @@
                                                 [[${rInfo.libraryBookVO.bookTitle}]]
                                             </td>
                                             <td>
-                                                [[${rInfo.libraryBookInfoVO.bookCateCode}]][[${rInfo.libraryBookInfoVO.bookMidCateCode}]]
-                                            </td>
-                                            <td>
                                                 [[${rInfo.reserveDate}]]
                                             </td>
                                             <td>
                                                 [[${rInfo.reserveCancel}]]
                                             </td>
                                             <td>
-                                                [[${rInfo.reserveCnt}]]
+                                                [[${rInfo.reserveStatus}]]
                                             </td>
                                         </tr>
                                     </th:block>
@@ -186,6 +168,12 @@
 
             </div>
         </div>
+        <div class="row text-lg-end mt-1">
+            <div class="col">
+                <input type="button" class="btn btn-primary" value="SMS전송">
+            </div>
+        </div>
+        
     </div>
 </th:block>
 

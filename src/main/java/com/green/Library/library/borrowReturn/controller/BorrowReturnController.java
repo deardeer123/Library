@@ -1,13 +1,17 @@
 package com.green.Library.library.borrowReturn.controller;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.green.Library.library.borrowReturn.service.BorrowReturnService;
 import com.green.Library.library.borrowReturn.vo.BookBNRVO;
 import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.user.service.UserService;
 import com.green.Library.library.user.vo.SearchUserVO;
+import com.green.Library.web.member.service.MemberService;
+import com.green.Library.web.member.service.MemberServiceImpl;
 import com.green.Library.web.member.vo.MemberVO;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +32,14 @@ public class BorrowReturnController {
     @Resource(name = "userService")
     UserService userService;
 
+    @Resource(name = "memberService")
+    MemberService memberService;
+
 
     //---------------대출반납----------------------------------------
     //대출 반납
     @GetMapping("/borrowReturn")
-    public String goBorrowReturn(Model model){
+    public String goBorrowReturn(Model model) {
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
@@ -40,7 +47,9 @@ public class BorrowReturnController {
         return "content/library/borrowReturn/borrowReturn.html";
     }
 
-    //이용자 조회와 대출반납 실행
+
+    // 이용자 조회와 대출반납 실행
+    // 시간 날 때 리팩토링...
     @ResponseBody
     @PostMapping("/selectBorrowInfoFetch")
     public Map<String, Object> selectBorrowInfo(@RequestBody Map<String, String> inputData, BookBNRVO bookBNRVO, BookReservationVO bookReservationVO) {
@@ -73,6 +82,7 @@ public class BorrowReturnController {
 
             //카드번호로 회원 정보 조회
             returnData.put("userInfo", borrowReturnService.selectBorrowInfo(memberInfo));
+            returnData.put("reserveInfo", borrowReturnService.selectOneReserveList(borrowReturnService.selectUserCode(cardNum)));
             returnData.put("isReserved", false);
             return returnData;
 
@@ -95,7 +105,8 @@ public class BorrowReturnController {
             System.out.println("1 = "+borrowReturnService.isCorrectBookCode(bookCode));
             System.out.println("2 = "+borrowReturnService.selectBookAvailable(bookCode));
             System.out.println("3 = "+borrowReturnService.selectGetReservation(bookReservationVO));
-            if (borrowReturnService.isCorrectBookCode(bookCode) && borrowReturnService.selectBookAvailable(bookCode)) {
+
+            if (borrowReturnService.isCorrectBookCode(bookCode) && borrowReturnService.selectBookAvailable(bookCode) && borrowReturnService.selectGetReservation(bookReservationVO).isEmpty()) {
 
                 //대출 내역을 insert
                 bookBNRVO.setBookCode(bookCode);
@@ -112,7 +123,7 @@ public class BorrowReturnController {
                 returnData.put("isReserved", false);
                 return returnData;
 
-            // 예약 내역 대출 진행
+                // 예약 내역 대출 진행
             } else if (borrowReturnService.isCorrectBookCode(bookCode) && borrowReturnService.selectBookAvailable(bookCode) && !borrowReturnService.selectGetReservation(bookReservationVO).isEmpty()) {
 
                 //대출 내역을 insert
@@ -129,7 +140,7 @@ public class BorrowReturnController {
 
                 //사용자 정보 및 내역 조회
                 returnData.put("userInfo", borrowReturnService.selectBorrowInfo(vo));
-                returnData.put("isReserved", true);
+                returnData.put("isReserved", false);
                 return returnData;
             }
             // 책 번호를 입력하고, 해당 책이 대출 중인 상태일 때 반납 진행
@@ -174,10 +185,13 @@ public class BorrowReturnController {
 
     }
 
+
     // 대출반납 페이지에서 이용자 정보 변경 메소드
     @ResponseBody
     @PostMapping("/updateUserIntroFetch")
-    public void updateUserIntro(@RequestBody MemberVO memberVO){
+    public void updateUserIntro(@RequestBody MemberVO memberVO) {
+
+        System.out.println(memberVO);
 
         userService.updateUserIntro(memberVO);
 
@@ -185,10 +199,9 @@ public class BorrowReturnController {
 
     //일관 반납
     @GetMapping("/consistentReturn")
-    public String goConsistentReturn(Model model){
+    public String goConsistentReturn(Model model) {
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
-
 
         System.out.println("대출반납으로 이동");
         return "content/library/borrowReturn/consistentReturn";
@@ -196,10 +209,9 @@ public class BorrowReturnController {
 
     //대출 반납 관리
     @GetMapping("/borrowReturnManagement")
-    public String goBorrowReturnManagement(Model model){
+    public String goBorrowReturnManagement(Model model) {
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
-
 
 
         System.out.println("대출 반납 관리 이동");
@@ -208,11 +220,13 @@ public class BorrowReturnController {
 
     //예약 정보 관리
     @RequestMapping("/reservationInfo")
-    public String goReservationInfo(Model model, SearchUserVO searchUserVO){
+    public String goReservationInfo(Model model, SearchUserVO searchUserVO) {
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
         List<BookReservationVO> reserveInfo = borrowReturnService.selectReservationList(searchUserVO);
+
+        System.out.println(reserveInfo);
 
         model.addAttribute("reserveInfo", reserveInfo);
 
@@ -224,7 +238,7 @@ public class BorrowReturnController {
 
     //출력 이력 관리
     @GetMapping("/outputHistory")
-    public String goOutputHistory(Model model){
+    public String goOutputHistory(Model model) {
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
 
@@ -237,4 +251,17 @@ public class BorrowReturnController {
     public boolean isNumberic(String str) {
         return str.matches("[+-]?\\d*(\\.\\d+)?");
     }
+
+//    // 매개변수로 넘어온 책 코드 데이터가 책 데이터에 있는 데이터인지 확인
+//    private boolean isValidBookCode(String bookCode) {
+//        return borrowReturnService.isCorrectBookCode(bookCode);
+//    }
+//
+//    // 매개변수로 넘어온 책 코드 데이터가 대출 가능한지, 해당 이용자가 그 책의 예약 내역이 있는지 확인
+//
+//
+//    // 반납으로 들어온 책 데이터가 예약 내역이 있는지 확인
+//    private boolean hasReservation(String bookCode) {
+//        return !borrowReturnService.selectChkReservation(bookCode).isEmpty();
+//    }
 }

@@ -2,12 +2,12 @@
 document.querySelector('#borrow-date').value = new Date().toISOString().substring(0, 10);
 document.querySelector('#return-date').value = new Date().toISOString().substring(0, 10);
 
+// 이용자 조회
 function selectMemberInfo() {
 
     // 그림 그릴 이용자 정보 태그 선택하기(userInfo)
     const userInfo = document.querySelector('#userInfo');
     
-
     // 모든 테이블의 tbody 태그 선택
     // 1. 대출 내역 테이블 tbody
     const borrow_list_tbody = document.querySelector('.borrow-list-table tbody');
@@ -21,7 +21,7 @@ function selectMemberInfo() {
     const returnCnt = document.querySelector('#return-cnt');
     const reserveCnt = document.querySelector('#reserve-cnt');
     const inputValue = document.querySelector('#inputData').value;
-    const selectedCardNum = document.querySelector('input[name="selectedCardNum"]').value
+    const selectedCardNum = document.querySelector('#selected-card-num').value
     const borrowDate = document.querySelector('#borrow-date').value;
     const returnDate = document.querySelector('#return-date').value;
 
@@ -49,7 +49,6 @@ function selectMemberInfo() {
             console.log(data);
 
             // const userCode = data.userInfo.userCode;
-            console.log(data.userInfo.userCode);
 
             if (data.userInfo.userCode == 0) {
                 alert('회원번호 혹은 책번호가 일치하지 않습니다.\n다시 입력하세요.');
@@ -58,8 +57,7 @@ function selectMemberInfo() {
 
             // selectedCardNum 값을 이전에 입력한 값으로 저장
             // 조회가 됐으면 조회된 데이터, 아니면 0이 들어감
-
-            document.querySelector('input[name="selectedCardNum"]').value = data.userInfo.cardNum;
+            document.querySelector('#selected-card-num').value = data.userInfo.cardNum;
 
             userInfo.innerHTML = '';
 
@@ -131,7 +129,7 @@ function selectMemberInfo() {
                 const data_cnt = data.userInfo.bookBorrowList.length;
 
                 //대출 및 반납, 예약 내역이 없을 경우
-                if (data_cnt == 1 && data.userInfo.bookBorrowList[0].bookCode == null) {
+                if (data_cnt == 1 && data.userInfo.bookBorrowList[0].bookCode == null && data.reserveInfo[0].reserveCode == null) {
 
                     cnt1 += `<b>대출(0/5)</b>`;
 
@@ -161,11 +159,11 @@ function selectMemberInfo() {
                     return_list_tbody.insertAdjacentHTML("afterbegin", str3);
                     reserve_list_tbody.insertAdjacentHTML("afterbegin", str4);
 
-                }
-                else {
+                } else {
 
                     let renCnt = 0;
                     let retCnt = 0;
+                    let resCnt = 0;
 
                     data.userInfo.bookBorrowList.forEach((bookBorrowInfo, idx) => {
                         if (bookBorrowInfo.returnYN == 'N') {
@@ -191,66 +189,92 @@ function selectMemberInfo() {
                             <td>
                                 ${bookBorrowInfo.exReturnDate.substring(0, 10)}
                             </td>
-                            <td>
-                                
-                            </td>
                         </tr>`;
                         }
-
-                        // else{
-                        //     if(renCnt == 6){
-                        //         alert('최대 대출 권수를 초과 하였습니다.');
-                        //      구현 하고싶은데 좀 있다가... 
-                        //     }
-                        // }
 
 
                         if (bookBorrowInfo.returnYN == 'Y') {
                             retCnt = retCnt + 1;
 
                             str3 += `
-                        <tr>
-                            <td>
-                                <img width="70px" src="/upload/${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}">
-                            </td>
-                            <td>
-                                ${bookBorrowInfo.bookCode}
-                            </td>
-                            <td>
-                                ${bookBorrowInfo.libraryBookVO.bookTitle}
-                            </td>
-                            <td>
-                                ${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookCateCode}${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookMidCateCode}
-                            </td>
-                            <td>
-                                ${bookBorrowInfo.borrowDate.substring(0, 10)}
-                            </td>
-                            <td>
-                                ${bookBorrowInfo.returnDate.substring(0, 10)}
-                            </td>
-                            <td>
-                                
-                            </td>
-                        </tr>`;
+                                    <tr>
+                                        <td>
+                                            <img width="70px" src="/upload/${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}">
+                                        </td>
+                                        <td>
+                                            ${bookBorrowInfo.bookCode}
+                                        </td>
+                                        <td>
+                                            ${bookBorrowInfo.libraryBookVO.bookTitle}
+                                        </td>
+                                        <td>
+                                            ${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookCateCode}${bookBorrowInfo.libraryBookVO.libraryBookInfoVO.bookMidCateCode}
+                                        </td>
+                                        <td>
+                                            ${bookBorrowInfo.borrowDate.substring(0, 10)}
+                                        </td>
+                                        <td>
+                                            ${bookBorrowInfo.returnDate.substring(0, 10)}
+                                        </td>
+                                    </tr>`;
                         }
+                    })
 
-                    });
-
-                    if(data.isReserved){
-                        alert('해당 도서는 예약 내역이 있습니다.\n카운터에 보관해주세요.');
+                    if(data.reserveInfo != null){
+                        data.reserveInfo.forEach((reserve, idx) => {
+                            resCnt = resCnt + 1;
+                            console.log(reserve)
+    
+                            str4 += `
+                                    <tr>
+                                        <td>
+                                            <img width="70px" src="/upload/${reserve.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}">
+                                        </td>
+                                        <td>
+                                            ${reserve.bookCode}
+                                        </td>
+                                        <td>
+                                            ${reserve.libraryBookVO.bookTitle}
+                                        </td>
+                                        <td>
+                                            ${reserve.libraryBookVO.libraryBookInfoVO.bookCateCode}${reserve.libraryBookVO.libraryBookInfoVO.bookMidCateCode}
+                                        </td>
+                                        <td>
+                                            ${reserve.reserveDate.substring(0, 10)}
+                                        </td>`
+                                        if(reserve.reserveCancel){
+                                            str4 += `<td>
+                                                ${reserve.reserveCancel.substring(0, 10)}
+                                            </td>`
+                                        }else{
+                                            str4 += `<td></td>`
+                                        }
+                                        
+                                    str4 += `</tr>
+                                    `;
+                        })
                     }
-                    
+
                     cnt1 += `<b>대출(${renCnt}/5)</b>`;
                     cnt2 += `<b>반납(${retCnt})</b>`;
+                    cnt3 += `<b>예약(${resCnt}/5)</b>`;
                     
 
                     renderCnt.insertAdjacentHTML("afterbegin", cnt1);
                     returnCnt.insertAdjacentHTML("afterbegin", cnt2);
+                    reserveCnt.insertAdjacentHTML("afterbegin", cnt3);
                     borrow_list_tbody.insertAdjacentHTML("afterbegin", str2);
                     return_list_tbody.insertAdjacentHTML("afterbegin", str3);
-                }
+                    reserve_list_tbody.insertAdjacentHTML("afterbegin", str4);
+                
+                };
 
+
+                if(data.isReserved){
+                    alert('해당 도서는 예약 내역이 있습니다.\n카운터에 보관해주세요.');
+                }
             }
+
         })
 
         //fetch 통신 실패 시 실행 영역
@@ -302,6 +326,11 @@ function showModal(userCode) {
     // 그림 그릴 모달 태그 선택
     const modalBody = document.querySelector('.modal-body');
 
+    const userDetail = {
+        userCode: String(userCode),
+        userDetail: String(true)
+    };
+
     fetch('/bookAdmin/showUserDetailFetch', { //요청경로
         method: 'POST',
         cache: 'no-cache',
@@ -309,11 +338,10 @@ function showModal(userCode) {
             'Content-Type': 'application/json; charset=UTF-8'
         },
         //컨트롤러로 전달할 데이터
-        body: JSON.stringify({
+        body: JSON.stringify(
             // 데이터명 : 데이터값
-            userCode: String(userCode),
-            userDetail: String(true)
-        })
+            userDetail
+        )
     })
         .then((response) => {
             return response.json(); //나머지 경우에 사용
@@ -321,7 +349,7 @@ function showModal(userCode) {
         //fetch 통신 후 실행 영역
         .then((data) => {//data -> controller에서 리턴되는 데이터!
 
-            // console.log(data);
+            console.log(data);
 
             modalBody.innerHTML = '';
 
@@ -335,7 +363,7 @@ function showModal(userCode) {
                 <col width="">
             </colgroup>
             <tr>
-                <input type="hidden" name="userCode" value="${data.userCode}" id="getUserCode">
+            <input type="hidden" name="userCode" value="${data.userCode}" id="get-user-code">
                 <td class="table-light">번호</td>
                 <td><span id="detailCardNum">${data.cardNum}</span>
                     <button class="btn btn-primary" onclick="reGrant(${data.userCode})">카드번호 재부여</button>
@@ -521,7 +549,7 @@ const reGrant = () => {
     // 그림 그릴 모달 태그 선택
     const modalBody = document.querySelector('.modal-body');
 
-    const userCode = document.querySelector('#getUserCode').value;
+    const userCode = document.querySelector('#get-user-code').value;
     const cardNum = document.querySelector('#detailCardNum').innerHTML;
     const userId = document.querySelector('#detailUserId').value;
     const userName = document.querySelector('#detailUserName').value;
@@ -576,7 +604,7 @@ const reGrant = () => {
                 <col width="">
             </colgroup>
             <tr>
-                <input type="hidden" name="userCode" value="${userCode}" id="getUserCode">
+                <input type="hidden" name="userCode" value="${userCode}" id="get-user-code">
                 <td class="table-light">번호</td>
                 <td><span id="detailCardNum">${data}</span>
                     <button class="btn btn-primary" onclick="reGrant(${userCode})">카드번호 재부여</button>
@@ -712,7 +740,7 @@ const updateUserDetail = () => {
     const cardNum = document.querySelector('#detailCardNum').innerHTML;
     const userId = document.querySelector('#detailUserId').value;
     const userName = document.querySelector('#detailUserName').value;
-    const userCode = document.querySelector('input[type="hidden"]').value;
+    const userCode = document.querySelector('#get-user-code').value;
     const isAdmin = document.querySelector('select[name="isAdmin"]').value;
     const cardStatus = document.querySelector('select[name="cardStatus"]').value;
     const gender = document.querySelector('select[name="gender"]').value;

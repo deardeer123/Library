@@ -33,8 +33,8 @@ public class UserServiceImpl implements UserService{
 
     // 모달창 유저 상세정보 업데이터
     @Override
-    public int userDetailUpdate(MemberVO memberVO) {
-        return sqlSession.update("userMenuMapper.userDetailUpdate", memberVO);
+    public void userDetailUpdate(MemberVO memberVO) {
+        sqlSession.update("userMenuMapper.userDetailUpdate", memberVO);
     }
 
     // 이용자 소개 업데이트
