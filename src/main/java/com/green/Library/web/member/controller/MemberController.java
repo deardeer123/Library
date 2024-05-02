@@ -93,7 +93,7 @@ public class MemberController {
         return "content/homePage/member/findIdOrPW";
     }
 
-    @PostMapping("/findId")
+    @PostMapping("/findIdFetch")
     @ResponseBody
     public void findId(MemberVO memberVO) throws MessagingException, UnsupportedEncodingException {
 
@@ -106,19 +106,30 @@ public class MemberController {
     }
 
 
-    @PostMapping("/findPw")
-    public String findPw(MemberVO memberVO){
+    @PostMapping("/findPwFetch")
+    @ResponseBody
+    public void findPw(MemberVO memberVO) throws MessagingException, UnsupportedEncodingException{
         //임시 비밀번호 생성
         String randomPw = memberService.createRandomPw();
+        //아이디 확인 및 업데이트를 위한 유저코드 유저코드 찾기
+        MemberVO member = memberService.findPwUser(memberVO);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+randomPw);
 
         //암호화
         String encodedPw = encoder.encode(randomPw);
         //vo에 담고
-        memberVO.setUserPw(encodedPw);
+        member.setUserPw(encodedPw);
         //암호화된 임시비밀번호를 업데이트
-        memberService.updateUserPw(memberVO);
-        return "";
+        memberService.updateUserPw(member);
+
+        //이메일 전송
+        String email = memberVO.getEmail();
+        String text = "임시 비밀번호는 " + randomPw +"입니다 \n 임시 비밀번호이니 로그인 즉시 개인정보 수정을 부탁드립니다.";
+        String subject = "그린 도서관입니다.";
+        simpleMailService.SimpleMailSend(email,text,subject);
     }
+
+
 
 
     @GetMapping("/logout")

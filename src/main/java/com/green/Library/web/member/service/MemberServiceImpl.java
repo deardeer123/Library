@@ -82,6 +82,11 @@ public class MemberServiceImpl implements MemberService{
         return sqlSession.selectOne("memberMapper.findUser",memberVO);
     }
 
+    @Override
+    public MemberVO findPwUser(MemberVO memberVO) {
+        return sqlSession.selectOne("memberMapper.findPwUser",memberVO);
+    }
+
     //12자리의 랜덤 비밀번호 생성
     public String createRandomPw(){
         String[] charSet = new String[]{

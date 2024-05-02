@@ -14,8 +14,11 @@ import net.nurigo.sdk.message.response.MessageListResponse;
 import net.nurigo.sdk.message.response.MultipleDetailMessageSentResponse;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class MessageController {
 
     final DefaultMessageService messageService;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     @Resource
     private MemberServiceImpl memberService;
@@ -58,5 +64,39 @@ public class MessageController {
         return "redirect:/login";
     }
 
+    @PostMapping("/pwFindOfTel")
+    public String pwFindOfTel(MemberVO memberVO,
+                              @RequestParam(name = "userTel") String userTel) {
+        //임시 비밀번호 생성
+        String randomPw = memberService.createRandomPw();
+
+        //아이디 확인 및 업데이트를 위한 유저코드 유저코드 찾기
+        MemberVO member = memberService.findPwUser(memberVO);
+        member.setUserCode(member.getUserCode());
+        member.setUserTel(userTel);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@랜덤 비밀번호 : "+randomPw);
+        //암호화
+        String encodedPw = encoder.encode(randomPw);
+        //vo에 담고
+        member.setUserPw(encodedPw);
+        //암호화된 임시비밀번호를 업데이트
+        memberService.updateUserPw(member);
+        member.setEmail(member.getEmail().replace(",", member.getEmail()));
+        System.out.println(member);
+        Message message = new Message();
+        // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
+
+        //발신자
+        message.setFrom("01076153762");
+        //수신자
+        message.setTo(memberVO.getUserTel());
+        //보낼 메세지
+        message.setText("[그린도서관] \n"+memberVO.getUserName()+"님의 임시비밀번호 : [" + randomPw + "] 입니다 \n 개인정보유출 방지를 위해 개인정보 수정을 부탁드립니다.");
+
+        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+        System.out.println(response);
+
+        return "redirect:/login";
+    }
 
 }

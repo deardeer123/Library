@@ -202,6 +202,18 @@
         AND USER_NAME = #{userName}
     </select>
 
+    <select id="findPwUser" resultMap="users">
+        SELECT
+        USER_ID
+        ,USER_NAME
+        ,USER_PW
+        ,email
+        ,user_code
+        FROM USERS
+        WHERE USER_TEL = #{userTel}
+        AND USER_NAME = #{userName}
+        AND USER_ID = #{userId}
+    </select>
     <!-- ////////////////////////// 예약 기능 ////////////////////////////////   -->
 
     <!-- 예약 조회 -->

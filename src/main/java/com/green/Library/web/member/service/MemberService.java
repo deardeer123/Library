@@ -40,6 +40,8 @@ public interface MemberService {
 
     MemberVO findUser(MemberVO memberVO);
 
+    MemberVO findPwUser(MemberVO memberVO);
+
     ///////////////// 예약 관리////////////////////
 
     // 예약 정보 조회
