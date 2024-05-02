@@ -17,7 +17,7 @@ public interface UserService {
     MemberVO showUserDetail(int userCode);
 
     // 이용자 상세 정보 수정
-    int userDetailUpdate(MemberVO memberVO);
+    void userDetailUpdate(MemberVO memberVO);
 
     // 대출반납에 조회 된 이용자의 이용자 정보 변경
     void updateUserIntro(MemberVO memberVO);

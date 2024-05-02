@@ -1,5 +1,6 @@
 package com.green.Library.web.member.controller;
 
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.member.service.MemberServiceImpl;
 import com.green.Library.web.member.vo.ApplyVO;
@@ -210,13 +211,30 @@ public class MemberController {
         return "content/homePage/member/bookLoanReturn";
     }
 
-    @GetMapping("myBookingList")
+    /////////////////////////// 예약 기능 /////////////////////////////////
+    @RequestMapping("myBookingList")
     public String myBookingList(Model model, HttpSession session){
         //내 (도서)예약 목록
         model.addAttribute("page", "myBookingList");
 
-        return "content/homePage/member/myBookingList?" + session.getAttribute("userCode");
+        model.addAttribute("rInfo", memberService.selectMyReservation((Integer) session.getAttribute("userCode")));
+
+        return "content/homePage/member/myBookingList";
     }
+
+    @GetMapping("cancelNow")
+    public String cancelNow(BookReservationVO bookReservationVO, HttpSession session){
+
+        bookReservationVO.setUserCode((Integer) session.getAttribute("userCode"));
+
+        memberService.updateSelfCancel(bookReservationVO);
+
+        return "redirect:myBookingList";
+    }
+
+
+
+    ////////////////////////////////////////////////////////////////////
 
     @GetMapping("memberWithdrawal")
     public String memberWithdrawal(Model model,HttpSession session){

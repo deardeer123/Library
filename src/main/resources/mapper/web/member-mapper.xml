@@ -24,6 +24,7 @@
         <result property="overdueCnt" column="OVERDUE_CNT"/>
         <association property="applyVO" resultMap="apply"/>
         <collection property="bookBorrowList" resultMap="bnrMapper.bookBNR"/>
+        <collection property="bookReservationList" resultMap="bnrMapper.bookReserve"/>
     </resultMap>
     <resultMap id="apply" type="com.green.Library.web.member.vo.ApplyVO">
         <id property="applyNum" column="APPLY_NUM"/>
@@ -200,6 +201,50 @@
         WHERE USER_TEL = #{userTel}
         AND USER_NAME = #{userName}
     </select>
+
+    <!-- ////////////////////////// 예약 기능 ////////////////////////////////   -->
+
+    <!-- 예약 조회 -->
+    <select id="selectMyReservation" resultMap="bnrMapper.bookReserve">
+        SELECT BR.USER_CODE
+        , BR.BOOK_CODE
+        , BOOK_INFO_ATTACHED_FILE_NAME
+        , BOOK_TITLE
+        , BOOK_WRITER
+        , RESERVE_DATE
+        , RESERVE_CANCEL
+        , RESERVE_STATUS
+        FROM BOOK_RESERVATION BR
+        LEFT JOIN BOOK B
+        ON BR.BOOK_CODE = B.BOOK_CODE
+        LEFT JOIN BOOK_INFO BI
+        ON BR.BOOK_CODE = BI.BOOK_CODE
+        WHERE USER_CODE = #{userCode}
+        ORDER BY RESERVE_DATE DESC
+    </select>
+
+    <!-- 예약 취소(본인) -->
+    <update id="updateSelfCancel">
+        UPDATE BOOK_RESERVATION
+        SET
+            RESERVE_CANCEL = NOW()
+            , RESERVE_STATUS = '취소'
+        WHERE USER_CODE = #{userCode}
+        AND BOOK_CODE = #{bookCode}
+    </update>
+
+    <!-- 예약 취소(자동) -->
+    <update id="updateAutoCancel">
+        UPDATE BOOK_RESERVATION
+        SET
+            RESERVE_CANCEL = NOW()
+            , RESERVE_STATUS = '취소'
+        WHERE BOOK_CODE = #{bookCode}
+        AND USER_CODE = #{userCode}
+        AND RESERVE_CANCEL &lt; NOW()
+    </update>
+
+    <!-- ///////////////////////////////////////////////////////////////// -->
 
 </mapper>
 

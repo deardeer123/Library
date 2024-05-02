@@ -1,5 +1,6 @@
 package com.green.Library.web.member.service;
 
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.member.vo.ApplyVO;
 import com.green.Library.web.member.vo.MemberVO;
@@ -38,5 +39,16 @@ public interface MemberService {
     void updateUserPw(MemberVO memberVO);
 
     MemberVO findUser(MemberVO memberVO);
+
+    ///////////////// 예약 관리////////////////////
+
+    // 예약 정보 조회
+    List<BookReservationVO> selectMyReservation(int userCode);
+
+    // 예약 본인 취소
+    void updateSelfCancel(BookReservationVO bookReservationVO);
+
+    // 예약 자동 취소
+    void updateAutoCancel(BookReservationVO bookReservationVO);
 }
 
