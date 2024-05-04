@@ -16,12 +16,11 @@ class SimpleMailServiceImplTest {
 
     @Autowired
     SimpleMailService simpleMailService;
-<<<<<<< HEAD
-=======
+
 
     @Resource(name = "memberService")
     MemberServiceImpl memberService;
->>>>>>> 50860842deda3c9e3e12d774f9f2019d5c1733bc
+
 
     @Test
     public void mail_email() throws MessagingException, UnsupportedEncodingException {

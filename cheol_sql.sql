@@ -1312,4 +1312,23 @@ FROM
 WHERE 
 	board_type = 24 AND attached_file.IS_MAIN = 'Y';
    
-   
+SELECT book_category.book_cate_index ,book_info.book_cate_code ,COUNT(book_category.book_cate_code)
+FROM book_info Left Outer JOIN book_category
+ON book_info.BOOK_CATE_CODE = book_category.BOOK_CATE_CODE
+GROUP BY book_category.book_cate_code;
+
+SELECT
+            book_category.book_cate_index,
+            book_category.BOOK_CATE_NAME,
+            COUNT(book_info.BOOK_CATE_CODE) AS COUNT
+        FROM book_category LEFT JOIN book_info
+        ON book_category.BOOK_CATE_CODE = book_info.BOOK_CATE_CODE
+        GROUP BY book_info.BOOK_CATE_CODE;
+
+SELECT count(*)
+FROM book_info;
+
+SELECT * FROM ask_and_answer_board;
+
+
+SELECT * FROM users;
