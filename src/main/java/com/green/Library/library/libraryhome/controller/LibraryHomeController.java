@@ -5,7 +5,10 @@ import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.libraryhome.service.LibraryHomeService;
 import com.green.Library.library.libraryhome.service.LibraryHomeServiceImpl;
 import com.green.Library.library.libraryhome.vo.CalendarVO;
+import com.green.Library.library.libraryhome.vo.MemoSearchVO;
+import com.green.Library.library.libraryhome.vo.MemoVO;
 import com.green.Library.libraryMember.vo.LibraryMemberVO;
+import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.member.vo.MemberVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import retrofit2.http.Path;
 
 import java.beans.Encoder;
 import java.util.*;
@@ -118,16 +122,70 @@ public class LibraryHomeController {
 
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
+
+        //메모리스트 3개 보내주기
+        model.addAttribute("memoList", libraryHomeService.selectMemoList3());
         return "content/library/home";
     }
+    //메모 작성
+    @PostMapping("memo/write")
+    public String writeMemo(MemoVO memoVO){
+        System.out.println(memoVO);
+        System.out.println("메모작성");
+        libraryHomeService.insertMemo(memoVO);
+        return "redirect:/bookAdmin/home";
+    }
+    //검색
+    @ResponseBody
+    @PostMapping("memo")
+    public Map<String,Object> selectMemoList(MemoSearchVO memoSearchVO){
+        System.out.println("memoSearchVO = " + memoSearchVO);
+        int memoCount = libraryHomeService.selectMemoCount(memoSearchVO);
+        memoSearchVO.setTotalDataCnt(memoCount);
+        memoSearchVO.setPageInfo();
+        //계속 이상하게 나오길래 넣은 코드입니다.
+        if(memoCount == 0){
+            memoSearchVO.setEndPage(1);
+        }
 
+        List<MemoVO> memoList1 = libraryHomeService.selectMemoList(memoSearchVO);
+        Map<String, Object> map = new HashMap<>();
+        map.put("memoList",memoList1);
+        map.put("searchVO", memoSearchVO);
 
+        return map;
+    }
+    //하나 찾기
+    @ResponseBody
+    @GetMapping("memo/{id}")
+    public MemoVO memoInfo(@PathVariable(name="id")int id){
+        System.out.println(id);
+        MemoVO memoVO = libraryHomeService.selectMemoInfo(id);
+        return memoVO;
+    }
 
+    //삭제하기
+    @ResponseBody
+    @PostMapping("memo/{id}/delete")
+    public Map<String, Object> deleteMemo(@PathVariable(name="id") int id, MemoSearchVO memoSearchVO){
+        System.out.println("id = " + id);
+        libraryHomeService.deleteMemo(id);
 
+        int memoCount = libraryHomeService.selectMemoCount(memoSearchVO);
+        memoSearchVO.setTotalDataCnt(memoCount);
+        memoSearchVO.setPageInfo();
+        //계속 이상하게 나오길래 넣은 코드입니다.
+        if(memoCount == 0){
+            memoSearchVO.setEndPage(1);
+        }
 
+        List<MemoVO> memoList1 = libraryHomeService.selectMemoList(memoSearchVO);
+        Map<String, Object> map = new HashMap<>();
+        map.put("memoList",memoList1);
+        map.put("searchVO", memoSearchVO);
 
-
-
+        return map;
+    }
 
 }
 

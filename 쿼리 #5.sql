@@ -17,3 +17,4 @@ SELECT
 
 (SELECT sunday FROM electric_accidents_by_day WHERE OCCURRED_YEAR = '2016')
 ))*100;
+

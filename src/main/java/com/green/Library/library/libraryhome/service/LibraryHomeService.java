@@ -1,7 +1,10 @@
 package com.green.Library.library.libraryhome.service;
 
 import com.green.Library.library.libraryhome.vo.CalendarVO;
+import com.green.Library.library.libraryhome.vo.MemoSearchVO;
+import com.green.Library.library.libraryhome.vo.MemoVO;
 import com.green.Library.libraryMember.vo.LibraryMemberVO;
+import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.member.vo.MemberVO;
 
 import java.util.List;
@@ -15,4 +18,17 @@ public interface LibraryHomeService {
     List<CalendarVO> selectCalendarList();
     void insertCalendar(CalendarVO calendarVO);
     void deleteCalendar(CalendarVO calendarVO);
+//    메모 작성
+    void insertMemo(MemoVO memoVO);
+//    메모 갯수
+    int selectMemoCount(MemoSearchVO memoSearchVO);
+
+//    메모리스트 조회(3개만)
+    List<MemoVO> selectMemoList3();
+//    메모리스트 조회
+    List<MemoVO> selectMemoList(MemoSearchVO searchVO);
+    //메모 하나만
+    MemoVO selectMemoInfo(int id);
+//    메모 삭제
+    void deleteMemo(int id);
 }

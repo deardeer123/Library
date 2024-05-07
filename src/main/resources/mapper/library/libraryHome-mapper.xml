@@ -10,6 +10,14 @@
         <result column="CALENDAR_URL" property="url" />
     </resultMap>
 
+    <resultMap id="memo" type="com.green.Library.library.libraryhome.vo.MemoVO">
+        <id column="ID" property="id"/>
+        <result column="MEMO_TITLE" property="memoTitle"/>
+        <result column="MEMO_CONTENT" property="memoContent"/>
+        <result column="MEMO_WRITER" property="memoWriter"/>
+        <result column="MEMO_DATE" property="date"/>
+    </resultMap>
+
 <!--    캘린터 검색-->
     <select id="selectCalendarList" resultMap="calendar">
         SELECT
@@ -39,8 +47,62 @@
     <delete id="deleteCalendar">
         DELETE FROM calendar
         WHERE calendar_title = #{title}
-
     </delete>
+
+    <insert id="insertMemo">
+        INSERT INTO MEMO
+        (
+        MEMO_TITLE ,
+        MEMO_CONTENT ,
+        MEMO_WRITER
+        )VALUES(
+        #{memoTitle} ,
+        #{memoContent} ,
+        #{memoWriter})
+    </insert>
+
+<!--    메모 조회 (3개만) -->
+    <select id="selectMemoList3" resultMap="memo">
+        SELECT *
+        FROM MEMO
+        ORDER BY id DESC
+        LIMIT 3
+    </select>
+
+<!--    메모 총 갯수-->
+    <select id="selectMemoCount" resultType="int">
+        select count(*)
+        from memo
+        where 1= 1
+        <if test='searchValue != null and !searchValue.equals("null") and !searchValue.equals("")'>
+            AND ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+    </select>
+
+<!--    메모조회 다-->
+    <select id="selectMemoList" resultMap="memo">
+        SELECT *
+        FROM MEMO
+        WHERE 1 = 1
+        <if test='searchValue != null and !searchValue.equals("null") and !searchValue.equals("")'>
+            AND ${searchType} LIKE CONCAT('%', #{searchValue} , '%')
+        </if>
+        ORDER BY id DESC
+        LIMIT ${displayDataCnt} OFFSET ${displayDataCnt * (nowPage - 1)}
+    </select>
+
+    <select id="selectMemoInfo" resultMap="memo">
+        select *
+        from memo
+        where id = #{id}
+    </select>
+
+
+    <delete id="deleteMemo">
+        delete from memo
+        where id =${id}
+    </delete>
+
 </mapper>
 
 
