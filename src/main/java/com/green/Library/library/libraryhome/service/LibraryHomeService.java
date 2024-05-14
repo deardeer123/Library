@@ -4,8 +4,10 @@ import com.green.Library.library.libraryhome.vo.CalendarVO;
 import com.green.Library.library.libraryhome.vo.MemoSearchVO;
 import com.green.Library.library.libraryhome.vo.MemoVO;
 import com.green.Library.libraryMember.vo.LibraryMemberVO;
+import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.member.vo.MemberVO;
+import com.green.Library.web.participationForum.vo.AskAndAnswerBoardVO;
 
 import java.util.List;
 
@@ -31,4 +33,8 @@ public interface LibraryHomeService {
     MemoVO selectMemoInfo(int id);
 //    메모 삭제
     void deleteMemo(int id);
+    //묻고 답하기 답변 안한 글 갯수
+    int askBoardCount();
+    //묻고 답하기 답변안한 글 5개
+    List<BoardVO> notAskBoard();
 }

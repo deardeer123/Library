@@ -40,12 +40,6 @@
                         <td colspan="4">
                             <div class="row" style="margin: 5px;">
                                 <div class="col-4 card" th:each="board : ${boardList}" style="padding: 10px;">
-<<<<<<< HEAD
-                                    <th:block sec:authorize="hasRole('ROLE_Y')">
-                                        <input th:value="${board.boardNum}" type="checkbox" class="chk" checked>
-                                    </th:block>
-=======
->>>>>>> 50860842deda3c9e3e12d774f9f2019d5c1733bc
 
                                     <a th:href="@{/eventDetailBoard(boardNum=${board.boardNum})}">
                                         <th:block th:each="e:${board.fileList}" th:if="${e.isMain=='Y'}">

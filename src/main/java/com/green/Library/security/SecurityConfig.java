@@ -51,8 +51,13 @@ public class SecurityConfig {
         security.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         c -> {
-                            c.anyRequest().permitAll();
+                            //관리자 인 경우메만 도서관리페이지로 이동.
+                            c.requestMatchers(
+                                    new AntPathRequestMatcher("/bookAdmin/**")
+                            ).hasRole("Y")
+                            .anyRequest().permitAll();
                         }
+
                 )
                 .formLogin(
                         formLogin -> {
@@ -89,7 +94,11 @@ public class SecurityConfig {
                                     //로그아웃 성공 시 세션 데이터 삭제
                                     .invalidateHttpSession(true);
                         }
-                );
+                ).exceptionHandling(
+                        ex->{ex.accessDeniedPage("/deny");
+                        }
+                )
+        ;
         return security.build();
     }
 

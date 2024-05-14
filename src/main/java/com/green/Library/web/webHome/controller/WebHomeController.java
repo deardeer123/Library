@@ -172,4 +172,8 @@ public class WebHomeController {
 
         return "redirect:/noticeDetail?boardNum="+boardNum;
     }
+    @GetMapping("/deny")
+    public String denyPage(){
+        return "/content/homePage/deny";
+    }
 }

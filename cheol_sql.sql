@@ -1342,3 +1342,28 @@ CREATE TABLE MEMO(
 	
 DROP TABLE memo;
 SELECT * FROM memo order by id desc LIMIT 3;
+
+-- 답변안한 질문응답
+SELECT board.BOARD_NUM , board.BOARD_TITLE, user_name
+FROM board INNER JOIN ask_and_answer_board
+ON board.BOARD_NUM = ask_and_answer_board.BOARD_NUM
+INNER JOIN users
+ON board.USER_CODE = users.USER_CODE
+WHERE is_answer_board = 'N' and ask_and_answer_board_num not IN 
+(SELECT if_answer_board_num
+FROM ask_and_answer_board
+WHERE is_answer_board = 'Y')
+ORDER BY board.board_num desc
+LIMIT 5;
+
+SELECT *
+FROM users;
+
+SELECT if_answer_board_num
+FROM ask_and_answer_board
+WHERE is_answer_board = 'Y';
+
+SELECT
+ COUNT(*)
+FROM ask_and_answer_board
+WHERE 

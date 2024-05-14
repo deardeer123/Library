@@ -8,8 +8,10 @@ import com.green.Library.library.libraryhome.vo.CalendarVO;
 import com.green.Library.library.libraryhome.vo.MemoSearchVO;
 import com.green.Library.library.libraryhome.vo.MemoVO;
 import com.green.Library.libraryMember.vo.LibraryMemberVO;
+import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.member.vo.MemberVO;
+import com.green.Library.web.participationForum.vo.AskAndAnswerBoardVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import org.apache.ibatis.javassist.expr.NewArray;
@@ -20,6 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import retrofit2.http.Path;
 
 import java.beans.Encoder;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -125,6 +129,22 @@ public class LibraryHomeController {
 
         //메모리스트 3개 보내주기
         model.addAttribute("memoList", libraryHomeService.selectMemoList3());
+
+        //오늘 날짜
+        LocalDate date = LocalDate.now(); //오늘 날짜 LocalDate 객체 생성
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = date.format(dateTimeFormatter); //LocalDate 객체를 String 객체로 바꿈
+        model.addAttribute("today", today);
+
+        //묻고 답하기 답변 안한 글 갯수
+        model.addAttribute("askCount", libraryHomeService.askBoardCount());
+
+        //묻고 답하기 답변 안한 글 5개
+        List<BoardVO> askBoard = libraryHomeService.notAskBoard();
+        askBoard.forEach(s-> System.out.println(s));
+        model.addAttribute("askBoard", libraryHomeService.notAskBoard());
+
+
         return "content/library/home";
     }
     //메모 작성

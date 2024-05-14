@@ -5,8 +5,10 @@ import com.green.Library.library.libraryhome.vo.MemoPageVO;
 import com.green.Library.library.libraryhome.vo.MemoSearchVO;
 import com.green.Library.library.libraryhome.vo.MemoVO;
 import com.green.Library.libraryMember.vo.LibraryMemberVO;
+import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.member.vo.MemberVO;
+import com.green.Library.web.participationForum.vo.AskAndAnswerBoardVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,5 +75,15 @@ public class LibraryHomeServiceImpl implements LibraryHomeService{
     @Override
     public void deleteMemo(int id) {
         sqlSession.delete("libraryHomeMapper.deleteMemo",id);
+    }
+
+    @Override
+    public int askBoardCount() {
+        return sqlSession.selectOne("libraryHomeMapper.askBoardCount");
+    }
+
+    @Override
+    public List<BoardVO> notAskBoard() {
+        return sqlSession.selectList("libraryHomeMapper.notAskBoard");
     }
 }

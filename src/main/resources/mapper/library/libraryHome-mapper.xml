@@ -103,6 +103,32 @@
         where id =${id}
     </delete>
 
+<!--    묻고 답하기 갯수-->
+    <select id="askBoardCount" resultType="int">
+        SELECT COUNT(*)
+        FROM board INNER JOIN ask_and_answer_board
+        ON board.BOARD_NUM = ask_and_answer_board.BOARD_NUM
+        WHERE is_answer_board = 'N' and ask_and_answer_board_num NOT IN
+        (SELECT if_answer_board_num
+        FROM ask_and_answer_board
+        WHERE is_answer_board = 'Y')
+
+    </select>
+<!--   묻고 답하기 게시물 정확히는 답변안한 게시물-->
+    <select id="notAskBoard" resultMap="boardMapper.board">
+        SELECT board.BOARD_NUM , board.BOARD_TITLE, user_name
+        FROM board INNER JOIN ask_and_answer_board
+        ON board.BOARD_NUM = ask_and_answer_board.BOARD_NUM
+        INNER JOIN users
+        ON board.USER_CODE = users.USER_CODE
+        WHERE is_answer_board = 'N' and ask_and_answer_board_num not IN
+        (SELECT if_answer_board_num
+        FROM ask_and_answer_board
+        WHERE is_answer_board = 'Y')
+        ORDER BY board.board_num desc
+        LIMIT 5;
+    </select>
+
 </mapper>
 
 

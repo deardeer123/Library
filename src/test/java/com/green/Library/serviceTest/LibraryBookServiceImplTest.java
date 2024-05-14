@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @SpringBootTest
 @Transactional
 public class LibraryBookServiceImplTest {
@@ -31,5 +34,12 @@ public class LibraryBookServiceImplTest {
         System.out.println("두번째 -> 추천책 데이터가 있는 경우 변경");
         libraryBookService.insertBookRecommendation(bookRecommendationVO2);
         System.out.println();
+    }
+    @Test
+    public void 오늘날짜(){
+        LocalDate date = LocalDate.now(); //오늘 날짜 LocalDate 객체 생성
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = date.format(dateTimeFormatter); //LocalDate 객체를 String 객체로 바꿈
+        System.out.println(today);
     }
 }
