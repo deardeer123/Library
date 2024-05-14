@@ -10,6 +10,7 @@
         <result      column="RETURN_YN"           property="returnYN"/>
         <result      column="EX_RETURN_DATE"      property="exReturnDate"/>
         <result      column="RETURN_DATE"         property="returnDate"/>
+        <result      column="OVERDUE_DATE"         property="overdueDate"/>
         <result      column="USER_CODE"           property="userCode"/>
         <result      column="BOOK_CODE"           property="bookCode"/>
         <association property="libraryBookVO"     resultMap="libraryBookMapper.libraryBook"/>
