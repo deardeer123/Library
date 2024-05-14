@@ -1,5 +1,6 @@
 package com.green.Library.web.member.service;
 
+import com.green.Library.library.borrowReturn.vo.BookBNRVO;
 import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.member.vo.ApplyVO;
@@ -41,6 +42,9 @@ public interface MemberService {
     MemberVO findUser(MemberVO memberVO);
 
     MemberVO findPwUser(MemberVO memberVO);
+
+    // 마이페이지 대출반납 내역 조회
+    List<BookBNRVO> selectMyHistory(int userCode);
 
     ///////////////// 예약 관리////////////////////
 

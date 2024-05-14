@@ -26,17 +26,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="info, state : ${rInfo}" class="tr-list">
-                        <input type="hidden" name="bookCode" th:value="${info.libraryBookVO.bookCode}">
-                        <td>[[${#lists.size(rInfo) - state.index}]]</td>
-                        <td><img width="70px" th:src="@{'upload/' + ${info.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}}"></td>
-                        <td >[[${info.libraryBookVO.bookTitle}]]</td>
-                        <td>[[${info.libraryBookVO.bookWriter}]]</td>
-                        <td>[[${info.reserveDate}]]</td>
-                        <td>[[${info.reserveCancel}]]</td>
-                        <td>[[${info.reserveStatus}]]</td>
+                    <tr th:each="my, state : ${history}" class="tr-list">
+                        <input type="hidden" name="bookCode" th:value="${my.libraryBookVO.bookCode}">
+                        <td>[[${#lists.size(history) - state.index}]]</td>
+                        <td><img width="70px" th:src="@{'upload/' + ${my.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}}"></td>
+                        <td >[[${my.libraryBookVO.bookTitle}]]</td>
+                        <td>[[${my.libraryBookVO.bookWriter}]]</td>
+                        <td>[[${my.borrowDate}]]</td>
+                        <td>[[${my.returnDate}]]</td>
+                        <td>[[${my.overdueDate}]]</td>
                     </tr>
-                    <th:block th:if="${#lists.size(rInfo) == 0}">
+                    <th:block th:if="${#lists.size(history) == 0}">
                         <tr>
                             <td colspan="9" style="font-weight: bold;">
                                 도서 대출 반납 내역이 없습니다.

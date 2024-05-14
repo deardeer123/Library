@@ -229,10 +229,12 @@ public class MemberController {
 
 
     @GetMapping("bookLoanReturn")
-    public String bookLoanReturn(Model model){
+    public String bookLoanReturn(Model model, HttpSession session){
         //도서 대출 반납 목록
         model.addAttribute("page", "bookLoanReturn");
 
+        Integer a = ((Integer) session.getAttribute("userCode"));
+        model.addAttribute("history", memberService.selectMyHistory(a));
 
 
         return "content/homePage/member/bookLoanReturn";
