@@ -55,6 +55,9 @@ public class SecurityConfig {
                             c.requestMatchers(
                                     new AntPathRequestMatcher("/bookAdmin/**")
                             ).hasRole("Y")
+                            .requestMatchers(
+                                    new AntPathRequestMatcher("/bookReservationFetch")
+                            ).hasRole("N")
                             .anyRequest().permitAll();
                         }
 

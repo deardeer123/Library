@@ -1363,7 +1363,4 @@ SELECT if_answer_board_num
 FROM ask_and_answer_board
 WHERE is_answer_board = 'Y';
 
-SELECT
- COUNT(*)
-FROM ask_and_answer_board
-WHERE 
+SELECT * FROM USERs;
