@@ -214,6 +214,30 @@
         AND USER_NAME = #{userName}
         AND USER_ID = #{userId}
     </select>
+
+    <!-- 마이페이지 대출반납 조회 -->
+    <select id="selectMyHistory">
+        SELECT USER_CODE
+            , BOOK_INFO_ATTACHED_FILE_NAME
+            , BOOK_TITLE
+            , BOOK_WRITER
+            , BOOK_CODE
+            , BORROW_DATE
+            , RETURN_DATE
+            , RETURN_YN
+            , CASE
+                WHEN RETURN_YN = 'N' THEN DATEDIFF(NOW(), EX_RETURN_DATE)
+                WHEN RETURN_YN = 'Y' AND RETURN_DATE > EX_RETURN_DATE THEN DATEDIFF(RETURN_DATE, EX_RETURN_DATE)
+                ELSE 0
+            END AS OVERDUE_DATE
+        FROM BOOK_BNR BB
+        LEFT JOIN BOOK_INFO BI
+        ON BB.BOOK_CODE = BI.BOOK_CODE
+        LEFT JOIN USERS U
+        ON BB.USER_CODE = U.USER_CODE
+        WHERE USER_CODE = #{userCode}
+    </select>
+
     <!-- ////////////////////////// 예약 기능 ////////////////////////////////   -->
 
     <!-- 예약 조회 -->
