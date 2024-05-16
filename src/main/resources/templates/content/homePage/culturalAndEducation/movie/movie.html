@@ -18,7 +18,6 @@
                             <select name="searchType" class="form-select" style="width: 200px; display: inline-block;">
                                 <option value="BOARD_TITLE" th:selected="${searchVO.searchType == 'board_Title'}">프로그램명
                                 </option>
-                                <option value="TEACHER" th:selected="${searchVO.searchType == 'TEACHER'}">강사명</option>
                             </select>
                             <input type="search" class="form-control" style="width: 670px; display: inline-block;"
                                 name="searchValue" th:value="${searchVO.searchValue}">
@@ -26,6 +25,9 @@
                         </td>
                     </tr>
                 </form>
+            </div>
+            <div class="border-top border-success border-2 mt-3 mb-1 border-opacity-50">
+
             </div>
             <div class="row row-cols-1 row-cols-md-2 g-6 justify-content-center" style="margin: 5px;">
                 <div class="col-6 card mb-3 mt-3 border-success" style="max-width: 520px; padding: 20px; margin: 0.2em;"

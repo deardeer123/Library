@@ -251,9 +251,9 @@ public class CulturalAndEducationController {
 
         boardVO.setFileList(fileList);
 
-//        for (UploadVO file : fileList){
-//            file.setBoardNum(maxBoardNum);
-//        }
+        for (UploadVO file : fileList){
+            file.setBoardNum(maxBoardNum);
+        }
 
         boardVO.setPlusVO(plusVO);
 
@@ -284,7 +284,14 @@ public class CulturalAndEducationController {
                                         @RequestParam(name = "boardNum") int boardNum,
                                         ApplyVO applyVO,
                                         HttpSession session){
-        applyVO.setUserCode((Integer) session.getAttribute("userCode"));
+        if(session.getAttribute("userCode") == null){
+            int anony = 0;
+            applyVO.setUserCode(anony);
+            System.out.println("@@@@@@@@@@@@@@@user"+applyVO.getUserCode());
+        }
+
+//        applyVO.setUserCode((Integer) session.getAttribute("userCode"));
+
         model.addAttribute("page","eventParticipation");
         model.addAttribute("check", boardService.applyCheck(applyVO));
         boardVO.setBoardNum(boardNum);

@@ -9,6 +9,9 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
+    <div class="border-top border-success border-2 mt-3 mb-1 border-opacity-50">
+
+    </div>
     <div class="row">
         <div class="col-6 mt-3" style="padding: 0;">
             <table class="text-center table table-bordered table-success">
@@ -86,10 +89,10 @@
                                     th:value="${board.fileList[0].OriginFileName}">
                                 <input type="hidden" name="AttachedFileName"
                                     th:value="${board.fileList[0].AttachedFileName}">
-                                <th:block th:if="${board.fileList[0].AttachedFileName != ''}">
+                                <!-- <th:block th:if="${board.fileList[0].AttachedFileName != ''}">
                                     <img th:src="@{/upload/}+${board.fileList[0].AttachedFileName}"
                                         style="height: 30vh;">
-                                </th:block>
+                                </th:block> -->
                                 <div onclick="download()">[[${board.fileList[0].OriginFileName}]]</div>
                             </form>
                         </div>
