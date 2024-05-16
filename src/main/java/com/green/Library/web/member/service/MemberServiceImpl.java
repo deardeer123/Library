@@ -1,5 +1,6 @@
 package com.green.Library.web.member.service;
 
+import com.green.Library.library.borrowReturn.vo.BookBNRVO;
 import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.member.vo.ApplyVO;
@@ -85,6 +86,12 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public MemberVO findPwUser(MemberVO memberVO) {
         return sqlSession.selectOne("memberMapper.findPwUser",memberVO);
+    }
+
+    // 마이페이지 대출반납 조회
+    @Override
+    public List<BookBNRVO> selectMyHistory(int userCode) {
+        return sqlSession.selectList("memberMapper.selectMyHistory", userCode);
     }
 
     //12자리의 랜덤 비밀번호 생성

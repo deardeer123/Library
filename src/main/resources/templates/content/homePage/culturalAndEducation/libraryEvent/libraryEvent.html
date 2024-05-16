@@ -42,8 +42,10 @@
                                 <div class="col-4 card" th:each="board : ${boardList}" style="padding: 10px;">
 
                                     <a th:href="@{/eventDetailBoard(boardNum=${board.boardNum})}">
-                                        <img th:src="@{'/upload/' + ${board.fileList[0].attachedFileName}}"
-                                            class="card-img-top" style="height: 350px;" alt="...">
+                                        <th:block th:each="e:${board.fileList}" th:if="${e.isMain=='Y'}">
+                                            <img th:src="@{'/upload/' + ${e.attachedFileName}}"
+                                                class="card-img-top" style="height: 350px;" alt="...">
+                                        </th:block>
                                     </a>
 
                                     <div class="card-body" style="font-weight: bold;">

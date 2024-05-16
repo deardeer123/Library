@@ -1,12 +1,19 @@
 package com.green.Library.library.libraryhome.controller;
 
 
+import com.green.Library.library.borrowReturn.vo.BookBNRVO;
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.libraryhome.service.LibraryHomeService;
 import com.green.Library.library.libraryhome.service.LibraryHomeServiceImpl;
 import com.green.Library.library.libraryhome.vo.CalendarVO;
+import com.green.Library.library.libraryhome.vo.MemoSearchVO;
+import com.green.Library.library.libraryhome.vo.MemoVO;
 import com.green.Library.libraryMember.vo.LibraryMemberVO;
+import com.green.Library.web.board.vo.BoardVO;
+import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.member.vo.MemberVO;
+import com.green.Library.web.participationForum.vo.AskAndAnswerBoardVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import org.apache.ibatis.javassist.expr.NewArray;
@@ -14,8 +21,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import retrofit2.http.Path;
 
 import java.beans.Encoder;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -118,16 +128,97 @@ public class LibraryHomeController {
 
         //이동하기전 메뉴리스트 가져가기
         model.addAttribute("menuList", libraryMenuService.selectLibraryMenuList());
+
+        //메모리스트 3개 보내주기
+        model.addAttribute("memoList", libraryHomeService.selectMemoList3());
+
+        //오늘 날짜
+        LocalDate date = LocalDate.now(); //오늘 날짜 LocalDate 객체 생성
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String today = date.format(dateTimeFormatter); //LocalDate 객체를 String 객체로 바꿈
+        model.addAttribute("today", today);
+
+        //묻고 답하기 답변 안한 글 갯수
+        model.addAttribute("askCount", libraryHomeService.askBoardCount());
+
+        //묻고 답하기 답변 안한 글 5개
+        List<BoardVO> askBoard = libraryHomeService.notAskBoard();
+        askBoard.forEach(s-> System.out.println(s));
+        model.addAttribute("askBoard", libraryHomeService.notAskBoard());
+
+        // 예약 5개
+        List<BookReservationVO> selectMainR = libraryHomeService.selectMainR();
+        model.addAttribute("reservesInfo", selectMainR);
+
+        // 대출
+        model.addAttribute("borrowCnt", libraryHomeService.selectNowB());
+        // 반납
+        model.addAttribute("returnCnt", libraryHomeService.selectNowR());
+        // 미납
+        BookBNRVO bookBNRVO = new BookBNRVO();
+        model.addAttribute("overdueCnt", libraryHomeService.selectNowO(bookBNRVO));
+
         return "content/library/home";
     }
+    //메모 작성
+    @PostMapping("memo/write")
+    public String writeMemo(MemoVO memoVO){
+        System.out.println(memoVO);
+        System.out.println("메모작성");
+        libraryHomeService.insertMemo(memoVO);
+        return "redirect:/bookAdmin/home";
+    }
+    //검색
+    @ResponseBody
+    @PostMapping("memo")
+    public Map<String,Object> selectMemoList(MemoSearchVO memoSearchVO){
+        System.out.println("memoSearchVO = " + memoSearchVO);
+        int memoCount = libraryHomeService.selectMemoCount(memoSearchVO);
+        memoSearchVO.setTotalDataCnt(memoCount);
+        memoSearchVO.setPageInfo();
+        //계속 이상하게 나오길래 넣은 코드입니다.
+        if(memoCount == 0){
+            memoSearchVO.setEndPage(1);
+        }
 
+        List<MemoVO> memoList1 = libraryHomeService.selectMemoList(memoSearchVO);
+        Map<String, Object> map = new HashMap<>();
+        map.put("memoList",memoList1);
+        map.put("searchVO", memoSearchVO);
 
+        return map;
+    }
+    //하나 찾기
+    @ResponseBody
+    @GetMapping("memo/{id}")
+    public MemoVO memoInfo(@PathVariable(name="id")int id){
+        System.out.println(id);
+        MemoVO memoVO = libraryHomeService.selectMemoInfo(id);
+        return memoVO;
+    }
 
+    //삭제하기
+    @ResponseBody
+    @PostMapping("memo/{id}/delete")
+    public Map<String, Object> deleteMemo(@PathVariable(name="id") int id, MemoSearchVO memoSearchVO){
+        System.out.println("id = " + id);
+        libraryHomeService.deleteMemo(id);
 
+        int memoCount = libraryHomeService.selectMemoCount(memoSearchVO);
+        memoSearchVO.setTotalDataCnt(memoCount);
+        memoSearchVO.setPageInfo();
+        //계속 이상하게 나오길래 넣은 코드입니다.
+        if(memoCount == 0){
+            memoSearchVO.setEndPage(1);
+        }
 
+        List<MemoVO> memoList1 = libraryHomeService.selectMemoList(memoSearchVO);
+        Map<String, Object> map = new HashMap<>();
+        map.put("memoList",memoList1);
+        map.put("searchVO", memoSearchVO);
 
-
-
+        return map;
+    }
 
 }
 

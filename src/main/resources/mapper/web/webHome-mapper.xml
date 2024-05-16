@@ -31,6 +31,18 @@
        LIMIT 6;
    </select>
 
+    <select id="libraryEventList3" resultType="map">
+        SELECT
+        board.BOARD_NUM,
+        attached_file.ATTACHED_FILE_NAME
+        FROM
+        board INNER JOIN attached_file
+        ON board.BOARD_NUM = attached_file.BOARD_NUM
+        WHERE
+        board_type = 24 AND attached_file.IS_MAIN = 'Y'
+        limit 3
+    </select>
+
 </mapper>
 
 

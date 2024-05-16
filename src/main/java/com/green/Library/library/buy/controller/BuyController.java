@@ -55,44 +55,34 @@ public class BuyController {
         model.addAttribute("page", "recommendedData");
         //그냉 원하는책 안넣고 책 추천하기 화면 만들거임 ㅅㄱ
 
+        System.out.println(1);
 
         //페이징
         System.out.println(bookSearchVO.getNowPage());
+        System.out.println(2);
         bookSearchVO.setNowPage(bookSearchVO.getNowPage());
-
+        System.out.println(2);
         //전체 게시물 갯수 설정
         int totalDataCnt = findBookService.selectFindBookCnt(bookSearchVO);
         System.out.println(totalDataCnt);
         bookSearchVO.setTotalDataCnt(totalDataCnt);
-
+        System.out.println(3);
         //페이지 정보 세팅
         bookSearchVO.setPageInfo();
-
+        System.out.println(4);
         //계속 이상하게 나오길래 넣은 코드입니다.
         if(totalDataCnt == 0){
             bookSearchVO.setEndPage(1);
         }
+        System.out.println(5);
         //카테고리 정보가 필요한 거 같음
-        Optional<List<LibraryBookCategoryVO>> catelist = Optional.ofNullable(libraryBookService.selectCateList());
-        model.addAttribute("cateList", catelist.get());
-
+        List<LibraryBookCategoryVO> catelist = libraryBookService.selectCateList();
+        model.addAttribute("cateList", catelist);
+        System.out.println(bookSearchVO.getUserType());
         //책들 정보 던져주기
-        List<FindBookVO> bookList = libraryBookService.selectBookRecommendation(bookSearchVO.getUserType()).get();
+        List<FindBookVO> bookList = libraryBookService.selectBookRecommendation(bookSearchVO.getUserType());
         model.addAttribute("bookList", bookList );
 
-        System.out.println(bookSearchVO.getUserType());
-        System.out.println(bookSearchVO.getUserType());
-        System.out.println(bookSearchVO.getUserType());
-        System.out.println(bookSearchVO.getUserType());
-        System.out.println(bookSearchVO.getUserType());
-        System.out.println(bookSearchVO.getUserType());
-        System.out.println(bookSearchVO.getUserType());
-        System.out.println(bookSearchVO.getUserType());
-        System.out.println(bookSearchVO.getUserType());
-        System.out.println(bookSearchVO.getUserType());
-        System.out.println(bookSearchVO.getUserType());
-        System.out.println(bookSearchVO.getUserType());
-        System.out.println(bookSearchVO.getUserType());
 
 
 

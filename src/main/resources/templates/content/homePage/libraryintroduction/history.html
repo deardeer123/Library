@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{fragment/homePage/homePage_detail_layout}" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/homePage/homePage_detail_layout}">
 
 <th:block layout:fragment="content_css">
     <!-- html 파일이 열릴때 같이 실행되는 css -->
@@ -9,12 +8,121 @@
 </th:block>
 
 <th:block layout:fragment="contentFragment">
+    <style>
+        li {
+            list-style: none;
+        }
+    </style>
     <!-- html 코드 작성 -->
-    연혁
+    <div class="row">
+        <div class="col">
+            <div class="row justify-content-center">
+                <div class="col mt-2 mb-2">
+                    <div class="bg-success p-2 text-white bg-opacity-50 rounded-4" style="display: inline-block; width: 100%;">
+                        <div class="fs-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                                class="bi bi-bookmark" viewBox="0 0 16 16">
+                                <path
+                                    d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z" />
+                            </svg>
+                            2024년 5월
+                        </div>
+                        <div>
+                            <ul>
+                                <li>24.05.01 카카오맵을 이용한 도서관 위치를 지도로 표현</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col mt-2 mb-2">
+                    <div class="bg-success p-2 text-white bg-opacity-50 rounded-4" style="display: inline-block; width: 100%;">
+                        <div class="fs-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                                class="bi bi-bookmark" viewBox="0 0 16 16">
+                                <path
+                                    d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z" />
+                            </svg>
+                            2024년 4월
+                        </div>
+                        <div>
+                            <ul>
+                                <li>24.04.26 - 20.04.30 도서관 홈페이지 테마 작업</li>
+                                <li>24.04.24 - 20.04.26 도서관 이용안내, 인사말 페이지 구현</li>
+                                <li>24.04.19 - 24.04.24 도서관 메인 페이지 구상 및 구현 </li>
+                                <li>24.04.15 - 24.04.19 대출반납 페이지 및 이용자 카드번호 구현</li>
+                                <li>24.04.08 - 24.04.15 추천하는 책 페이지 구현 및 로그인 화면 리팩토링</li>
+                                <li>24.04.03 - 24.04.08 대출이 많은 책, 새로 들어온 책 페이지 구현</li>
+                                <li>24.04.01 - 24.04.03 첨부파일 다운로드 구현 및 인터셉터 작업</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col mt-2 mb-2 ">
+                    <div class="bg-success p-2 text-white bg-opacity-50 rounded-4" style="display: inline-block; width: 100%;">
+                        <div class="fs-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                                class="bi bi-bookmark" viewBox="0 0 16 16">
+                                <path
+                                    d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z" />
+                            </svg>
+                            2024년 3월
+                        </div>
+                        <div>
+                            <ul>
+                                <li>24.03.20 - 24.03.29 도서관 공지사항, 묻고 답하기 CRUD 구현</li>
+                                <li>24.03.18 - 24.03.20 도서관 가이드 페이지, 이용자 관리 조회 및 상세보기 조회 구현</li>
+                                <li>24.03.14 - 24.03.18 도서관 홈페이지 헤더 및 사이드 메뉴 작업</li>
+                                <li>24.03.11 - 24.03.14 전체 자료 찾기, 책 생성 시 필요한 테이블 생성</li>
+                                <li>24.03.04 - 24.03.11 문자 발송 기능, 달력 일정 추가 기능 구현</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col mt-2 mb-2">
+                    <div class="bg-success p-2 text-white bg-opacity-50 rounded-4" style="display: inline-block; width: 100%;">
+                        <div class="fs-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                                class="bi bi-bookmark" viewBox="0 0 16 16">
+                                <path
+                                    d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z" />
+                            </svg>
+                            2024년 2월
+                        </div>
+                        <div>
+                            <ul>
+                                <li>24.02.29 책 대출 정보 조회 기능 및 책 CRUD 구현</li>
+                                <li>24.02.28 로그인 기능 및 로그아웃 기능 구현</li>
+                                <li>24.02.27 도서관 프로젝트 진행</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col mt-5 mb-5 ">
+            <!-- 그림 -->
+            <img class="rounded mt-5" src="/upload/연혁책그림.jpg" width="80%" style="height: 65vh;">
+        </div>
+    </div>
 </th:block>
 
 <th:block layout:fragment="content_js">
     <!-- html 파일이 열릴때 같이 실행되는 js -->
     <!-- <script src="/"></script> -->
 </th:block>
+
 </html>

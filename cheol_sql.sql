@@ -1301,5 +1301,66 @@ LIMIT 3;
         from find_book_view
    ORDER BY BOOK_REGDATE DESC
    LIMIT 6;
+
+
+SELECT 
+	board.BOARD_NUM,
+	attached_file.ATTACHED_FILE_NAME
+FROM 
+	board INNER JOIN attached_file
+	ON board.BOARD_NUM = attached_file.BOARD_NUM
+WHERE 
+	board_type = 24 AND attached_file.IS_MAIN = 'Y';
    
-   
+SELECT book_category.book_cate_index ,book_info.book_cate_code ,COUNT(book_category.book_cate_code)
+FROM book_info Left Outer JOIN book_category
+ON book_info.BOOK_CATE_CODE = book_category.BOOK_CATE_CODE
+GROUP BY book_category.book_cate_code;
+
+SELECT
+            book_category.book_cate_index,
+            book_category.BOOK_CATE_NAME,
+            COUNT(book_info.BOOK_CATE_CODE) AS COUNT
+        FROM book_category LEFT JOIN book_info
+        ON book_category.BOOK_CATE_CODE = book_info.BOOK_CATE_CODE
+        GROUP BY book_info.BOOK_CATE_CODE;
+
+SELECT count(*)
+FROM book_info;
+
+SELECT * FROM ask_and_answer_board;
+
+
+SELECT * FROM users;
+
+CREATE TABLE MEMO(
+	ID INT AUTO_INCREMENT PRIMARY KEY ,
+	MEMO_TITLE VARCHAR(50) NOT NULL ,
+	MEMO_CONTENT VARCHAR(50) NOT NULL ,
+	MENO_WRITER VARCHAR(50) NOT NULL,
+	MEMO_DATE DATETIME DEFAULT CURRENT_TIMESTAMP);
+	
+DROP TABLE memo;
+SELECT * FROM memo order by id desc LIMIT 3;
+
+-- 답변안한 질문응답
+SELECT board.BOARD_NUM , board.BOARD_TITLE, user_name
+FROM board INNER JOIN ask_and_answer_board
+ON board.BOARD_NUM = ask_and_answer_board.BOARD_NUM
+INNER JOIN users
+ON board.USER_CODE = users.USER_CODE
+WHERE is_answer_board = 'N' and ask_and_answer_board_num not IN 
+(SELECT if_answer_board_num
+FROM ask_and_answer_board
+WHERE is_answer_board = 'Y')
+ORDER BY board.board_num desc
+LIMIT 5;
+
+SELECT *
+FROM users;
+
+SELECT if_answer_board_num
+FROM ask_and_answer_board
+WHERE is_answer_board = 'Y';
+
+SELECT * FROM USERs;

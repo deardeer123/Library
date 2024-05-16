@@ -35,180 +35,1045 @@
         .fc-day-sat a {
             color: blue;
         }
+
+        .fc-event-title {
+            text-overflow: ellipsis;
+        }
     </style>
 
     <div class="row">
         <div class="col">
-
+            <div class="row">
+                <div class="col">
+                    <!-- 그림 넣을곳 -->
+                    <img src="/upload/hello.jpg" style="height: 40vh; width: 100%; ">
+                </div>
+            </div>
+            <div id='calendar'
+                style="position: absolute; left: 58.5vw; top: 16.5vh; width: 25vw; background-color: whitesmoke; font-size: 0.7em; opacity: 0.7;">
+            </div>
             <div class="row">
                 <div class="col-3">
                     <!-- 메세지 보내기 -->
-                    <form method="post">
-                        <!-- action="/send-one" -->
-                        <div class="row mb-3">
-                            <div class="col">메세지보내기</div>
-                        </div>
+                    <div class="row mt-1">
+                        <div class="col">
+                            <form method="post" action="/sendMessage">
+                                <!-- action="/send-one" -->
+                                <div class="card shadow-sm rounded" style="max-width: 18rem;">
+                                    <div class="card-header">
+                                        <div class="input-group mb-1">
+                                            <input type="text" class="form-control" name="setTo"
+                                                placeholder="수신자 01012341234" aria-label="수신자 01012341234"
+                                                aria-describedby="button-addon2" style="font-size: 0.8em;">
+                                            <button class="btn btn-outline-secondary" type="submit"
+                                                id="button-addon2">문자발송</button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <input type="hidden" name="setFrom" value="01041505657">
 
-                        <div class="row mb-3">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col" style="font-size: 0.8em;">
-                                        발신자 번호(01011111111 이런식으로 적어야함)
+                                        <div class="input-group">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" placeholder="문자내용" id="floatingTextarea2" name="setText"
+                                                    style="height: 25vh"></textarea>
+                                                <label for="floatingTextarea2">문자내용</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                            </form>
+                        </div>
+                    </div>
 
-                                <div class="row">
-                                    <div class="col">
-                                        <input type="text" name="setFrom" class="form-control"
-                                            placeholder="발신자 01012341234">
+                    <div class="row mt-2">
+                        <!-- 메모 Create -->
+                        <!-- 작성자는 현재 접속하고 있는 사람의 ID -->
+                        <div class="col">
+                            <div class="card mb-3 shadow-sm rounded" style="max-width: 18rem;">
+                                <form action="/bookAdmin/memo/write" method="post">
+                                    <div class="card-header">
+                                        <div class="input-group mb-1">
+                                            <input type="text" class="form-control" name="memoTitle" placeholder="메모제목"
+                                                aria-label="메모제목" aria-describedby="button-addon3"
+                                                style="font-size: 0.8em;">
+                                            <input type="hidden" th:value="${#authentication.name}" name="memoWriter">
+                                            <button class="btn btn-outline-secondary" type="submit"
+                                                id="button-addon3">메모
+                                                등록</button>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col" style="font-size: 0.8em;">
-                                        수신자 번호(01011111111 이런식으로 적어야함)
+                                    <div class="card-body">
+                                        <div class="form-floating">
+                                            <textarea class="form-control" placeholder="Leave a comment here"
+                                                name="memoContent" id="textarea3" style="height: 25vh"></textarea>
+                                            <label for="textarea3">메모</label>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col">
-                                        <input type="text" name="setTo" class="form-control"
-                                            placeholder="수신자 01012341234">
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
-
-                        <div class="row mb-3">
-                            <div class="col">
-                                <div class="input-group">
-                                    <span class="input-group-text">문자 내용</span>
-                                    <textarea class="form-control" aria-label="With textarea" name="messageText"
-                                        rows="6"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col">
-                                <input type="submit" class="btn btn-primary" value="제발되라">
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
+
 
                 <div class="col-6">
-                    <!-- 달력 -->
-                    <div id='calendar'></div>
-                </div>
+                    <!-- 예약 들어온것 확인(카운트) 및 메모장을 확인 할 수 있는 게시판(Read Update Delete)
+                오늘 대출이 얼마나 했는지 확인하는 숫자(캬운트), 새로 등록된 책, 질의문답 올라온것 확인(답변해줘야함), 
+                강의 혹은 행사 참여 확인 할 수 있는 관리페이지, 캘린더 휴무일 지정해 줄 수 있는 바로가기 하나 , 카드 발급 하나?
+                
+            -->
+                    <div class="row">
+                        <div class="col board">
+                            <!-- 질의문답 확인 숫자로? -->
+                            <div class="fs-4 border-bottom border-secondary text-center">답변을 기다리고있는 질문
+                                <span class="fs-3 fw-bold">[[${askCount}]]개</span>
+                                <span>
+                                    <button class="btn" type="button"
+                                        style="border: none; padding-left: 0; padding-top: 0; padding-bottom: 012px;">
+                                        <span onclick="location.href='/askAndAnswer'">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                                <path
+                                                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                            </svg>
+                                        </span>
+                                    </button>
+                                </span>
+                            </div>
+                            <table class="table" style="height: 260px;">
+                                <thead>
+                                    <tr>
+                                        <td>글번호</td>
+                                        <td>제목</td>
+                                        <td>작성자</td>
+                                    </tr>
+                                </thead>
 
-                <div class="col-3">
-                    <!-- 일정추가 -->
+                                <body>
+                                    <th:block th:each="e:${askBoard}">
+                                        <tr th:onclick="goAsk([[${e.boardNum}]])">
+                                            <td>[[${e.boardNum}]]</td>
+                                            <td>[[${e.boardTitle}]]</td>
+                                            <td>[[${e.memberVO.userName}]]</td>
+                                        </tr>
+                                    </th:block>
+                                    <script>
+                                        function goAsk(boardNum){
+                                            location.href=`/goDetailAskBoard?boardNum=${boardNum}`;
+                                        }
+                                    </script>
+                                </body>
+                            </table>
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col">
-                            일정 추가
+                            <!-- 예약 들어온거 숫자로 누르면 예약 관련 페이지로 이동 -->
+                            <div class="fs-3 text-center border-bottom border-secondary text-center">도서 예약
+                                <button class="btn" type="button"
+                                    style="border: none; padding-left: 0; padding-top: 0; padding-bottom: 012px;">
+                                    <span onclick="location.href='/bookAdmin/reservationInfo'">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                            <path
+                                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                        </svg>
+                                    </span>
+                                </button>
+                            </div>
+                            <table class="table" style="height: 250px;">
+                                <thead>
+                                    <tr>
+                                        <td>예약번호</td>
+                                        <td>책 제목</td>
+                                        <td>날짜</td>
+                                        <td>대출자</td>
+                                    </tr>
+                                </thead>
+
+                                <body>
+                                    <tr th:each="one, state : ${reservesInfo}" onclick="location.href='/bookAdmin/reservationInfo'">
+                                        <td>[[${#lists.size(reservesInfo) - state.index}]]</td>
+                                        <td>[[${one.libraryBookVO.bookTitle}]]</td>
+                                        <td>[[${one.reserveDate}]]</td>
+                                        <td>[[${one.memberVO.userName}]]</td>
+                                    </tr>
+                                </body>
+                            </table>
                         </div>
                     </div>
-                    <form action="/bookAdmin/calendarAdd" method="post">
-                        <div class="row mt-3">
-                            <div class="col">
-                                일정 이름
-                            </div>
-                        </div>
-                        <div class="row mt-1">
-                            <div class="col">
-                                <input type="text" name="title" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col">
-                                날짜
-                            </div>
-                        </div>
-
-                        <div class="row mt-1">
-                            <div class="col">
-                                <input type="date" name="start" class="form-control">
-                                <input type="time" name="time" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="row mt-1">
-                            <div class="col">
-                                <select class="form-select" name="color">
-                                    <option value="blue">영화</option>
-                                    <option value="red">휴무일</option>
-                                    <option value="green">강의</option>
-                                    <option value="blue">행사</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row mt-1">
-                            <div class="col">
-                                <input type="text" class="form-control" name="url" placeholder="url">
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col">
-                                <input type="submit" class="btn btn-primary" value="일정 추가하기">
-                            </div>
-                        </div>
-                    </form>
-
-                    <!-- 일정삭제 -->
-                    <div class="row mt-3">
+                </div>
+                <div class="col-3">
+                    <div class="row">
                         <div class="col">
-                            일정삭제
+                            <!-- 메모장 게시판 -->
+                            <div class="fs-3 text-center border-bottom border-secondary text-center">메모 확인
+                                <button class="btn" type="button" onclick="showMemoModal()"
+                                    style="border: none; padding-left: 0; padding-top: 0; padding-bottom: 012px;">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                            <path
+                                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                        </svg>
+                                    </span>
+                                </button>
+                            </div>
+                            <table class="table text-center">
+                                <colgroup>
+                                    <col width="20%">
+                                    <col width="*">
+                                    <col width="30%">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <td>번호</td>
+                                        <td>제목</td>
+                                        <td>작성자</td>
+                                    </tr>
+                                </thead>
+
+                                <body>
+                                    <th:block th:each="e:${memoList}">
+                                        <tr th:onclick="showDetailMemoModal2([[${e.id}]])">
+                                            <td>[[${e.id}]]</td>
+                                            <td>[[${e.memoTitle}]]</td>
+                                            <td>[[${e.memoWriter}]]</td>
+                                        </tr>
+                                    </th:block>
+                                </body>
+                            </table>
                         </div>
                     </div>
-                    <form action="/bookAdmin/calendarDelete" method="post">
-                        <div class="row mt-3">
-                            <div class="col">
-                                일정 이름
-                            </div>
+
+                    <div class="row mt-1 g-1">
+                        <div class="text-center">
+                            <span>현재 날짜 : </span>
+                            <span class="fs-2">[[${today}]]</span>
                         </div>
-                        <div class="row mt-1">
-                            <div class="col">
-                                <input type="text" name="title" class="form-control">
+                        <div class="col-4 p-1">
+                            <!-- 오늘 대출 여부 숫자로 누르면 대출 관련 페이지로 이동-->
+                            <div class="border border-secondary border-2 text-center rounded ">
+                                <div>
+                                    대출 도서
+                                </div>
+                                <div class="fs-1">
+                                    [[${borrowCnt}]]
+                                </div>
                             </div>
+
                         </div>
 
-                        <div class="row mt-3">
-                            <div class="col">
-                                날짜
+                        <div class="col-4 p-1">
+                            <!-- 오늘 반납 되어야하는 책 숫자로 -->
+                            <div class=" border border-secondary border-2 text-center rounded">
+                                <div>
+                                    반납 도서
+                                </div>
+                                <div class="fs-1">
+                                    [[${returnCnt}]]
+                                </div>
                             </div>
+
                         </div>
 
-                        <div class="row mt-1">
-                            <div class="col">
-                                <input type="date" name="start" class="form-control">
+                        <div class="col-4  p-1">
+                            <div class="border border-secondary border-2 text-center rounded">
+                                <div>
+                                    미납 도서
+                                </div>
+                                <div class="fs-1">
+                                    [[${overdueCnt}]]
+                                </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-1 g-1">
+                        <div class="col-6  p-1" style="height: 15vh;">
+                            <!-- 강의 및 행사 참가 관리 페이지 이동 -->
+                            <a href="/applyList" style="color: black;">
+                                <div class="bg-warning-subtle rounded btn" style="height:14vh;">
+                                    강의 및 행사 관리 페이지 이동
+                                </div>
+                            </a>
+
                         </div>
 
-                        <div class="row mt-3">
-                            <div class="col">
-                                <input type="submit" class="btn btn-primary" value="일정 삭제하기">
-                            </div>
+                        <div class="col-6  p-1" style="height: 15vh;">
+                            <!-- 캘린더 관리 페이지로 이동하는 버튼 -->
+                            <a href="/test2" style="color: black;">
+                                <div class="bg-info-subtle rounded btn" style="height:14vh;">
+                                    캘린더 관리 페이지 이동
+                                </div>
+                            </a>
                         </div>
-                    </form>
+
+                        <div class="col-6 p-1" style="height: 15vh;">
+                            <!-- 자료등록 관리 페이지로 이동하는 버튼 -->
+                            <a href="/bookAdmin/buyBook" style="color: black;">
+                                <div class="bg-danger-subtle rounded btn" style="height:14vh;" onclick="">
+                                    자료 등록 페이지 이동
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-6 p-1" style="height: 15vh;">
+                            <!-- 이용자 관리 페이지로 이동하는 버튼 -->
+                            <a href="/bookAdmin/user" style="color: black;">
+                                <div class="bg-success-subtle rounded btn" style="height:14vh;">
+                                    이용자 관리 페이지 이동
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-
-
-
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade memoModal" id="memoModal" tabindex="-1" aria-labelledby="memoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="memoModalLabel">메모 작성 내역</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="memoModalBody">
+                    <table class="table text-center">
+                        <div>
+                            <!-- 검색 기능  -->
+                            <form>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <select name="searchType" class="form-select" id="memoSearchType">
+                                            <option value="MEMO_TITLE">제목</option>
+                                            <option value="MEMO_WRITER">작성자</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control" name="searchValue" id="memoSeachValue">
+                                    </div>
+
+                                    <div class="col-2 d-grid">
+                                        <input type="button" class="btn btn-primary" value="검색">
+                                    </div>
+
+                                </div>
+                        </div>
+                        <thead>
+                            <tr>
+                                <td>번호</td>
+                                <td>제목</td>
+                                <td>작성자</td>
+                                <td>작성일</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr type="button" data-bs-target="#memoModal2" data-bs-toggle="modal"
+                                onclick="showDetailMemoModal('123')">
+                                <td>3</td>
+                                <td>메모3</td>
+                                <td>admin</td>
+                                <td>2024-05-06 07:41:55</td>
+                            </tr>
+
+                            <tr>
+                                <td>3</td>
+                                <td>메모3</td>
+                                <td>admin</td>
+                                <td>2024-05-06 07:41:55</td>
+                            </tr>
+
+                            <tr>
+                                <td>3</td>
+                                <td>메모3</td>
+                                <td>admin</td>
+                                <td>2024-05-06 07:41:55</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal2 -->
+    <div class="modal fade memoModal2" id="memoModal2" tabindex="-1" aria-labelledby="memoModal2Label"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="memoModal2Label">메모 상세보기</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="detailMemo">
+                    <div class="row" style="font-size: 0.8em;">
+                        <div class="col-auto">
+                            번호 : <span>1</span>
+                        </div>
+                        <div class="col-auto">
+                            제목 : <span>메모제목</span>
+                        </div>
+                        <div class="col-auto">
+                            작성자 : <span>글쓴이</span>
+                        </div>
+                        <div class="col-auto">
+                            날짜 : <span>2024-05-06 07:57:07</span>
+                        </div>
+                    </div>
+
+                    <div class="row mt-1">
+                        <div class="col" style="height: 20vh;">
+                            메모 내용
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" data-bs-target="#memoModal" data-bs-toggle="modal" class="btn btn-primary"
+                        onclick="refreshList()">
+                        목록</button>
+                    <button type="button" data-bs-target="#memoModal" data-bs-toggle="modal" class="btn btn-danger"
+                        onclick="deleteAndrefreshList()">
+                        삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
     <script>
+        let memoModal
+        let memoModal2
+
+        function deleteAndrefreshList() {
+            let id = document.querySelector("#deleteMemoId").value;
+            console.log(id)
+            // ------------------- 첫번째 방식 ---------------//
+            fetch(`/bookAdmin/memo/${id}/delete`, { //요청경로
+                method: 'POST',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                //컨트롤러로 전달할 데이터
+                body: new URLSearchParams({
+                    // 데이터명 : 데이터값
+                })
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                        return;
+                    }
+
+                    //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+                    return response.json(); //나머지 경우에 사용
+                })
+                //fetch 통신 후 실행 영역
+                .then((data) => {//data -> controller에서 리턴되는 데이터!
+
+                    console.log(data)
+                    let searchType = data.searchVO.searchType;
+                    let searchValue = data.searchVO.searchValue;
+
+
+                    let memoMadalBodyTag = document.querySelector("#memoModalBody");
+                    memoMadalBodyTag.innerHTML = '';
+                    let str = '';
+                    str += `
+                            <div>
+                                <!-- 검색 기능  -->
+                                <div class="row">
+                                    <div class="col-3">
+                                        <select name="searchType" class="form-select" id="memoSearchType">`
+                    if (searchType == "MEMO_WRITER") {
+                        str += `
+                                                <option value="MEMO_TITLE">제목</option>
+                                                <option value="MEMO_WRITER" selected>작성자</option>
+                                                `
+                    } else {
+                        str += `
+                                                <option value="MEMO_TITLE" selected>제목</option>
+                                                <option value="MEMO_WRITER">작성자</option>
+                                                `
+                    }
+                    str += `
+                                        </select>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control" name="searchValue" id="memoSearchValue">
+                                    </div>
+
+                                    <div class="col-2 d-grid">
+                                        <input type="button" class="btn btn-primary" value="검색" onclick="searchMemo(1)">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            `
+                    str += `
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <td>번호</td>
+                                    <td>제목</td>
+                                    <td>작성자</td>
+                                    <td>작성일</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                `
+                    data.memoList.forEach((e, idx) => {
+                        str += `
+                                <tr type="button" data-bs-target="#memoModal2" data-bs-toggle="modal"
+                                    onclick="showDetailMemoModal(${e.id})">
+                                    <td>${e.id}</td>
+                                    <td>${e.memoTitle}</td>
+                                    <td>${e.memoWriter}</td>
+                                    <td>${e.date}</td>
+                                </tr>
+                                `
+                    })
+
+                    str += `
+                            </tbody>
+                        </table>
+                    
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center" id="paging-tag">
+                    `
+                    for (let i = data.searchVO.beginPage; i <= data.searchVO.endPage; i++) {
+                        str += `
+                                <li class="page-item"><span class="page-link" onclick="searchMemo(${i})">${i}</span></li>
+                                
+                        `
+                        // nowPage = i
+                        // searchType 2번쨰
+                        // searchValue 3번째 매개변수
+                    }
+                    str += `
+                            </ul>
+                        </nav>
+                    
+                    `
+                    memoMadalBodyTag.insertAdjacentHTML("afterbegin", str)
+
+                })
+                //fetch 통신 실패 시 실행 영역
+                .catch(err => {
+                    alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+                    console.log(err);
+                });
+
+
+        }
+
+        function showMemoModal() {
+            memoModal = new bootstrap.Modal('#memoModal')
+            console.log("모달")
+
+            // ------------------- 첫번째 방식 ---------------//
+            fetch('/bookAdmin/memo', {
+                method: 'POST',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                //컨트롤러로 전달할 데이터
+                body: new URLSearchParams({
+                    // 데이터명 : 데이터값
+                })
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                        return;
+                    }
+
+                    //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+                    return response.json(); //나머지 경우에 사용
+                })
+                //fetch 통신 후 실행 영역
+                .then((data) => {//data -> controller에서 리턴되는 데이터!
+                    console.log(data)
+                    let searchType = data.searchVO.searchType;
+                    let searchValue = data.searchVO.searchValue;
+                    console.log(searchType)
+                    if (searchValue == null) {
+                        searchValue = ''
+                    }
+
+                    let memoMadalBodyTag = document.querySelector("#memoModalBody");
+                    memoMadalBodyTag.innerHTML = '';
+                    let str = '';
+                    str += `
+                            <div>
+                                <!-- 검색 기능  -->
+                                <div class="row">
+                                    <div class="col-3">
+                                        <select name="searchType" class="form-select" id="memoSearchType">`
+                    if (searchType == "MEMO_WRITER") {
+                        str += `
+                                                <option value="MEMO_TITLE">제목</option>
+                                                <option value="MEMO_WRITER" selected>작성자</option>
+                                                `
+                    } else {
+                        str += `
+                                                <option value="MEMO_TITLE" selected>제목</option>
+                                                <option value="MEMO_WRITER">작성자</option>
+                                                `
+                    }
+                    str += `
+                                        </select>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control" name="searchValue" id="memoSearchValue">
+                                    </div>
+
+                                    <div class="col-2 d-grid">
+                                        <input type="button" class="btn btn-primary" value="검색" onclick="searchMemo(1)">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            `
+
+                    str += `
+                    
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <td>번호</td>
+                                    <td>제목</td>
+                                    <td>작성자</td>
+                                    <td>작성일</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                `
+                    data.memoList.forEach((e, idx) => {
+                        str += `
+                                <tr type="button" data-bs-target="#memoModal2" data-bs-toggle="modal"
+                                    onclick="showDetailMemoModal(${e.id})">
+                                    <td>${e.id}</td>
+                                    <td>${e.memoTitle}</td>
+                                    <td>${e.memoWriter}</td>
+                                    <td>${e.date}</td>
+                                </tr>
+                                `
+                    })
+
+                    str += `
+                            </tbody>
+                        </table>
+                    
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center" id="paging-tag">
+                    `
+                    for (let i = data.searchVO.beginPage; i <= data.searchVO.endPage; i++) {
+                        str += `
+                                <li class="page-item"><span class="page-link" onclick="searchMemo(${i})">${i}</span></li>
+                        `
+                        // nowPage = i
+                        // searchType 2번쨰
+                        // searchValue 3번째 매개변수
+                    }
+                    str += `
+                            </ul>
+                        </nav>
+                    
+                    `
+                    memoMadalBodyTag.insertAdjacentHTML("afterbegin", str)
+                    memoModal.show();
+
+                })//fetch 통신 실패 시 실행 영역
+                .catch(err => {
+                    alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+                    console.log(err);
+                });
+
+        }
+
+        function searchMemo(nowPage) {
+            console.log(nowPage)
+
+            let memoSearchType = document.querySelector("#memoSearchType").value
+            let memoSearchValue = document.querySelector("#memoSearchValue").value
+            console.log(`memoSearchType = ${memoSearchType}`)
+            console.log(`memoSearchValue = ${memoSearchValue}`)
+
+            // ------------------- 첫번째 방식 ---------------//
+            fetch('/bookAdmin/memo', { //요청경로
+                method: 'POST',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                //컨트롤러로 전달할 데이터
+                body: new URLSearchParams({
+                    // 데이터명 : 데이터값
+                    nowPage: nowPage,
+                    searchType: memoSearchType,
+                    searchValue: memoSearchValue
+                })
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                        return;
+                    }
+
+                    //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+                    return response.json(); //나머지 경우에 사용
+                })
+                //fetch 통신 후 실행 영역
+                .then((data) => {//data -> controller에서 리턴되는 데이터!
+                    console.log(data)
+                    let searchType = data.searchVO.searchType;
+                    let searchValue = data.searchVO.searchValue;
+
+
+                    let memoMadalBodyTag = document.querySelector("#memoModalBody");
+                    memoMadalBodyTag.innerHTML = '';
+                    let str = '';
+                    str += `
+                            <div>
+                                <!-- 검색 기능  -->
+                                <div class="row">
+                                    <div class="col-3">
+                                        <select name="searchType" class="form-select" id="memoSearchType">`
+                    if (searchType == "MEMO_WRITER") {
+                        str += `
+                                                <option value="MEMO_TITLE">제목</option>
+                                                <option value="MEMO_WRITER" selected>작성자</option>
+                                                `
+                    } else {
+                        str += `
+                                                <option value="MEMO_TITLE" selected>제목</option>
+                                                <option value="MEMO_WRITER">작성자</option>
+                                                `
+                    }
+                    str += `
+                                        </select>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control" name="searchValue" id="memoSearchValue">
+                                    </div>
+
+                                    <div class="col-2 d-grid">
+                                        <input type="button" class="btn btn-primary" value="검색" onclick="searchMemo(1)">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            `
+                    str += `
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <td>번호</td>
+                                    <td>제목</td>
+                                    <td>작성자</td>
+                                    <td>작성일</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                `
+                    data.memoList.forEach((e, idx) => {
+                        str += `
+                                <tr type="button" data-bs-target="#memoModal2" data-bs-toggle="modal"
+                                    onclick="showDetailMemoModal(${e.id})">
+                                    <td>${e.id}</td>
+                                    <td>${e.memoTitle}</td>
+                                    <td>${e.memoWriter}</td>
+                                    <td>${e.date}</td>
+                                </tr>
+                                `
+                    })
+
+                    str += `
+                            </tbody>
+                        </table>
+                    
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center" id="paging-tag">
+                    `
+                    for (let i = data.searchVO.beginPage; i <= data.searchVO.endPage; i++) {
+                        str += `
+                                <li class="page-item"><span class="page-link" onclick="searchMemo(${i})">${i}</span></li>
+                        `
+                        // nowPage = i
+                        // searchType 2번쨰
+                        // searchValue 3번째 매개변수
+                    }
+                    str += `
+                            </ul>
+                        </nav>
+                    
+                    `
+                    memoMadalBodyTag.insertAdjacentHTML("afterbegin", str)
+
+
+                })
+                //fetch 통신 실패 시 실행 영역
+                .catch(err => {
+                    alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+                    console.log(err);
+                });
+
+        }
+
+        function showDetailMemoModal(id) {
+            console.log(id)
+
+            // ------------------- 첫번째 방식 ---------------//
+            fetch(`/bookAdmin/memo/${id}`)
+                .then((response) => {
+                    if (!response.ok) {
+                        alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                        return;
+                    }
+
+                    //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+                    return response.json(); //나머지 경우에 사용
+                })
+                //fetch 통신 후 실행 영역
+                .then((data) => {//data -> controller에서 리턴되는 데이터!
+                    console.log(data)
+                    let detailMemoTag = document.querySelector("#detailMemo")
+                    detailMemoTag.innerHTML = '';
+                    let str = ''
+                    str += `
+                    <div class="row border-bottom border-black" style="font-size: 0.8em;">
+                        <input type="hidden" value="${data.id}" id="deleteMemoId">
+                        <div class="col-auto" >
+                            번호 | <span>${data.id}</span>
+                        </div>
+                        <div class="col-auto">
+                            제목 | <span>${data.memoTitle}</span>
+                        </div>
+                        <div class="col-auto">
+                            작성자 | <span>${data.memoWriter}</span>
+                        </div>
+                        <div class="col-auto">
+                            날짜 | <span>${data.date}7</span>
+                        </div>
+                    </div>
+
+                    <div class="row mt-1">
+                        <div class="col" style="height: 20vh;">
+                            ${data.memoContent}
+                        </div>
+                    </div>
+                    `
+                    detailMemoTag.insertAdjacentHTML("afterbegin", str);
+                })
+                //fetch 통신 실패 시 실행 영역
+                .catch(err => {
+                    alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+                    console.log(err);
+                });
+        }
+
+        function showDetailMemoModal2(id) {
+            memoModal = new bootstrap.Modal('#memoModal2')
+            console.log("메인에서 상세 모달")
+            // ------------------- 첫번째 방식 ---------------//
+            fetch(`/bookAdmin/memo/${id}`)
+                .then((response) => {
+                    if (!response.ok) {
+                        alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                        return;
+                    }
+
+                    //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+                    return response.json(); //나머지 경우에 사용
+                })
+                //fetch 통신 후 실행 영역
+                .then((data) => {//data -> controller에서 리턴되는 데이터!
+                    console.log(data)
+                    let detailMemoTag = document.querySelector("#detailMemo")
+                    detailMemoTag.innerHTML = '';
+                    let str = ''
+                    str += `
+                    <div class="row border-bottom border-black" style="font-size: 0.8em;">
+                        <input type="hidden" value="${data.id}" id="deleteMemoId">
+                        <div class="col-auto" >
+                            번호 | <span>${data.id}</span>
+                        </div>
+                        <div class="col-auto">
+                            제목 | <span>${data.memoTitle}</span>
+                        </div>
+                        <div class="col-auto">
+                            작성자 | <span>${data.memoWriter}</span>
+                        </div>
+                        <div class="col-auto">
+                            날짜 | <span>${data.date}7</span>
+                        </div>
+                    </div>
+
+                    <div class="row mt-1">
+                        <div class="col" style="height: 20vh;">
+                            ${data.memoContent}
+                        </div>
+                    </div>
+                    `
+                    detailMemoTag.insertAdjacentHTML("afterbegin", str);
+                    memoModal.show();
+
+                })
+                //fetch 통신 실패 시 실행 영역
+                .catch(err => {
+                    alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+                    console.log(err);
+                });
+        }
+
+        let refreshList = () => {
+            //그말대로 새로고침
+            console.log("새로고침")
+
+            // ------------------- 첫번째 방식 ---------------//
+            fetch('/bookAdmin/memo', {
+                method: 'POST',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                //컨트롤러로 전달할 데이터
+                body: new URLSearchParams({
+                    // 데이터명 : 데이터값
+                })
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                        return;
+                    }
+
+                    //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+                    return response.json(); //나머지 경우에 사용
+                })
+                //fetch 통신 후 실행 영역
+                .then((data) => {//data -> controller에서 리턴되는 데이터!
+                    console.log(data)
+                    let searchType = data.searchVO.searchType;
+                    let searchValue = data.searchVO.searchValue;
+                    console.log(searchType)
+                    console.log()
+
+                    let memoMadalBodyTag = document.querySelector("#memoModalBody");
+                    memoMadalBodyTag.innerHTML = '';
+                    let str = '';
+                    str += `
+                            <div>
+                                <!-- 검색 기능  -->
+                                <div class="row">
+                                    <div class="col-3">
+                                        <select name="searchType" class="form-select" id="memoSearchType">`
+                    if (searchType == "MEMO_WRITER") {
+                        str += `
+                                                <option value="MEMO_TITLE">제목</option>
+                                                <option value="MEMO_WRITER" selected>작성자</option>
+                                                `
+                    } else {
+                        str += `
+                                                <option value="MEMO_TITLE" selected>제목</option>
+                                                <option value="MEMO_WRITER">작성자</option>
+                                                `
+                    }
+                    str += `
+                                        </select>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control" name="searchValue" id="memoSearchValue">
+                                    </div>
+
+                                    <div class="col-2 d-grid">
+                                        <input type="button" class="btn btn-primary" value="검색" onclick="searchMemo(1)">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            `
+                    str += `
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <td>번호</td>
+                                    <td>제목</td>
+                                    <td>작성자</td>
+                                    <td>작성일</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                `
+                    data.memoList.forEach((e, idx) => {
+                        str += `
+                                <tr type="button" data-bs-target="#memoModal2" data-bs-toggle="modal"
+                                    onclick="showDetailMemoModal(${e.id})">
+                                    <td>${e.id}</td>
+                                    <td>${e.memoTitle}</td>
+                                    <td>${e.memoWriter}</td>
+                                    <td>${e.date}</td>
+                                </tr>
+                                `
+                    })
+
+                    str += `
+                            </tbody>
+                        </table>
+                    
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center" id="paging-tag">
+                    `
+                    for (let i = data.searchVO.beginPage; i <= data.searchVO.endPage; i++) {
+                        str += `
+                                <li class="page-item"><span class="page-link" onclick="searchMemo(${i})">${i}</span></li>
+                                
+                        `
+                        // nowPage = i
+                        // searchType 2번쨰
+                        // searchValue 3번째 매개변수
+                    }
+                    str += `
+                            </ul>
+                        </nav>
+                    
+                    `
+                    memoMadalBodyTag.insertAdjacentHTML("afterbegin", str)
+
+                })//fetch 통신 실패 시 실행 영역
+                .catch(err => {
+                    alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+                    console.log(err);
+                });
+        }
+
         calendarData();
 
         function calendarData() {
@@ -241,18 +1106,28 @@
 
                     var calendarEl = document.getElementById('calendar');
                     var calendar = new FullCalendar.Calendar(calendarEl, {
-                        height: 350,
+                        height: 355, //높이
+                        contentHeight: 355, //컨텐츠 높이
                         initialView: 'dayGridMonth',
                         //시간표시 제거하기
                         displayEventTime: false,
                         locale: 'ko',
                         //이벤트
-                        events: eventList
+                        events: eventList,
+                        headerToolbar: {
+                            start: '',
+                            center: '',
+                            end: ''
+                        }
+
 
                     });
                     calendar.render();
 
-
+                    let toolbarDiv = document.querySelector(".fc-header-toolbar")
+                    toolbarDiv.style.display = "none"
+                    let calendarDiv = document.querySelector("#calendar");
+                    calendarDiv.style.height = '36vh'
 
                 })
                 //fetch 통신 실패 시 실행 영역

@@ -62,38 +62,42 @@
                     <!-- 책검색기능 -->
                     <!-- <div class="row mt-4 mb-5 ms-3" style="height: 12vh;">
                         <div class="col"> -->
-                    <div class="row "
-                        style="margin-top: 4vh; position: absolute; top: 20%; left: 10%; z-index: 1; width: 70%;">
-                        <div class="col-3"></div>
-                        <div class="col-2">
-                            <!-- 카테고리 -->
-                            <select class="form-select" aria-label="Default select example" name="searchType"
-                                id="search-type" style="height: 5vh;">
-                                <option value="BOOK_TITLE" th:selected="${bookSearchVO.searchType == 'BOOK_TITLE' }">책이름
-                                </option>
-                                <option value="BOOK_WRITER" th:selected="${bookSearchVO.searchType == 'BOOK_WRITER'}">저자
-                                </option>
-                                <option value="BOOK_PUB" th:selected="${bookSearchVO.searchType == 'BOOK_PUB'}">
-                                    출판사
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-4">
-                            <!-- 검색 -->
-                            <input type="text" class="form-control" name="searchValue" id="search-value"
-                                style="height: 5vh;" th:value="${bookSearchVO.searchValue}">
-                        </div>
-                        <div class="col-1">
-                            <!-- 검색 버튼 -->
-                            <input type="submit" class="btn text-white" value="검색"
-                                style="background-color: #4F9D79; height: 5vh;">
-                        </div>
+                    <form action="/findFullBook" method="post">
+                        <div class="row "
+                            style="margin-top: 4vh; position: absolute; top: 20%; left: 10%; z-index: 1; width: 70%;">
+                            <div class="col-3"></div>
+                            <div class="col-2">
+                                <!-- 카테고리 -->
+                                <select class="form-select" aria-label="Default select example" name="searchType"
+                                    id="search-type" style="height: 5vh;">
+                                    <option value="BOOK_TITLE"
+                                        th:selected="${bookSearchVO.searchType == 'BOOK_TITLE' }">책이름
+                                    </option>
+                                    <option value="BOOK_WRITER"
+                                        th:selected="${bookSearchVO.searchType == 'BOOK_WRITER'}">저자
+                                    </option>
+                                    <option value="BOOK_PUB" th:selected="${bookSearchVO.searchType == 'BOOK_PUB'}">
+                                        출판사
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <!-- 검색 -->
+                                <input type="text" class="form-control" name="searchValue" id="search-value"
+                                    style="height: 5vh;" th:value="${bookSearchVO.searchValue}">
+                            </div>
+                            <div class="col-1">
+                                <!-- 검색 버튼 -->
+                                <input type="submit" class="btn text-white" value="검색"
+                                    style="background-color: #4F9D79; height: 5vh;">
+                            </div>
 
-                        <!-- <div class="col-4"
+                            <!-- <div class="col-4"
                                     style="font-family: YEONGJUSeonbiTTF; font-size: 1.5em; font-weight: 300;">
                                     <div>책 읽는 당신을 위한 그린 도서관📖</div>
                                 </div> -->
-                    </div>
+                        </div>
+                    </form>
                     <!-- </div>
                     </div> -->
                 </div>
@@ -226,8 +230,8 @@
                         <div class="col-1"></div>
                         <div class="col">
                             <div class="fs-3 text-white"
-                                style="background-color: #8BC3A9; text-decoration : underline;"><span
-                                    class="ms-2">행사정보</span></div>
+                                style="background-color: #8BC3A9; text-decoration : underline;"><span class="ms-2">도서관
+                                    행사</span></div>
                             <div class="">
                                 <div id="carouselExampleIndicators" class="carousel slide">
                                     <div class="carousel-indicators">
@@ -240,18 +244,15 @@
                                             data-bs-slide-to="2" aria-label="Slide 3"></button>
                                     </div>
                                     <div class="carousel-inner">
-                                        <div class="carousel-item active">
-                                            <img src="/upload/f4d4330e-9b95-44fa-8243-db2a0141de89.jpg"
-                                                style="height: 60vh;" width="100%" alt="...">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="/upload/3a5b56c7-9516-4584-8292-ba1957b6e315.jpg"
-                                                style="height: 60vh;" width="100%" alt="...">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="/upload/f4d4330e-9b95-44fa-8243-db2a0141de89.jpg"
-                                                style="height: 60vh;" width="100%" alt="...">
-                                        </div>
+                                        <th:block th:each="e,state:${libraryEventList}">
+                                            <div class="carousel-item"
+                                                th:classappend="${state.index == 0 ? ' active':''}"
+                                                th:onclick="goLibraryEvent([[${e.BOARD_NUM}]])">
+                                                <img th:src="@{/upload/} + ${e.ATTACHED_FILE_NAME}"
+                                                    style="height: 54vh;" width="100%" alt="...">
+                                            </div>
+                                        </th:block>
+
                                     </div>
                                     <button class="carousel-control-prev" type="button"
                                         data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -270,7 +271,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- 영화상영 -->
 
         </div>
@@ -280,6 +280,10 @@
     <script>
         //달력 읽어오기
         calendarData();
+
+        function goLibraryEvent(boardNum) {
+            location.href = `/eventDetailBoard?boardNum=${boardNum}`
+        }
 
         function goNotice(boardNum) {
             location.href = `/goNotice?boardNum=${boardNum}`
@@ -322,16 +326,20 @@
                 .then((data) => {//data -> controller에서 리턴되는 데이터!
                     console.log(data)
 
-                    let korType = ''
-                  
-                    
-
+                    let korType = data.type;
+                    if (korType == 'recommend') {
+                        korType = '추천도서'
+                    } else if (korType == 'new') {
+                        korType = '새로들어온 책'
+                    } else {
+                        korType = '대출이 많은책'
+                    }
 
                     let str = ``;
                     str += `
                         <div class="text-center mb-1" style="font-size: 2em; font-weight: bold; ">
                                 <span class="bg-success-subtle bg-opacity-75" style="display: inline-block; width: 10vw;">
-                                    ${data.type}
+                                    ${korType}
                                 </span>
                         </div>
                     `

@@ -24,7 +24,7 @@ public interface LibraryBookService {
     //등록이 되어 있지 않으면 insert , 등록이 되어 있으면 update
 
     //추천된 책 찾기
-    Optional<List<FindBookVO>> selectBookRecommendation (String userType);
+    List<FindBookVO> selectBookRecommendation (String userType);
 
     //북코드로 추천타입 찾기
     Optional<String> selectBookRecommendationUserType (String bookCode);

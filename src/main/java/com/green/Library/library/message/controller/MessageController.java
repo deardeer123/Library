@@ -41,6 +41,23 @@ public class MessageController {
     /**
      * 단일 메시지 발송 예제
      */
+    @PostMapping("/sendMessage")
+    public String sendMessage(@RequestParam(name="setTo")String setTo,
+                              @RequestParam(name="setFrom")String setFrom,
+                              @RequestParam(name="setText")String setText){
+        System.out.println("setTo = " + setTo + ", setFrom = " + setFrom + ", setText = " + setText);
+        Message message = new Message();
+
+        //발신자
+        message.setFrom(setFrom);
+        //수신자
+        message.setTo(setTo);
+        //보낼 매세지
+        message.setText(setText);
+        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+
+        return "redirect:/bookAdmin/home";
+    }
 
     @PostMapping("/FindOfTel")
     public String sendOne(MemberVO memberVO) {

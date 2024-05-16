@@ -16,6 +16,7 @@ public class BookBNRVO {
     private String returnYN;
     private String exReturnDate;
     private String returnDate;
+    private int overdueDate;
     private int userCode;
     private String bookCode;
     private LibraryBookVO libraryBookVO;

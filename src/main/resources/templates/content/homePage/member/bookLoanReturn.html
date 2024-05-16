@@ -10,7 +10,44 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
-    도서대출반납 목록
+
+    <div class="row mt-4">
+        <div class="col mt-3">
+            <table class="align-middle table text-center ">
+                <thead>
+                    <tr>
+                        <td>No.</td>
+                        <td>도서 표지</td>
+                        <td>서명</td>
+                        <td>작가</td>
+                        <td>대출일자</td>
+                        <td>반납일자</td>
+                        <td>연체</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="my, state : ${history}" class="tr-list">
+                        <input type="hidden" name="bookCode" th:value="${my.libraryBookVO.bookCode}">
+                        <td>[[${#lists.size(history) - state.index}]]</td>
+                        <td><img width="70px" th:src="@{'upload/' + ${my.libraryBookVO.libraryBookInfoVO.bookInfoAttachedFileName}}"></td>
+                        <td >[[${my.libraryBookVO.bookTitle}]]</td>
+                        <td>[[${my.libraryBookVO.bookWriter}]]</td>
+                        <td>[[${my.borrowDate}]]</td>
+                        <td>[[${my.returnDate}]]</td>
+                        <td>[[${my.overdueDate}]]</td>
+                    </tr>
+                    <th:block th:if="${#lists.size(history) == 0}">
+                        <tr>
+                            <td colspan="9" style="font-weight: bold;">
+                                도서 대출 반납 내역이 없습니다.
+                            </td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </th:block>
 
 <th:block layout:fragment="content_js">

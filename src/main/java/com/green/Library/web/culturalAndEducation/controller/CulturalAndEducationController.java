@@ -71,7 +71,6 @@ public class CulturalAndEducationController {
 
 //        boardVO.setMemberVO((MemberVO) session.getAttribute("userName"));
         List<BoardVO> boardList = boardService.selectBoardList(searchVO);
-        System.out.println(boardList);
 
         model.addAttribute("boardList",boardList);
         System.out.println(session.getAttribute("userName"));
@@ -147,6 +146,21 @@ public class CulturalAndEducationController {
     //문화 게시판 삭제
     @GetMapping("/cuLDeleteBoard")
     public String deleteBoard(BoardVO boardVO){
+
+        System.out.println(boardVO);
+        System.out.println(boardVO);
+        System.out.println(boardVO);
+        System.out.println(boardVO);
+        System.out.println(boardVO);
+        System.out.println(boardVO);
+        System.out.println(boardVO);
+        System.out.println(boardVO);
+        System.out.println(boardVO);
+        System.out.println(boardVO);
+        System.out.println(boardVO);
+        System.out.println(boardVO);
+        System.out.println(boardVO);
+
 
         boardService.deleteBoard(boardVO.getBoardNum());
         return "redirect:/libraryEvent";
@@ -247,6 +261,8 @@ public class CulturalAndEducationController {
                             .isMain("")
                             .boardNum(maxBoardNum)
                             .build());
+        }else{
+            fileList.forEach(s->s.setBoardNum(maxBoardNum));
         }
 
         boardVO.setFileList(fileList);
@@ -292,16 +308,7 @@ public class CulturalAndEducationController {
 //        applyVO.setUserCode(userCode);
 //        model.addAttribute("check", boardService.applyCheck(applyVO));
         BoardVO board = boardService.selectEventBoardDetail(boardVO.getBoardNum());
-        System.out.println(board.getFileList());
-        System.out.println(board.getFileList());
-        System.out.println(board.getFileList());
-        System.out.println(board.getFileList());
-        System.out.println(board.getFileList());
-        System.out.println(board.getFileList());
-        System.out.println(board.getFileList());
-        System.out.println(board.getFileList());
-        System.out.println(board.getFileList());
-        System.out.println(board.getFileList());
+
 
         model.addAttribute("board", board);
         System.out.println(board);

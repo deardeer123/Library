@@ -4,6 +4,20 @@
 <!-- 해당 파일에 모든 쿼리문을 작성 -->
 <mapper namespace="libraryIntroductionMapper">
 
+    <select id="libraryState" resultType="map">
+        SELECT
+            book_category.book_cate_index,
+            book_category.BOOK_CATE_NAME,
+            COUNT(book_info.BOOK_CATE_CODE) AS COUNT
+        FROM book_category LEFT JOIN book_info
+        ON book_category.BOOK_CATE_CODE = book_info.BOOK_CATE_CODE
+        GROUP BY book_info.BOOK_CATE_CODE;
+    </select>
+
+    <select id="libraryState2" resultType="Integer">
+        SELECT count(*)
+        FROM book_info;
+    </select>
 </mapper>
 
 
