@@ -197,25 +197,11 @@
                                 </thead>
 
                                 <body>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>쉽게 배우는 자바</td>
-                                        <td>2024-05-06</td>
-                                        <td>홍길동</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>4</td>
-                                        <td>쉽게 배우는 파이썬</td>
-                                        <td>2024-05-06</td>
-                                        <td>홍길동</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>3</td>
-                                        <td>쉽게 배우는 스프링부트</td>
-                                        <td>2024-05-03</td>
-                                        <td>홍길동</td>
+                                    <tr th:each="one, state : ${reservesInfo}" onclick="location.href='/bookAdmin/reservationInfo'">
+                                        <td>[[${#lists.size(reservesInfo) - state.index}]]</td>
+                                        <td>[[${one.libraryBookVO.bookTitle}]]</td>
+                                        <td>[[${one.reserveDate}]]</td>
+                                        <td>[[${one.memberVO.userName}]]</td>
                                     </tr>
                                 </body>
                             </table>
@@ -279,7 +265,7 @@
                                     대출 도서
                                 </div>
                                 <div class="fs-1">
-                                    5
+                                    [[${borrowCnt}]]
                                 </div>
                             </div>
 
@@ -292,7 +278,7 @@
                                     반납 도서
                                 </div>
                                 <div class="fs-1">
-                                    4
+                                    [[${returnCnt}]]
                                 </div>
                             </div>
 
@@ -304,7 +290,7 @@
                                     미납 도서
                                 </div>
                                 <div class="fs-1">
-                                    8
+                                    [[${overdueCnt}]]
                                 </div>
                             </div>
                         </div>

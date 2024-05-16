@@ -1,6 +1,8 @@
 package com.green.Library.library.libraryhome.controller;
 
 
+import com.green.Library.library.borrowReturn.vo.BookBNRVO;
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.library.libraryMenu.service.LibraryMenuService;
 import com.green.Library.library.libraryhome.service.LibraryHomeService;
 import com.green.Library.library.libraryhome.service.LibraryHomeServiceImpl;
@@ -144,6 +146,17 @@ public class LibraryHomeController {
         askBoard.forEach(s-> System.out.println(s));
         model.addAttribute("askBoard", libraryHomeService.notAskBoard());
 
+        // 예약 5개
+        List<BookReservationVO> selectMainR = libraryHomeService.selectMainR();
+        model.addAttribute("reservesInfo", selectMainR);
+
+        // 대출
+        model.addAttribute("borrowCnt", libraryHomeService.selectNowB());
+        // 반납
+        model.addAttribute("returnCnt", libraryHomeService.selectNowR());
+        // 미납
+        BookBNRVO bookBNRVO = new BookBNRVO();
+        model.addAttribute("overdueCnt", libraryHomeService.selectNowO(bookBNRVO));
 
         return "content/library/home";
     }
