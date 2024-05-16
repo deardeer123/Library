@@ -1,3 +1,34 @@
+function searchAddress(){
+    new daum.Postcode({
+        oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+            document.querySelector('#postCode').value = data.zonecode;
+            
+            
+            var roadAddr = data.roadAddress; // 도로명 주소 변수
+            var extraRoadAddr = ''; // 참고 항목 변수
+
+            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+            if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                extraRoadAddr += data.bname;
+            }
+            // 건물명이 있고, 공동주택일 경우 추가한다.
+            if(data.buildingName !== '' && data.apartment === 'Y'){
+                extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+            if(extraRoadAddr !== ''){
+                extraRoadAddr = ' (' + extraRoadAddr + ')';
+            }
+
+            document.querySelector('#userAddr').value = roadAddr;
+
+        }
+    }).open();
+}
+
 document.querySelector('#all').addEventListener('change', checkAll);
 
 function checkAll() {
@@ -136,22 +167,8 @@ function showModal(userCode) {
                     }
                     str += `</select>
                 </td>
-            </tr>
-            <tr>
                 <td class="table-light">이름</td>
                 <td><input type="text" name="userName" class="form-control" id="detailUserName" value="${data.userName}"></td>
-                <td class="table-light">카드상태</td>
-                <td>
-                    <select name="cardStatus" class="form-select">`
-                    if(data.cardStatus == '사용중'){
-                    str += `<option value="사용중" selected>사용중</option>
-                        <option value="분실">분실</option>`
-                    }else{
-                    str += `<option value="사용중">사용중</option>
-                        <option value="분실" selected>분실</option>`
-                    }
-                    str += `</select>
-                </td>
             </tr>
             <tr>
                 <td class="table-light">아이디</td>
@@ -170,26 +187,10 @@ function showModal(userCode) {
                 </td>
             </tr>
             <tr>
-                <td class="table-light">이메일</td>
-                <td><input type="text" value="${data.email}" name="email" class="form-control"></td>
-                <td class="table-light">이메일 수신 여부</td>
-                <td>
-                    <select class="form-select">
-                        <option>수신함</option>
-                        <option>수신안함</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
                 <td class="table-light">전화번호</td>
                 <td><input type="text" value="${data.userTel}" name="detailUserTel" class="form-control"></td>
-                <td class="table-light">SMS 수신여부</td>
-                <td>
-                    <select class="form-select">
-                        <option>수신함</option>
-                        <option>수신안함</option>
-                    </select>
-                </td>
+                <td class="table-light">이메일</td>
+                <td><input type="text" value="${data.email}" name="email" class="form-control"></td>
             </tr>
             <tr>
                 <td rowspan="2" class="table-light">주소</td>
@@ -233,7 +234,6 @@ const updateUserDetail = () => {
     const userName = document.querySelector('#detailUserName').value;
     const userCode = document.querySelector('#getUserCode').value;
     const isAdmin = document.querySelector('select[name="isAdmin"]').value;
-    const cardStatus = document.querySelector('select[name="cardStatus"]').value;
     const gender = document.querySelector('select[name="detailGender"]').value;
     const email = document.querySelector('input[name="email"]').value;
     const userTel = document.querySelector('input[name="detailUserTel"]').value;
@@ -246,7 +246,6 @@ const updateUserDetail = () => {
         // 데이터명 : 데이터값
         userCode : userCode
         , isAdmin : isAdmin
-        , cardStatus : cardStatus
         , gender : gender
         , email : email
         , userTel : userTel
