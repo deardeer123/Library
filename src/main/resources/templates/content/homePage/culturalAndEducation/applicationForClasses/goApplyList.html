@@ -15,7 +15,7 @@
             <table class="align-middle table text-center">
                 <thead>
                     <tr>
-                        <td><input type="checkbox" id="allChk" checked onclick="allchk()">전체선택</td>
+
                         <td>이름</td>
                         <td>제목</td>
                         <td>행사 시작 날짜</td>
@@ -28,9 +28,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- 관리자 goApplyList.html -->
                     <tr th:each="board : ${boardList}" class="tr-list">
                         <th:block th:if="${board.ApplyVO.applyStatus == '신청대기'}">
-                            <td><input type="checkbox" id="chk" checked onclick="allchk()"></td>
                             <td>[[${board.MemberVO.userName}]]</td>
                             <td>[[${board.boardTitle}]]</td>
                             <td>[[${board.PlusVO.openDate}]]</td>

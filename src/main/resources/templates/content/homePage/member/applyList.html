@@ -27,6 +27,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- 사용자 applyList.html -->
                     <tr th:each="board : ${userBoardList}" class="tr-list">
                         <th:block th:unless="${#lists.size(userBoardList) == 0}">
                             <td>[[${board.MemberVO.userName}]]</td>

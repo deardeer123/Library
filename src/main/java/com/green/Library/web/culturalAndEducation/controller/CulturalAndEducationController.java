@@ -305,8 +305,8 @@ public class CulturalAndEducationController {
             applyVO.setUserCode(anony);
             System.out.println("@@@@@@@@@@@@@@@user"+applyVO.getUserCode());
         }
-
-//        applyVO.setUserCode((Integer) session.getAttribute("userCode"));
+        memberService.CF(boardNum);
+        applyVO.setUserCode((Integer) session.getAttribute("userCode"));
 
         model.addAttribute("page","eventParticipation");
         model.addAttribute("check", boardService.applyCheck(applyVO));
@@ -617,6 +617,25 @@ public class CulturalAndEducationController {
         return "redirect:/courseGuide";
     }
 
+    @GetMapping("/goGuideUpdate")
+    public String goGuideUpdate(Model model, BoardVO boardVO,HttpSession session){
+        model.addAttribute("page","courseGuide");
+        boardVO.setUserCode((Integer) session.getAttribute("userCode"));
+        BoardVO board = boardService.selectBoardDetail(boardVO.getBoardNum());
+        System.out.println(board);
+        model.addAttribute("board",board);
+        return "content/homePage/culturalAndEducation/courseGuide/guideUpdate";
+    }
+
+    @PostMapping("/guideUpdate")
+    public String guideUpdate(BoardVO boardVO, Model model){
+        boardService.updateBoard(boardVO);
+        return "redirect:/courseGuide?boardNum="+boardVO.getBoardNum();
+    }
+
+
+
+
     //게시판 선택 삭제
     @PostMapping("/GuideDelete")
     public String GuideDeletes(BoardVO boardVO){
@@ -765,6 +784,7 @@ public class CulturalAndEducationController {
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
         System.out.println("@@@@@@@@@@@@@@@@@" + boardService.applyBoardList());
         model.addAttribute("boardList", boardService.applyBoardList());
+
         return "content/homePage/culturalAndEducation/applicationForClasses/goApplyList";
     }
 
@@ -788,7 +808,7 @@ public class CulturalAndEducationController {
     @GetMapping("/confirm")
     public String confirm(BoardVO boardVO){
         memberService.CF(boardVO.getBoardNum());
-        return "redirect:goApplyUserListPage";
+        return "redirect:/goApplyUserListPage";
     }
     //다중 삭제
     @GetMapping("/goAppDelete")

@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.naming.Name;
 import java.beans.Encoder;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -127,9 +128,7 @@ public class MemberController {
         //암호화된 임시비밀번호를 업데이트
         memberService.updateUserPw(member);
 
-        //문자열치환
-        memberVO.setUserTel(memberVO.getUserTel().replace(",","-"));
-        memberVO.setEmail(memberVO.getEmail().replace(" ",""));
+
 
         if(memberVO.getEmail().equals(member.getEmail())){
             //이메일 전송
@@ -234,7 +233,14 @@ public class MemberController {
         model.addAttribute("page","applyList");
         //신청 목록
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
-        model.addAttribute("userBoardList",memberService.applyUserBoardList(boardVO));
+        List<BoardVO> memberVOList = memberService.applyUserBoardList(boardVO);
+        System.out.println("*****");
+        System.out.println("*****");
+        System.out.println("*****");
+        System.out.println("*****");
+        System.out.println("*****");
+        System.out.println(memberVOList);
+        model.addAttribute("userBoardList",memberVOList);
         System.out.println(memberService.applyUserBoardList(boardVO));
         return "content/homePage/member/applyList";
     }

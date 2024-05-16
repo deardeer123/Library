@@ -90,6 +90,7 @@ function goAppDeletes() {
 function dateView(boardNum) {
     const modal = new bootstrap.Modal('#myModal')
     const boardNumTag = document.querySelector('#boardNumTag');
+    
     boardNumTag.value = boardNum
     modal.show();
 
