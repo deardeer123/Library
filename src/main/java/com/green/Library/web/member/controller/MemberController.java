@@ -95,20 +95,25 @@ public class MemberController {
 
     @PostMapping("/findIdFetch")
     @ResponseBody
-    public void findId(MemberVO memberVO) throws MessagingException, UnsupportedEncodingException {
+    public MemberVO findId(MemberVO memberVO) throws MessagingException, UnsupportedEncodingException {
 
         MemberVO member = memberService.findUser(memberVO);
         System.out.println("!@!!!!!!!!!!!!!!!!!!!!!!!!"+member.getUserId());
-        String email = memberVO.getEmail();
-        String text = "아이디 : "+member.getUserId() + "입니다 \n 개인정보유출 방지를 위해 개인정보 수정을 부탁드립니다.";
-        String subject = "그린 도서관입니다.";
-        simpleMailService.SimpleMailSend(email,text,subject);
+
+
+        if (memberVO.getEmail().equals(member.getEmail())){
+            String email = memberVO.getEmail();
+            String text = "아이디 : "+member.getUserId() + "입니다 \n 개인정보유출 방지를 위해 개인정보 수정을 부탁드립니다.";
+            String subject = "그린 도서관입니다.";
+            simpleMailService.SimpleMailSend(email,text,subject);
+        }
+        return memberService.findUser(memberVO);
     }
 
 
     @PostMapping("/findPwFetch")
     @ResponseBody
-    public void findPw(MemberVO memberVO) throws MessagingException, UnsupportedEncodingException{
+    public MemberVO findPw(MemberVO memberVO) throws MessagingException, UnsupportedEncodingException{
         //임시 비밀번호 생성
         String randomPw = memberService.createRandomPw();
         //아이디 확인 및 업데이트를 위한 유저코드 유저코드 찾기
@@ -122,11 +127,18 @@ public class MemberController {
         //암호화된 임시비밀번호를 업데이트
         memberService.updateUserPw(member);
 
-        //이메일 전송
-        String email = memberVO.getEmail();
-        String text = "임시 비밀번호는 " + randomPw +"입니다 \n 임시 비밀번호이니 로그인 즉시 개인정보 수정을 부탁드립니다.";
-        String subject = "그린 도서관입니다.";
-        simpleMailService.SimpleMailSend(email,text,subject);
+        //문자열치환
+        memberVO.setUserTel(memberVO.getUserTel().replace(",","-"));
+        memberVO.setEmail(memberVO.getEmail().replace(" ",""));
+
+        if(memberVO.getEmail().equals(member.getEmail())){
+            //이메일 전송
+            String email = memberVO.getEmail();
+            String text = "임시 비밀번호는 " + randomPw +"입니다 \n 임시 비밀번호이니 로그인 즉시 개인정보 수정을 부탁드립니다.";
+            String subject = "그린 도서관입니다.";
+            simpleMailService.SimpleMailSend(email,text,subject);
+        }
+        return memberService.findPwUser(memberVO);
     }
 
 

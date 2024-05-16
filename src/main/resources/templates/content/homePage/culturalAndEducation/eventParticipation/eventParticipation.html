@@ -9,11 +9,14 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
+    <div class="border-top border-success border-2 mt-3 mb-1 border-opacity-50">
+
+    </div>
     <div class="row mt-4">
         <div class="col-12">
             <div>
                 <p><span style="font-weight: bold;">참가신청 :</span> 로그인 → ‘신청’ 버튼이 활성화되어 있는 날짜 중 희망 날짜 선택 후<br>
-                   신청 → 신청 양식 작성 → 행사 신청 후 ‘승인완료’ 처리 여부를 반드시 확인하시길 바랍니다.
+                    신청 → 신청 양식 작성 → 행사 신청 후 ‘승인완료’ 처리 여부를 반드시 확인하시길 바랍니다.
             </div>
         </div>
         <div>
@@ -32,7 +35,7 @@
                 </tr>
             </form>
         </div>
-        
+
         <div class="col mt-3">
             <table class="align-middle table text-center table-hover">
                 <thead>
@@ -48,8 +51,8 @@
                 </thead>
                 <tbody>
                     <tr th:each="board : ${boardList}">
-                        
-                        
+
+
                         <td>[[${board.PlusVO.teacher}]]</td>
                         <td>
                             <span th:onclick="|location.href='@{/goDetailParticipation(boardNum=${board.boardNum})}'|"
