@@ -33,16 +33,16 @@
             </div>
 
             <div class="row g-2">
-                <div class="col-6">
+                <!-- <div class="col-6">
                     <div class="p-4 border border-success-subtle border-3">
                         <div class="row align-items-center">
                             <div class="col">
-                                <!--  그림 부분 -->
+                           
                                 <img src="/upload/순돌아도망쳐.jpg" width="90%" style="height: 25vh;">
                             </div>
 
                             <div class="col">
-                                <!-- 책 정보 -->
+
                                 <div style="font-weight: bold; font-size: large;">순돌아도망쳐</div>
                                 <div><span style="color: blueviolet;">지은이 :</span> 김자환</div>
                                 <div><span style="color: blueviolet;">출판사 :</span> 삼성당</div>
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <th:block th:each="e:${bookList}">
                     <div class="col-6" th:onclick="bookDetail([[${e.bookCode}]])">
@@ -194,13 +194,15 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                             <!-- 예약하기 버튼 -->
-                            <button type="button" class="btn btn-primary">예약하기 </button>
+                            <button type="button" onclick="insertR()" class="btn btn-primary">예약하기 </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- 지금 로그인을 했는지 안했는지 확인 여부 -->
+    <input type="hidden" id="memberId" th:value="${#authentication.name}">
     <script>
         function bookDetail(bookCode) {
             // 책 하나 찾기
@@ -252,7 +254,7 @@
                                             <div class="row mt-5">
                                                 <!-- 북 코드 -->
                                                 <div class="col-2">코드 :</div>
-                                                <div class="col">${data.bookCode}</div>
+                                                <div class="col" id="book-code">${data.bookCode}</div>
                                             </div>
 
                                             <div class="row mt-2">
@@ -323,10 +325,71 @@
                     console.log(err);
                 });
         }
+        const insertR = () => {
+            const bookCode = document.querySelector('#book-code').innerHTML;
+            let memberId = document.querySelector("#memberId").value;
+            if(memberId == 'anonymousUser'){
+                alert("로그인 한 다음 이용해주세요.")
+                location.href='/login'
+            }
+
+           
+
+            fetch('/bookReservationFetch', { //요청경로
+                method: 'POST',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                //컨트롤러로 전달할 데이터
+                body: new URLSearchParams({
+                // 데이터명 : 데이터값
+                    bookCode : bookCode
+
+                })
+            })
+            .then((response) => {
+                if(!response.ok){
+                    alert('fetch error!\n컨트롤러로 통신중에 오류가 발생했습니다.');
+                    return ;
+                }
+
+                return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+                //return response.json(); //나머지 경우에 사용
+            })
+            //fetch 통신 후 실행 영역
+            .then((data) => {//data -> controller에서 리턴되는 데이터!
+
+                // console.log(`${session.userCode}`);
+
+                if(data === 'get'){
+                    const result = confirm('예약 되었습니다.\n 예약 내역으로 가시겠습니까?');
+                    if(result){
+                        window.location.href = `/myBookingList`;
+                    }
+                }else if(data === 'next'){
+                    const result = confirm('예약 되었습니다.\n 예약 내역으로 가시겠습니까?');
+                    if(result){
+                        window.location.href = `/myBookingList`;
+                    }
+                }else if(data === 'fail'){
+                    const result = confirm('이미 예약 하셨습니다.\n 예약 내역으로 가시겠습니까?');
+                    if(result){
+                        window.location.href = `/myBookingList`;
+                    }
+                }
+                // 시큐리티로 로그인 페이지 날리기
+            })
+            //fetch 통신 실패 시 실행 영역
+            .catch(err=>{
+                alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
+                console.log(err);
+            });
+        }
 
 
-        function changeRecommended(userType){
-            location.href=`/recommendedBook?userType=${userType}`
+        function changeRecommended(userType) {
+            location.href = `/recommendedBook?userType=${userType}`
         }
     </script>
 </th:block>

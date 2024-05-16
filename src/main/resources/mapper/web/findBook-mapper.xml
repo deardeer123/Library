@@ -105,13 +105,13 @@
         <if test='searchDate != null and !searchDate.equals("")'>
             and DATE_FORMAT(find_book_view.BOOK_REGDATE, '%Y-%m-%d') >= #{searchDate}
         </if>
-        <if test='bookBorrowAvailable != null and !bookBorrowAvailable.equals("ALL")'>
+        <if test='bookBorrowAvailable != null and !bookBorrowAvailable.equals("ALL") and !bookBorrowAvailable.equals("")'>
             and find_book_view.book_borrow_available = #{bookBorrowAvailable}
         </if>
-        <if test='bookCateName != null and !bookCateName.equals("noCate")'>
+        <if test='bookCateName != null and !bookCateName.equals("noCate") and !bookCateName.equals("")'>
             and book_cate_name = #{bookCateName}
         </if>
-        <if test='bookMidCateName != null and !bookMidCateName.equals("noMidCate")'>
+        <if test='bookMidCateName != null and !bookMidCateName.equals("noMidCate") and !bookMidCateName.equals("")'>
             and book_mid_cate_name = #{bookMidCateName}
         </if>
         ORDER by book_info.BOOK_REGDATE desc
@@ -127,13 +127,13 @@
         <if test='searchDate != null and !searchDate.equals("")'>
             and DATE_FORMAT(find_book_view.BOOK_REGDATE, '%Y-%m-%d') >= #{searchDate}
         </if>
-        <if test='bookBorrowAvailable != null and !bookBorrowAvailable.equals("ALL")'>
+        <if test='bookBorrowAvailable != null and !bookBorrowAvailable.equals("ALL") and !bookBorrowAvailable.equals("")'>
             and find_book_view.book_borrow_available = #{bookBorrowAvailable}
         </if>
-        <if test='bookCateName != null and !bookCateName.equals("noCate")'>
+        <if test='bookCateName != null and !bookCateName.equals("noCate") and !bookCateName.equals("")'>
             and book_cate_name = #{bookCateName}
         </if>
-        <if test='bookMidCateName != null and !bookMidCateName.equals("noMidCate")'>
+        <if test='bookMidCateName != null and !bookMidCateName.equals("noMidCate") and !bookMidCateName.equals("")'>
             and book_mid_cate_name = #{bookMidCateName}
         </if>
     </select>
