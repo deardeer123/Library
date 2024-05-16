@@ -1,5 +1,7 @@
 package com.green.Library.library.libraryhome.service;
 
+import com.green.Library.library.borrowReturn.vo.BookBNRVO;
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.library.libraryhome.vo.CalendarVO;
 import com.green.Library.library.libraryhome.vo.MemoPageVO;
 import com.green.Library.library.libraryhome.vo.MemoSearchVO;
@@ -13,6 +15,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service("libraryHomeService")
@@ -85,5 +89,26 @@ public class LibraryHomeServiceImpl implements LibraryHomeService{
     @Override
     public List<BoardVO> notAskBoard() {
         return sqlSession.selectList("libraryHomeMapper.notAskBoard");
+    }
+
+    // 예약 내역 최신 5개
+    @Override
+    public List<BookReservationVO> selectMainR() {
+        return sqlSession.selectList("libraryHomeMapper.selectMainR");
+    }
+
+    @Override
+    public int selectNowB() {
+        return sqlSession.selectOne("libraryHomeMapper.selectNowB");
+    }
+
+    @Override
+    public int selectNowR() {
+        return sqlSession.selectOne("libraryHomeMapper.selectNowR");
+    }
+
+    @Override
+    public int selectNowO(BookBNRVO bookBNRVO) {
+        return sqlSession.selectOne("libraryHomeMapper.selectNowO", bookBNRVO);
     }
 }

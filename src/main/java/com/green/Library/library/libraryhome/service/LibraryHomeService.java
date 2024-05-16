@@ -1,5 +1,7 @@
 package com.green.Library.library.libraryhome.service;
 
+import com.green.Library.library.borrowReturn.vo.BookBNRVO;
+import com.green.Library.library.borrowReturn.vo.BookReservationVO;
 import com.green.Library.library.libraryhome.vo.CalendarVO;
 import com.green.Library.library.libraryhome.vo.MemoSearchVO;
 import com.green.Library.library.libraryhome.vo.MemoVO;
@@ -8,7 +10,10 @@ import com.green.Library.web.board.vo.BoardVO;
 import com.green.Library.web.board.vo.SearchVO;
 import com.green.Library.web.member.vo.MemberVO;
 import com.green.Library.web.participationForum.vo.AskAndAnswerBoardVO;
+import lombok.Data;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public interface LibraryHomeService {
@@ -37,4 +42,17 @@ public interface LibraryHomeService {
     int askBoardCount();
     //묻고 답하기 답변안한 글 5개
     List<BoardVO> notAskBoard();
+
+    // 예약 최신 5개
+    List<BookReservationVO> selectMainR();
+
+    //대출 count
+    int selectNowB();
+
+    //반납 count
+    int selectNowR();
+
+    //미납 count
+    int selectNowO(BookBNRVO bookBNRVO);
+
 }

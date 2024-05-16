@@ -129,6 +129,44 @@
         LIMIT 5;
     </select>
 
+    <!-- 메인화면에 뿌릴 예약 정보 최신순 5개 -->
+    <select id="selectMainR" resultMap="bnrMapper.bookReserve">
+        SELECT RESERVE_CODE
+            , BOOK_TITLE
+            , RESERVE_DATE
+            , USER_NAME
+        FROM BOOK_RESERVATION BR
+        LEFT JOIN BOOK
+        ON BR.BOOK_CODE = BOOK.BOOK_CODE
+        LEFT JOIN USERS
+        ON BR.USER_CODE = USERS.USER_CODE
+        ORDER BY RESERVE_CODE DESC
+        LIMIT 5
+    </select>
+
+    <!-- 오늘 대출 도서 -->
+    <select id="selectNowB" resultType="int">
+        SELECT COUNT(BORROW_CODE)
+        FROM book_bnr
+        WHERE BORROW_DATE = DATE_FORMAT(NOW(), '%Y%m%d')
+    </select>
+
+    <!-- 오늘 반납 도서 -->
+    <select id="selectNowR" resultType="int">
+        SELECT COUNT(EX_RETURN_DATE)
+        FROM book_bnr
+        WHERE EX_RETURN_DATE = DATE_FORMAT(NOW(), '%Y%m%d')
+        AND RETURN_YN = 'N'
+    </select>
+
+    <!-- 미납 반납 도서 -->
+    <select id="selectNowO" resultType="int">
+        SELECT COUNT(BORROW_CODE)
+        FROM book_bnr
+        WHERE RETURN_YN = 'N'
+        AND EX_RETURN_DATE &lt; DATE_FORMAT(NOW(), '%Y%m%d')
+    </select>
+
 </mapper>
 
 
