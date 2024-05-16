@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="footerFragment">
+  <style>
+    .footer-div {
+      font-size: 18px;
+    }
+    .logo{
+      color: navy;
+      font-size: 14px;
+    }
+  </style>
+
+
+
+  <div class="footer-div row justify-content-center" style="background-color: #8cc3a9;">
+    <div class="col">
+      <div class="row justify-content-center">
+        <div class="col-8" style="height: 100%;">
+          <img src="/upload/headLogo.gif" style="height: 20%; width: 20%;">
+        </div>
+      </div>
+      <div class="row mb-5 justify-content-center">
+        <div class="col text-center">
+          <p>울산광역시 남구 삼산중로</p>
+          <p>전화번호 052-123-4567 | 팩스번호 052-987-6543</p>
+          <p class="logo">Green Library</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</th:block>
+
+</html>

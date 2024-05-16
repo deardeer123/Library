@@ -100,7 +100,7 @@ function pwEmail(){
     })
     //fetch 통신 후 실행 영역
     .then((data) => {//data -> controller에서 리턴되는 데이터!
-      // location.href='/login'
+      location.href='/login'
     })
     //fetch 통신 실패 시 실행 영역
     .catch(err => {

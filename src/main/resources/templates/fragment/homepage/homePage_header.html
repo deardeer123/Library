@@ -3,7 +3,28 @@
 
 <!-- headerFragment -->
 <th:block th:fragment="headerFragment">
-    
+    <style>
+        #goingTop {
+    position: fixed;
+    /* right: 70%; */
+    left: 90%;
+    bottom: 5%;
+    float: right;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    background-color: darkgreen;
+    color: #ffffff;
+    font-size: 25px;
+    box-shadow: 0px 0px 5px #88bda4;
+    cursor: pointer;
+}
+    </style>
     <!-- headerFragment -->
     <div class="row">
         <div class="col">
@@ -193,7 +214,7 @@
                 </div>
             </div>
 
-
+            <span id="goingTop"  onclick="window.scrollTo(0,0);">↑</span>
         </div>
     </div>
 

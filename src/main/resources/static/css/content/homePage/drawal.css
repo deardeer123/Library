@@ -12,6 +12,7 @@
 .main-box{
   border: 1px solid darkgreen;
   border-radius: 15px;
+
 }
 
 /* .title-box .title-head::before{
@@ -23,3 +24,28 @@
   height: 3px;
   background: #045738;
 } */
+
+.main-box > p{
+  font-size: 20px;
+  color: darkgreen;
+  margin-top: 20px;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.small-dot{
+  list-style: square
+}
+
+.small-dot > li{
+  color: black;
+  font-size: 18px;
+}
+.small-dot > li::marker{
+  color: coral;
+}
+.small-ul > li{
+  margin-top: 2px;
+  margin-bottom: 2px;
+  font-size: 16px;
+}
