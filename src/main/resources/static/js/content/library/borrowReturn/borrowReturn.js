@@ -129,7 +129,7 @@ function selectMemberInfo() {
                 const data_cnt = data.userInfo.bookBorrowList.length;
 
                 //대출 및 반납, 예약 내역이 없을 경우
-                if (data_cnt == 1 && data.userInfo.bookBorrowList[0].bookCode == null && data.reserveInfo[0].reserveCode == null) {
+                if (data_cnt == 1 && data.userInfo.bookBorrowList[0].bookCode == null && data.reserveInfo.length === 0) {
 
                     cnt1 += `<b>대출(0/5)</b>`;
 
@@ -253,6 +253,12 @@ function selectMemberInfo() {
                                     str4 += `</tr>
                                     `;
                         })
+                    } else {
+                        str4 += `<tr>
+                                    <td colspan="7">
+                                        예약 내역이 없습니다.
+                                    </td>
+                                </tr>`;
                     }
 
                     cnt1 += `<b>대출(${renCnt}/5)</b>`;
@@ -414,26 +420,10 @@ function showModal(userCode) {
                 </td>
             </tr>
             <tr>
-                <td class="table-light">이메일</td>
-                <td><input type="text" value="${data.email}" name="email" class="form-control"></td>
-                <td class="table-light">이메일 수신 여부</td>
-                <td>
-                    <select class="form-select">
-                        <option>수신함</option>
-                        <option>수신안함</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
                 <td class="table-light">전화번호</td>
                 <td><input type="text" value="${data.userTel}" name="userTel" class="form-control"></td>
-                <td class="table-light">SMS 수신여부</td>
-                <td>
-                    <select class="form-select">
-                        <option>수신함</option>
-                        <option>수신안함</option>
-                    </select>
-                </td>
+                <td class="table-light">이메일</td>
+                <td><input type="text" value="${data.email}" name="email" class="form-control"></td>
             </tr>
             <tr>
                 <td rowspan="2" class="table-light">주소</td>
@@ -517,7 +507,7 @@ function searchAddress(){
                 extraRoadAddr = ' (' + extraRoadAddr + ')';
             }
 
-            document.querySelector('#userAddr').value = roadAddr;
+            document.querySelector('#address').value = roadAddr;
 
         }
     }).open();

@@ -90,10 +90,10 @@ function showModal(userCode) {
                 </td>
             </tr>
             <tr>
-                <td class="table-light">이메일</td>
-                <td><input type="text" value="${data.email}" name="email" class="form-control"></td>
                 <td class="table-light">전화번호</td>
                 <td><input type="text" value="${data.userTel}" id="detailUserTel" class="form-control"></td>
+                <td class="table-light">이메일</td>
+                <td><input type="text" value="${data.email}" name="email" class="form-control"></td>
             </tr>
             <tr>
                 <td rowspan="2" class="table-light">주소</td>
@@ -133,9 +133,13 @@ function showModal(userCode) {
                 <td colspan="3" id="overdueCnt">${data.overdueCnt}</td>
             </tr>
             <tr>
-                <td class="table-light">최근 대출일</td>
-                <td colspan="3" id="recentDate">${data.recentDate}</td>
-            </tr>
+                <td class="table-light">최근 대출일</td>`
+                if(data.recentDate == null){
+                    str += `<td colspan="3" id="recentDate"> </td>`
+                }else{
+                    str += `<td colspan="3" id="recentDate">${data.recentDate}</td>`
+                }
+            str += `</tr>
         </table>
         `
             modalBody.insertAdjacentHTML('afterbegin', str);
@@ -187,7 +191,7 @@ function searchAddress(){
                 extraRoadAddr = ' (' + extraRoadAddr + ')';
             }
 
-            document.querySelector('#userAddr').value = roadAddr;
+            document.querySelector('#address').value = roadAddr;
 
         }
     }).open();

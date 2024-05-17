@@ -23,7 +23,7 @@ function searchAddress(){
                 extraRoadAddr = ' (' + extraRoadAddr + ')';
             }
 
-            document.querySelector('#userAddr').value = roadAddr;
+            document.querySelector('#address').value = roadAddr;
 
         }
     }).open();
