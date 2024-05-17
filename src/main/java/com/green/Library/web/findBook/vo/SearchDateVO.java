@@ -15,4 +15,7 @@ public class SearchDateVO extends PageVO{
     private String bookCateName;
     private String bookMidCateName;
     private String bookBorrowAvailable;
+    private String searchValue;
+    private String searchType;
+    private int boardType;
 }

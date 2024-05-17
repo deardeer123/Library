@@ -152,20 +152,29 @@
                             <option value="N" th:selected='${searchDateVO.bookBorrowAvailable=="N"}'>대출불가</option>
                         </select>
                     </div>
-                    <div class="col-auto date-text mt-4">
-                        날짜
+                    <div class="col-2">
+                        <!-- 카테고리 -->
+                        <select class="form-select mt-3" aria-label="Default select example"
+                            name="searchType" id="search-type">
+                            <option value="BOOK_TITLE"
+                                th:selected="${searchDateVO.searchType == 'BOOK_TITLE' }">책이름
+                            </option>
+                            <option value="BOOK_WRITER"
+                                th:selected="${searchDateVO.searchType == 'BOOK_WRITER'}">저자
+                            </option>
+                            <option value="BOOK_PUB" th:selected="${searchDateVO.searchType == 'BOOK_PUB'}">
+                                출판사
+                            </option>
+                        </select>
                     </div>
-                    <div class="col-auto mt-3">
-                        <input type="text" class="form-control" id="myInput" name="searchDate"
-                            th:value="${searchDateVO.searchDate}">
+                    <div class="col-3 mt-3">
+                        <!-- 검색 -->
+                        <input type="text" class="form-control" name="searchValue" id="search-value"
+                            th:value="${searchDateVO.searchValue}">
                     </div>
-
-                    <div class="col-auto date-text mt-3">
-                        일에 등록된 책
-                    </div>
-
-                    <div class="col-auto mt-3">
-                        <input type="submit" class="btn" value="찾기" style="background-color: cadetblue;">
+                    <div class="col mt-3">
+                        <!-- 검색 버튼 -->
+                        <input type="submit" class="btn btn-primary" value="검색">
                     </div>
                 </div>
 
