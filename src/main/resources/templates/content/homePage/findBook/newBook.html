@@ -478,19 +478,24 @@
 
                     // console.log(`${session.userCode}`);
 
-                    if (data === 'get') {
+                    if(data === 'get'){
                         const result = confirm('예약 되었습니다.\n 예약 내역으로 가시겠습니까?');
-                        if (result) {
+                        if(result){
                             window.location.href = `/myBookingList`;
                         }
-                    } else if (data === 'next') {
+                    }else if(data === 'first-wait'){
                         const result = confirm('예약 되었습니다.\n 예약 내역으로 가시겠습니까?');
-                        if (result) {
+                        if(result){
                             window.location.href = `/myBookingList`;
                         }
-                    } else if (data === 'fail') {
+                    }else if(data === 'next'){
+                        const result = confirm('예약 되었습니다.\n 예약 내역으로 가시겠습니까?');
+                        if(result){
+                            window.location.href = `/myBookingList`;
+                        }
+                    }else if(data === 'fail'){
                         const result = confirm('이미 예약 하셨습니다.\n 예약 내역으로 가시겠습니까?');
-                        if (result) {
+                        if(result){
                             window.location.href = `/myBookingList`;
                         }
                     }

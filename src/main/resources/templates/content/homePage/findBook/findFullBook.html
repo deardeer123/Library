@@ -483,6 +483,11 @@
                     if(result){
                         window.location.href = `/myBookingList`;
                     }
+                }else if(data === 'first-wait'){
+                    const result = confirm('예약 되었습니다.\n 예약 내역으로 가시겠습니까?');
+                    if(result){
+                        window.location.href = `/myBookingList`;
+                    }
                 }else if(data === 'next'){
                     const result = confirm('예약 되었습니다.\n 예약 내역으로 가시겠습니까?');
                     if(result){
