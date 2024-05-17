@@ -28,8 +28,9 @@ INSERT INTO HEADER_MENU(
 	('대출 반납', 'borrowReturn', 1 , 'library'),
 	('이용자', 'user', 2 , 'library') ,
 	('자료 등록', 'bookReg', 3 , 'library') ,
-	('자료 변경/열람', 'bookChangeAndOpen', 4 , 'library') ,
-	('통계', 'statistics', 5 , 'library');
+	('자료 변경/열람', 'bookChangeAndOpen', 4 , 'library');
+
+	
 	
 SELECT * FROM header_menu;
 
@@ -107,32 +108,29 @@ INSERT INTO SIDE_MENU(
 	('일관 반납', 'consistentReturn', 2 , 1 ),
 	('대출 반납 관리', 'borrowReturnManagement', 3 , 1),
 	('예약정보 관리', 'reservationInfo', 4 , 1),
-	('출력이력 관리', 'outputHistory', 5 , 1) ,
 	-- 이용자
 	('이용자 관리', 'user' , 1 , 2) ,
 	('이용자 승인', 'userApproval', 2 , 2) ,
-	('연체자 관리', 'delinquent', 3 , 2) ,
 	-- 구입
-	('추천 자료' , 'recommendedBook' , 1 , 3 ) ,
-	('삭제 자료' , 'deleteBook', 2 , 3 ) ,
-	('구입 자료' , 'buyBook', 3 , 3 ) ,
-	('기증 자료' , 'donatedBook', 4 , 3 ) ,
+	('추천 자료 등록' , 'recommendedBook' , 1 , 3 ) ,
+	('제외 자료' , 'deleteBook', 2 , 3 ) ,
+	('자료 등록' , 'buyBook', 3 , 3 ) ,
 	-- 등록 열람
-	('작업 자료 관리', 'workingBook', 1, 4 ),
-	('소장 자료 관리', 'collectionBook', 2, 4 ),
-	('마크 반입', 'markImport', 3, 4  ),
-	-- 통계
-	('통계' , 'statistics', 1, 5 );
+	('자료 정보 변경', 'workingBook', 1, 4 ),
+	('자료 검색', 'collectionBook', 2, 4 ),
+	('바코드 조회', 'markImport', 3, 4  );
 
 SELECT * FROM header_menu;
 SELECT * FROM side_menu;
 
 UPDATE side_menu
+SET side_menu_name = '자료 멈색'
+WHERE side_menu_num = 11;
+UPDATE side_menu
 SET 
-SIDE_MENU_NAME = '추천 자료' ,
-SIDE_MENU_PAGE = 'recommendedData'
+SIDE_MENU_PAGE = 'deleteBook'
 WHERE
-side_menu_num = 9;
+side_menu_num = 8;
 
 SELECT
 		SIDE_MENU_NAME, 
@@ -152,34 +150,34 @@ INSERT INTO side_menu(
 	MENU_NUM )
 	VALUES
 	-- 자료찾기
-	('전체자료찾기', 'findFullBook', 1 , 6 ) ,
-	('새로 들어온 책', 'newBook', 2 , 6 ) ,
-	('추천도서', 'recommendedBook', 3 , 6 ) ,
-	('대출이 많은책', 'manyBorrowedBook' , 4 , 6 ) ,
-	('희망도서신청', 'hopeBookApplication' , 5 , 6),
+	('전체자료찾기', 'findFullBook', 1 , 5 ) ,
+	('새로 들어온 책', 'newBook', 2 , 5 ) ,
+	('추천도서', 'recommendedBook', 3 , 5 ) ,
+	('대출이 많은책', 'manyBorrowedBook' , 4 , 5 ) ,
+	('희망도서신청', 'hopeBookApplication' , 5 , 5),
 	-- 도서관 이용
-	('이용안내 및 자료실 소개', 'userGuide', 1 , 7) ,
-	('이달의 행사 및 휴관일', 'eventAndCloseDay' , 2 , 7) ,
+	('이용안내 및 자료실 소개', 'userGuide', 1 , 6) ,
+	('이달의 행사 및 휴관일', 'eventAndCloseDay' , 2 , 6) ,
 	-- 문화행사 / 교육
-	('도서관 행사', 'libraryEvent', 1 , 8) ,
-	('행사 참가신청', 'eventParticipation' , 2 , 8) ,
-	('영화 상영', 'movie', 3 , 8 ) ,
-	('평생교육 강좌안내', 'courseGuide', 4, 8) ,
-	('강좌 수강신청', 'applicationForClasses' , 5 , 8 ) ,
+	('도서관 행사', 'libraryEvent', 1 , 7) ,
+	('행사 참가신청', 'eventParticipation' , 2 , 7) ,
+	('영화 상영', 'movie', 3 , 7 ) ,
+	('평생교육 강좌안내', 'courseGuide', 4, 7) ,
+	('강좌 수강신청', 'applicationForClasses' , 5 , 7 ) ,
 	-- 참여 마당
-	('공지사항', 'notice', 1 , 9 ) ,
-	('묻고 답하기', 'askAndAnswer', 2 , 9) ,
-	('자료기증', 'bookDonation' , 3 , 9 ) ,
-	('사물함 예약', 'lockerReservation' , 4, 9) ,
+	('공지사항', 'notice', 1 , 8 ) ,
+	('묻고 답하기', 'askAndAnswer', 2 , 8) ,
+	('자료기증', 'bookDonation' , 3 , 8 ) ,
+
 	-- 도서관 소개
-	('인사말' , 'greeting' , 1 , 10 ) ,
-	('연혁' , 'history' , 2 , 10 ) ,
-	('도서관 현황', 'libraryStatus', 3 , 10) ,
-	('찾아오시는 길', 'libraryCome', 4, 10) ; 
+	('인사말' , 'greeting' , 1 , 9 ) ,
+	('연혁' , 'history' , 2 , 9 ) ,
+	('도서관 현황', 'libraryStatus', 3 , 9) ,
+	('찾아오시는 길', 'libraryCome', 4, 9) ; 
 	
-	 DROP TABLE book_borrow;
-	 DROP TABLE book_return;
-	DROP table users;
+	--  DROP TABLE book_borrow;
+	--  DROP TABLE book_return;
+	-- DROP table users;
 	
 -- 헤더 윗 부분(로그인/회원가입/아이디,비밀번호 찾기)를 위한 데이터
 -- 회원 탈퇴 부분은 마이페이지이런곳에 들어가서 할 수 있도록 만들어야 할듯
@@ -189,9 +187,9 @@ INSERT INTO side_menu(
 	SIDE_MENU_INDEX ,
 	MENU_NUM )
 	VALUES
-	('로그인', 'login', 1 , 11),
-	('회원가입', 'join', 2 , 11),
-	('아이디/비밀번호 찾기', 'findIdOrPW', 3, 11);
+	('로그인', 'login', 1 , 10),
+	('회원가입', 'join', 2 , 10),
+	('아이디/비밀번호 찾기', 'findIdOrPW', 3, 10);
 	
 SELECT * FROM header_menu;	
 	
@@ -203,15 +201,15 @@ INSERT INTO side_menu(
 	MENU_NUM )
 	VALUES
 	-- 내 프로필
-	('회원정보 변경' , 'memberInfoChange', 1 , 12),
-	('비밀번호 변경' , 'passwdChange' , 2 , 12),
+	('회원정보 변경' , 'memberInfoChange', 1 , 11),
+	('비밀번호 변경' , 'passwdChange' , 2 , 11),
 	-- 내 행사 신청
-	('신청 목록' , 'applyList', 1, 13) ,
+	('신청 목록' , 'applyList', 1, 12) ,
 	-- 내 서재
-	('도서대출반납 목록', 'bookLoanReturn', 1 , 14) ,
-	('내 예약 목록', 'myBookingList' , 2 , 14 ),
+	('도서대출반납 목록', 'bookLoanReturn', 1 , 13) ,
+	('내 예약 목록', 'myBookingList' , 2 , 13 ),
 	-- 회원 탈퇴
-	('회원 탈퇴' , 'memberWithdrawal' , 1 ,15);
+	('회원 탈퇴' , 'memberWithdrawal' , 1 ,14);
 	
 	SELECT
         header_menu.MENU_TYPE,
@@ -372,8 +370,10 @@ CREATE TABLE BOOK_BNR(
 	, EX_RETURN_DATE DATETIME
 	, RETURN_DATE DATETIME
 	, USER_CODE INT REFERENCES users(USER_CODE)
-	, BOOK_CODE VARCHAR(20) REFERENCES BOOK(BOOK_CODE)
+	, BOOK_CODE VARCHAR(20) NOT NULL
 );
+
+
 
 SELECT * FROM book_bnr;
 
@@ -539,6 +539,15 @@ SET BOOK_MID_CATE_CODE = 1;
 SELECT * FROM book_info;
 
 -- DELETE FROM book_info;
+SELECT * FROM book_breakage;
+
+SELECT * FROM book WHERE book_code = "GR0000000020";
+
+DELETE FROM book_breakage WHERE book_code = "GR0000000020";
+DELETE FROM book_breakage_info WHERE book_code = "GR0000000020";
+
+SELECT * FROM book_bnr WHERE book_code ="GR0000000020";
+DELETE FROM book_bnr;
 
 CREATE TABLE BOOK_BREAKAGE(
    BOOK_CODE VARCHAR(15) PRIMARY KEY,
@@ -1363,4 +1372,6 @@ SELECT if_answer_board_num
 FROM ask_and_answer_board
 WHERE is_answer_board = 'Y';
 
-SELECT * FROM USERs;
+SELECT * FROM users;
+SELECT * FROM book;
+SELECT * FROM book_info;

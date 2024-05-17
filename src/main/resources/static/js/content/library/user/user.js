@@ -90,26 +90,10 @@ function showModal(userCode) {
                 </td>
             </tr>
             <tr>
-                <td class="table-light">이메일</td>
-                <td><input type="text" value="${data.email}" name="email" class="form-control"></td>
-                <td class="table-light">이메일 수신 여부</td>
-                <td>
-                    <select class="form-select">
-                        <option>수신함</option>
-                        <option>수신안함</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
                 <td class="table-light">전화번호</td>
                 <td><input type="text" value="${data.userTel}" id="detailUserTel" class="form-control"></td>
-                <td class="table-light">SMS 수신여부</td>
-                <td>
-                    <select class="form-select">
-                        <option>수신함</option>
-                        <option>수신안함</option>
-                    </select>
-                </td>
+                <td class="table-light">이메일</td>
+                <td><input type="text" value="${data.email}" name="email" class="form-control"></td>
             </tr>
             <tr>
                 <td rowspan="2" class="table-light">주소</td>
@@ -149,9 +133,13 @@ function showModal(userCode) {
                 <td colspan="3" id="overdueCnt">${data.overdueCnt}</td>
             </tr>
             <tr>
-                <td class="table-light">최근 대출일</td>
-                <td colspan="3" id="recentDate">${data.recentDate}</td>
-            </tr>
+                <td class="table-light">최근 대출일</td>`
+                if(data.recentDate == null){
+                    str += `<td colspan="3" id="recentDate"> </td>`
+                }else{
+                    str += `<td colspan="3" id="recentDate">${data.recentDate}</td>`
+                }
+            str += `</tr>
         </table>
         `
             modalBody.insertAdjacentHTML('afterbegin', str);
@@ -181,9 +169,29 @@ function checkAll(){
 function searchAddress(){
     new daum.Postcode({
         oncomplete: function(data) {
-            
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
             document.querySelector('#postCode').value = data.zonecode;
-            document.querySelector('#address').value = data.roadAddress;
+            
+            
+            var roadAddr = data.roadAddress; // 도로명 주소 변수
+            var extraRoadAddr = ''; // 참고 항목 변수
+
+            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+            if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                extraRoadAddr += data.bname;
+            }
+            // 건물명이 있고, 공동주택일 경우 추가한다.
+            if(data.buildingName !== '' && data.apartment === 'Y'){
+                extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+            if(extraRoadAddr !== ''){
+                extraRoadAddr = ' (' + extraRoadAddr + ')';
+            }
+
+            document.querySelector('#address').value = roadAddr;
 
         }
     }).open();
@@ -301,26 +309,10 @@ const reGrant = () => {
                 </td>
             </tr>
             <tr>
-                <td class="table-light">이메일</td>
-                <td><input type="text" value="${email}" name="email" class="form-control"></td>
-                <td class="table-light">이메일 수신 여부</td>
-                <td>
-                    <select class="form-select">
-                        <option>수신함</option>
-                        <option>수신안함</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
                 <td class="table-light">전화번호</td>
                 <td><input type="text" value="${userTel}" id="detailUserTel" class="form-control"></td>
-                <td class="table-light">SMS 수신여부</td>
-                <td>
-                    <select class="form-select">
-                        <option>수신함</option>
-                        <option>수신안함</option>
-                    </select>
-                </td>
+                <td class="table-light">이메일</td>
+                <td><input type="text" value="${email}" name="email" class="form-control"></td>
             </tr>
             <tr>
                 <td rowspan="2" class="table-light">주소</td>

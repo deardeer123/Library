@@ -82,10 +82,14 @@
                     <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center" id="paging-tag">
                             <th:block>
-                                <li class="page-item disabled">
-                                    <a class="page-link">Previous</a>
-                                    <!-- classappend 추가해야함 -->
+
+                                <li class="page-item" th:if="${bookSearchVO.prev}">
+                                    <a class="page-link" aria-label="이전"
+                                        th:href="@{/applicationForClasses(nowPage=${bookSearchVO.beginPage - 1})}">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
                                 </li>
+
                             </th:block>
 
                             <th:block th:each="e: ${#numbers.sequence(bookSearchVO.beginPage,bookSearchVO.endPage)}">
@@ -95,9 +99,11 @@
                             </th:block>
 
                             <th:block>
-                                <li class="page-item disabled">
-                                    <!-- <a class="page-link" href="#">Next</a> -->
-                                    <!-- classappend 추가해야함 -->
+                                <li class="page-item" th:if="${bookSearchVO.next}">
+                                    <a class="page-link" aria-label="다음"
+                                        th:href="@{/applicationForClasses(nowPage=${bookSearchVO.endPage + 1})}">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
                                 </li>
                             </th:block>
 
@@ -216,7 +222,7 @@
                         </div>
                         <div class="modal-footer" id="modal-detail-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                            <button type="button" class="btn btn-primary">폐기하기</button>
+                            <!-- <button type="button" class="btn btn-primary">폐기하기</button> -->
                             <button type="button" class="btn btn-primary">재진열</button>
                         </div>
                     </div>
@@ -345,11 +351,10 @@
                     book_modal_footer.innerHTML = ''
                     str = `
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                            <button type="button" class="btn btn-primary" onclick=''>폐기하기</button>
                             <button type="button" class="btn btn-primary" onclick='goRedisplay("${libraryBookBreakageVO.bookCode}")'>재진열</button>
 
                     `
-                    book_modal_footer.insertAdjacentHTML('beforeend',str)
+                    book_modal_footer.insertAdjacentHTML('beforeend', str)
 
                     book_modal.show();
 
@@ -361,7 +366,7 @@
                 });
 
         }
-        function goRedisplay(bookCode){
+        function goRedisplay(bookCode) {
             console.log(bookCode)
 
             //------------------- 첫번째 방식 ---------------//
@@ -383,13 +388,13 @@
                         return;
                     }
 
-                    //return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
-                    return response.json(); //나머지 경우에 사용
+                    return response.text(); //컨트롤러에서 return하는 데이터가 없거나 int, String 일 때 사용
+                    //return response.json(); //나머지 경우에 사용
                 })
                 //fetch 통신 후 실행 영역
                 .then((data) => {//data -> controller에서 리턴되는 데이터!
-                    
-
+                    alert(data)
+                    location.href="/bookAdmin/deleteBook"
                 })
                 //fetch 통신 실패 시 실행 영역
                 .catch(err => {
@@ -398,7 +403,6 @@
                 });
 
         }
-
     </script>
 
 </th:block>

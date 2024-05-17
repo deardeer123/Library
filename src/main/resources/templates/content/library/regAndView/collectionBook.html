@@ -14,7 +14,7 @@
 
             <div class="row">
                 <div class="col">
-                    <h2>자료 열람</h2>
+                    <h2>자료 검색</h2>
                 </div>
             </div>
 
@@ -88,24 +88,18 @@
                 <div class="col">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center" id="paging-tag">
-                            <th:block>
-                                <li class="page-item disabled">
-                                    <a class="page-link">Previous</a>
-                                    <!-- classappend 추가해야함 -->
-                                </li>
+                            <th:block th:if="${bookSearchVO.prev}">
+                                <a th:href="@{/bookAdmin/collectionBook(nowPage=${bookSearchVO.beginPage - 1})}">이전</a>
                             </th:block>
 
                             <th:block th:each="e: ${#numbers.sequence(bookSearchVO.beginPage,bookSearchVO.endPage)}">
                                 <li class="page-item"><a class="page-link"
-                                        th:href="@{/bookAdmin/workingBook(nowPage=${e},searchType=${bookSearchVO.searchType},searchValue=${bookSearchVO.searchValue})}">[[${e}]]</a>
+                                        th:href="@{/bookAdmin/collectionBook(nowPage=${e},searchType=${bookSearchVO.searchType},searchValue=${bookSearchVO.searchValue})}">[[${e}]]</a>
                                 </li>
                             </th:block>
 
-                            <th:block>
-                                <li class="page-item disabled">
-                                    <!-- <a class="page-link" href="#">Next</a> -->
-                                    <!-- classappend 추가해야함 -->
-                                </li>
+                            <th:block th:if="${bookSearchVO.next}">
+                                <a th:href="@{/bookAdmin/collectionBook(nowPage=${bookSearchVO.endPage + 1})}">이전</a>
                             </th:block>
 
                         </ul>
@@ -222,8 +216,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                         </div>
                     </div>
                 </div>
@@ -646,9 +639,7 @@
 
                     // 이전 버튼 누를수 있고 못누르게 하는건 if문으로
                     let str1 = `
-                        <li class="page-item disabled">
-                            <a class="page-link">Previous</a>
-                        </li>
+                    
                     `;
                     for (let i = data.bookSearchVO.beginPage; i <= data.bookSearchVO.endPage; i++) {
                         str1 = str1 + `
@@ -660,9 +651,7 @@
                     //값을 제대로 안넘겨주는거 같음 
                     // 다음 버튼 누를수 있고 못누르게 하는건 if문으로 할것
                     str1 = str1 + `
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
+                    
                     `
 
                     paging_tag.insertAdjacentHTML("beforeend", str1);
@@ -735,9 +724,7 @@
 
                     // 이전 버튼 누를수 있고 못누르게 하는건 if문으로
                     let str1 = `
-                        <li class="page-item disabled">
-                            <a class="page-link">Previous</a>
-                        </li>
+             
                     `;
                     for (let i = data.bookSearchVO.beginPage; i <= data.bookSearchVO.endPage; i++) {
                         str1 = str1 + `
@@ -749,9 +736,7 @@
                     //값을 제대로 안넘겨주는거 같음 
                     // 다음 버튼 누를수 있고 못누르게 하는건 if문으로 할것
                     str1 = str1 + `
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
+               
                     `
 
                     paging_tag.insertAdjacentHTML("beforeend", str1);

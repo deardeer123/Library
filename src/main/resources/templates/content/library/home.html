@@ -464,7 +464,9 @@
         function deleteAndrefreshList() {
             let id = document.querySelector("#deleteMemoId").value;
             console.log(id)
-            // ------------------- 첫번째 방식 ---------------//
+
+            if(confirm("메모를 삭제하시겠습니까?")){
+                // ------------------- 첫번째 방식 ---------------//
             fetch(`/bookAdmin/memo/${id}/delete`, { //요청경로
                 method: 'POST',
                 cache: 'no-cache',
@@ -582,8 +584,7 @@
                     alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
                     console.log(err);
                 });
-
-
+            }
         }
 
         function showMemoModal() {

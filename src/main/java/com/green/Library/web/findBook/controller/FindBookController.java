@@ -92,28 +92,30 @@ public class FindBookController {
 
     // 책 예약
     @ResponseBody
-    @RequestMapping("/bookReservationFetch")
-    public String bookReservationFetch(@RequestParam(name = "bookCode")String bookCode, HttpSession session, BookReservationVO bookReservationVO) {
+    @GetMapping("/bookReservationFetch/{bookCode}")
+    public String bookReservationFetch(@PathVariable(name = "bookCode")String bookCode, HttpSession session, BookReservationVO bookReservationVO) {
 
-//        List<BookReservationVO> myInfo = memberService.selectMyReservation((Integer) session.getAttribute("userCode"));
         bookReservationVO.setUserCode((Integer) session.getAttribute("userCode"));
 
-//        myInfo.forEach(m -> {
-//            if(m.getBookCode().equals(bookReservationVO.getBookCode())){
-//                bookReservationVO.setReserveStatus(m.getReserveStatus());
-//            }
-//        });
 
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@" + borrowReturnService.selectBookAvailable(bookCode));
+        System.out.println("##########################" + findBookService.selectDuplication(bookReservationVO));
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&" + borrowReturnService.selectChkReservation(bookCode));
 
 
-        if (!session.getAttribute("userCode").equals("") && !findBookService.selectDuplication(bookReservationVO) && borrowReturnService.selectBookAvailable(bookCode) || !borrowReturnService.selectChkReservation(bookCode).isEmpty()) {
+        if ((!session.getAttribute("userCode").equals("") && !findBookService.selectDuplication(bookReservationVO) && borrowReturnService.selectBookAvailable(bookCode)) && borrowReturnService.selectChkReservation(bookCode).isEmpty()) {
 
             findBookService.bookReservationFetch1(bookReservationVO);
 
             return "get";
 
-        } else if(!session.getAttribute("userCode").equals("") && !findBookService.selectDuplication(bookReservationVO) && !borrowReturnService.selectBookAvailable(bookCode) || !borrowReturnService.selectChkReservation(bookCode).isEmpty()){
+        } else if ((!session.getAttribute("userCode").equals("") && !findBookService.selectDuplication(bookReservationVO) && !borrowReturnService.selectBookAvailable(bookCode)) && borrowReturnService.selectChkReservation(bookCode).isEmpty()) {
+
+            findBookService.bookReservationFetch2(bookReservationVO);
+
+            return "first-wait";
+
+        } else if((!session.getAttribute("userCode").equals("") && !findBookService.selectDuplication(bookReservationVO) && !borrowReturnService.selectBookAvailable(bookCode)) && !borrowReturnService.selectChkReservation(bookCode).isEmpty()){
 
             findBookService.bookReservationFetch2(bookReservationVO);
 
@@ -131,7 +133,7 @@ public class FindBookController {
         //인터셉터에 newBook 정보를 넘겨줌
         model.addAttribute("page","newBook");
 
-
+        System.out.println(searchDateVO);
         //페이징
         searchDateVO.setNowPage(searchDateVO.getNowPage());
 
