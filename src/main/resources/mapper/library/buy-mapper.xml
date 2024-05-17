@@ -10,12 +10,14 @@
         BOOK_INFO_ORIGIN_FILE_NAME ,
         BOOK_INTRO ,
         BOOK_CATE_CODE ,
+        BOOK_MID_CATE_CODE,
         BOOK_CODE)
         VALUES(
         #{libraryBookInfoVO.bookInfoAttachedFileName},
         #{libraryBookInfoVO.bookInfoOriginFileName},
         #{libraryBookInfoVO.bookIntro},
         #{libraryBookInfoVO.bookCateCode},
+        #{libraryBookInfoVO.bookMidCateCode},
         #{libraryBookInfoVO.bookCode})
     </insert>
 
@@ -72,6 +74,9 @@
         LIMIT ${displayDataCnt} offset ${(displayDataCnt) * (nowPage - 1)}
     </select>
 
+
+
+<!--    부서진 책 하나 검색-->
     <select id="searchBookBreakageDetail" resultMap="libraryBookMapper.LibraryBookBreakage">
         SELECT
             *
@@ -95,7 +100,29 @@
         WHERE book_code = #{bookCode};
     </select>
 
+    <!--    부서진 책 하나 검색-->
+    <select id="searchBookBreakageDetail2" resultMap="libraryBookMapper.libraryBook">
+        SELECT
+        *
+        FROM
+        book_breakage INNER JOIN book_breakage_info
+        on book_breakage.book_code = book_breakage_info.book_code
+        WHERE
+        book_breakage.book_code = #{bookCode}
+    </select>
+
 <!--    망가진책 삭제하고 재진열하는 쿼리문-->
+    <delete id="deleteBreakageBook">
+        delete from BOOK_BREAKAGE_INFO
+        where book_code = #{bookCode}
+    </delete>
+    <!--    망가진책 삭제하고 재진열하는 쿼리문2-->
+    <delete id="deleteBreakageBook2">
+        delete from book_breakage
+        where book_code = #{bookCode}
+    </delete>
+
+
 
 
 

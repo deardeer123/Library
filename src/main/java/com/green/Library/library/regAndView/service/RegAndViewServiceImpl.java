@@ -57,8 +57,8 @@ public class RegAndViewServiceImpl implements RegAndViewService{
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteBookOne(String bookCode) {
-        sqlSession.update("regAndViewMapper.DeleteBookOne", bookCode);
-        sqlSession.update("regAndViewMapper.DeleteBookTwo", bookCode);
+        sqlSession.delete("regAndViewMapper.DeleteBookOne", bookCode);
+        sqlSession.delete("regAndViewMapper.DeleteBookTwo", bookCode);
     }
 
 

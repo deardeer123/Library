@@ -23,4 +23,13 @@ public interface BuyService {
     //제외한 책 카테고리 정보 가져오기
     LibraryBookCategoryVO selectCateNameOne(String bookCode);
 
+    //제외한책 다시 원래 책으로 되돌리기 1
+    LibraryBookVO searchBookBreakageDetail2(String bookCode);
+    //제외한 책 삭제하기
+    void deleteBreakageBook(String bookCode);
+    //제외한 책 다시 원래 책으로 되돌리기
+    void deleteBreakageBook2(String bookCode);
+
+    //진짜
+
 }
