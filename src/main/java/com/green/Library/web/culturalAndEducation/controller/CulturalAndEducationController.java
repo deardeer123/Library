@@ -353,22 +353,22 @@ public class CulturalAndEducationController {
     @PostMapping("/goEventDelete")
     @ResponseBody
     public void goEventDelete(@RequestParam(name = "boardNum") int boardNum,
-                              @RequestParam(name = "openDate") String openDate,
-                              @RequestParam(name = "boardTitle") String boardTitle){
+                              @RequestParam(name = "boardTitle") String boardTitle,
+                              BoardVO boardVO){
         //날짜가 안넘어가서 그냥 start라는 변수로 넘겨줌
         CalendarVO calendarVO = new CalendarVO();
 
         LocalDate date = LocalDate.now(); //오늘 날짜 LocalDate 객체 생성
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String today = date.format(dateTimeFormatter); //LocalDate 객체를 String 객체로 바꿈
-        calendarVO.setStart(openDate);
         calendarVO.setTitle(boardTitle);
         calendarVO.setColor("red");
         String time = "12:00:00";
         //날짜 형식 맞춰주기
+        boardVO.setBoardNum(boardNum);
         calendarVO.setStart(calendarVO.getStart() + " "+time);
         libraryHomeService.deleteCalendar(calendarVO);
-        boardService.eventBoardDelete(boardNum);
+        boardService.eventBoardDelete(boardVO.getBoardNum());
     }
 
     //게시글 선택 삭제
@@ -801,7 +801,7 @@ public class CulturalAndEducationController {
     @RequestMapping("/deleteApply")
     public String deleteApply(BoardVO boardVO){
         memberService.deleteApply(boardVO.getBoardNum());
-        return "redirect:/goApplyUserListPage";
+        return "redirect:/applyList";
     }
 
     //신청 확인

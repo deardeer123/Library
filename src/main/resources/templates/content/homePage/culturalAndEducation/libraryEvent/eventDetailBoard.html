@@ -58,10 +58,13 @@
             <tr>
                 <td><pre>[[${board.content}]]</pre></td>
             </tr>
+            <div class="border-bottom border-secondary-subtle border-1 mt-2 mb-3 border-opacity-25">
+
+            </div>
             <div sec:authorize="hasRole('ROLE_Y')" class="d-md-flex justify-content-end">
                 <input type="button" style="margin-right: 5px;" class="btn btn-primary btn-sm" value="게시글 수정"
                     th:onclick="|location.href='@{/culUpdate(boardNum=${board.boardNum})}'|">
-                <input type="button" class="btn btn-primary btn-sm" value="게시글 삭제" th:onclick="|location.href='@{/cuLDeleteBoard(boardNum=${board.boardNum})}'|">
+                <input type="button" class="btn btn-primary btn-sm" value="게시글 삭제" th:onclick="deleteBoard([[${board.boardNum}]])">
             </div>
             <div>
                 <input class="btn btn-success btn-lg" type="button" value="목록" onclick="location.href='/libraryEvent'">
@@ -69,6 +72,18 @@
             </tbody>
         </div>
     </div>
+    
+
+    <script>
+        function deleteBoard(boardNum){
+            if(confirm('삭제하시겠습니까?')){
+                location.href=`/cuLDeleteBoard?boardNum=${boardNum}`
+            }
+
+        }
+    </script>
+
+    
 </th:block>
 
 <th:block layout:fragment="content_js">

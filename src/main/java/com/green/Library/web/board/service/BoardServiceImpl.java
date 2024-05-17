@@ -106,6 +106,7 @@ public class BoardServiceImpl implements BoardService {
     public void eventBoardDelete(int boardNum) {
         sqlSession.delete("boardMapper.eventFileDelete", boardNum);
         sqlSession.delete("boardMapper.eventBPDelete", boardNum);
+        sqlSession.delete("boardMapper.applyDelete",boardNum);
         sqlSession.delete("boardMapper.eventBoardDelete",boardNum);
     }
 

@@ -35,6 +35,7 @@ const changeMy = () => {
   }
   else {
     form.submit();
+    alert('정보변경이 완료 되었습니다.')
   }
 
 }
@@ -86,7 +87,9 @@ const pwCF2 = (userPw, userCode) => {
     .then((data) => {//data -> controller에서 리턴되는 데이터!
       
       alert(`${data}`)
-      location.href = '/logout'
+      if(data == '비밀번호가 변경 되었습니다.'){
+        location.href = '/logout'
+      }
     })
     //fetch 통신 실패 시 실행 영역
     .catch(err => {
