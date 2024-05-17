@@ -125,7 +125,7 @@ public class FindBookController {
         //인터셉터에 newBook 정보를 넘겨줌
         model.addAttribute("page","newBook");
 
-
+        System.out.println(searchDateVO);
         //페이징
         searchDateVO.setNowPage(searchDateVO.getNowPage());
 

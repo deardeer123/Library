@@ -47,4 +47,23 @@ public class BuyServiceImpl implements BuyService{
     public LibraryBookCategoryVO selectCateNameOne(String bookCode) {
         return sqlSession.selectOne("buyMapper.selectCateNameOne",bookCode);
     }
+
+    
+    //제외한 책 다시 되돌리기
+    @Override
+    public LibraryBookVO searchBookBreakageDetail2(String bookCode) {
+        return sqlSession.selectOne("buyMapper.searchBookBreakageDetail2",bookCode);
+    }
+
+    //진짜 삭제
+    @Override
+    public void deleteBreakageBook(String bookCode) {
+        sqlSession.delete("buyMapper.deleteBreakageBook", bookCode);
+        sqlSession.delete("buyMapper.deleteBreakageBook2", bookCode);
+    }
+
+    @Override
+    public void deleteBreakageBook2(String bookCode) {
+        sqlSession.delete("buyMapper.deleteBreakageBook2", bookCode);
+    }
 }

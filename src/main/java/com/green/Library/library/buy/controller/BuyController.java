@@ -115,8 +115,9 @@ public class BuyController {
         model.addAttribute("page", "deleteBook");
 
 
+        int totalDataCnt = buyService.selectCntLibraryBookBreakage(bookSearchVO);
         //제외한 책 갯수 설정
-        bookSearchVO.setTotalDataCnt(buyService.selectCntLibraryBookBreakage(bookSearchVO));
+        bookSearchVO.setTotalDataCnt(totalDataCnt);
         //페이지 정보 세팅
         bookSearchVO.setPageInfo();
 
@@ -124,6 +125,10 @@ public class BuyController {
         List<LibraryBookBreakageVO> bookBreakageList = buyService.selectLibraryBookBreakageList(bookSearchVO);
         model.addAttribute("bookBreakageList" , bookBreakageList);
         System.out.println(bookBreakageList);
+        //계속 이상하게 나오길래 넣은 코드입니다.
+        if(totalDataCnt == 0){
+            bookSearchVO.setEndPage(1);
+        }
 
         System.out.println("삭제 자료 이동");
         return "content/library/buy/deleteBook";
@@ -145,8 +150,13 @@ public class BuyController {
 
     @ResponseBody
     @PostMapping("/bookRedisplay")
-    public void bookRedisplay(@RequestParam(name="bookCode")String bookCode){
+    public String bookRedisplay(@RequestParam(name="bookCode")String bookCode){
         System.out.println(bookCode);
+        LibraryBookVO libraryBookVO = buyService.searchBookBreakageDetail2(bookCode); //책 정보
+        buyService.regBook(libraryBookVO); //책 다시 등록
+
+        buyService.deleteBreakageBook(bookCode); //제외한 책 삭제
+        return "재진열 했습니다.";
     }
 
 
