@@ -95,11 +95,6 @@ public class FindBookController {
     @GetMapping("/bookReservationFetch/{bookCode}")
     public String bookReservationFetch(@PathVariable(name = "bookCode")String bookCode, HttpSession session, BookReservationVO bookReservationVO) {
 
-        System.out.println("확인");
-        System.out.println("확인");
-        System.out.println("확인");
-        System.out.println("확인");
-        System.out.println("확인");
         bookReservationVO.setUserCode((Integer) session.getAttribute("userCode"));
 
 
