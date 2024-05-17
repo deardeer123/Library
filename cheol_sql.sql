@@ -154,7 +154,6 @@ INSERT INTO side_menu(
 	('새로 들어온 책', 'newBook', 2 , 5 ) ,
 	('추천도서', 'recommendedBook', 3 , 5 ) ,
 	('대출이 많은책', 'manyBorrowedBook' , 4 , 5 ) ,
-	('희망도서신청', 'hopeBookApplication' , 5 , 5),
 	-- 도서관 이용
 	('이용안내 및 자료실 소개', 'userGuide', 1 , 6) ,
 	('이달의 행사 및 휴관일', 'eventAndCloseDay' , 2 , 6) ,
@@ -178,6 +177,8 @@ INSERT INTO side_menu(
 	--  DROP TABLE book_borrow;
 	--  DROP TABLE book_return;
 	-- DROP table users;
+	SELECT * FROM side_menu WHERE side_menu_num = 17;
+
 	
 -- 헤더 윗 부분(로그인/회원가입/아이디,비밀번호 찾기)를 위한 데이터
 -- 회원 탈퇴 부분은 마이페이지이런곳에 들어가서 할 수 있도록 만들어야 할듯

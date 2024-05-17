@@ -300,7 +300,8 @@ public class CulturalAndEducationController {
                                         @RequestParam(name = "boardNum") int boardNum,
                                         ApplyVO applyVO,
                                         HttpSession session){
-        applyVO.setUserCode((Integer) session.getAttribute("userCode"));
+        int userCode = Optional.ofNullable((Integer) session.getAttribute("userCode")).orElse(0);
+        applyVO.setUserCode(userCode);
         model.addAttribute("page","eventParticipation");
         model.addAttribute("check", boardService.applyCheck(applyVO));
         boardVO.setBoardNum(boardNum);
