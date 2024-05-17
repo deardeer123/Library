@@ -69,7 +69,7 @@ public class MessageController {
         // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
 
         //발신자
-        message.setFrom("01076153762");
+        message.setFrom("01041505657");
         //수신자
         message.setTo(memberVO.getUserTel());
         //보낼 메세지
@@ -104,7 +104,7 @@ public class MessageController {
         // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
 
         //발신자
-        message.setFrom("01076153762");
+        message.setFrom("01041505657");
         //수신자
         message.setTo(memberVO.getUserTel());
         //보낼 메세지

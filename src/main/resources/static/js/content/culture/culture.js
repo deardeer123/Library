@@ -90,6 +90,7 @@ function goAppDeletes() {
 function dateView(boardNum) {
     const modal = new bootstrap.Modal('#myModal')
     const boardNumTag = document.querySelector('#boardNumTag');
+    
     boardNumTag.value = boardNum
     modal.show();
 
@@ -139,7 +140,7 @@ function approve(boardNum) {
 
 function deleteApply(boardNum) {
     location.href = `/deleteApply?boardNum=${boardNum}`
-
+    alert('신청이 취소 되었습니다.')
 }
 
 function CF(boardNum) {
@@ -281,7 +282,9 @@ function dateCode() {
 }
 
 // 행사 참가신청 삭제 (캘린더 포함)
-function eventDelete(boardNum, openDate, boardTitle) {
+function eventDelete(boardNum, boardTitle) {
+    if(confirm('삭제 하시겠습니까?')){
+    // alert(boardNum)
     // ------------------- 첫번째 방식 ---------------//
     fetch('/goEventDelete', { //요청경로
         method: 'POST',
@@ -293,8 +296,8 @@ function eventDelete(boardNum, openDate, boardTitle) {
         body: new URLSearchParams({
             // 데이터명 : 데이터값
             boardNum: boardNum,
-            openDate: openDate,
             boardTitle: boardTitle
+            
         })
     })
         .then((response) => {
@@ -315,6 +318,7 @@ function eventDelete(boardNum, openDate, boardTitle) {
             alert('fetch error!\nthen 구문에서 오류가 발생했습니다.\n콘솔창을 확인하세요!');
             console.log(err);
         });
+    }
 }
 
 

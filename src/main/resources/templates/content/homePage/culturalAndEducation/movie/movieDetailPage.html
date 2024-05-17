@@ -9,24 +9,30 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
+    <div class="border-top border-success border-2 mt-3 mb-3 border-opacity-50">
+
+    </div>
     <div class="row">
-        <div class="head-title">
+        <div class="head-title text-center">
             <span>
-                <h3>
+                <h3 >
                     [[${board.MovieVO.movieName}]]
                 </h3>
             </span>
         </div>
-        <div class="col-5 body-img " th:each="file : ${board.fileList}" style="padding: 10px; width: 449px; height: 450px;">
+        <div class="border-top border-secondary-subtle border-1 mt-1 mb-2 border-opacity-25">
+
+        </div>
+        <div class="col-5 body-img text-center border-end " th:each="file : ${board.fileList}" style="padding: 10px; width: 449px; height: 450px;">
             <img th:src="@{'/upload/' + ${file.attachedFileName}}">
         </div>
-        <div class="col-7 body-comment" style="padding: 10px;">
+        <div class="col-7 mt-3 body-comment" style="padding: 10px;">
             <dl>
-                <dt style="float: left;">상영일자</dt>
+                <dt style="float: left; font-weight: bold; color: rgb(2, 112, 112);">상영일자 ｜ </dt>
                 <dd>[[${board.MovieVO.movieDay}]]</dd>
             </dl>
             <dl>
-                <dt style="float: left;">상영시간</dt>
+                <dt style="float: left; font-weight: bold; color: rgb(2, 112, 112);">상영시간 ｜ </dt>
                 <dd>
                     [[${board.MovieVO.movieStart}]]
                     ~ 
@@ -34,9 +40,16 @@
                 </dd>
             </dl>
             <dl>
-                <dt style="float: left;">관람등급</dt>
+                <dt style="float: left; font-weight: bold; color: rgb(2, 112, 112);">관람등급 ｜ </dt>
                 <dd>[[${board.MovieVO.filmRating}]]</dd>
             </dl>
+            <dl>
+                <dt style="float: left; font-weight: bold; color: rgb(2, 112, 112);">줄거리 ｜ </dt>
+                <dd>[[${board.content}]]</dd>
+            </dl>
+        </div>
+        <div class="border-top border-secondary-subtle border-1 mt-1 mb-2 border-opacity-25">
+
         </div>
         <div sec:authorize="hasRole('ROLE_Y')" class="d-md-flex justify-content-end">
             <input type="button" style="margin-right: 5px;" class="btn btn-primary btn-sm" value="게시글 수정"
@@ -44,7 +57,7 @@
             <input type="button" class="btn btn-primary btn-sm" value="게시글 삭제"  th:onclick="deleteMovie([[${board.boardNum}]],[[${board.MovieVO.movieDay}]],[[${board.MovieVO.movieName}]])">
         </div>
         <div>
-            <input class="btn btn-success btn-lg" type="button" value="목록" onclick="location.href='/movie'">
+            <input class="btn btn-success btn-lg mt-3" type="button" value="목록" onclick="location.href='/movie'">
         </div>
     </div>
 </th:block>

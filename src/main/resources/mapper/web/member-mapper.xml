@@ -197,6 +197,7 @@
         ,USER_NAME
         ,USER_PW
         ,email
+        ,email
         FROM USERS
         WHERE USER_TEL = #{userTel}
         AND USER_NAME = #{userName}

@@ -95,24 +95,27 @@ public class FindBookController {
     @GetMapping("/bookReservationFetch/{bookCode}")
     public String bookReservationFetch(@PathVariable(name = "bookCode")String bookCode, HttpSession session, BookReservationVO bookReservationVO) {
 
-        System.out.println("확인");
-        System.out.println("확인");
-        System.out.println("확인");
-        System.out.println("확인");
-        System.out.println("확인");
         bookReservationVO.setUserCode((Integer) session.getAttribute("userCode"));
 
 
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@" + borrowReturnService.selectBookAvailable(bookCode));
+        System.out.println("##########################" + findBookService.selectDuplication(bookReservationVO));
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&" + borrowReturnService.selectChkReservation(bookCode));
 
 
-        if (!session.getAttribute("userCode").equals("") && !findBookService.selectDuplication(bookReservationVO) && borrowReturnService.selectBookAvailable(bookCode) || !borrowReturnService.selectChkReservation(bookCode).isEmpty()) {
+        if ((!session.getAttribute("userCode").equals("") && !findBookService.selectDuplication(bookReservationVO) && borrowReturnService.selectBookAvailable(bookCode)) && borrowReturnService.selectChkReservation(bookCode).isEmpty()) {
 
             findBookService.bookReservationFetch1(bookReservationVO);
 
             return "get";
 
-        } else if(!session.getAttribute("userCode").equals("") && !findBookService.selectDuplication(bookReservationVO) && !borrowReturnService.selectBookAvailable(bookCode) || !borrowReturnService.selectChkReservation(bookCode).isEmpty()){
+        } else if ((!session.getAttribute("userCode").equals("") && !findBookService.selectDuplication(bookReservationVO) && !borrowReturnService.selectBookAvailable(bookCode)) && borrowReturnService.selectChkReservation(bookCode).isEmpty()) {
+
+            findBookService.bookReservationFetch2(bookReservationVO);
+
+            return "first-wait";
+
+        } else if((!session.getAttribute("userCode").equals("") && !findBookService.selectDuplication(bookReservationVO) && !borrowReturnService.selectBookAvailable(bookCode)) && !borrowReturnService.selectChkReservation(bookCode).isEmpty()){
 
             findBookService.bookReservationFetch2(bookReservationVO);
 

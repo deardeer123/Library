@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.naming.Name;
 import java.beans.Encoder;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -95,20 +96,25 @@ public class MemberController {
 
     @PostMapping("/findIdFetch")
     @ResponseBody
-    public void findId(MemberVO memberVO) throws MessagingException, UnsupportedEncodingException {
+    public MemberVO findId(MemberVO memberVO) throws MessagingException, UnsupportedEncodingException {
 
         MemberVO member = memberService.findUser(memberVO);
         System.out.println("!@!!!!!!!!!!!!!!!!!!!!!!!!"+member.getUserId());
-        String email = memberVO.getEmail();
-        String text = "아이디 : "+member.getUserId() + "입니다 \n 개인정보유출 방지를 위해 개인정보 수정을 부탁드립니다.";
-        String subject = "그린 도서관입니다.";
-        simpleMailService.SimpleMailSend(email,text,subject);
+
+
+        if (memberVO.getEmail().equals(member.getEmail())){
+            String email = memberVO.getEmail();
+            String text = "아이디 : "+member.getUserId() + "입니다 \n 개인정보유출 방지를 위해 개인정보 수정을 부탁드립니다.";
+            String subject = "그린 도서관입니다.";
+            simpleMailService.SimpleMailSend(email,text,subject);
+        }
+        return memberService.findUser(memberVO);
     }
 
 
     @PostMapping("/findPwFetch")
     @ResponseBody
-    public void findPw(MemberVO memberVO) throws MessagingException, UnsupportedEncodingException{
+    public MemberVO findPw(MemberVO memberVO) throws MessagingException, UnsupportedEncodingException{
         //임시 비밀번호 생성
         String randomPw = memberService.createRandomPw();
         //아이디 확인 및 업데이트를 위한 유저코드 유저코드 찾기
@@ -122,11 +128,16 @@ public class MemberController {
         //암호화된 임시비밀번호를 업데이트
         memberService.updateUserPw(member);
 
-        //이메일 전송
-        String email = memberVO.getEmail();
-        String text = "임시 비밀번호는 " + randomPw +"입니다 \n 임시 비밀번호이니 로그인 즉시 개인정보 수정을 부탁드립니다.";
-        String subject = "그린 도서관입니다.";
-        simpleMailService.SimpleMailSend(email,text,subject);
+
+
+        if(memberVO.getEmail().equals(member.getEmail())){
+            //이메일 전송
+            String email = memberVO.getEmail();
+            String text = "임시 비밀번호는 " + randomPw +"입니다 \n 임시 비밀번호이니 로그인 즉시 개인정보 수정을 부탁드립니다.";
+            String subject = "그린 도서관입니다.";
+            simpleMailService.SimpleMailSend(email,text,subject);
+        }
+        return memberService.findPwUser(memberVO);
     }
 
 
@@ -203,6 +214,13 @@ public class MemberController {
         System.out.println("memberVO"+memberVO1.getUserPw());
 
         System.out.println("매치"+encoder.matches(userPw, memberVO1.getUserPw()));
+        //입력한 기존 비밀번호랑 db에 저장되어 있는 pw 확인
+//        if(encoder.matches(userPw, memberVO1.getUserPw()) == false){
+//
+//            return "기존 비밀번호가 틀렸습니다";
+//            //맞으면 그냥 넘어가고는거고
+//            //틀리면 여기서 걸러지게
+//        }
         String str = "";
         if(!encoder.matches(userPw, memberVO1.getUserPw())){
             str += "비밀번호를 확인해주세요";
@@ -217,12 +235,15 @@ public class MemberController {
 
 
 
-    @GetMapping("applyList")
+    @GetMapping("/applyList")
     public String applyList(Model model, BoardVO boardVO, HttpSession session){
         model.addAttribute("page","applyList");
         //신청 목록
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
-        model.addAttribute("userBoardList",memberService.applyUserBoardList(boardVO));
+        List<BoardVO> memberVOList = memberService.applyUserBoardList(boardVO);
+
+        System.out.println(memberVOList);
+        model.addAttribute("userBoardList",memberVOList);
         System.out.println(memberService.applyUserBoardList(boardVO));
         return "content/homePage/member/applyList";
     }

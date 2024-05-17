@@ -9,6 +9,9 @@
 
 <th:block layout:fragment="contentFragment">
     <!-- html 코드 작성 -->
+    <div class="border-top border-success border-2 mt-3 mb-1 border-opacity-50">
+
+    </div>
     <div class="row">
         <div class="col-6 mt-3" style="padding: 0;">
             <table class="text-center table table-bordered table-success">
@@ -86,10 +89,10 @@
                                     th:value="${board.fileList[0].OriginFileName}">
                                 <input type="hidden" name="AttachedFileName"
                                     th:value="${board.fileList[0].AttachedFileName}">
-                                <th:block th:if="${board.fileList[0].AttachedFileName != ''}">
+                                <!-- <th:block th:if="${board.fileList[0].AttachedFileName != ''}">
                                     <img th:src="@{/upload/}+${board.fileList[0].AttachedFileName}"
                                         style="height: 30vh;">
-                                </th:block>
+                                </th:block> -->
                                 <div onclick="download()">[[${board.fileList[0].OriginFileName}]]</div>
                             </form>
                         </div>
@@ -107,8 +110,7 @@
                 <input type="button" class="btn btn-primary btn-sm" style="margin-right: 5px;"
                     th:onclick="|location.href='@{/goEventUpdatePage(boardNum=${board.boardNum})}'|" value="게시물 수정">
                 <input type="button" class="btn btn-primary btn-sm"
-                    th:onclick="eventDelete([[${board.boardNum}]],[[${board.PlusVO.openDate}]],[[${board.boardTitle}]])"
-                    value="게시물 삭제">
+                    th:onclick="eventDelete([[${board.boardNum}]],[[${board.boardTitle}]])" value="게시물 삭제">
             </div>
             <div>
                 <input class="btn btn-success btn-lg" type="button" value="목록"
@@ -131,11 +133,13 @@
                 </div>
                 <form action="/applyApp" method="post">
                     <div class="modal-body d-grid">
+
                         <div>
                             <span style="color: red;">*</span><span>신청하실 날짜를 선택하세요</span>
                         </div>
                         <div>
-                            <input type="date" class="form-control" name="applyDate" id="applyDate">
+                            <input type="date" class="form-control" name="applyDate" id="applyDate"
+                                onclick="setDate() ">
                         </div>
                         <input type="hidden" id="boardNumTag" name="boardNum">
                     </div>
@@ -159,6 +163,14 @@
             const downloadTag = document.querySelector("#downloadTag");
             downloadTag.submit();
 
+        }
+
+
+
+        function setDate() {
+            document.querySelector();
+            let offset = 1000 * 60 * 60 * 9 // 9시간 밀리세컨트 값
+            let today = new Date(Date.now() + offset)
         }
     </script>
 </th:block>
