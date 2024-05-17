@@ -92,17 +92,16 @@ public class FindBookController {
 
     // 책 예약
     @ResponseBody
-    @RequestMapping("/bookReservationFetch")
-    public String bookReservationFetch(@RequestParam(name = "bookCode")String bookCode, HttpSession session, BookReservationVO bookReservationVO) {
+    @GetMapping("/bookReservationFetch/{bookCode}")
+    public String bookReservationFetch(@PathVariable(name = "bookCode")String bookCode, HttpSession session, BookReservationVO bookReservationVO) {
 
-//        List<BookReservationVO> myInfo = memberService.selectMyReservation((Integer) session.getAttribute("userCode"));
+        System.out.println("확인");
+        System.out.println("확인");
+        System.out.println("확인");
+        System.out.println("확인");
+        System.out.println("확인");
         bookReservationVO.setUserCode((Integer) session.getAttribute("userCode"));
 
-//        myInfo.forEach(m -> {
-//            if(m.getBookCode().equals(bookReservationVO.getBookCode())){
-//                bookReservationVO.setReserveStatus(m.getReserveStatus());
-//            }
-//        });
 
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@" + borrowReturnService.selectBookAvailable(bookCode));
 
