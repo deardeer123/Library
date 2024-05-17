@@ -214,6 +214,13 @@ public class MemberController {
         System.out.println("memberVO"+memberVO1.getUserPw());
 
         System.out.println("매치"+encoder.matches(userPw, memberVO1.getUserPw()));
+        //입력한 기존 비밀번호랑 db에 저장되어 있는 pw 확인
+//        if(encoder.matches(userPw, memberVO1.getUserPw()) == false){
+//
+//            return "기존 비밀번호가 틀렸습니다";
+//            //맞으면 그냥 넘어가고는거고
+//            //틀리면 여기서 걸러지게
+//        }
         String str = "";
         if(!encoder.matches(userPw, memberVO1.getUserPw())){
             str += "비밀번호를 확인해주세요";
@@ -228,17 +235,13 @@ public class MemberController {
 
 
 
-    @GetMapping("applyList")
+    @GetMapping("/applyList")
     public String applyList(Model model, BoardVO boardVO, HttpSession session){
         model.addAttribute("page","applyList");
         //신청 목록
         boardVO.setUserCode((Integer) session.getAttribute("userCode"));
         List<BoardVO> memberVOList = memberService.applyUserBoardList(boardVO);
-        System.out.println("*****");
-        System.out.println("*****");
-        System.out.println("*****");
-        System.out.println("*****");
-        System.out.println("*****");
+
         System.out.println(memberVOList);
         model.addAttribute("userBoardList",memberVOList);
         System.out.println(memberService.applyUserBoardList(boardVO));

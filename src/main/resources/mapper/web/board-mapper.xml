@@ -394,6 +394,10 @@
         FROM ATTACHED_FILE
         WHERE BOARD_NUM = #{boardNum}
     </delete>
+    <delete id="applyDelete">
+        DELETE FROM APPLY
+        WHERE BOARD_NUM = #{boardNum}
+    </delete>
 
     <update id="updateStatus">
         UPDATE board_plus AS A

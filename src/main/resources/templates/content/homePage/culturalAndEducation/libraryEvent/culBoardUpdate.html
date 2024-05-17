@@ -34,7 +34,7 @@
                                 제목
                             </td>
                             <td colspan="3">
-                                <input type="text" name="boardTitle" class="form-control">
+                                <input type="text" name="boardTitle" th:value="${board.boardTitle}" class="form-control">
                             </td>
                         </tr>
                         <tr>
@@ -48,13 +48,13 @@
                             <td colspan="4">
                                 <div class="form-floating">
                                     <textarea class="form-control" placeholder="Leave a comment here"
-                                        style="height: 600px"></textarea>
+                                        style="height: 600px">[[${board.content}]]</textarea>
                                 </div>
                             </td>
                         </tr>
                     </tbody>
                     <div class="mb-2 d-md-flex justify-content-end">
-                        <input type="submit" class="btn btn-primary btn-sm" value="수정하기">
+                        <input type="submit" class="btn btn-primary btn-sm" onclick="confirm('수정하시겠습니까 ?')" value="수정하기">
                     </div>
                     <input type="hidden" name="boardNum" th:value="${board.boardNum}">
                     <input type="hidden" name="userCode" th:value="${session.userCode}">
