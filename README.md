@@ -4,3 +4,11 @@
 > 홈페이지 구축을 같이 하기로 결정 함.
 
 ## 개발환경
+* Java 17
+* Html
+* Javascript
+* CSS
+* MariaDB
+* Spring boot
+* Spring security
+* Bootstrap
