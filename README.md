@@ -16,3 +16,10 @@
 * Spring boot
 * Spring security
 * Bootstrap
+
+## 프로젝트 팀 구성인원 및 담당 세션
+> 오철민(팀장)
+
+> 김봄이
+
+> 남지훈
