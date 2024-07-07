@@ -17,10 +17,10 @@
  <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat&logo=springsecurity&logoColor=white">
  <img src="https://img.shields.io/badge/Bootstrap-7952B3?style=flat&logo=bootstrap&logoColor=white">
 
-## 프로젝트 소개 pdf
-https://drive.google.com/file/d/1S-7tNta6D1HrAiY8iarJNu9-yDqh98_3/preview
+## 프로젝트 소개 PDF 링크(구글 드라이브)
+[프로젝트 소개 PDF](https://drive.google.com/file/d/1S-7tNta6D1HrAiY8iarJNu9-yDqh98_3/preview)
 
-## 프로젝트 팀 구성인원 및 담당 세션 (세부사항은 소개 pdf 참조)
+## 프로젝트 팀 구성인원 및 담당 세션 (세부사항은 소개 PDF 참조)
 > 오철민(팀장) / 도서관 관리 시스템 + 도서관 홈페이지
 1. 도서관 관리 시스템 및 도서관 홈페이지 메인 페이지 구현
 - 도서관 관리 시스템
