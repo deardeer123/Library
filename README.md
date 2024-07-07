@@ -5,7 +5,7 @@
 > 관리 시스템을 구축하다보니 도서관 홈페이지와 관리 시스템은 유기적이란 것을 확인 한 뒤   
 > 홈페이지 구축을 같이 하기로 결정 함.
 
-> 기간 : 24.02.29 ~ 24.05.17
+> 기간 : 24.02.27 ~ 24.05.17
 
 ## 개발환경
  <img src="https://img.shields.io/badge/Java17-000000?style=flat&logo=OpenJDK&logoColor=white">
